@@ -178,10 +178,4 @@ Base URL: `/api/v1`
 - JWTs are stored in `localStorage` on the frontend for Phase 1 simplicity.
 - Passwords are hashed before storage and never returned in API responses.
 - All workspace and project data is scoped to the authenticated user.
-- The project details page includes a placeholder for future requirement drift analysis.
-
-## Future Phases
-
-- Phase 2: AI requirement ingestion and drift detection
-- Phase 3: Change request generation and impact analysis
-- Phase 4: Billing, plan limits, and production hardening
+- Phase 1 is complete for the current product scope.
