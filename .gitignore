@@ -1,0 +1,15 @@
+node_modules
+dist
+build
+coverage
+.env
+.env.*
+!.env.example
+.DS_Store
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+client/node_modules
+client/dist
+server/node_modules
+server/dist
