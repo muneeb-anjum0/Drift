@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ChevronRight, Zap, Shield, BarChart3, ArrowRight, Cpu, GitBranch, Layers, Workflow, CheckCircle2, Star, Code2, Users } from 'lucide-react';
+import { ChevronRight, Zap, Shield, BarChart3, ArrowRight, GitBranch, Layers, Workflow, CheckCircle2, Star, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function LandingPage() {
@@ -262,111 +262,22 @@ export default function LandingPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.15 }}
-                className="relative"
+                className="relative h-full"
               >
                 <div className="absolute -top-6 -left-6 text-6xl font-bold text-lime-400/10 font-mono">{step.num}</div>
                 <motion.div
                   whileHover={{ scale: 1.05, borderColor: '#22ff00', boxShadow: '0 0 20px rgba(34, 255, 0, 0.2)' }}
-                  className="p-8 border border-lime-400/20 rounded-2xl bg-black/40 backdrop-blur-sm transition-all"
+                  className="h-full p-8 border border-lime-400/20 rounded-2xl bg-black/40 backdrop-blur-sm transition-all flex flex-col"
                 >
                   <motion.div
                     whileHover={{ rotate: 10, scale: 1.1 }}
-                    className="inline-block p-3 bg-lime-400/10 rounded-full mb-4"
+                    className="inline-block p-3 bg-lime-400/10 rounded-full mb-4 w-fit"
                   >
                     <step.icon className="w-6 h-6 text-lime-400" />
                   </motion.div>
                   <h3 className="font-semibold text-xl mb-3">{step.title}</h3>
-                  <p className="text-gray-400">{step.desc}</p>
+                  <p className="text-gray-400 flex-1">{step.desc}</p>
                 </motion.div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Tech Stack Section */}
-      <section className="relative z-10 py-20 border-t border-lime-400/10">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.h2
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl font-bold text-center mb-16"
-          >
-            Built with Modern Tech
-          </motion.h2>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ staggerChildren: 0.08 }}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-          >
-            {[
-              { name: 'React', icon: Code2 },
-              { name: 'TypeScript', icon: Cpu },
-              { name: 'Node.js', icon: GitBranch },
-              { name: 'MongoDB', icon: Layers },
-              { name: 'Tailwind CSS', icon: Workflow },
-              { name: 'JWT Auth', icon: Shield },
-              { name: 'Express.js', icon: Zap },
-              { name: 'Framer Motion', icon: BarChart3 }
-            ].map((tech, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.08 }}
-                whileHover={{ scale: 1.1, borderColor: '#22ff00' }}
-                className="p-4 border border-lime-400/20 rounded-xl bg-black/40 backdrop-blur-sm flex flex-col items-center gap-2 hover:bg-lime-400/5 transition-all"
-              >
-                <tech.icon className="w-6 h-6 text-lime-400" />
-                <span className="text-sm font-medium">{tech.name}</span>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Features Deep Dive */}
-      <section className="relative z-10 py-20 border-t border-lime-400/10">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.h2
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl font-bold text-center mb-16"
-          >
-            Powerful Features
-          </motion.h2>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ staggerChildren: 0.1 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
-          >
-            {[
-              { icon: Users, title: 'Team Collaboration', desc: 'Invite team members and manage permissions with ease' },
-              { icon: Workflow, title: 'Automated Workflows', desc: 'Set up automated actions based on code changes' },
-              { icon: BarChart3, title: 'Advanced Analytics', desc: 'Get detailed insights into your development patterns' },
-              { icon: Shield, title: 'Enterprise Security', desc: 'Bank-level encryption and compliance standards' },
-              { icon: Zap, title: 'Lightning Fast', desc: 'Real-time processing with sub-second latency' },
-              { icon: GitBranch, title: 'Multi-Repository', desc: 'Manage unlimited repositories across platforms' }
-            ].map((feature, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1 }}
-                whileHover={{ x: 10 }}
-                className="flex gap-4 p-6 border border-lime-400/10 rounded-xl bg-black/40 hover:border-lime-400/30 transition-all"
-              >
-                <feature.icon className="w-8 h-8 text-lime-400 flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
-                  <p className="text-gray-400">{feature.desc}</p>
-                </div>
               </motion.div>
             ))}
           </motion.div>
