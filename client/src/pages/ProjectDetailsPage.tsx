@@ -115,12 +115,12 @@ export const ProjectDetailsPage = () => {
                 <Layers3 className="h-5 w-5 text-lime-400" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold">AI-powered drift detection</h3>
-                <p className="text-sm text-gray-400">Phase 2 placeholder</p>
+                <h3 className="text-lg font-semibold">Future roadmap</h3>
+                <p className="text-sm text-gray-400">Advanced requirement analysis will arrive in a later phase.</p>
               </div>
             </div>
             <p className="mt-4 text-sm leading-7 text-gray-400">
-              AI-powered drift detection will be added in Phase 2.
+              Phase 1 is focused on capturing the project’s current scope, ownership, and delivery context.
             </p>
           </div>
           <div className="mt-6 rounded-2xl border border-gray-800 bg-black/40 p-4 text-sm text-gray-400">
