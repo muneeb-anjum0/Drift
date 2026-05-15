@@ -157,7 +157,7 @@ export default function LandingPage() {
             transition={{ duration: 0.6 }}
             className="text-4xl font-bold text-center mb-16"
           >
-            Built for Developers
+            <span className="text-lime-400">Developers</span> First
           </motion.h2>
 
           <motion.div
@@ -228,7 +228,7 @@ export default function LandingPage() {
             transition={{ duration: 0.6 }}
             className="text-4xl font-bold text-center mb-16"
           >
-            How It Works
+            How <span className="text-lime-400">It</span> Works
           </motion.h2>
 
           <motion.div
@@ -293,7 +293,7 @@ export default function LandingPage() {
             transition={{ duration: 0.6 }}
             className="text-4xl font-bold text-center mb-16"
           >
-            Loved by Developers
+            Loved by <span className="text-lime-400">Teams</span>
           </motion.h2>
 
           <motion.div
@@ -340,7 +340,7 @@ export default function LandingPage() {
             transition={{ duration: 0.6 }}
             className="text-4xl font-bold text-center mb-16"
           >
-            Frequently Asked Questions
+            Frequently Asked <span className="text-lime-400">Questions</span>
           </motion.h2>
 
           <motion.div

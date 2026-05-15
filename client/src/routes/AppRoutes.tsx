@@ -1,47 +1,58 @@
+import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 import LandingPage from '../pages/LandingPage';
-import { LoginPage } from '../pages/LoginPage';
-import { RegisterPage } from '../pages/RegisterPage';
-import { DashboardPage } from '../pages/DashboardPage';
-import { WorkspacesPage } from '../pages/WorkspacesPage';
-import { ProjectsPage } from '../pages/ProjectsPage';
-import { ProjectDetailsPage } from '../pages/ProjectDetailsPage';
-import { NotFoundPage } from '../pages/NotFoundPage';
 import { AuthLayout } from '../components/layout/AuthLayout';
 import { AppLayout } from '../components/layout/AppLayout';
+import { Spinner } from '../components/common/Spinner';
+
+const LoginPage = lazy(() => import('../pages/LoginPage').then((module) => ({ default: module.LoginPage })));
+const RegisterPage = lazy(() => import('../pages/RegisterPage').then((module) => ({ default: module.RegisterPage })));
+const DashboardPage = lazy(() => import('../pages/DashboardPage').then((module) => ({ default: module.DashboardPage })));
+const WorkspacesPage = lazy(() => import('../pages/WorkspacesPage').then((module) => ({ default: module.WorkspacesPage })));
+const ProjectsPage = lazy(() => import('../pages/ProjectsPage').then((module) => ({ default: module.ProjectsPage })));
+const ProjectDetailsPage = lazy(() => import('../pages/ProjectDetailsPage').then((module) => ({ default: module.ProjectDetailsPage })));
+const NotFoundPage = lazy(() => import('../pages/NotFoundPage').then((module) => ({ default: module.NotFoundPage })));
+
+const routeFallback = (
+  <div className="flex min-h-screen items-center justify-center bg-black text-white">
+    <Spinner />
+  </div>
+);
 
 export const AppRoutes = () => {
   return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route
-        path="/login"
-        element={(
-          <AuthLayout>
-            <LoginPage />
-          </AuthLayout>
-        )}
-      />
-      <Route
-        path="/register"
-        element={(
-          <AuthLayout>
-            <RegisterPage />
-          </AuthLayout>
-        )}
-      />
+    <Suspense fallback={routeFallback}>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route
+          path="/login"
+          element={(
+            <AuthLayout>
+              <LoginPage />
+            </AuthLayout>
+          )}
+        />
+        <Route
+          path="/register"
+          element={(
+            <AuthLayout>
+              <RegisterPage />
+            </AuthLayout>
+          )}
+        />
 
-      <Route element={<ProtectedRoute />}>
-        <Route element={<AppLayout />}>
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/workspaces" element={<WorkspacesPage />} />
-          <Route path="/projects" element={<ProjectsPage />} />
-          <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<AppLayout />}>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/workspaces" element={<WorkspacesPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
+          </Route>
         </Route>
-      </Route>
 
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Suspense>
   );
 };
