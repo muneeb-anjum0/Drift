@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ChevronRight, Zap, Shield, BarChart3, ArrowRight } from 'lucide-react';
+import { ChevronRight, Zap, Shield, BarChart3, ArrowRight, Cpu, GitBranch, Layers, Workflow, CheckCircle2, Star, Code2, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function LandingPage() {
@@ -66,15 +66,7 @@ export default function LandingPage() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate('/login')}
-              className="px-6 py-2 text-white hover:text-lime-400 transition-colors"
-            >
-              Sign In
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate('/register')}
-              className="px-6 py-2 bg-lime-400 text-black rounded-lg font-semibold hover:bg-lime-300 transition-colors"
+              className="px-6 py-2 bg-lime-400 text-black rounded-full font-semibold hover:bg-lime-300 transition-colors"
             >
               Get Started
             </motion.button>
@@ -118,17 +110,10 @@ export default function LandingPage() {
               <motion.button
                 whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(34, 255, 0, 0.5)' }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('/register')}
-                className="px-8 py-4 bg-lime-400 text-black rounded-lg font-semibold flex items-center gap-2 hover:bg-lime-300 transition-all"
+                onClick={() => navigate('/login')}
+                className="px-8 py-4 bg-lime-400 text-black rounded-full font-semibold flex items-center gap-2 hover:bg-lime-300 transition-all"
               >
-                Start Free <ArrowRight size={20} />
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05, borderColor: '#22ff00' }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 border-2 border-lime-400/50 text-lime-400 rounded-lg font-semibold hover:border-lime-400 transition-colors"
-              >
-                Watch Demo
+                Get Started <ArrowRight size={20} />
               </motion.button>
             </motion.div>
           </motion.div>
@@ -205,26 +190,296 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="relative z-10 py-20 border-t border-lime-400/10">
-        <div className="max-w-4xl mx-auto px-6 text-center">
+      {/* Stats Section */}
+      <section className="relative z-10 py-20 border-t border-lime-400/10 bg-black/30">
+        <div className="max-w-6xl mx-auto px-6">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
+            className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center"
           >
-            <h2 className="text-4xl font-bold mb-6">Ready to Get Started?</h2>
-            <p className="text-xl text-gray-300 mb-8">Join developers who trust DriftLedger for code change management.</p>
-            <motion.button
-              whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(34, 255, 0, 0.6)' }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate('/register')}
-              className="px-10 py-4 bg-lime-400 text-black rounded-lg font-semibold text-lg hover:bg-lime-300 transition-all inline-flex items-center gap-2"
-            >
-              Create Free Account <ChevronRight size={20} />
-            </motion.button>
+            {[
+              { label: 'Active Users', value: '5000+' },
+              { label: 'Projects Tracked', value: '25000+' },
+              { label: 'Changes Logged', value: '2.5M+' },
+              { label: 'Uptime', value: '99.9%' }
+            ].map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <motion.h3 className="text-4xl font-bold text-lime-400 mb-2">{stat.value}</motion.h3>
+                <p className="text-gray-400">{stat.label}</p>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="relative z-10 py-20 border-t border-lime-400/10">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.h2
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl font-bold text-center mb-16"
+          >
+            How It Works
+          </motion.h2>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ staggerChildren: 0.15 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
+            {[
+              { 
+                icon: Layers,
+                num: '01',
+                title: 'Create Workspace',
+                desc: 'Set up your workspace and invite team members'
+              },
+              {
+                icon: GitBranch,
+                num: '02',
+                title: 'Add Projects',
+                desc: 'Connect your repositories and projects'
+              },
+              {
+                icon: BarChart3,
+                num: '03',
+                title: 'Monitor Changes',
+                desc: 'Track all code changes in real-time'
+              }
+            ].map((step, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.15 }}
+                className="relative"
+              >
+                <div className="absolute -top-6 -left-6 text-6xl font-bold text-lime-400/10 font-mono">{step.num}</div>
+                <motion.div
+                  whileHover={{ scale: 1.05, borderColor: '#22ff00', boxShadow: '0 0 20px rgba(34, 255, 0, 0.2)' }}
+                  className="p-8 border border-lime-400/20 rounded-2xl bg-black/40 backdrop-blur-sm transition-all"
+                >
+                  <motion.div
+                    whileHover={{ rotate: 10, scale: 1.1 }}
+                    className="inline-block p-3 bg-lime-400/10 rounded-full mb-4"
+                  >
+                    <step.icon className="w-6 h-6 text-lime-400" />
+                  </motion.div>
+                  <h3 className="font-semibold text-xl mb-3">{step.title}</h3>
+                  <p className="text-gray-400">{step.desc}</p>
+                </motion.div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Tech Stack Section */}
+      <section className="relative z-10 py-20 border-t border-lime-400/10">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.h2
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl font-bold text-center mb-16"
+          >
+            Built with Modern Tech
+          </motion.h2>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ staggerChildren: 0.08 }}
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+          >
+            {[
+              { name: 'React', icon: Code2 },
+              { name: 'TypeScript', icon: Cpu },
+              { name: 'Node.js', icon: GitBranch },
+              { name: 'MongoDB', icon: Layers },
+              { name: 'Tailwind CSS', icon: Workflow },
+              { name: 'JWT Auth', icon: Shield },
+              { name: 'Express.js', icon: Zap },
+              { name: 'Framer Motion', icon: BarChart3 }
+            ].map((tech, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.08 }}
+                whileHover={{ scale: 1.1, borderColor: '#22ff00' }}
+                className="p-4 border border-lime-400/20 rounded-xl bg-black/40 backdrop-blur-sm flex flex-col items-center gap-2 hover:bg-lime-400/5 transition-all"
+              >
+                <tech.icon className="w-6 h-6 text-lime-400" />
+                <span className="text-sm font-medium">{tech.name}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Features Deep Dive */}
+      <section className="relative z-10 py-20 border-t border-lime-400/10">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.h2
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl font-bold text-center mb-16"
+          >
+            Powerful Features
+          </motion.h2>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ staggerChildren: 0.1 }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          >
+            {[
+              { icon: Users, title: 'Team Collaboration', desc: 'Invite team members and manage permissions with ease' },
+              { icon: Workflow, title: 'Automated Workflows', desc: 'Set up automated actions based on code changes' },
+              { icon: BarChart3, title: 'Advanced Analytics', desc: 'Get detailed insights into your development patterns' },
+              { icon: Shield, title: 'Enterprise Security', desc: 'Bank-level encryption and compliance standards' },
+              { icon: Zap, title: 'Lightning Fast', desc: 'Real-time processing with sub-second latency' },
+              { icon: GitBranch, title: 'Multi-Repository', desc: 'Manage unlimited repositories across platforms' }
+            ].map((feature, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+                whileHover={{ x: 10 }}
+                className="flex gap-4 p-6 border border-lime-400/10 rounded-xl bg-black/40 hover:border-lime-400/30 transition-all"
+              >
+                <feature.icon className="w-8 h-8 text-lime-400 flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
+                  <p className="text-gray-400">{feature.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="relative z-10 py-20 border-t border-lime-400/10 bg-black/30">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.h2
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl font-bold text-center mb-16"
+          >
+            Loved by Developers
+          </motion.h2>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ staggerChildren: 0.1 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
+            {[
+              { name: 'Alex Chen', role: 'Tech Lead', company: 'StartupXYZ', quote: 'DriftLedger transformed how we track code changes.' },
+              { name: 'Sarah Williams', role: 'DevOps Engineer', company: 'CloudTech', quote: 'The analytics dashboard is incredibly intuitive.' },
+              { name: 'Marcus Johnson', role: 'CTO', company: 'InnovateLabs', quote: 'Best investment we made for our development workflow.' }
+            ].map((testimonial, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                whileHover={{ scale: 1.05, borderColor: '#22ff00' }}
+                className="p-6 border border-lime-400/20 rounded-xl bg-black/60 backdrop-blur-sm transition-all"
+              >
+                <div className="flex gap-1 mb-4">
+                  {[...Array(5)].map((_, j) => (
+                    <Star key={j} className="w-4 h-4 fill-lime-400 text-lime-400" />
+                  ))}
+                </div>
+                <p className="text-gray-300 mb-4 italic">"{testimonial.quote}"</p>
+                <div>
+                  <p className="font-semibold">{testimonial.name}</p>
+                  <p className="text-sm text-gray-500">{testimonial.role} at {testimonial.company}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="relative z-10 py-20 border-t border-lime-400/10">
+        <div className="max-w-3xl mx-auto px-6">
+          <motion.h2
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl font-bold text-center mb-16"
+          >
+            Frequently Asked Questions
+          </motion.h2>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ staggerChildren: 0.08 }}
+            className="space-y-4"
+          >
+            {[
+              { q: 'Is there a free tier?', a: 'Yes! DriftLedger offers a generous free tier perfect for individual developers.' },
+              { q: 'How secure is my data?', a: 'We use bank-level encryption and comply with GDPR, HIPAA, and SOC 2 standards.' },
+              { q: 'Can I integrate with GitHub/GitLab?', a: 'Absolutely! We support seamless integration with major git platforms.' },
+              { q: 'What is the API rate limit?', a: 'Our free tier allows 1000 API calls per month, plus unlimited for paid plans.' }
+            ].map((faq, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.08 }}
+                className="p-6 border border-lime-400/20 rounded-xl bg-black/40 hover:border-lime-400/50 transition-all"
+              >
+                <div className="flex gap-3">
+                  <CheckCircle2 className="w-6 h-6 text-lime-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">{faq.q}</h3>
+                    <p className="text-gray-400">{faq.a}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Footer CTA */}
+      <section className="relative z-10 py-20 border-t border-lime-400/10 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <p className="text-gray-400 mb-6">Still have questions? Reach out to our support team.</p>
+          <motion.a
+            href="mailto:support@driftledger.io"
+            whileHover={{ scale: 1.05 }}
+            className="inline-flex items-center gap-2 px-6 py-3 border border-lime-400/50 rounded-full text-lime-400 hover:border-lime-400 hover:bg-lime-400/5 transition-all"
+          >
+            Get in Touch <ChevronRight size={16} />
+          </motion.a>
+        </motion.div>
       </section>
 
       {/* Footer */}

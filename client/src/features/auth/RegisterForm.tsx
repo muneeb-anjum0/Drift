@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Eye, EyeOff, UserPlus } from 'lucide-react';
+import { Eye, EyeOff, UserPlus, ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '../../components/common/Button';
@@ -41,6 +41,17 @@ export const RegisterForm = () => {
       transition={{ duration: 0.6 }}
       className="w-full"
     >
+      <motion.button
+        type="button"
+        onClick={() => navigate('/')}
+        whileHover={{ scale: 1.05, x: -5 }}
+        whileTap={{ scale: 0.95 }}
+        className="mb-8 flex items-center gap-2 text-gray-400 hover:text-lime-400 transition-colors"
+      >
+        <ArrowLeft size={18} />
+        <span className="text-sm font-medium">Back to Home</span>
+      </motion.button>
+
       <div className="mb-8 space-y-3">
         <motion.div 
           initial={{ opacity: 0 }}
