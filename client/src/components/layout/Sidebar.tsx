@@ -37,7 +37,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
         initial={{ x: -300 }}
         animate={{ x: isOpen ? 0 : -300 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="fixed left-0 top-0 h-screen w-72 bg-black border-r border-lime-400/10 text-white shadow-2xl z-50 lg:relative lg:z-0 lg:translate-x-0 lg:w-72 flex flex-col lg:animate-none"
+        className="fixed inset-y-0 left-0 w-72 bg-black border-r border-lime-400/10 text-white shadow-2xl z-50 flex flex-col lg:relative lg:inset-auto lg:z-0 lg:translate-x-0 lg:w-72 lg:min-h-screen lg:h-auto lg:self-stretch lg:animate-none"
       >
         {/* Header */}
         <div className="border-b border-lime-400/10 px-8 py-8 flex items-center justify-between">

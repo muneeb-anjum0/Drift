@@ -2,7 +2,9 @@
 
 DriftLedger is a SaaS foundation for freelancers, agencies, and software teams to organize client work, track original requirements, and prepare for future requirement drift analysis.
 
-Phase 1 focuses on the product base: authentication, workspaces, projects, protected routes, dashboard UI, activity logging, and a clean scalable MERN architecture. AI drift detection, change request generation, and billing are intentionally reserved for later phases.
+Phase 1 focuses on the product base: authentication, workspaces, projects, protected routes, dashboard UI, activity logging, and a clean scalable MERN architecture.
+
+Phase 2 adds the Requirement Intelligence Layer: structured requirement management, baseline snapshots, local requirement extraction, version history, and the frontend foundation for future AI-assisted drift detection.
 
 ## Phase 1 Scope
 
@@ -17,11 +19,25 @@ Completed in this phase:
 - MongoDB models and Express service/controller separation
 - Zod validation and centralized API error handling
 
+## Phase 2 Scope
+
+Completed in this phase:
+
+- Requirement model with project, workspace, status, priority, type, source, baseline, and effort fields
+- Requirement version model with immutable requirement snapshots
+- Requirement CRUD APIs
+- Requirement baseline creation API
+- Local rule-based requirement extraction from project scope text
+- Requirement activity logs for create, update, delete, extract, and baseline actions
+- Requirement table, create/edit modal, extraction review panel, baseline button, and version history UI
+- Project details page requirement section with summary cards and baseline management
+- AI service placeholder for a future Gemini/OpenAI integration without requiring API keys
+
 ## Future Vision
 
 Planned later phases will add:
 
-- AI requirement extraction and comparison
+- Requirement drift comparison against baselines
 - Requirement diff generation
 - Scope drift reports
 - Change request documents
@@ -168,6 +184,17 @@ Base URL: `/api/v1`
 - `PATCH /projects/:projectId`
 - `DELETE /projects/:projectId`
 
+### Requirements
+
+- `GET /requirements/project/:projectId`
+- `POST /requirements`
+- `GET /requirements/:requirementId`
+- `PATCH /requirements/:requirementId`
+- `DELETE /requirements/:requirementId`
+- `POST /requirements/extract`
+- `POST /requirements/baseline`
+- `GET /requirements/versions/:projectId`
+
 ### Activities
 
 - `GET /activities`
@@ -178,4 +205,5 @@ Base URL: `/api/v1`
 - JWTs are stored in `localStorage` on the frontend for Phase 1 simplicity.
 - Passwords are hashed before storage and never returned in API responses.
 - All workspace and project data is scoped to the authenticated user.
-- Phase 1 is complete for the current product scope.
+- Phase 1 is complete for the core SaaS foundation.
+- Phase 2 is the structured requirement foundation for future drift detection.

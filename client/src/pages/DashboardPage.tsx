@@ -52,55 +52,57 @@ export const DashboardPage = () => {
         />
       ) : null}
 
-      {/* Stats Grid */}
-      <motion.div 
+      {/* Stats Grid (redesigned) */}
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, staggerChildren: 0.1 }}
-        className="grid gap-5 md:grid-cols-2 xl:grid-cols-4"
+        transition={{ duration: 0.6, staggerChildren: 0.08 }}
+        className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
       >
         {stats.map((stat, i) => (
           <motion.div
             key={stat.label}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
+            transition={{ delay: i * 0.08 }}
           >
             <StatCard label={stat.label} value={stat.value} icon={stat.icon} tone={stat.tone} />
           </motion.div>
         ))}
       </motion.div>
 
-      {/* Overview Card */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-      >
-        <Card className="p-6 border-lime-400/20 hover:border-lime-400/50">
-          <div className="mb-6 flex items-start justify-between">
+      {/* Overview Card (redesigned) */}
+      <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28 }}>
+        <Card className="p-6 border-lime-600/20">
+          <div className="mb-4 flex items-start justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+              <h2 className="text-2xl font-extrabold text-white flex items-center gap-3">
                 <TrendingUp className="h-6 w-6 text-lime-400" />
                 SaaS Overview
               </h2>
-              <p className="mt-1 text-gray-400">Phase 1 builds the foundation for requirement drift tracking</p>
+              <p className="mt-1 text-sm text-gray-400 max-w-xl">Phase 1 builds the foundation for requirement drift tracking — core features, activity logs, and workspace/project management.</p>
+            </div>
+            <div className="hidden md:flex items-center gap-3">
+              <div className="text-sm text-gray-400">Live</div>
+              <div className="rounded-full bg-lime-400/10 px-3 py-1 text-lime-300 text-sm">Production</div>
             </div>
           </div>
-          <div className="grid gap-4 md:grid-cols-3">
+
+          <div className="grid gap-4 sm:grid-cols-3 mt-4">
             {[
-              { title: 'Authentication', text: 'JWT-based login & protected routes', icon: '🔐' },
-              { title: 'Workspace System', text: 'Organize clients & projects', icon: '📦' },
-              { title: 'Activity Logging', text: 'Track all events & changes', icon: '📊' },
-            ].map(({ title, text, icon }) => (
-              <motion.div 
-                key={title}
-                whileHover={{ scale: 1.05, y: -5 }}
-                className="rounded-lg bg-black/60 border border-gray-800 p-4 hover:border-lime-400/50 transition-all"
-              >
-                <div className="text-2xl mb-2">{icon}</div>
-                <p className="font-semibold text-white">{title}</p>
-                <p className="mt-1 text-sm text-gray-400">{text}</p>
+              { title: 'Authentication', text: 'JWT login, protected routes', icon: '🔐' },
+              { title: 'Workspaces', text: 'Organize clients & teams', icon: '🗂️' },
+              { title: 'Activity', text: 'Event logging & timeline', icon: '📈' },
+            ].map(({ title, text, icon }, idx) => (
+              <motion.div key={title} whileHover={{ y: -6 }} className="rounded-lg bg-black/40 p-4 border border-gray-800 hover:shadow-[0_10px_40px_rgba(16,185,129,0.04)] transition-all">
+                <div className="flex items-center gap-3">
+                  <div className="text-2xl">{icon}</div>
+                  <div>
+                    <p className="font-semibold text-white">{title}</p>
+                    <p className="mt-1 text-sm text-gray-400">{text}</p>
+                  </div>
+                </div>
+                <div className="mt-3 h-1 w-full rounded-full bg-gradient-to-r from-lime-400/30 to-transparent" />
               </motion.div>
             ))}
           </div>

@@ -6,18 +6,18 @@ import { Button } from '../../components/common/Button';
 import { formatDate } from '../../utils/formatDate';
 
 const statusStyles: Record<Project['status'], string> = {
-  planning: 'bg-blue-400/20 text-blue-300 border border-blue-400/30',
-  active: 'bg-emerald-400/20 text-emerald-300 border border-emerald-400/30',
-  paused: 'bg-amber-400/20 text-amber-300 border border-amber-400/30',
+  planning: 'bg-gray-800/50 text-gray-200 border border-gray-700',
+  active: 'bg-lime-400/10 text-lime-300 border border-lime-400/30',
+  paused: 'bg-amber-400/10 text-amber-300 border border-amber-400/30',
   completed: 'bg-lime-400/20 text-lime-300 border border-lime-400/30',
-  archived: 'bg-gray-700/50 text-gray-300 border border-gray-600',
+  archived: 'bg-gray-800/50 text-gray-400 border border-gray-700',
 };
 
 const priorityStyles: Record<Project['priority'], string> = {
-  low: 'bg-gray-700/50 text-gray-300 border border-gray-600',
-  medium: 'bg-blue-400/20 text-blue-300 border border-blue-400/30',
-  high: 'bg-amber-400/20 text-amber-300 border border-amber-400/30',
-  urgent: 'bg-red-400/20 text-red-300 border border-red-400/30',
+  low: 'bg-gray-800/50 text-gray-300 border border-gray-700',
+  medium: 'bg-gray-800/40 text-gray-200 border border-gray-700',
+  high: 'bg-amber-400/10 text-amber-300 border border-amber-400/30',
+  urgent: 'bg-red-400/10 text-red-300 border border-red-400/30',
 };
 
 const workspaceName = (workspace: Project['workspace']) => (typeof workspace === 'string' ? 'Workspace' : workspace.name);

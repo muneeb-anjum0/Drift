@@ -21,20 +21,22 @@ export const StatCard = ({ label, value, icon: Icon, tone = 'lime' }: StatCardPr
 
   return (
     <motion.div
-      whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(34, 255, 0, 0.1)' }}
-      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+      whileHover={{ y: -6 }}
+      transition={{ type: 'spring', stiffness: 280, damping: 28 }}
     >
-      <Card className={`p-6 border ${toneColors.border} bg-gradient-to-br ${toneColors.bg} backdrop-blur-sm`}>
-        <div className="flex items-start justify-between gap-4">
+      <Card className={`p-6 border ${toneColors.border} bg-gradient-to-br ${toneColors.bg}`}>
+        <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-sm text-gray-400 font-medium">{label}</p>
-            <p className="mt-3 text-4xl font-bold text-white">{value}</p>
+            <p className="mt-2 text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-lime-400 to-lime-200">{value}</p>
+            <p className="mt-1 text-xs text-gray-500">Overview metric</p>
           </div>
-          <motion.div 
-            whileHover={{ scale: 1.1, rotate: 10 }}
-            className={`flex h-12 w-12 items-center justify-center rounded-lg ${toneColors.icon}`}
+
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="flex h-14 w-14 items-center justify-center rounded-xl bg-black/40 ring-1 ring-lime-400/20 shadow-[0_6px_30px_rgba(16,185,129,0.06)]"
           >
-            <Icon className="h-6 w-6" />
+            <Icon className="h-7 w-7 text-lime-400" />
           </motion.div>
         </div>
       </Card>
