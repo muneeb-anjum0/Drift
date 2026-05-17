@@ -1,10 +1,7 @@
 import { useState } from 'react';
-import { Eye, EyeOff, LogIn, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Button } from '../../components/common/Button';
-import { Input } from '../../components/common/Input';
-import { Spinner } from '../../components/common/Spinner';
 import { useAuth } from '../../hooks/useAuth';
 import type { LoginFormValues } from './auth.types';
 
@@ -25,7 +22,7 @@ export const LoginForm = () => {
     setError('');
     setIsSubmitting(true);
     try {
-      await login(values);
+      await login(values.email, values.password);
       navigate('/dashboard');
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : 'Unable to log in');
@@ -148,9 +145,9 @@ export const LoginForm = () => {
           whileTap={{ scale: 0.98 }}
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-3 px-4 bg-lime-400 text-black font-semibold rounded-lg hover:bg-lime-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+          className="w-full py-3 px-4 bg-lime-400 text-black font-semibold rounded-lg hover:bg-lime-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
         >
-          {isSubmitting ? <Spinner /> : <><LogIn size={18} /> Sign In</>}
+          {isSubmitting ? 'Signing in...' : 'Sign In'}
         </motion.button>
       </motion.form>
 

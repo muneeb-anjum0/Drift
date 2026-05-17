@@ -3,8 +3,10 @@ export interface LoginFormValues {
   password: string;
 }
 
-export interface RegisterFormValues {
-  name: string;
+export interface SignupFormValues {
   email: string;
   password: string;
+  confirmPassword: string;
 }
+
+export interface RegisterFormValues extends SignupFormValues {}

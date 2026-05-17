@@ -38,7 +38,7 @@ export const Topbar = ({ onToggleSidebar, sidebarOpen }: TopbarProps) => {
           className="hidden items-center gap-2 rounded-full bg-black border border-lime-400/20 px-5 py-2.5 text-sm text-gray-300 md:flex transition-all duration-300"
         >
           <UserCircle2 className="h-4 w-4 text-lime-400" />
-          <span>{user?.name ?? 'User'}</span>
+          <span>{user?.displayName ?? user?.email ?? 'User'}</span>
         </motion.div>
         <motion.button
           whileHover={{ scale: 1.05, backgroundColor: 'rgba(239, 68, 68, 0.1)' }}

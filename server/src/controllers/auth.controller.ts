@@ -2,18 +2,20 @@ import type { Request, Response } from 'express';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { loginSchema, registerSchema } from '../validators/auth.validator.js';
-import { getCurrentUser, loginUser, registerUser } from '../services/auth.service.js';
+import { getCurrentUser } from '../services/firebaseUser.service.js';
 
 export const registerController = asyncHandler(async (req: Request, res: Response) => {
+  // Firebase handles registration on the frontend
+  // This endpoint is kept for compatibility but not used in Firebase flow
   const payload = registerSchema.parse(req.body);
-  const result = await registerUser(payload);
-  res.status(201).json(new ApiResponse('Registration successful', result));
+  res.status(201).json(new ApiResponse('Use Firebase Authentication for registration', {}));
 });
 
 export const loginController = asyncHandler(async (req: Request, res: Response) => {
+  // Firebase handles login on the frontend
+  // This endpoint is kept for compatibility but not used in Firebase flow
   const payload = loginSchema.parse(req.body);
-  const result = await loginUser(payload);
-  res.status(200).json(new ApiResponse('Login successful', result));
+  res.status(200).json(new ApiResponse('Use Firebase Authentication for login', {}));
 });
 
 export const meController = asyncHandler(async (req: Request, res: Response) => {

@@ -1,4 +1,7 @@
+import { firestore } from '../config/firebase.js';
 import { ActivityLogModel } from '../models/ActivityLog.model.js';
+
+const USE_FIRESTORE = process.env.USE_FIRESTORE === 'true';
 
 export const logActivity = async (params: {
   workspace: string;
@@ -8,10 +11,44 @@ export const logActivity = async (params: {
   entityId: string;
   metadata?: Record<string, unknown>;
 }) => {
+  try {
+    if (USE_FIRESTORE) {
+      const activityRef = firestore.collection('activities').doc();
+      await activityRef.set({
+        _id: activityRef.id,
+        workspace: params.workspace,
+        user: params.user,
+        action: params.action,
+        entityType: params.entityType,
+        entityId: params.entityId,
+        metadata: params.metadata || {},
+        createdAt: new Date(),
+      });
+      return { _id: activityRef.id, ...params };
+    }
+  } catch (error) {
+    console.error('Error logging to Firestore:', error);
+  }
+
+  // Fallback to MongoDB
   return ActivityLogModel.create(params);
 };
 
 export const getActivitiesForUser = async (workspaceIds: string[]) => {
+  if (USE_FIRESTORE) {
+    try {
+      const activitiesQuery = await firestore
+        .collection('activities')
+        .where('workspace', 'in', workspaceIds)
+        .orderBy('createdAt', 'desc')
+        .limit(50)
+        .get();
+      return activitiesQuery.docs.map((doc) => doc.data());
+    } catch (error) {
+      console.error('Error fetching from Firestore:', error);
+    }
+  }
+
   return ActivityLogModel.find({ workspace: { $in: workspaceIds } })
     .sort({ createdAt: -1 })
     .limit(50)
@@ -20,6 +57,20 @@ export const getActivitiesForUser = async (workspaceIds: string[]) => {
 };
 
 export const getActivitiesForWorkspace = async (workspaceId: string) => {
+  if (USE_FIRESTORE) {
+    try {
+      const activitiesQuery = await firestore
+        .collection('activities')
+        .where('workspace', '==', workspaceId)
+        .orderBy('createdAt', 'desc')
+        .limit(50)
+        .get();
+      return activitiesQuery.docs.map((doc) => doc.data());
+    } catch (error) {
+      console.error('Error fetching from Firestore:', error);
+    }
+  }
+
   return ActivityLogModel.find({ workspace: workspaceId })
     .sort({ createdAt: -1 })
     .limit(50)
