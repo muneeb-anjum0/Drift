@@ -10,6 +10,18 @@ const envSchema = z.object({
   JWT_SECRET: z.string().min(1),
   JWT_EXPIRES_IN: z.string().default('7d'),
   CLIENT_URL: z.string().url().default('http://localhost:5173'),
+  OLLAMA_ENABLED: z
+    .preprocess((value) => {
+      if (typeof value === 'string') {
+        return value.toLowerCase() === 'true';
+      }
+
+      return value;
+    }, z.boolean())
+    .default(false),
+  OLLAMA_BASE_URL: z.string().url().default('http://localhost:11434'),
+  OLLAMA_MODEL: z.string().min(1).default('llama3.1:8b'),
+  OLLAMA_TIMEOUT_MS: z.coerce.number().int().positive().default(30000),
 });
 
 const resolvedEnv = {
@@ -19,6 +31,10 @@ const resolvedEnv = {
   JWT_SECRET: process.env.JWT_SECRET ?? 'driftledger-dev-secret',
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN,
   CLIENT_URL: process.env.CLIENT_URL,
+  OLLAMA_ENABLED: process.env.OLLAMA_ENABLED,
+  OLLAMA_BASE_URL: process.env.OLLAMA_BASE_URL,
+  OLLAMA_MODEL: process.env.OLLAMA_MODEL,
+  OLLAMA_TIMEOUT_MS: process.env.OLLAMA_TIMEOUT_MS,
 };
 
 export const env = envSchema.parse(resolvedEnv);

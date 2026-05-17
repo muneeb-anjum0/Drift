@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, CalendarDays, CheckCircle2, Clock3, FolderKanban, Layers3, Plus, Sparkles, User2 } from 'lucide-react';
+import { ArrowLeft, CalendarDays, Clock3, FolderKanban, Plus, Sparkles, User2 } from 'lucide-react';
 import { projectApi } from '../api/project.api';
 import { Button } from '../components/common/Button';
 import { Card } from '../components/common/Card';
+import { EmptyState } from '../components/common/EmptyState';
 import { Spinner } from '../components/common/Spinner';
 import { formatDate } from '../utils/formatDate';
 import { BaselineButton } from '../features/requirements/BaselineButton';
@@ -13,6 +14,12 @@ import { RequirementFormModal } from '../features/requirements/RequirementFormMo
 import { RequirementTable } from '../features/requirements/RequirementTable';
 import { RequirementVersionHistory } from '../features/requirements/RequirementVersionHistory';
 import type { Requirement, RequirementFormSubmitValues, RequirementFormValues } from '../features/requirements/requirement.types';
+import { DriftAnalysisPanel } from '../features/drift/DriftAnalysisPanel';
+import { DriftHistory } from '../features/drift/DriftHistory';
+import { ChangeRequestPreview } from '../features/change-requests/ChangeRequestPreview';
+import { ChangeRequestHistory } from '../features/change-requests/ChangeRequestHistory';
+import type { ChangeRequest } from '../features/change-requests/changeRequest.types';
+import type { DriftAnalysis } from '../features/drift/drift.types';
 import {
   useCreateBaseline,
   useCreateRequirement,
@@ -21,6 +28,8 @@ import {
   useRequirementVersions,
   useUpdateRequirement,
 } from '../hooks/useRequirements';
+import { useDeleteDriftAnalysis, useProjectDriftAnalyses } from '../hooks/useDrift';
+import { useDeleteChangeRequest, useProjectChangeRequests, useUpdateChangeRequest } from '../hooks/useChangeRequests';
 
 const detailItems = [
   { label: 'Client name', valueKey: 'clientName' as const, icon: User2 },
@@ -48,6 +57,7 @@ export const ProjectDetailsPage = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const [isRequirementModalOpen, setIsRequirementModalOpen] = useState(false);
   const [editingRequirement, setEditingRequirement] = useState<Requirement | null>(null);
+  const [activeSection, setActiveSection] = useState<'requirements' | 'drift' | 'changes'>('requirements');
 
   const projectQuery = useQuery({
     queryKey: ['project', projectId],
@@ -57,10 +67,15 @@ export const ProjectDetailsPage = () => {
 
   const requirementsQuery = useProjectRequirements(projectId);
   const versionsQuery = useRequirementVersions(projectId);
+  const driftAnalysesQuery = useProjectDriftAnalyses(projectId);
+  const changeRequestsQuery = useProjectChangeRequests(projectId);
   const createRequirementMutation = useCreateRequirement();
   const updateRequirementMutation = useUpdateRequirement();
   const deleteRequirementMutation = useDeleteRequirement();
   const createBaselineMutation = useCreateBaseline();
+  const deleteDriftAnalysisMutation = useDeleteDriftAnalysis();
+  const deleteChangeRequestMutation = useDeleteChangeRequest();
+  const updateChangeRequestMutation = useUpdateChangeRequest();
 
   if (projectQuery.isLoading) {
     return (
@@ -90,17 +105,8 @@ export const ProjectDetailsPage = () => {
   const workspaceId = typeof project.workspace === 'string' ? project.workspace : project.workspace._id;
   const requirements = requirementsQuery.data ?? [];
   const versions = versionsQuery.data ?? [];
-  const approvedCount = requirements.filter((requirement) => requirement.status === 'approved').length;
-  const highPriorityCount = requirements.filter(
-    (requirement) => requirement.priority === 'high' || requirement.priority === 'critical'
-  ).length;
-
-  const stats = [
-    { label: 'Total Requirements', value: requirements.length, icon: FolderKanban },
-    { label: 'Approved', value: approvedCount, icon: CheckCircle2 },
-    { label: 'High / Critical Priority', value: highPriorityCount, icon: Clock3 },
-    { label: 'Baseline Versions', value: versions.length, icon: Layers3 },
-  ];
+  const driftAnalyses = driftAnalysesQuery.data ?? [];
+  const changeRequests = changeRequestsQuery.data ?? [];
 
   const handleOpenCreateModal = () => {
     setEditingRequirement(null);
@@ -132,6 +138,29 @@ export const ProjectDetailsPage = () => {
     await createBaselineMutation.mutateAsync({ projectId });
   };
 
+  const handleDeleteDriftAnalysis = async (analysis: DriftAnalysis) => {
+    if (!projectId || !analysis._id) return;
+    const confirmed = window.confirm('Delete this saved drift analysis?');
+    if (!confirmed) return;
+    await deleteDriftAnalysisMutation.mutateAsync({ driftAnalysisId: analysis._id, projectId });
+  };
+
+  const handleDeleteChangeRequest = async (changeRequest: ChangeRequest) => {
+    if (!projectId || !changeRequest._id) return;
+    const confirmed = window.confirm('Delete this change request?');
+    if (!confirmed) return;
+    await deleteChangeRequestMutation.mutateAsync({ changeRequestId: changeRequest._id, projectId });
+  };
+
+  const handleUpdateChangeRequestStatus = async (changeRequest: ChangeRequest, status: ChangeRequest['status']) => {
+    if (!projectId || !changeRequest._id) return;
+    await updateChangeRequestMutation.mutateAsync({
+      changeRequestId: changeRequest._id,
+      projectId,
+      payload: { status },
+    });
+  };
+
   return (
     <div className="space-y-6 text-white">
       <div className="flex items-center justify-between gap-4">
@@ -147,140 +176,210 @@ export const ProjectDetailsPage = () => {
         </Link>
       </div>
 
-      <div className="grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
-        <Card className="border-lime-400/20 bg-black/60 p-6">
-          <div className="grid gap-4 sm:grid-cols-2">
-            {detailItems.map(({ label, valueKey, icon: Icon }) => {
-              const value =
-                valueKey === 'workspace'
-                  ? workspaceName
-                  : valueKey === 'deadline'
-                    ? formatDate(project.deadline)
-                    : valueKey === 'createdBy'
-                      ? typeof project.createdBy === 'string'
-                        ? 'Team member'
-                        : project.createdBy.name
-                      : project[valueKey];
+      <Card className="border-lime-400/20 bg-black/60 p-6">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {detailItems.map(({ label, valueKey, icon: Icon }) => {
+            const value =
+              valueKey === 'workspace'
+                ? workspaceName
+                : valueKey === 'deadline'
+                  ? formatDate(project.deadline)
+                  : valueKey === 'createdBy'
+                    ? typeof project.createdBy === 'string'
+                      ? 'Team member'
+                      : project.createdBy.name
+                    : project[valueKey];
 
-              return (
-                <div key={label} className="rounded-2xl border border-gray-800 bg-black/40 p-4">
-                  <div className="flex items-center gap-2 text-sm font-medium text-gray-400">
-                    <Icon className="h-4 w-4" />
-                    {label}
-                  </div>
-                  <p className="mt-2 text-base font-semibold text-white">{String(value)}</p>
-                </div>
-              );
-            })}
-          </div>
-          <div className="mt-6 space-y-4">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-lime-400">Original scope</p>
-              <p className="mt-2 whitespace-pre-line text-sm leading-7 text-gray-400">
-                {project.originalScope || 'No original scope has been recorded for this project yet.'}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-lime-400">Description</p>
-              <p className="mt-2 whitespace-pre-line text-sm leading-7 text-gray-400">
-                {project.description || 'No description provided.'}
-              </p>
-            </div>
-          </div>
-        </Card>
-
-        <Card className="border-lime-400/20 bg-black/60 p-6">
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-lime-400">Requirement Drift Analysis</p>
-          <div className="mt-4 rounded-3xl border border-dashed border-gray-800 bg-black/40 p-6">
-            <div className="flex items-center gap-3 text-white">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-lime-400/20 bg-black shadow-sm">
-                <Layers3 className="h-5 w-5 text-lime-400" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold">Future roadmap</h3>
-                <p className="text-sm text-gray-400">Scope drift detection will be added in Phase 3 after baseline requirements are created.</p>
-              </div>
-            </div>
-            <p className="mt-4 text-sm leading-7 text-gray-400">
-              Phase 2 is focused on structured requirement capture, local extraction, and baseline snapshots.
-            </p>
-          </div>
-          <div className="mt-6 rounded-2xl border border-gray-800 bg-black/40 p-4 text-sm text-gray-400">
-            <p className="font-semibold text-white">Updated at</p>
-            <p className="mt-1">{formatDate(project.updatedAt)}</p>
-          </div>
-        </Card>
-      </div>
-
-      <div className="space-y-6">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-lime-400">Requirements</p>
-            <h3 className="mt-1 text-2xl font-semibold text-white">Requirement Intelligence Layer</h3>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-400">
-              Capture structured requirements now so Phase 3 can compare them against future client messages and scope changes.
-            </p>
-          </div>
-          <Button type="button" onClick={handleOpenCreateModal}>
-            <Plus className="mr-2 h-4 w-4" />
-            Add Requirement
-          </Button>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {stats.map((stat) => {
-            const Icon = stat.icon;
             return (
-              <Card key={stat.label} className="border-lime-400/20 bg-black/60 p-5">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">{stat.label}</p>
-                    <p className="mt-2 text-3xl font-semibold text-white">{stat.value}</p>
-                  </div>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-lime-400/20 bg-black">
-                    <Icon className="h-5 w-5 text-lime-400" />
-                  </div>
+              <div key={label} className="rounded-2xl border border-gray-800 bg-black/40 p-4">
+                <div className="flex items-center gap-2 text-sm font-medium text-gray-400">
+                  <Icon className="h-4 w-4" />
+                  {label}
                 </div>
-              </Card>
+                <p className="mt-2 text-base font-semibold text-white">{String(value)}</p>
+              </div>
             );
           })}
         </div>
 
-        <BaselineButton requirementCount={requirements.length} isLoading={createBaselineMutation.isPending} onCreateBaseline={handleCreateBaseline} />
-
-        <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-          <Card className="border-lime-400/20 bg-black/60 p-6">
-            <div className="mb-4 flex items-start justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-lime-400">Requirement list</p>
-                <h3 className="mt-1 text-lg font-semibold text-white">Structured requirements</h3>
-              </div>
-              <div className="rounded-full border border-lime-400/20 bg-lime-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-lime-300">
-                {requirements.length} total
-              </div>
-            </div>
-            {requirementsQuery.isLoading ? (
-              <div className="flex min-h-[240px] items-center justify-center">
-                <Spinner />
-              </div>
-            ) : (
-              <RequirementTable
-                requirements={requirements}
-                onEdit={(requirement) => {
-                  setEditingRequirement(requirement);
-                  setIsRequirementModalOpen(true);
-                }}
-                onDelete={handleDeleteRequirement}
-              />
-            )}
-          </Card>
-
-          <div className="space-y-6">
-            <RequirementExtractionPanel projectId={project._id} workspaceId={workspaceId} defaultSourceText={project.originalScope} />
-            <RequirementVersionHistory versions={versionsQuery.isLoading ? [] : versions} />
+        <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          <div className="rounded-2xl border border-gray-800 bg-black/40 px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-400">Requirements</p>
+            <p className="mt-1 text-lg font-semibold text-white">{requirements.length}</p>
+          </div>
+          <div className="rounded-2xl border border-gray-800 bg-black/40 px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-400">Baselines</p>
+            <p className="mt-1 text-lg font-semibold text-white">{versions.length}</p>
+          </div>
+          <div className="rounded-2xl border border-gray-800 bg-black/40 px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-400">Updated</p>
+            <p className="mt-1 text-sm font-semibold text-white">{formatDate(project.updatedAt)}</p>
           </div>
         </div>
-      </div>
+
+        <div className="mt-6 space-y-4">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-lime-400">Original scope</p>
+            <p className="mt-2 whitespace-pre-line text-sm leading-7 text-gray-400">
+              {project.originalScope || 'No original scope has been recorded for this project yet.'}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-lime-400">Description</p>
+            <p className="mt-2 whitespace-pre-line text-sm leading-7 text-gray-400">
+              {project.description || 'No description provided.'}
+            </p>
+          </div>
+        </div>
+      </Card>
+
+      <Card className="border-lime-400/20 bg-black/60 p-4">
+        <div className="grid gap-2 sm:grid-cols-3">
+          <Button
+            type="button"
+            variant={activeSection === 'requirements' ? 'primary' : 'secondary'}
+            onClick={() => setActiveSection('requirements')}
+            className="w-full"
+          >
+            Requirements
+          </Button>
+          <Button
+            type="button"
+            variant={activeSection === 'drift' ? 'primary' : 'secondary'}
+            onClick={() => setActiveSection('drift')}
+            className="w-full"
+          >
+            Drift Analysis
+          </Button>
+          <Button
+            type="button"
+            variant={activeSection === 'changes' ? 'primary' : 'secondary'}
+            onClick={() => setActiveSection('changes')}
+            className="w-full"
+          >
+            Change Requests
+          </Button>
+        </div>
+      </Card>
+
+      {activeSection === 'requirements' ? (
+        <div className="space-y-6">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-lime-400">Requirements</p>
+              <h3 className="mt-1 text-2xl font-semibold text-white">Define and baseline scope</h3>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-400">
+                Add requirements first, then freeze a baseline for drift tracking.
+              </p>
+            </div>
+            <Button type="button" onClick={handleOpenCreateModal}>
+              <Plus className="mr-2 h-4 w-4" />
+              Add Requirement
+            </Button>
+          </div>
+
+          <BaselineButton requirementCount={requirements.length} isLoading={createBaselineMutation.isPending} onCreateBaseline={handleCreateBaseline} />
+
+          <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
+            <Card className="border-lime-400/20 bg-black/60 p-6">
+              <div className="mb-4 flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm font-semibold uppercase tracking-[0.24em] text-lime-400">Requirement list</p>
+                  <h3 className="mt-1 text-lg font-semibold text-white">Structured requirements</h3>
+                </div>
+                <div className="rounded-full border border-lime-400/20 bg-lime-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-lime-300">
+                  {requirements.length} total
+                </div>
+              </div>
+              {requirementsQuery.isLoading ? (
+                <div className="flex min-h-[240px] items-center justify-center">
+                  <Spinner />
+                </div>
+              ) : (
+                <RequirementTable
+                  requirements={requirements}
+                  onEdit={(requirement) => {
+                    setEditingRequirement(requirement);
+                    setIsRequirementModalOpen(true);
+                  }}
+                  onDelete={handleDeleteRequirement}
+                />
+              )}
+            </Card>
+
+            <div className="space-y-6">
+              <RequirementVersionHistory versions={versionsQuery.isLoading ? [] : versions} />
+              <RequirementExtractionPanel projectId={project._id} workspaceId={workspaceId} defaultSourceText={project.originalScope} />
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {activeSection === 'drift' ? (
+        <div className="space-y-6">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-lime-400">Requirement Drift Analysis</p>
+            <h3 className="mt-1 text-2xl font-semibold text-white">Analyze new client input</h3>
+          </div>
+
+          {requirements.length === 0 ? (
+            <EmptyState
+              title="Add requirements and create a baseline before analyzing drift."
+              description="Drift analysis needs approved requirements so it can compare future client input against the original scope."
+              icon={<span className="text-lime-400">DRIFT</span>}
+            />
+          ) : versions.length === 0 ? (
+            <EmptyState
+              title="Create a requirement baseline before running drift analysis."
+              description="Baseline versions are required so the drift engine has an approved scope to compare against."
+              actionLabel="Create Baseline"
+              onAction={() => {
+                void handleCreateBaseline();
+              }}
+              icon={<span className="text-lime-400">BASE</span>}
+            />
+          ) : (
+            <DriftAnalysisPanel projectId={project._id} versions={versions} hasRequirements={requirements.length > 0} />
+          )}
+
+          <Card className="border-lime-400/20 bg-black/60 p-6">
+            <div className="mb-4">
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-lime-400">Drift history</p>
+              <h3 className="mt-1 text-lg font-semibold text-white">Saved analyses</h3>
+            </div>
+            <DriftHistory
+              analyses={driftAnalysesQuery.isLoading ? [] : driftAnalyses}
+              onDelete={handleDeleteDriftAnalysis}
+              isDeleting={deleteDriftAnalysisMutation.isPending}
+            />
+          </Card>
+        </div>
+      ) : null}
+
+      {activeSection === 'changes' ? (
+        <div className="space-y-6">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-lime-400">Change Requests</p>
+            <h3 className="mt-1 text-2xl font-semibold text-white">Generate and track approvals</h3>
+          </div>
+
+          <ChangeRequestPreview projectId={project._id} driftAnalyses={driftAnalyses} />
+
+          <Card className="border-lime-400/20 bg-black/60 p-6">
+            <div className="mb-4">
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-lime-400">Change request history</p>
+              <h3 className="mt-1 text-lg font-semibold text-white">Saved requests</h3>
+            </div>
+            <ChangeRequestHistory
+              changeRequests={changeRequestsQuery.isLoading ? [] : changeRequests}
+              onUpdate={handleUpdateChangeRequestStatus}
+              onDelete={handleDeleteChangeRequest}
+              isUpdating={updateChangeRequestMutation.isPending}
+              isDeleting={deleteChangeRequestMutation.isPending}
+            />
+          </Card>
+        </div>
+      ) : null}
 
       <RequirementFormModal
         open={isRequirementModalOpen}

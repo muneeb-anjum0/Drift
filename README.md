@@ -1,10 +1,12 @@
 # DriftLedger
 
-DriftLedger is a SaaS foundation for freelancers, agencies, and software teams to organize client work, track original requirements, and prepare for future requirement drift analysis.
+DriftLedger is a SaaS foundation for freelancers, agencies, and software teams to organize client work, track original requirements, and detect requirement drift before it becomes scope creep.
 
 Phase 1 focuses on the product base: authentication, workspaces, projects, protected routes, dashboard UI, activity logging, and a clean scalable MERN architecture.
 
 Phase 2 adds the Requirement Intelligence Layer: structured requirement management, baseline snapshots, local requirement extraction, version history, and the frontend foundation for future AI-assisted drift detection.
+
+Phase 3 adds the Drift Detection and Change Request Engine: rule-based drift analysis, optional Ollama enhancement, saved drift history, and client-friendly change request generation.
 
 ## Phase 1 Scope
 
@@ -33,16 +35,31 @@ Completed in this phase:
 - Project details page requirement section with summary cards and baseline management
 - AI service placeholder for a future Gemini/OpenAI integration without requiring API keys
 
+## Phase 3 Scope
+
+Completed in this phase:
+
+- DriftAnalysis model for saved drift reports
+- ChangeRequest model for client-friendly scope change drafts
+- Rule-based drift detection against baseline requirement snapshots
+- Drift scoring service with risk levels, counts, and effort estimates
+- Optional Ollama local enhancement with automatic fallback to the rule-based engine
+- Drift analysis preview, save, history, and delete APIs
+- Change request generation, save, update, history, and delete APIs
+- Drift analysis UI with baseline selection, input type selection, preview, and save flow
+- Drift history UI with expandable saved reports and delete support
+- Change request preview UI with editable draft fields and save flow
+- Change request history UI with status updates and delete support
+- README and environment documentation for the new drift workflow
+
 ## Future Vision
 
 Planned later phases will add:
 
-- Requirement drift comparison against baselines
-- Requirement diff generation
-- Scope drift reports
-- Change request documents
-- Client-friendly explanations
-- Updated task lists and impact estimates
+- PDF export for drift reports and change requests
+- Client portal for sharing approved scope updates
+- Advanced AI summaries and richer drift explanations
+- Deployment polish and production hardening
 - Billing and subscription management
 
 ## Tech Stack
@@ -117,6 +134,10 @@ MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 JWT_EXPIRES_IN=7d
 CLIENT_URL=http://localhost:5173
+OLLAMA_ENABLED=false
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=llama3.1:8b
+OLLAMA_TIMEOUT_MS=30000
 ```
 
 ### `client/.env`
@@ -124,6 +145,37 @@ CLIENT_URL=http://localhost:5173
 ```env
 VITE_API_BASE_URL=http://localhost:5000/api/v1
 ```
+
+## Optional Ollama
+
+Ollama is optional. DriftLedger works without it by using the local rule-based drift engine.
+
+To use Ollama locally:
+
+1. Install Ollama from the official website.
+2. Pull a model, for example:
+
+```bash
+ollama pull llama3.1:8b
+```
+
+or a lighter model:
+
+```bash
+ollama pull mistral:7b
+```
+
+3. Start Ollama locally.
+4. Add these values to `server/.env`:
+
+```env
+OLLAMA_ENABLED=true
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=llama3.1:8b
+OLLAMA_TIMEOUT_MS=30000
+```
+
+If Ollama is disabled or unavailable, DriftLedger automatically falls back to the rule-based engine.
 
 ## Installation
 
@@ -195,6 +247,23 @@ Base URL: `/api/v1`
 - `POST /requirements/baseline`
 - `GET /requirements/versions/:projectId`
 
+### Drift
+
+- `POST /drift/analyze`
+- `POST /drift/save`
+- `GET /drift/project/:projectId`
+- `GET /drift/:driftAnalysisId`
+- `DELETE /drift/:driftAnalysisId`
+
+### Change Requests
+
+- `POST /change-requests/generate`
+- `POST /change-requests`
+- `GET /change-requests/project/:projectId`
+- `GET /change-requests/:changeRequestId`
+- `PATCH /change-requests/:changeRequestId`
+- `DELETE /change-requests/:changeRequestId`
+
 ### Activities
 
 - `GET /activities`
@@ -207,3 +276,5 @@ Base URL: `/api/v1`
 - All workspace and project data is scoped to the authenticated user.
 - Phase 1 is complete for the core SaaS foundation.
 - Phase 2 is the structured requirement foundation for future drift detection.
+- Phase 3 is the drift detection and change request layer built on top of approved baselines.
+- DriftLedger works without paid AI APIs. Ollama is optional and falls back to the local rule-based engine when unavailable.

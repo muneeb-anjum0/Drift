@@ -252,7 +252,7 @@ export const createRequirementBaseline = async (userId: string, data: {
     versionNumber,
     label: data.label?.trim() || (versionNumber === 1 ? 'Initial Baseline' : 'Manual Update'),
     description: data.description?.trim() ?? '',
-    requirementsSnapshot: requirements.map((requirement) => toRequirementSnapshot(requirement)),
+      requirementsSnapshot: requirements.map((requirement) => toRequirementSnapshot(requirement)),
     createdBy: userId,
   });
 

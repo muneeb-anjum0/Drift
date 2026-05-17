@@ -10,6 +10,8 @@ import { workspaceRouter } from './routes/workspace.routes.js';
 import { projectRouter } from './routes/project.routes.js';
 import { activityRouter } from './routes/activity.routes.js';
 import { requirementRouter } from './routes/requirement.routes.js';
+import { driftRouter } from './routes/drift.routes.js';
+import { changeRequestRouter } from './routes/changeRequest.routes.js';
 import { notFoundMiddleware } from './middlewares/notFound.middleware.js';
 import { errorMiddleware } from './middlewares/error.middleware.js';
 
@@ -32,6 +34,8 @@ export const createApp = () => {
   app.use(`${API_PREFIX}/projects`, projectRouter);
   app.use(`${API_PREFIX}/activities`, activityRouter);
   app.use(`${API_PREFIX}/requirements`, requirementRouter);
+  app.use(`${API_PREFIX}/drift`, driftRouter);
+  app.use(`${API_PREFIX}/change-requests`, changeRequestRouter);
 
   app.use(notFoundMiddleware);
   app.use(errorMiddleware);
