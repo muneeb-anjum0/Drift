@@ -1,4 +1,4 @@
-import { Plus, FolderKanban } from 'lucide-react';
+import { FolderKanban, Plus, SlidersHorizontal } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -15,6 +15,24 @@ import type { Project } from '../types';
 
 const statusOptions: Array<'all' | Project['status']> = ['all', 'planning', 'active', 'paused', 'completed', 'archived'];
 
+const normalizeDeadlineInput = (deadline: unknown) => {
+  if (!deadline) return '';
+  if (typeof deadline === 'string') return deadline.slice(0, 10);
+  if (deadline instanceof Date) return deadline.toISOString().slice(0, 10);
+
+  if (typeof deadline === 'object' && deadline !== null) {
+    if ('toDate' in deadline && typeof (deadline as { toDate?: () => Date }).toDate === 'function') {
+      return (deadline as { toDate: () => Date }).toDate().toISOString().slice(0, 10);
+    }
+
+    const parsed = new Date(String(deadline));
+    if (!Number.isNaN(parsed.getTime())) return parsed.toISOString().slice(0, 10);
+  }
+
+  const fallback = new Date(String(deadline));
+  return Number.isNaN(fallback.getTime()) ? '' : fallback.toISOString().slice(0, 10);
+};
+
 export const ProjectsPage = () => {
   const navigate = useNavigate();
   const { workspaces, isLoading: workspacesLoading } = useWorkspaces();
@@ -24,12 +42,13 @@ export const ProjectsPage = () => {
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
 
-  const filteredProjects = useMemo(() => {
+  const visibleProjects = useMemo(() => {
     return projects.filter((project) => {
       const matchesStatus = statusFilter === 'all' || project.status === statusFilter;
-      return matchesStatus;
+      const matchesWorkspace = !selectedWorkspaceId || (typeof project.workspace !== 'string' && project.workspace._id === selectedWorkspaceId);
+      return matchesStatus && matchesWorkspace;
     });
-  }, [projects, statusFilter]);
+  }, [projects, selectedWorkspaceId, statusFilter]);
 
   const handleDelete = async (project: Project) => {
     if (!window.confirm(`Delete ${project.name}?`)) return;
@@ -45,60 +64,48 @@ export const ProjectsPage = () => {
   }
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      className="space-y-6"
-    >
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="flex flex-wrap items-center justify-between gap-4"
-      >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-7">
+      <section className="flex flex-wrap items-end justify-between gap-5 rounded-[2.25rem] border border-lime-400/20 bg-black/75 p-6 shadow-[0_24px_90px_rgba(163,230,53,0.06)] sm:p-8">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-lime-400">Projects</p>
-          <h2 className="mt-2 text-4xl font-bold text-white">Track Projects</h2>
-          <p className="mt-1 text-gray-400">Monitor delivery scope per client project</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-lime-400">Projects</p>
+          <h2 className="mt-3 text-4xl font-semibold text-white">Scope-controlled delivery</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-gray-400">Create client projects, preserve original scope, and move into requirements and AI drift analysis.</p>
         </div>
         <Button type="button" onClick={() => setIsCreateOpen(true)} disabled={workspaces.length === 0}>
           <Plus className="mr-2 h-4 w-4" />
-          Create Project
+          New Project
         </Button>
-      </motion.div>
+      </section>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-      >
-        <Card className="p-6 border-lime-400/20">
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            <WorkspaceSwitcher workspaces={workspaces} selectedWorkspaceId={selectedWorkspaceId} onChange={setSelectedWorkspaceId} />
-            <label className="block space-y-2">
-              <span className="text-sm font-semibold text-gray-300">Status</span>
-              <select
-                value={statusFilter}
-                onChange={(event) => setStatusFilter(event.target.value as typeof statusFilter)}
-                className="h-11 w-full rounded-2xl border border-gray-700 bg-black px-4 text-sm text-white shadow-sm outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
-              >
-                <option value="all">All statuses</option>
-                <option value="planning">Planning</option>
-                <option value="active">Active</option>
-                <option value="paused">Paused</option>
-                <option value="completed">Completed</option>
-                <option value="archived">Archived</option>
-              </select>
-            </label>
-            <div className="flex items-end">
-              <Button type="button" variant="secondary" onClick={() => setStatusFilter('all')} className="w-full">
-                Reset Filters
-              </Button>
-            </div>
+      <Card className="rounded-[2rem] border-white/10 bg-black/65 p-5">
+        <div className="mb-4 flex items-center gap-2 text-lime-400">
+          <SlidersHorizontal className="h-4 w-4" />
+          <p className="text-xs font-semibold uppercase tracking-[0.2em]">Filters</p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-[1fr_1fr_auto]">
+          <WorkspaceSwitcher workspaces={workspaces} selectedWorkspaceId={selectedWorkspaceId} onChange={setSelectedWorkspaceId} />
+          <label className="block space-y-2">
+            <span className="text-sm font-semibold text-gray-300">Status</span>
+            <select
+              value={statusFilter}
+              onChange={(event) => setStatusFilter(event.target.value as typeof statusFilter)}
+              className="h-10 w-full rounded-full border border-white/10 bg-black px-4 text-sm text-white shadow-sm outline-none transition focus:border-lime-400/40 focus:ring-2 focus:ring-lime-400/20"
+            >
+              <option value="all">All statuses</option>
+              <option value="planning">Planning</option>
+              <option value="active">Active</option>
+              <option value="paused">Paused</option>
+              <option value="completed">Completed</option>
+              <option value="archived">Archived</option>
+            </select>
+          </label>
+          <div className="flex items-end">
+            <Button type="button" variant="secondary" onClick={() => setStatusFilter('all')} className="w-full xl:w-auto">
+              Reset
+            </Button>
           </div>
-        </Card>
-      </motion.div>
+        </div>
+      </Card>
 
       {workspaces.length === 0 ? (
         <EmptyState
@@ -108,7 +115,7 @@ export const ProjectsPage = () => {
           onAction={() => navigate('/workspaces')}
           icon={<FolderKanban className="h-5 w-5" />}
         />
-      ) : filteredProjects.length === 0 ? (
+      ) : visibleProjects.length === 0 ? (
         <EmptyState
           title="No projects found"
           description="Create a new project or change the filters to see existing work."
@@ -118,10 +125,7 @@ export const ProjectsPage = () => {
         />
       ) : (
         <ProjectList
-          projects={filteredProjects.filter((project) => {
-            if (!selectedWorkspaceId) return true;
-            return typeof project.workspace !== 'string' && project.workspace._id === selectedWorkspaceId;
-          })}
+          projects={visibleProjects}
           onEdit={(project) => setEditingProject(project)}
           onDelete={handleDelete}
           onOpen={(project) => navigate(`/projects/${project._id}`)}
@@ -156,7 +160,7 @@ export const ProjectsPage = () => {
                 status: editingProject.status,
                 priority: editingProject.priority,
                 originalScope: editingProject.originalScope,
-                deadline: editingProject.deadline ? editingProject.deadline.slice(0, 10) : '',
+                deadline: normalizeDeadlineInput(editingProject.deadline),
               }
             : undefined
         }

@@ -2,10 +2,7 @@ import type { Request, Response } from 'express';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { analyzeDriftSchema, saveDriftAnalysisSchema } from '../validators/drift.validator.js';
-import * as driftDetectionService from '../services/driftDetection.service.js';
-
-// Keep using MongoDB for drift analyses until Firestore is fully migrated
-const driftService = driftDetectionService;
+import * as driftService from '../services/firestoreDrift.service.js';
 
 export const analyzeDriftController = asyncHandler(async (req: Request, res: Response) => {
   const payload = analyzeDriftSchema.parse(req.body);

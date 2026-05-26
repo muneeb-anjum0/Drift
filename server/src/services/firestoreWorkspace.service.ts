@@ -15,14 +15,22 @@ const slugify = (value: string) =>
 
 const makeUniqueSlug = async (name: string) => {
   const baseSlug = slugify(name) || 'workspace';
-  const query = await firestore
-    .collection(WORKSPACES_COLLECTION)
-    .where('slug', '>=', baseSlug)
-    .where('slug', '<', baseSlug + '~')
-    .get();
+  let candidate = baseSlug;
+  let suffix = 2;
 
-  return query.empty ? baseSlug : `${baseSlug}-${query.size + 1}`;
+  while (true) {
+    const query = await firestore.collection(WORKSPACES_COLLECTION).where('slug', '==', candidate).limit(1).get();
+    if (query.empty) return candidate;
+
+    candidate = `${baseSlug}-${suffix}`;
+    suffix += 1;
+  }
 };
+
+const normalizeWorkspace = (workspace: FirestoreWorkspace): FirestoreWorkspace => ({
+  ...workspace,
+  slug: workspace.slug || slugify(workspace.name) || workspace._id,
+});
 
 const ensureWorkspaceAccess = async (workspaceId: string, userId: string) => {
   const memberQuery = await firestore
@@ -49,6 +57,7 @@ export const createDefaultWorkspace = async (userId: string, userName: string) =
   const workspace: FirestoreWorkspace = {
     _id: workspaceRef.id,
     name: workspaceName,
+    slug,
     description: 'Default workspace created during onboarding',
     owner: userId,
     members: [userId],
@@ -63,6 +72,8 @@ export const createDefaultWorkspace = async (userId: string, userName: string) =
     workspace: workspaceRef.id,
     user: userId,
     role: 'owner',
+    createdAt: now,
+    updatedAt: now,
     joinedAt: now,
   });
 
@@ -87,6 +98,7 @@ export const createWorkspace = async (userId: string, name: string, description 
   const workspace: FirestoreWorkspace = {
     _id: workspaceRef.id,
     name,
+    slug,
     description,
     owner: userId,
     members: [userId],
@@ -101,6 +113,8 @@ export const createWorkspace = async (userId: string, name: string, description 
     workspace: workspaceRef.id,
     user: userId,
     role: 'owner',
+    createdAt: now,
+    updatedAt: now,
     joinedAt: now,
   });
 
@@ -128,7 +142,7 @@ export const getUserWorkspaces = async (userId: string) => {
     const member = doc.data();
     const workspaceDoc = await firestore.collection(WORKSPACES_COLLECTION).doc(member.workspace).get();
     if (workspaceDoc.exists) {
-      workspaces.push(workspaceDoc.data() as FirestoreWorkspace);
+      workspaces.push(normalizeWorkspace(workspaceDoc.data() as FirestoreWorkspace));
     }
   }
 
@@ -144,7 +158,7 @@ export const getWorkspaceById = async (workspaceId: string, userId: string) => {
     throw new ApiError(404, 'Workspace not found');
   }
 
-  return workspaceDoc.data() as FirestoreWorkspace;
+  return normalizeWorkspace(workspaceDoc.data() as FirestoreWorkspace);
 };
 
 export const updateWorkspace = async (workspaceId: string, userId: string, data: { name?: string; description?: string }) => {
@@ -171,7 +185,7 @@ export const updateWorkspace = async (workspaceId: string, userId: string, data:
   await firestore.collection(WORKSPACES_COLLECTION).doc(workspaceId).update(updates);
 
   const updated = await firestore.collection(WORKSPACES_COLLECTION).doc(workspaceId).get();
-  return updated.data() as FirestoreWorkspace;
+  return normalizeWorkspace(updated.data() as FirestoreWorkspace);
 };
 
 export const deleteWorkspace = async (workspaceId: string, userId: string) => {

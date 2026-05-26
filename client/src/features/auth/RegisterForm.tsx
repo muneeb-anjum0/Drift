@@ -9,6 +9,7 @@ export const RegisterForm = () => {
   const navigate = useNavigate();
   const { signup } = useAuth();
   const [values, setValues] = useState<SignupFormValues>({
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -31,14 +32,19 @@ export const RegisterForm = () => {
       return;
     }
 
-    if (values.password.length < 6) {
-      setError('Password must be at least 6 characters');
+    if (values.name.trim().length < 2) {
+      setError('Name is required');
+      return;
+    }
+
+    if (values.password.length < 8) {
+      setError('Password must be at least 8 characters');
       return;
     }
 
     setIsSubmitting(true);
     try {
-      await signup(values.email, values.password);
+      await signup(values.name.trim(), values.email, values.password);
       navigate('/dashboard');
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : 'Unable to create account');
@@ -103,6 +109,22 @@ export const RegisterForm = () => {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+        >
+          <label className="block text-sm font-semibold text-white mb-2">Name</label>
+          <input
+            type="text"
+            value={values.name}
+            onChange={(event) => onChange('name', event.target.value)}
+            placeholder="Alex Morgan"
+            required
+            className="w-full px-4 py-3 rounded-lg bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:border-lime-400 focus:outline-none focus:ring-1 focus:ring-lime-400 transition-all"
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
           <label className="block text-sm font-semibold text-white mb-2">Email Address</label>
@@ -127,7 +149,7 @@ export const RegisterForm = () => {
               type={showPassword ? 'text' : 'password'}
               value={values.password}
               onChange={(event) => onChange('password', event.target.value)}
-              placeholder="••••••••"
+              placeholder="********"
               required
               className="w-full px-4 py-3 rounded-lg bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:border-lime-400 focus:outline-none focus:ring-1 focus:ring-lime-400 transition-all"
             />
@@ -154,7 +176,7 @@ export const RegisterForm = () => {
               type={showConfirmPassword ? 'text' : 'password'}
               value={values.confirmPassword}
               onChange={(event) => onChange('confirmPassword', event.target.value)}
-              placeholder="••••••••"
+              placeholder="********"
               required
               className="w-full px-4 py-3 rounded-lg bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:border-lime-400 focus:outline-none focus:ring-1 focus:ring-lime-400 transition-all"
             />

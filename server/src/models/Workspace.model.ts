@@ -1,14 +1,13 @@
-import mongoose, { Schema, type InferSchemaType } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const workspaceSchema = new Schema(
   {
-    name: { type: String, required: true, trim: true },
-    slug: { type: String, required: true, unique: true, index: true },
-    owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    name: { type: String, required: true },
+    slug: { type: String, required: true, unique: true },
     description: { type: String, default: '' },
+    createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
   },
   { timestamps: true }
 );
 
-export type WorkspaceDocument = InferSchemaType<typeof workspaceSchema>;
 export const WorkspaceModel = mongoose.model('Workspace', workspaceSchema);

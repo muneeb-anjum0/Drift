@@ -6,23 +6,58 @@ import type { FirestoreProject } from './firebaseInit.service.js';
 
 const PROJECTS_COLLECTION = 'projects';
 
+const normalizeProject = (project: FirestoreProject): FirestoreProject => ({
+  ...project,
+  clientName: project.clientName || 'Client',
+  description: project.description || '',
+  status: project.status || 'planning',
+  priority: project.priority || 'medium',
+  originalScope: project.originalScope || '',
+  deadline: project.deadline ?? null,
+});
+
+const getTimeValue = (value: unknown) => {
+  if (value instanceof Date) return value.getTime();
+  if (value && typeof value === 'object' && 'toDate' in value && typeof (value as { toDate: () => Date }).toDate === 'function') {
+    return (value as { toDate: () => Date }).toDate().getTime();
+  }
+
+  const parsed = new Date(value as string | number);
+  return Number.isNaN(parsed.getTime()) ? 0 : parsed.getTime();
+};
+
 export const createProject = async (
   userId: string,
   workspaceId: string,
-  data: { name: string; description?: string }
+  data: {
+    name: string;
+    clientName: string;
+    description?: string;
+    status?: 'planning' | 'active' | 'paused' | 'completed' | 'archived';
+    priority?: 'low' | 'medium' | 'high' | 'urgent';
+    originalScope?: string;
+    deadline?: string;
+  }
 ) => {
   await assertWorkspaceAccess(workspaceId, userId);
+
+  const deadlineDate = data.deadline ? new Date(data.deadline) : null;
+  const deadline = deadlineDate && !Number.isNaN(deadlineDate.getTime()) ? deadlineDate : null;
 
   const now = new Date();
   const projectRef = firestore.collection(PROJECTS_COLLECTION).doc();
 
   const project: FirestoreProject = {
     _id: projectRef.id,
-    name: data.name,
-    description: data.description || '',
     workspace: workspaceId,
-    owner: userId,
-    status: 'active',
+    name: data.name,
+    clientName: data.clientName,
+    description: data.description || '',
+    status: data.status || 'planning',
+    priority: data.priority || 'medium',
+    originalScope: data.originalScope || '',
+    deadline,
+    createdBy: userId,
     createdAt: now,
     updatedAt: now,
   };
@@ -38,7 +73,7 @@ export const createProject = async (
     metadata: { name: data.name },
   });
 
-  return project;
+  return normalizeProject(project);
 };
 
 export const getProjectById = async (projectId: string, userId: string) => {
@@ -53,7 +88,7 @@ export const getProjectById = async (projectId: string, userId: string) => {
   // Check access
   await assertWorkspaceAccess(project.workspace, userId);
 
-  return project;
+  return normalizeProject(project);
 };
 
 export const listProjectsByWorkspace = async (workspaceId: string, userId: string) => {
@@ -62,16 +97,25 @@ export const listProjectsByWorkspace = async (workspaceId: string, userId: strin
   const projectsQuery = await firestore
     .collection(PROJECTS_COLLECTION)
     .where('workspace', '==', workspaceId)
-    .orderBy('createdAt', 'desc')
     .get();
 
-  return projectsQuery.docs.map((doc) => doc.data() as FirestoreProject);
+  return projectsQuery.docs
+    .map((doc) => normalizeProject(doc.data() as FirestoreProject))
+    .sort((left, right) => getTimeValue(right.createdAt) - getTimeValue(left.createdAt));
 };
 
 export const updateProject = async (
   projectId: string,
   userId: string,
-  data: { name?: string; description?: string; status?: 'active' | 'archived' | 'completed' }
+  data: {
+    name?: string;
+    clientName?: string;
+    description?: string;
+    status?: 'planning' | 'active' | 'paused' | 'completed' | 'archived';
+    priority?: 'low' | 'medium' | 'high' | 'urgent';
+    originalScope?: string;
+    deadline?: string | null;
+  }
 ) => {
   const project = await getProjectById(projectId, userId);
 
@@ -80,13 +124,24 @@ export const updateProject = async (
   };
 
   if (data.name) updates.name = data.name;
+  if (data.clientName) updates.clientName = data.clientName;
   if (data.description !== undefined) updates.description = data.description;
   if (data.status) updates.status = data.status;
+  if (data.priority) updates.priority = data.priority;
+  if (data.originalScope !== undefined) updates.originalScope = data.originalScope;
+  if (data.deadline !== undefined) {
+    if (data.deadline === null || data.deadline === '') {
+      updates.deadline = null;
+    } else {
+      const deadlineDate = new Date(data.deadline);
+      updates.deadline = Number.isNaN(deadlineDate.getTime()) ? null : deadlineDate;
+    }
+  }
 
   await firestore.collection(PROJECTS_COLLECTION).doc(projectId).update(updates);
 
   const updated = await firestore.collection(PROJECTS_COLLECTION).doc(projectId).get();
-  return updated.data() as FirestoreProject;
+  return normalizeProject(updated.data() as FirestoreProject);
 };
 
 export const deleteProject = async (projectId: string, userId: string) => {

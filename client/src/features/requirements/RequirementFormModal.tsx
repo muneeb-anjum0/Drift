@@ -35,7 +35,7 @@ const defaultValues: RequirementFormValues = {
 };
 
 const selectClass =
-  'h-11 w-full rounded-2xl border border-gray-700 bg-black px-4 text-sm text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30';
+  'h-12 w-full rounded-full border border-gray-700 bg-black px-4 text-base text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30';
 
 const splitList = (value: string) =>
   value
@@ -97,7 +97,7 @@ export const RequirementFormModal = ({
       description="Capture the structured requirement before you create a baseline."
       onClose={onClose}
     >
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="space-y-5" onSubmit={handleSubmit}>
         <Input
           label="Title"
           value={values.title}
@@ -107,12 +107,12 @@ export const RequirementFormModal = ({
         />
 
         <label className="block space-y-2">
-          <span className="text-sm font-semibold text-gray-300">Description</span>
+          <span className="text-base font-semibold text-gray-300">Description</span>
           <textarea
             value={values.description}
             onChange={(event) => setValues((current) => ({ ...current, description: event.target.value }))}
             rows={4}
-            className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+            className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-base text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
             placeholder="Describe the requirement in clear, plain language"
             required
           />
@@ -120,7 +120,7 @@ export const RequirementFormModal = ({
 
         <div className="grid gap-4 md:grid-cols-2">
           <label className="block space-y-2">
-            <span className="text-sm font-semibold text-gray-300">Type</span>
+            <span className="text-base font-semibold text-gray-300">Type</span>
             <select value={values.type} onChange={(event) => setValues((current) => ({ ...current, type: event.target.value as RequirementType }))} className={selectClass}>
               <option value="functional">Functional</option>
               <option value="non_functional">Non functional</option>
@@ -134,7 +134,7 @@ export const RequirementFormModal = ({
             </select>
           </label>
           <label className="block space-y-2">
-            <span className="text-sm font-semibold text-gray-300">Priority</span>
+            <span className="text-base font-semibold text-gray-300">Priority</span>
             <select value={values.priority} onChange={(event) => setValues((current) => ({ ...current, priority: event.target.value as RequirementPriority }))} className={selectClass}>
               <option value="low">Low</option>
               <option value="medium">Medium</option>
@@ -146,7 +146,7 @@ export const RequirementFormModal = ({
 
         <div className="grid gap-4 md:grid-cols-2">
           <label className="block space-y-2">
-            <span className="text-sm font-semibold text-gray-300">Status</span>
+            <span className="text-base font-semibold text-gray-300">Status</span>
             <select value={values.status} onChange={(event) => setValues((current) => ({ ...current, status: event.target.value as RequirementStatus }))} className={selectClass}>
               <option value="proposed">Proposed</option>
               <option value="approved">Approved</option>
@@ -157,7 +157,7 @@ export const RequirementFormModal = ({
             </select>
           </label>
           <label className="block space-y-2">
-            <span className="text-sm font-semibold text-gray-300">Source</span>
+            <span className="text-base font-semibold text-gray-300">Source</span>
             <select value={values.source} onChange={(event) => setValues((current) => ({ ...current, source: event.target.value as RequirementSource }))} className={selectClass}>
               <option value="manual">Manual</option>
               <option value="original_scope">Original scope</option>
@@ -170,34 +170,34 @@ export const RequirementFormModal = ({
         </div>
 
         <label className="block space-y-2">
-          <span className="text-sm font-semibold text-gray-300">Source text</span>
+          <span className="text-base font-semibold text-gray-300">Source text</span>
           <textarea
             value={values.sourceText}
             onChange={(event) => setValues((current) => ({ ...current, sourceText: event.target.value }))}
             rows={4}
-            className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+            className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-base text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
             placeholder="Exact source text this requirement was derived from"
           />
         </label>
 
         <label className="block space-y-2">
-          <span className="text-sm font-semibold text-gray-300">Acceptance criteria</span>
+          <span className="text-base font-semibold text-gray-300">Acceptance criteria</span>
           <textarea
             value={values.acceptanceCriteria}
             onChange={(event) => setValues((current) => ({ ...current, acceptanceCriteria: event.target.value }))}
             rows={4}
-            className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+            className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-base text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
             placeholder="One item per line"
           />
         </label>
 
         <label className="block space-y-2">
-          <span className="text-sm font-semibold text-gray-300">Tags</span>
+          <span className="text-base font-semibold text-gray-300">Tags</span>
           <textarea
             value={values.tags}
             onChange={(event) => setValues((current) => ({ ...current, tags: event.target.value }))}
             rows={3}
-            className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+            className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-base text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
             placeholder="Comma-separated tags"
           />
         </label>
@@ -211,7 +211,7 @@ export const RequirementFormModal = ({
           placeholder="4"
         />
 
-        {error ? <p className="text-sm text-red-400">{error}</p> : null}
+        {error ? <p className="text-sm text-lime-300">{error}</p> : null}
 
         <div className="flex justify-end gap-3">
           <Button type="button" variant="secondary" onClick={onClose}>

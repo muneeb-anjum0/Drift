@@ -4,8 +4,13 @@ import { env } from './env.js';
 
 let memoryServer: MongoMemoryServer | null = null;
 
-export const connectDB = async (): Promise<void> => {
+export const connectDB = async () => {
   mongoose.set('strictQuery', true);
+
+  if (env.USE_FIRESTORE) {
+    console.log('MongoDB bootstrap skipped because Firestore mode is enabled.');
+    return;
+  }
 
   try {
     await mongoose.connect(env.MONGO_URI);
@@ -15,7 +20,6 @@ export const connectDB = async (): Promise<void> => {
     if (env.NODE_ENV !== 'development') {
       throw error;
     }
-
     console.warn('MongoDB connection failed. Falling back to in-memory MongoDB for development.');
     memoryServer = await MongoMemoryServer.create();
     const memoryUri = memoryServer.getUri();
@@ -24,7 +28,7 @@ export const connectDB = async (): Promise<void> => {
   }
 };
 
-export const stopInMemoryDB = async (): Promise<void> => {
+export const stopInMemoryDB = async () => {
   if (memoryServer) {
     await memoryServer.stop();
     memoryServer = null;

@@ -55,19 +55,19 @@ export const CreateWorkspaceModal = ({
       description="Organize projects, clients, and activities in a dedicated workspace."
       onClose={onClose}
     >
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="space-y-5" onSubmit={handleSubmit}>
         <Input label="Workspace name" value={values.name} onChange={(event) => setValues((current) => ({ ...current, name: event.target.value }))} placeholder="Acme Design Studio" required />
         <label className="block space-y-2">
-          <span className="text-sm font-semibold text-gray-300">Description</span>
+          <span className="text-base font-semibold text-gray-300">Description</span>
           <textarea
             value={values.description}
             onChange={(event) => setValues((current) => ({ ...current, description: event.target.value }))}
             rows={4}
-            className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+            className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-base text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
             placeholder="A short description of this workspace"
           />
         </label>
-        {error ? <p className="text-sm text-red-400">{error}</p> : null}
+        {error ? <p className="text-sm text-lime-300">{error}</p> : null}
         <div className="flex justify-end gap-3">
           <Button type="button" variant="secondary" onClick={onClose}>
             Cancel

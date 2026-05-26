@@ -5,6 +5,7 @@ import { ApiError } from '../utils/ApiError.js';
 
 export const errorMiddleware = (err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof ApiError) {
+    console.error('ApiError:', err.statusCode, err.message, err.errors);
     res.status(err.statusCode).json({ success: false, message: err.message, errors: err.errors });
     return;
   }

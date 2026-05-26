@@ -8,7 +8,6 @@ export const driftApi = {
     baselineVersionId: string;
     inputText: string;
     inputType?: DriftInputType;
-    useOllama?: boolean;
     ollamaModel?: string;
   }) => {
     const response = await api.post<ApiResponse<{ analysis: DriftAnalysisPreview }>>('/drift/analyze', payload);

@@ -5,5 +5,5 @@ export const NAV_ITEMS = [
   { label: 'Dashboard', to: '/dashboard' },
   { label: 'Workspaces', to: '/workspaces' },
   { label: 'Projects', to: '/projects' },
-  { label: 'Settings', to: '/dashboard' },
+  { label: 'Settings', to: '/settings' },
 ];

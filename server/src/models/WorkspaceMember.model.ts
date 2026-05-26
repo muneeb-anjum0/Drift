@@ -1,4 +1,4 @@
-import mongoose, { Schema, type InferSchemaType } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const workspaceMemberSchema = new Schema(
   {
@@ -16,5 +16,4 @@ const workspaceMemberSchema = new Schema(
 
 workspaceMemberSchema.index({ workspace: 1, user: 1 }, { unique: true });
 
-export type WorkspaceMemberDocument = InferSchemaType<typeof workspaceMemberSchema>;
 export const WorkspaceMemberModel = mongoose.model('WorkspaceMember', workspaceMemberSchema);

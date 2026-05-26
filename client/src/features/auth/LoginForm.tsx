@@ -111,7 +111,7 @@ export const LoginForm = () => {
               type={showPassword ? 'text' : 'password'}
               value={values.password}
               onChange={(event) => onChange('password', event.target.value)}
-              placeholder="••••••••"
+              placeholder="********"
               required
               className="w-full px-4 py-3 rounded-lg bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:border-lime-400 focus:outline-none focus:ring-1 focus:ring-lime-400 transition-all"
             />

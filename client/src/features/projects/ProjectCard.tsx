@@ -6,18 +6,18 @@ import { Button } from '../../components/common/Button';
 import { formatDate } from '../../utils/formatDate';
 
 const statusStyles: Record<Project['status'], string> = {
-  planning: 'bg-gray-800/50 text-gray-200 border border-gray-700',
+  planning: 'bg-white/[0.04] text-gray-200 border border-white/10',
   active: 'bg-lime-400/10 text-lime-300 border border-lime-400/30',
-  paused: 'bg-amber-400/10 text-amber-300 border border-amber-400/30',
+  paused: 'bg-white/[0.04] text-gray-200 border border-white/10',
   completed: 'bg-lime-400/20 text-lime-300 border border-lime-400/30',
-  archived: 'bg-gray-800/50 text-gray-400 border border-gray-700',
+  archived: 'bg-white/[0.03] text-gray-400 border border-white/10',
 };
 
 const priorityStyles: Record<Project['priority'], string> = {
-  low: 'bg-gray-800/50 text-gray-300 border border-gray-700',
-  medium: 'bg-gray-800/40 text-gray-200 border border-gray-700',
-  high: 'bg-amber-400/10 text-amber-300 border border-amber-400/30',
-  urgent: 'bg-red-400/10 text-red-300 border border-red-400/30',
+  low: 'bg-white/[0.03] text-gray-300 border border-white/10',
+  medium: 'bg-white/[0.04] text-gray-200 border border-white/10',
+  high: 'bg-lime-400/10 text-lime-300 border border-lime-400/30',
+  urgent: 'bg-lime-400/20 text-lime-200 border border-lime-400/40',
 };
 
 const workspaceName = (workspace: Project['workspace']) => (typeof workspace === 'string' ? 'Workspace' : workspace.name);
@@ -38,9 +38,10 @@ export const ProjectCard = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      whileHover={{ y: -5 }}
+      whileHover={{ y: -6, scale: 1.012 }}
+      whileTap={{ scale: 0.99 }}
     >
-      <Card className="p-6 border-lime-400/20 hover:border-lime-400/50 h-full">
+      <Card className="h-full rounded-[2rem] border-white/10 bg-black/65 p-6 hover:border-lime-400/35">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
             <motion.button 
@@ -48,20 +49,20 @@ export const ProjectCard = ({
               className="text-left transition-colors"
               onClick={onOpen}
             >
-              <h3 className="text-lg font-bold text-white">{project.name}</h3>
+              <h3 className="text-2xl font-semibold text-white">{project.name}</h3>
             </motion.button>
-            <p className="mt-1 text-sm text-gray-400">{project.clientName}</p>
+            <p className="mt-2 text-base text-gray-400">{project.clientName}</p>
           </div>
-          <Button type="button" variant="ghost" size="sm" onClick={onEdit} className="px-2">
+          <Button type="button" variant="ghost" size="sm" onClick={onEdit} className="h-9 w-9 px-0">
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </div>
-        <p className="mt-4 line-clamp-2 text-sm leading-6 text-gray-400">{project.description || 'No description provided.'}</p>
+        <p className="mt-5 line-clamp-3 text-base leading-7 text-gray-400">{project.description || 'No description provided.'}</p>
         <div className="mt-4 flex flex-wrap gap-2">
-          <span className={`rounded-full px-3 py-1 text-xs font-semibold ${statusStyles[project.status]}`}>{project.status}</span>
-          <span className={`rounded-full px-3 py-1 text-xs font-semibold ${priorityStyles[project.priority]}`}>{project.priority}</span>
+          <span className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${statusStyles[project.status]}`}>{project.status}</span>
+          <span className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${priorityStyles[project.priority]}`}>{project.priority}</span>
         </div>
-        <div className="mt-5 grid gap-3 text-sm text-gray-400 sm:grid-cols-2">
+        <div className="mt-5 grid gap-3 text-base text-gray-400 sm:grid-cols-2">
           <div className="flex items-center gap-2">
             <Clock3 className="h-4 w-4 text-lime-400" />
             <span>{workspaceName(project.workspace)}</span>

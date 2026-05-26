@@ -159,7 +159,7 @@ export const RequirementExtractionPanel = ({ projectId, workspaceId, defaultSour
                         <p className="text-xs uppercase tracking-[0.12em] text-gray-500">Acceptance criteria</p>
                         <ul className="mt-2 space-y-1">
                           {suggestion.acceptanceCriteria.map((criterion) => (
-                            <li key={criterion}>• {criterion}</li>
+                            <li key={criterion}>- {criterion}</li>
                           ))}
                         </ul>
                       </div>

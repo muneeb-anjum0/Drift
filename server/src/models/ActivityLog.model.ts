@@ -1,4 +1,4 @@
-import mongoose, { Schema, type InferSchemaType } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const activityLogSchema = new Schema(
   {
@@ -12,5 +12,4 @@ const activityLogSchema = new Schema(
   { timestamps: { createdAt: true, updatedAt: false } }
 );
 
-export type ActivityLogDocument = InferSchemaType<typeof activityLogSchema>;
 export const ActivityLogModel = mongoose.model('ActivityLog', activityLogSchema);

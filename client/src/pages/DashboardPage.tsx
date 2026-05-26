@@ -1,14 +1,22 @@
-import { FolderKanban, LayoutGrid, Rocket, CheckCircle2, BriefcaseBusiness, TrendingUp } from 'lucide-react';
+import { BriefcaseBusiness, CheckCircle2, FolderKanban, GitCompareArrows, LayoutGrid, ListChecks, Rocket } from 'lucide-react';
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { StatCard } from '../components/dashboard/StatCard';
 import { RecentActivity } from '../components/dashboard/RecentActivity';
 import { EmptyState } from '../components/common/EmptyState';
 import { Card } from '../components/common/Card';
 import { Spinner } from '../components/common/Spinner';
+import { Button } from '../components/common/Button';
 import { useWorkspaces } from '../hooks/useWorkspaces';
 import { useProjects } from '../hooks/useProjects';
 import { useActivities } from '../hooks/useActivities';
+
+const sectionMotion = {
+  initial: { opacity: 0, y: 18 },
+  animate: { opacity: 1, y: 0 },
+  transition: { type: 'spring', stiffness: 220, damping: 26 },
+} as const;
 
 export const DashboardPage = () => {
   const { workspaces, isLoading: workspacesLoading } = useWorkspaces();
@@ -20,10 +28,10 @@ export const DashboardPage = () => {
     const completedProjects = projects.filter((project) => project.status === 'completed').length;
 
     return [
-      { label: 'Total Workspaces', value: workspaces.length, icon: BriefcaseBusiness, tone: 'lime' as const },
-      { label: 'Total Projects', value: projects.length, icon: FolderKanban, tone: 'blue' as const },
-      { label: 'Active Projects', value: activeProjects, icon: Rocket, tone: 'green' as const },
-      { label: 'Completed Projects', value: completedProjects, icon: CheckCircle2, tone: 'purple' as const },
+      { label: 'Workspaces', value: workspaces.length, icon: BriefcaseBusiness },
+      { label: 'Projects', value: projects.length, icon: FolderKanban },
+      { label: 'Active', value: activeProjects, icon: Rocket },
+      { label: 'Completed', value: completedProjects, icon: CheckCircle2 },
     ];
   }, [projects, workspaces.length]);
 
@@ -38,85 +46,86 @@ export const DashboardPage = () => {
   const isEmpty = workspaces.length === 0 && projects.length === 0 && activities.length === 0;
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      className="space-y-6"
-    >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-7">
+      <motion.section
+        {...sectionMotion}
+        className="overflow-hidden rounded-[2.25rem] border border-lime-400/20 bg-black/75 p-6 shadow-[0_24px_90px_rgba(163,230,53,0.07)] sm:p-8"
+      >
+        <div className="flex flex-wrap items-start justify-between gap-5">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.26em] text-lime-400">Command center</p>
+            <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-white sm:text-5xl">Track scope before it turns into unpaid work.</h1>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-gray-400">
+              Monitor workspaces, projects, requirement baselines, and drift activity from one focused dashboard.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Link to="/projects">
+              <Button type="button">Open Projects</Button>
+            </Link>
+            <Link to="/workspaces">
+              <Button type="button" variant="secondary">Workspaces</Button>
+            </Link>
+          </div>
+        </div>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map((stat, index) => (
+            <motion.div key={stat.label} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.06 }}>
+              <StatCard label={stat.label} value={stat.value} icon={stat.icon} />
+            </motion.div>
+          ))}
+        </div>
+      </motion.section>
+
       {isEmpty ? (
         <EmptyState
-          title="Your dashboard is ready"
-          description="Create a workspace and a project to start seeing activity and project metrics."
+          title="Your workspace is ready"
+          description="Create a workspace and project to start building baselines and tracking requirement drift."
           icon={<LayoutGrid className="h-5 w-5" />}
         />
       ) : null}
 
-      {/* Stats Grid (redesigned) */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, staggerChildren: 0.08 }}
-        className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
-      >
-        {stats.map((stat, i) => (
-          <motion.div
-            key={stat.label}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.08 }}
-          >
-            <StatCard label={stat.label} value={stat.value} icon={stat.icon} tone={stat.tone} />
-          </motion.div>
-        ))}
-      </motion.div>
-
-      {/* Overview Card (redesigned) */}
-      <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28 }}>
-        <Card className="p-6 border-lime-600/20">
-          <div className="mb-4 flex items-start justify-between">
-            <div>
-              <h2 className="text-2xl font-extrabold text-white flex items-center gap-3">
-                <TrendingUp className="h-6 w-6 text-lime-400" />
-                SaaS Overview
-              </h2>
-              <p className="mt-1 text-sm text-gray-400 max-w-xl">Phase 1 builds the foundation for requirement drift tracking — core features, activity logs, and workspace/project management.</p>
+      <div className="grid gap-6 xl:grid-cols-[1fr_420px]">
+        <motion.section {...sectionMotion} transition={{ ...sectionMotion.transition, delay: 0.12 }}>
+          <Card className="rounded-[2rem] border-white/10 bg-black/65 p-6">
+            <div className="mb-5 flex items-center justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-lime-400">Workflow</p>
+                <h2 className="mt-1 text-xl font-semibold text-white">Scope protection pipeline</h2>
+              </div>
+              <GitCompareArrows className="h-5 w-5 text-lime-400" />
             </div>
-            <div className="hidden md:flex items-center gap-3">
-              <div className="text-sm text-gray-400">Live</div>
-              <div className="rounded-full bg-lime-400/10 px-3 py-1 text-lime-300 text-sm">Production</div>
-            </div>
-          </div>
 
-          <div className="grid gap-4 sm:grid-cols-3 mt-4">
-            {[
-              { title: 'Authentication', text: 'JWT login, protected routes', icon: '🔐' },
-              { title: 'Workspaces', text: 'Organize clients & teams', icon: '🗂️' },
-              { title: 'Activity', text: 'Event logging & timeline', icon: '📈' },
-            ].map(({ title, text, icon }, idx) => (
-              <motion.div key={title} whileHover={{ y: -6 }} className="rounded-lg bg-black/40 p-4 border border-gray-800 hover:shadow-[0_10px_40px_rgba(16,185,129,0.04)] transition-all">
-                <div className="flex items-center gap-3">
-                  <div className="text-2xl">{icon}</div>
-                  <div>
-                    <p className="font-semibold text-white">{title}</p>
-                    <p className="mt-1 text-sm text-gray-400">{text}</p>
+            <div className="grid gap-4 md:grid-cols-3">
+              {[
+                { title: 'Capture', text: 'Create projects and preserve original scope.', icon: FolderKanban },
+                { title: 'Baseline', text: 'Structure requirements into approved snapshots.', icon: ListChecks },
+                { title: 'Analyze', text: 'Run Ollama drift analysis on new input.', icon: GitCompareArrows },
+              ].map(({ title, text, icon: Icon }, index) => (
+                <motion.div
+                  key={title}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.18 + index * 0.07 }}
+                  whileHover={{ y: -5, scale: 1.015 }}
+                  className="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5 transition-colors hover:border-lime-400/35 hover:bg-lime-400/10"
+                >
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full border border-lime-400/25 bg-lime-400/10">
+                    <Icon className="h-5 w-5 text-lime-300" />
                   </div>
-                </div>
-                <div className="mt-3 h-1 w-full rounded-full bg-gradient-to-r from-lime-400/30 to-transparent" />
-              </motion.div>
-            ))}
-          </div>
-        </Card>
-      </motion.div>
+                  <p className="mt-5 font-semibold text-white">{title}</p>
+                  <p className="mt-2 text-sm leading-6 text-gray-400">{text}</p>
+                </motion.div>
+              ))}
+            </div>
+          </Card>
+        </motion.section>
 
-      {/* Recent Activity */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-      >
-        <RecentActivity activities={activities} />
-      </motion.div>
+        <motion.section {...sectionMotion} transition={{ ...sectionMotion.transition, delay: 0.18 }}>
+          <RecentActivity activities={activities} />
+        </motion.section>
+      </div>
     </motion.div>
   );
 };

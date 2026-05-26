@@ -71,6 +71,4 @@ export interface DriftAnalysisFormValues {
   baselineVersionId: string;
   inputType: DriftInputType;
   inputText: string;
-  useOllama: boolean;
-  ollamaModel: string;
 }

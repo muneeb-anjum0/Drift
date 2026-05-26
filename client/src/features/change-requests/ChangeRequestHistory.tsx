@@ -67,7 +67,7 @@ const ChangeRequestHistoryItem = ({
               <p className="font-semibold text-white">{change.title}</p>
               <p className="mt-1 text-sm leading-6 text-gray-400">{change.description}</p>
               <p className="mt-2 text-xs uppercase tracking-[0.14em] text-gray-500">
-                {change.changeType} • {change.impact} • {change.estimatedEffort ?? 0}h
+                {change.changeType} / {change.impact} / {change.estimatedEffort ?? 0}h
               </p>
             </div>
           ))}

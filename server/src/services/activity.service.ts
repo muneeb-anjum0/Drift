@@ -37,15 +37,19 @@ export const logActivity = async (params: {
 export const getActivitiesForUser = async (workspaceIds: string[]) => {
   if (USE_FIRESTORE) {
     try {
+      if (workspaceIds.length === 0) {
+        return [];
+      }
+
       const activitiesQuery = await firestore
         .collection('activities')
         .where('workspace', 'in', workspaceIds)
-        .orderBy('createdAt', 'desc')
         .limit(50)
         .get();
-      return activitiesQuery.docs.map((doc) => doc.data());
+      return activitiesQuery.docs.map((doc) => doc.data()).sort((left, right) => new Date((right as { createdAt?: unknown }).createdAt as string | number).getTime() - new Date((left as { createdAt?: unknown }).createdAt as string | number).getTime());
     } catch (error) {
       console.error('Error fetching from Firestore:', error);
+      return [];
     }
   }
 
@@ -62,12 +66,12 @@ export const getActivitiesForWorkspace = async (workspaceId: string) => {
       const activitiesQuery = await firestore
         .collection('activities')
         .where('workspace', '==', workspaceId)
-        .orderBy('createdAt', 'desc')
         .limit(50)
         .get();
-      return activitiesQuery.docs.map((doc) => doc.data());
+      return activitiesQuery.docs.map((doc) => doc.data()).sort((left, right) => new Date((right as { createdAt?: unknown }).createdAt as string | number).getTime() - new Date((left as { createdAt?: unknown }).createdAt as string | number).getTime());
     } catch (error) {
       console.error('Error fetching from Firestore:', error);
+      return [];
     }
   }
 

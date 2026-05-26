@@ -1,9 +1,10 @@
 import { createApp } from './app.js';
-import { connectDB, stopInMemoryDB } from './config/db.js';
 import { env } from './config/env.js';
+import { connectDB } from './config/db.js';
 
 const startServer = async () => {
   await connectDB();
+
   const app = createApp();
 
   const server = app.listen(env.PORT, () => {
@@ -11,8 +12,7 @@ const startServer = async () => {
   });
 
   const shutdown = async () => {
-    server.close(async () => {
-      await stopInMemoryDB();
+    server.close(() => {
       process.exit(0);
     });
   };

@@ -18,10 +18,7 @@ const defaultFormValues: DriftAnalysisFormValues = {
   baselineVersionId: '',
   inputType: 'client_message',
   inputText: '',
-  useOllama: false,
-  ollamaModel: 'llama3.1:8b',
 };
-
 const inputTypes: Array<{ label: string; value: DriftInputType }> = [
   { label: 'Client message', value: 'client_message' },
   { label: 'Meeting note', value: 'meeting_note' },
@@ -86,8 +83,6 @@ export const DriftAnalysisPanel = ({
         baselineVersionId: values.baselineVersionId,
         inputText: values.inputText.trim(),
         inputType: values.inputType,
-        useOllama: values.useOllama,
-        ollamaModel: values.useOllama ? values.ollamaModel.trim() || undefined : undefined,
       });
       setResult(analysis);
     } catch (submitError) {
@@ -130,22 +125,22 @@ export const DriftAnalysisPanel = ({
   };
 
   return (
-    <Card className="border-lime-400/20 bg-black/60 p-6">
+    <Card className="border-white/10 bg-black/60 p-5">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-lime-400">Requirement drift analysis</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-lime-400">AI drift analysis</p>
           <h3 className="mt-1 text-xl font-semibold text-white">Compare new client input against the approved baseline</h3>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-400">
-            Ollama is optional. If it is disabled or unavailable, DriftLedger uses the local rule-based engine.
+            DriftLedger runs this analysis through your local Ollama model by default.
           </p>
         </div>
         <div className="rounded-full border border-lime-400/20 bg-lime-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-lime-300">
-          Local fallback enabled
+          Ollama powered
         </div>
       </div>
 
-      <div className="mt-6 grid gap-4 xl:grid-cols-[1fr_0.85fr]">
-        <div className="space-y-4">
+      <div className="mt-6 space-y-5">
+        <div className="grid gap-4 xl:grid-cols-2">
           <BaselineSelector versions={versions} value={values.baselineVersionId} onChange={(baselineVersionId) => setValues((current) => ({ ...current, baselineVersionId }))} />
 
           <label className="block space-y-2">
@@ -158,31 +153,23 @@ export const DriftAnalysisPanel = ({
               ))}
             </select>
           </label>
+        </div>
 
-          <label className="block space-y-2">
-            <span className="text-sm font-semibold text-gray-300">New client message</span>
-            <textarea
-              value={values.inputText}
-              onChange={(event) => setValues((current) => ({ ...current, inputText: event.target.value }))}
-              rows={8}
-              className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
-              placeholder="Paste the latest client message, meeting note, or scope update here"
-            />
-          </label>
+        <label className="block space-y-2">
+          <span className="text-sm font-semibold text-gray-300">New client message</span>
+          <textarea
+            value={values.inputText}
+            onChange={(event) => setValues((current) => ({ ...current, inputText: event.target.value }))}
+            rows={7}
+            className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+            placeholder="Paste the latest client message, meeting note, or scope update here"
+          />
+        </label>
 
-          <div className="grid gap-4 md:grid-cols-[auto_1fr] md:items-start">
-            <label className="flex items-center gap-3 rounded-2xl border border-gray-700 bg-black/50 px-4 py-3 text-sm text-gray-300">
-              <input
-                type="checkbox"
-                checked={values.useOllama}
-                onChange={(event) => setValues((current) => ({ ...current, useOllama: event.target.checked }))}
-                className="h-4 w-4 rounded border-gray-600 bg-black text-lime-400 focus:ring-lime-400/30"
-              />
-              Use Ollama
-            </label>
-
-            <InputOrModel value={values.ollamaModel} useOllama={values.useOllama} onChange={(ollamaModel) => setValues((current) => ({ ...current, ollamaModel }))} />
-          </div>
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-lime-400/20 bg-lime-400/10 px-4 py-3">
+          <p className="text-sm text-lime-100">
+            Model: <span className="font-semibold text-lime-300">llama3.1:8b</span>
+          </p>
 
           <div className="flex flex-wrap items-center gap-3">
             <Button type="button" onClick={handleAnalyze} disabled={analyzeMutation.isPending || saveMutation.isPending}>
@@ -195,47 +182,30 @@ export const DriftAnalysisPanel = ({
               </Button>
             ) : null}
           </div>
-
-          {error ? <p className="text-sm text-red-400">{error}</p> : null}
         </div>
 
-        <div className="space-y-4">
-          {result ? (
-            <>
+        {error ? <p className="text-sm text-red-400">{error}</p> : null}
+
+        {result ? (
+          <div className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+            <div className="min-w-0">
               <DriftScoreCard analysis={result} />
-              <Card className="border-gray-800 bg-black/50 p-5">
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-lime-400">Detected changes</p>
-                <div className="mt-4">
-                  <DetectedChangesList changes={result.detectedChanges} />
-                </div>
-              </Card>
-            </>
-          ) : (
-            <EmptyState
-              title="Run a drift analysis to see results."
-              description="The preview will show score, risk, detected changes, and a save option after analysis completes."
-              icon={<Sparkles className="h-5 w-5" />}
-            />
-          )}
-        </div>
+            </div>
+            <Card className="min-w-0 border-gray-800 bg-black/50 p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-lime-400">Detected changes</p>
+              <div className="mt-4">
+                <DetectedChangesList changes={result.detectedChanges} />
+              </div>
+            </Card>
+          </div>
+        ) : (
+          <EmptyState
+            title="Run a drift analysis to see results."
+            description="The preview will show score, risk, detected changes, and a save option after analysis completes."
+            icon={<Sparkles className="h-5 w-5" />}
+          />
+        )}
       </div>
     </Card>
-  );
-};
-
-const InputOrModel = ({ value, useOllama, onChange }: { value: string; useOllama: boolean; onChange: (value: string) => void }) => {
-  return (
-    <label className="block space-y-2 md:pt-0">
-      <span className="text-sm font-semibold text-gray-300">Ollama model</span>
-      <input
-        type="text"
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        disabled={!useOllama}
-        placeholder="llama3.1:8b"
-        className="h-11 w-full rounded-2xl border border-gray-700 bg-black px-4 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30 disabled:cursor-not-allowed disabled:opacity-60"
-      />
-      <p className="text-xs text-gray-500">Optional local enhancement. The app still works when Ollama is disabled or unavailable.</p>
-    </label>
   );
 };

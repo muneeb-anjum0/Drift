@@ -1,11 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useAuth } from '../contexts/AuthContext';
 import { workspaceApi } from '../api/workspace.api';
 
 export const useWorkspaces = () => {
+  const { user } = useAuth();
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['workspaces'],
     queryFn: workspaceApi.list,
+    enabled: !!user, // Only fetch when user is authenticated
   });
 
   const createMutation = useMutation({

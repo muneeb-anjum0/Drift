@@ -1,11 +1,12 @@
 import type { Request, Response } from 'express';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
-import { generateChangeRequestSchema, saveChangeRequestSchema, updateChangeRequestSchema } from '../validators/drift.validator.js';
-import * as changeRequestService from '../services/changeRequest.service.js';
-
-// Keep using MongoDB for change requests until Firestore is fully migrated
-const crService = changeRequestService;
+import {
+  generateChangeRequestSchema,
+  saveChangeRequestSchema,
+  updateChangeRequestSchema,
+} from '../validators/changeRequest.validator.js';
+import * as crService from '../services/firestoreChangeRequest.service.js';
 
 export const generateChangeRequestController = asyncHandler(async (req: Request, res: Response) => {
   const payload = generateChangeRequestSchema.parse(req.body);

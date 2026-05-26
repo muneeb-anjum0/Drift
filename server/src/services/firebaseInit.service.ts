@@ -27,6 +27,10 @@ export const initializeFirestoreCollections = async () => {
       docs: [],
     },
     {
+      name: 'requirementVersions',
+      docs: [],
+    },
+    {
       name: 'driftAnalyses',
       docs: [],
     },
@@ -53,12 +57,12 @@ export const initializeFirestoreCollections = async () => {
           _initialized: true,
           _createdAt: new Date(),
         });
-        console.log(`✓ Collection created: ${collection.name}`);
+        console.log(`Collection created: ${collection.name}`);
       } else {
-        console.log(`✓ Collection already exists: ${collection.name}`);
+        console.log(`Collection already exists: ${collection.name}`);
       }
     } catch (error) {
-      console.error(`✗ Error initializing collection ${collection.name}:`, error);
+      console.error(`Error initializing collection ${collection.name}:`, error);
     }
   }
 
@@ -81,6 +85,7 @@ export interface FirestoreUser {
 export interface FirestoreWorkspace {
   _id: string;
   name: string;
+  slug: string;
   description: string;
   owner: string; // user id
   members: string[]; // array of user ids
@@ -90,11 +95,15 @@ export interface FirestoreWorkspace {
 
 export interface FirestoreProject {
   _id: string;
+  workspace: string; // workspace id
   name: string;
   description: string;
-  workspace: string; // workspace id
-  owner: string; // user id
-  status: 'active' | 'archived' | 'completed';
+  clientName: string;
+  status: 'planning' | 'active' | 'paused' | 'completed' | 'archived';
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  originalScope: string;
+  deadline?: Date | null;
+  createdBy: string; // user id
   createdAt: Date;
   updatedAt: Date;
 }
@@ -102,43 +111,94 @@ export interface FirestoreProject {
 export interface FirestoreRequirement {
   _id: string;
   project: string; // project id
+  workspace: string; // workspace id
   title: string;
   description: string;
-  status: 'active' | 'deprecated' | 'replaced';
-  version: number;
+  type: 'functional' | 'non_functional' | 'business' | 'technical' | 'ui_ux' | 'security' | 'performance' | 'integration' | 'other';
+  priority: 'low' | 'medium' | 'high' | 'critical';
+  status: 'proposed' | 'approved' | 'in_progress' | 'completed' | 'rejected' | 'changed';
+  source: 'original_scope' | 'manual' | 'client_message' | 'meeting_note' | 'document' | 'ai_extracted';
+  sourceText: string;
+  acceptanceCriteria: string[];
   tags: string[];
+  estimatedEffort?: number | null;
+  isBaseline: boolean;
+  baselineVersion: number;
+  createdBy: string;
+  updatedBy?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
+export interface FirestoreRequirementSnapshot {
+  requirementId: string;
+  title: string;
+  description: string;
+  type: FirestoreRequirement['type'];
+  priority: FirestoreRequirement['priority'];
+  status: FirestoreRequirement['status'];
+  source: FirestoreRequirement['source'];
+  acceptanceCriteria: string[];
+  tags: string[];
+  estimatedEffort?: number | null;
+}
+
+export interface FirestoreRequirementVersion {
+  _id: string;
+  project: string;
+  workspace: string;
+  versionNumber: number;
+  label: string;
+  description: string;
+  requirementsSnapshot: FirestoreRequirementSnapshot[];
+  createdBy: string;
+  createdAt: Date;
+}
+
 export interface FirestoreDriftAnalysis {
   _id: string;
-  project: string; // project id
-  requirement: string; // requirement id
-  baseline: string; // baseline requirement snapshot
-  input: string; // current input text
-  score: number;
-  severity: 'low' | 'medium' | 'high' | 'critical';
-  changes: {
-    added: string[];
-    modified: string[];
-    removed: string[];
-    ambiguous: string[];
-  };
+  project: string;
+  workspace: string;
+  baselineVersion: string;
+  baselineVersionNumber: number;
+  inputType: 'client_message' | 'meeting_note' | 'scope_update' | 'document_text' | 'other';
+  inputText: string;
+  driftScore: number;
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  summary: string;
+  detectedChanges: Array<Record<string, unknown>>;
+  addedCount: number;
+  modifiedCount: number;
+  removedCount: number;
+  ambiguousCount: number;
+  contradictionCount: number;
+  estimatedExtraHours: number;
+  analysisEngine: 'rule_based' | 'ollama' | 'hybrid';
+  ollamaUsed: boolean;
+  ollamaModel?: string | null;
+  status: 'draft' | 'saved' | 'reviewed';
+  createdBy: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface FirestoreChangeRequest {
   _id: string;
-  project: string; // project id
-  driftAnalysis: string; // drift analysis id
+  project: string;
+  workspace: string;
+  driftAnalysis: string;
   title: string;
-  description: string;
-  estimatedEffort: 'low' | 'medium' | 'high' | 'complex';
-  estimatedTimeline: string;
+  clientName?: string;
+  summary: string;
+  changesRequested: Array<Record<string, unknown>>;
+  businessReason: string;
+  timelineImpact: string;
   costImpact: string;
-  status: 'open' | 'approved' | 'in_progress' | 'completed' | 'rejected';
+  recommendedAction: string;
+  approvalNote: string;
+  status: 'draft' | 'sent' | 'approved' | 'rejected' | 'archived';
+  generatedBy: 'rule_based' | 'ollama' | 'hybrid';
+  createdBy: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -150,6 +210,6 @@ export interface FirestoreActivity {
   action: string;
   entityType: string;
   entityId: string;
-  metadata: Record<string, any>;
+  metadata: Record<string, unknown>;
   createdAt: Date;
 }

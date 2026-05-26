@@ -39,11 +39,16 @@ export const getWorkspaceActivities = async (workspaceId: string, limit = 50) =>
     const activitiesQuery = await firestore
       .collection(ACTIVITIES_COLLECTION)
       .where('workspace', '==', workspaceId)
-      .orderBy('createdAt', 'desc')
       .limit(limit)
       .get();
 
-    return activitiesQuery.docs.map((doc) => doc.data() as FirestoreActivity);
+    return activitiesQuery.docs
+      .map((doc) => doc.data() as FirestoreActivity)
+      .sort((left, right) => {
+        const leftTime = left.createdAt instanceof Date ? left.createdAt.getTime() : new Date(left.createdAt as unknown as string | number).getTime();
+        const rightTime = right.createdAt instanceof Date ? right.createdAt.getTime() : new Date(right.createdAt as unknown as string | number).getTime();
+        return rightTime - leftTime;
+      });
   } catch (error) {
     console.error('Error fetching activities:', error);
     return [];

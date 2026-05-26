@@ -1,6 +1,5 @@
-import { Plus, BriefcaseBusiness } from 'lucide-react';
+import { BriefcaseBusiness, Plus, Settings2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '../components/common/Button';
 import { Card } from '../components/common/Card';
@@ -11,7 +10,6 @@ import { useWorkspaces } from '../hooks/useWorkspaces';
 import type { Workspace } from '../types';
 
 export const WorkspacesPage = () => {
-  const navigate = useNavigate();
   const { workspaces, isLoading, createWorkspace, updateWorkspace, deleteWorkspace, isCreating, isUpdating } = useWorkspaces();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingWorkspace, setEditingWorkspace] = useState<Workspace | null>(null);
@@ -32,28 +30,18 @@ export const WorkspacesPage = () => {
   }
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      className="space-y-6"
-    >
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="flex flex-wrap items-center justify-between gap-4"
-      >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-7">
+      <section className="flex flex-wrap items-end justify-between gap-5 rounded-[2.25rem] border border-lime-400/20 bg-black/75 p-6 shadow-[0_24px_90px_rgba(163,230,53,0.06)] sm:p-8">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-lime-400">Workspaces</p>
-          <h2 className="mt-2 text-4xl font-bold text-white">Manage Workspaces</h2>
-          <p className="mt-1 text-gray-400">Organize your clients and team projects</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-lime-400">Workspaces</p>
+          <h2 className="mt-3 text-4xl font-semibold text-white">Client operating rooms</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-gray-400">Keep each client, team, and delivery stream separated before projects start drifting.</p>
         </div>
         <Button type="button" onClick={() => setIsCreateOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
-          Create Workspace
+          New Workspace
         </Button>
-      </motion.div>
+      </section>
 
       {sortedWorkspaces.length === 0 ? (
         <EmptyState
@@ -64,30 +52,30 @@ export const WorkspacesPage = () => {
           icon={<BriefcaseBusiness className="h-5 w-5" />}
         />
       ) : (
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2, staggerChildren: 0.05 }}
-          className="grid gap-5 xl:grid-cols-2"
-        >
-          {sortedWorkspaces.map((workspace, i) => (
+        <div className="grid gap-5 xl:grid-cols-2">
+          {sortedWorkspaces.map((workspace, index) => (
             <motion.div
               key={workspace._id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
+              transition={{ delay: index * 0.05, type: 'spring', stiffness: 260, damping: 24 }}
+              whileHover={{ y: -6, scale: 1.01 }}
             >
-              <Card className="p-6 border-lime-400/20 hover:border-lime-400/50 hover:shadow-lg hover:shadow-lime-400/20">
+              <Card className="rounded-[2rem] border-white/10 bg-black/65 p-7 hover:border-lime-400/35">
                 <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-white">{workspace.name}</h3>
-                    <p className="mt-2 text-gray-400">{workspace.description || 'No description provided.'}</p>
-                    <div className="mt-4 inline-block rounded-lg bg-lime-400/10 border border-lime-400/30 px-3 py-1">
-                      <span className="text-xs font-semibold text-lime-400">{workspace.slug}</span>
+                  <div className="min-w-0">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full border border-lime-400/25 bg-lime-400/10">
+                      <BriefcaseBusiness className="h-5 w-5 text-lime-300" />
+                    </div>
+                    <h3 className="mt-5 text-2xl font-semibold text-white">{workspace.name}</h3>
+                    <p className="mt-3 line-clamp-3 text-base leading-7 text-gray-400">{workspace.description || 'No description provided.'}</p>
+                    <div className="mt-4 inline-flex rounded-full border border-lime-400/20 bg-lime-400/10 px-3 py-1">
+                      <span className="text-xs font-semibold text-lime-300">{workspace.slug}</span>
                     </div>
                   </div>
+                  <Settings2 className="h-5 w-5 text-lime-400" />
                 </div>
-                <div className="mt-6 flex justify-end gap-3">
+                <div className="mt-6 flex flex-wrap justify-end gap-3">
                   <Button type="button" variant="secondary" size="sm" onClick={() => setEditingWorkspace(workspace)}>
                     Edit
                   </Button>
@@ -98,7 +86,7 @@ export const WorkspacesPage = () => {
               </Card>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       )}
 
       <CreateWorkspaceModal

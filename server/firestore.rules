@@ -1,0 +1,89 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function getUserId() {
+      return request.auth.uid;
+    }
+
+    function isWorkspaceMember(workspaceId) {
+      return isAuthenticated() && 
+             exists(/databases/{database}/documents/workspaceMembers/$(workspaceId)_$(getUserId()));
+    }
+
+    function isWorkspaceOwner(workspaceId) {
+      return isAuthenticated() &&
+             get(/databases/{database}/documents/workspaces/$(workspaceId)).data.owner == getUserId();
+    }
+
+    // Users collection - users can only read/write their own document
+    match /users/{userId} {
+      allow read: if isAuthenticated() && userId == getUserId();
+      allow write: if isAuthenticated() && userId == getUserId();
+      allow create: if isAuthenticated() && userId == getUserId();
+    }
+
+    // Workspaces collection - owner can write, members can read
+    match /workspaces/{workspaceId} {
+      allow read: if isAuthenticated() && isWorkspaceMember(workspaceId);
+      allow write: if isAuthenticated() && isWorkspaceOwner(workspaceId);
+      allow create: if isAuthenticated();
+    }
+
+    // Workspace members collection - only workspace members can read
+    match /workspaceMembers/{memberId} {
+      allow read: if isAuthenticated() && 
+                     memberId.split('_')[0] in get(/databases/{database}/documents/workspaces/$(memberId.split('_')[0])).data.members;
+      allow write: if isAuthenticated() && 
+                      isWorkspaceOwner(memberId.split('_')[0]);
+      allow create: if isAuthenticated();
+    }
+
+    // Projects collection - workspace members can read, write by owner/workspace
+    match /projects/{projectId} {
+      allow read: if isAuthenticated() && 
+                     isWorkspaceMember(get(/databases/{database}/documents/projects/$(projectId)).data.workspace);
+      allow write: if isAuthenticated() && 
+                      isWorkspaceMember(get(/databases/{database}/documents/projects/$(projectId)).data.workspace);
+      allow create: if isAuthenticated();
+    }
+
+    // Requirements collection - workspace members can read, workspace members can write
+    match /requirements/{requirementId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+      allow create: if isAuthenticated();
+    }
+
+    // Drift analyses collection - workspace members can read/write
+    match /driftAnalyses/{driftId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+      allow create: if isAuthenticated();
+    }
+
+    // Change requests collection - workspace members can read/write
+    match /changeRequests/{changeRequestId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+      allow create: if isAuthenticated();
+    }
+
+    // Activities collection - workspace members can read
+    match /activities/{activityId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+      allow create: if false;
+    }
+
+    // Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

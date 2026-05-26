@@ -1,18 +1,24 @@
 import axios from 'axios';
-import { firebaseAuth } from '../contexts/AuthContext';
+import { TOKEN_KEY } from '../utils/constants';
 
-const baseURL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5000/api/v1';
+const API_PREFIX = '/api/v1';
+const rawBaseURL = import.meta.env.VITE_API_BASE_URL?.trim();
+
+const baseURL = (() => {
+  const resolvedBaseURL = rawBaseURL && rawBaseURL.length > 0 ? rawBaseURL.replace(/\/+$/, '') : API_PREFIX;
+
+  return resolvedBaseURL.endsWith(API_PREFIX) ? resolvedBaseURL : `${resolvedBaseURL}${API_PREFIX}`;
+})();
 
 export const api = axios.create({
   baseURL,
   withCredentials: false,
 });
 
-api.interceptors.request.use(async (config) => {
-  const user = firebaseAuth.currentUser;
-  if (user) {
-    const token = await user.getIdToken();
-    config.headers.Authorization = `Bearer ${token}`;
+api.interceptors.request.use((config) => {
+  const storedToken = localStorage.getItem(TOKEN_KEY);
+  if (storedToken) {
+    config.headers.Authorization = `Bearer ${storedToken}`;
   }
   return config;
 });

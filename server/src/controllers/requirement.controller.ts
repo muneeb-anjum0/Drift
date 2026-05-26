@@ -7,10 +7,7 @@ import {
   extractRequirementsSchema,
   updateRequirementSchema,
 } from '../validators/requirement.validator.js';
-import * as mongoRequirementService from '../services/requirement.service.js';
-
-// Keep using MongoDB for requirements until Firestore is fully migrated
-const requirementService = mongoRequirementService;
+import * as requirementService from '../services/firestoreRequirement.service.js';
 
 export const listProjectRequirementsController = asyncHandler(async (req: Request, res: Response) => {
   const { projectId } = req.params as { projectId: string };
