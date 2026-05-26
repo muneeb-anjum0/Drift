@@ -1,171 +1,153 @@
 # DriftLedger
 
-Track requirement drift before it becomes unpaid work.
+DriftLedger is a full-stack SaaS platform for freelancers, agencies, and software teams to detect scope drift, document requirement changes, and generate client-ready change requests.
 
-DriftLedger is a SaaS platform for freelancers, agencies, and software teams. It helps users capture original scope, structure requirements, create baseline versions, detect drift in later client messages, estimate extra effort, and generate client-friendly change requests.
+## Overview
 
-## Problem
-
-Client scope changes often arrive as vague messages, meeting notes, or incremental requests. That makes it hard to prove what changed, estimate the impact, and protect delivery time.
-
-## Solution
-
-DriftLedger turns scope into structured requirements, freezes approved baselines, compares new input against those baselines, and generates a clear change request draft when drift appears.
-
-## Completed Phases
-
-Phase 1: SaaS foundation with auth, workspaces, projects, dashboard, protected routes, app layout, and activity logs.
-
-Phase 2: Requirement Intelligence Layer with requirement CRUD, extraction, baseline snapshots, and version history.
-
-Phase 3: Drift Detection and Change Request Engine with Ollama-powered analysis, deterministic scoring, drift history, and change request generation/history.
+Client projects often drift after the original scope is approved. New features, vague improvements, and quiet requirement changes can create unpaid work and delivery risk. DriftLedger helps teams preserve the original scope, structure requirements, create baselines, compare new client input, score scope creep risk, and generate approval drafts.
 
 ## Tech Stack
 
-Frontend: React, Vite, TypeScript, Tailwind CSS, React Router, TanStack Query, Axios, Lucide React, and Framer Motion.
+- Frontend: React, Vite, TypeScript, Tailwind CSS
+- Backend: Go / Golang with Gin
+- Database: MongoDB
+- File storage: Firebase Storage through backend-only Google Cloud Storage APIs
+- Optional AI: Ollama local LLM through plain HTTP
 
-Backend: Node.js, Express.js, TypeScript, JWT auth, bcryptjs, Zod, dotenv, cors, helmet, morgan, cookie-parser, Mongoose models, and a Firestore-backed service layer for the current live data path.
+This is no longer a pure MERN app after the Go backend migration. The backend lives in `server-go/`.
 
-AI: Ollama-powered local analysis by default using `llama3.1:8b`.
+## Features
+
+Phase 1 includes authentication, JWT-protected routes, workspaces, projects, dashboard views, activity logs, a SaaS landing page, and the black, white, and lime green UI.
+
+Phase 2 adds structured requirements, requirement version history, local requirement extraction, immutable baselines, and requirement activity logs.
+
+Phase 3 adds rule-based drift detection, deterministic scope creep scoring, optional Ollama enhancement, saved drift history, change request generation, and change request history.
+
+The Go backend also adds project document persistence:
+
+- MongoDB stores file metadata.
+- Firebase Storage stores uploaded files.
+- Firebase Storage is optional; the app still starts without it.
+- Service account credentials stay backend-only.
 
 ## Folder Structure
 
 ```text
-driftledger/
-|-- client/
-|   |-- public/
-|   `-- src/
-|       |-- api/
-|       |-- components/
-|       |-- contexts/
-|       |-- features/
-|       |-- hooks/
-|       |-- pages/
-|       |-- routes/
-|       |-- store/
-|       |-- types/
-|       `-- utils/
-|-- server/
-|   |-- scripts/
-|   `-- src/
-|       |-- config/
-|       |-- controllers/
-|       |-- middlewares/
-|       |-- models/
-|       |-- routes/
-|       |-- services/
-|       |-- types/
-|       |-- utils/
-|       `-- validators/
-`-- package.json
+client/      React + Vite frontend
+server-go/   Go backend
+README.md
+.gitignore
+package.json
 ```
 
-## Environment Variables
+## Environment
 
-Client:
+Frontend:
 
 ```env
 VITE_API_BASE_URL=http://localhost:5000/api/v1
 ```
 
-Server:
+Go backend variables are documented in `server-go/.env.example`.
 
-```env
-PORT=5000
-NODE_ENV=development
-USE_FIRESTORE=true
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-JWT_EXPIRES_IN=7d
-CLIENT_URL=http://localhost:5173
+MongoDB is required for structured app data. Firebase Storage and Ollama are optional.
 
-FIREBASE_PROJECT_ID=your_firebase_project_id
-FIREBASE_CLIENT_EMAIL=your_firebase_client_email
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nyour_private_key\n-----END PRIVATE KEY-----\n"
-FIREBASE_PRIVATE_KEY_ID=your_firebase_private_key_id
-FIREBASE_CLIENT_ID=your_firebase_client_id
-FIREBASE_CERT_URL=https://www.googleapis.com/robot/v1/metadata/x509/your_service_account_email
+## Running Locally
 
-OLLAMA_ENABLED=true
-OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_MODEL=llama3.1:8b
-OLLAMA_TIMEOUT_MS=30000
-```
-
-## Installation
+Install frontend dependencies if needed:
 
 ```bash
 npm install
 ```
 
-Useful scripts:
+Install Go module dependencies:
 
 ```bash
-npm run install:all
-npm run dev
+cd server-go
+go mod tidy
+```
+
+Start the active Go backend:
+
+```bash
+npm run dev:server-go
+```
+
+Start the frontend:
+
+```bash
 npm run dev:client
-npm run dev:server
-npm run build
-npm run build:client
-npm run build:server
 ```
 
-## API Endpoints
-
-Base URL: `/api/v1`
-
-Auth: `POST /auth/register`, `POST /auth/login`, `GET /auth/me`, `POST /auth/logout`
-
-Workspaces: `POST /workspaces`, `GET /workspaces`, `GET /workspaces/:workspaceId`, `PATCH /workspaces/:workspaceId`, `DELETE /workspaces/:workspaceId`
-
-Projects: `POST /projects`, `GET /projects`, `GET /projects/:projectId`, `PATCH /projects/:projectId`, `DELETE /projects/:projectId`
-
-Requirements: `GET /requirements/project/:projectId`, `POST /requirements`, `GET /requirements/:requirementId`, `PATCH /requirements/:requirementId`, `DELETE /requirements/:requirementId`, `POST /requirements/extract`, `POST /requirements/baseline`, `GET /requirements/versions/:projectId`
-
-Drift: `POST /drift/analyze`, `POST /drift/save`, `GET /drift/project/:projectId`, `GET /drift/:driftAnalysisId`, `DELETE /drift/:driftAnalysisId`
-
-Change requests: `POST /change-requests/generate`, `POST /change-requests`, `GET /change-requests/project/:projectId`, `GET /change-requests/:changeRequestId`, `PATCH /change-requests/:changeRequestId`, `DELETE /change-requests/:changeRequestId`
-
-Activities: `GET /activities`, `GET /activities/:workspaceId`
-
-## Ollama Setup
-
-Drift analysis is powered by Ollama by default. Install Ollama, pull the configured model, and keep Ollama running while using the app.
+Or run both together because `concurrently` is already installed:
 
 ```bash
-ollama pull llama3.1:8b
+npm run dev:go
 ```
 
-Then set:
+## API Overview
+
+Base URL: `http://localhost:5000/api/v1`
+
+- `POST /auth/register`
+- `POST /auth/login`
+- `GET /auth/me`
+- `POST /auth/logout`
+- `/workspaces`
+- `/projects`
+- `/activities`
+- `/requirements`
+- `/drift`
+- `/change-requests`
+- `/files`
+
+Responses use `{ success, message, data }`. Errors use `{ success, message, errors }`.
+
+## File Upload Setup
+
+Set these backend variables only when Firebase Storage should be enabled:
+
+```env
+FIREBASE_STORAGE_ENABLED=true
+FIREBASE_STORAGE_BUCKET=your-project-id.appspot.com
+GOOGLE_APPLICATION_CREDENTIALS=./firebase-service-account.json
+```
+
+Never commit service account files. If Firebase Storage is disabled, upload endpoints return:
+
+```text
+Firebase Storage is not enabled. Configure Firebase Storage to upload files.
+```
+
+## Ollama
+
+Ollama is optional. Enable it with:
 
 ```env
 OLLAMA_ENABLED=true
 OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=llama3.1:8b
-OLLAMA_TIMEOUT_MS=30000
 ```
 
-## Screenshots
+If Ollama is disabled or unavailable, drift analysis and change request generation continue with deterministic rule-based logic.
 
-Add product screenshots here once you have deployment-ready images.
+## Security Notes
+
+- Authentication remains JWT-based in the Go backend.
+- MongoDB stores structured SaaS data.
+- Firebase Storage stores only uploaded file blobs.
+- Firebase credentials are never exposed to the frontend.
+- Secrets, `.env` files, and service account JSON files are ignored by Git.
 
 ## Deployment Notes
 
-- Keep `JWT_SECRET` and Firebase service account values out of source control.
-- Set `VITE_API_BASE_URL` to the deployed API base URL.
-- Keep Ollama running or point `OLLAMA_BASE_URL` to a reachable Ollama host before demoing drift analysis.
-- Confirm Firestore indexes/rules are configured before demoing with live data.
+Deploy the React frontend separately from the Go API. Set `VITE_API_BASE_URL` to the deployed Go API URL. Configure MongoDB in the backend environment. Configure Firebase Storage only when document uploads are required.
 
-## Future Roadmap
+## Roadmap
 
-- PDF export for drift reports and change requests
-- Client portal for approved scope changes
-- Advanced AI summaries and richer explanation layers
-- Deployment polish and production monitoring
-- Billing-ready plans
-- Team invitations
-- Email notifications
-
-## Recruiter-Friendly Summary
-
-DriftLedger demonstrates full-stack SaaS architecture, authenticated workspace isolation, structured domain modeling, AI-powered local drift analysis, deterministic scoring, and a polished React UI. It is built to show product thinking, backend discipline, and practical scope-control workflows rather than a toy demo.
+- Team invitations and role management
+- Document text extraction
+- Exportable change request PDFs
+- More detailed estimate workflows
+- Deployment hardening and CI checks

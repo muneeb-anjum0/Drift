@@ -3,9 +3,12 @@ dist
 build
 coverage
 .env
+.env.local
 .env.*
+.env.*.local
 !.env.example
 .DS_Store
+*.log
 .vscode/settings.json
 .vscode/launch.json
 .vscode/tasks.json
@@ -13,3 +16,7 @@ client/node_modules
 client/dist
 server/node_modules
 server/dist
+firebase-service-account.json
+*.firebase-service-account.json
+server-go/firebase-service-account.json
+server-go/*.firebase-service-account.json

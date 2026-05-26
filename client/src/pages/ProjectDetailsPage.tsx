@@ -7,12 +7,11 @@ import {
   CalendarDays,
   Clock3,
   FileText,
-  FolderKanban,
   GitCompareArrows,
   Layers3,
   ListChecks,
   Plus,
-  Sparkles,
+  Upload,
   User2,
 } from 'lucide-react';
 import { projectApi } from '../api/project.api';
@@ -44,13 +43,17 @@ import {
 } from '../hooks/useRequirements';
 import { useDeleteDriftAnalysis, useProjectDriftAnalyses } from '../hooks/useDrift';
 import { useDeleteChangeRequest, useProjectChangeRequests, useUpdateChangeRequest } from '../hooks/useChangeRequests';
+import { FileUploadPanel } from '../features/files/FileUploadPanel';
+import type { ProjectFile } from '../features/files/file.types';
+import { useDeleteFile, useProjectFiles, useUploadFile } from '../hooks/useFiles';
 
-type ActiveSection = 'requirements' | 'drift' | 'changes';
+type ActiveSection = 'requirements' | 'drift' | 'changes' | 'documents';
 
 const navItems: Array<{ id: ActiveSection; label: string; description: string; icon: typeof ListChecks }> = [
   { id: 'requirements', label: 'Requirements', description: 'Scope, extraction, baselines', icon: ListChecks },
   { id: 'drift', label: 'Drift Analysis', description: 'Compare new client input', icon: GitCompareArrows },
   { id: 'changes', label: 'Change Requests', description: 'Client-ready approvals', icon: FileText },
+  { id: 'documents', label: 'Documents', description: 'Briefs, scope files, notes', icon: Upload },
 ];
 
 const toRequirementFormValues = (requirement: Requirement): Partial<RequirementFormValues> => ({
@@ -124,6 +127,7 @@ export const ProjectDetailsPage = () => {
   const versionsQuery = useRequirementVersions(projectId);
   const driftAnalysesQuery = useProjectDriftAnalyses(projectId);
   const changeRequestsQuery = useProjectChangeRequests(projectId);
+  const filesQuery = useProjectFiles(projectId);
   const createRequirementMutation = useCreateRequirement();
   const updateRequirementMutation = useUpdateRequirement();
   const deleteRequirementMutation = useDeleteRequirement();
@@ -131,6 +135,8 @@ export const ProjectDetailsPage = () => {
   const deleteDriftAnalysisMutation = useDeleteDriftAnalysis();
   const deleteChangeRequestMutation = useDeleteChangeRequest();
   const updateChangeRequestMutation = useUpdateChangeRequest();
+  const uploadFileMutation = useUploadFile();
+  const deleteFileMutation = useDeleteFile();
 
   if (projectQuery.isLoading) {
     return (
@@ -162,6 +168,7 @@ export const ProjectDetailsPage = () => {
   const versions = versionsQuery.data ?? [];
   const driftAnalyses = driftAnalysesQuery.data ?? [];
   const changeRequests = changeRequestsQuery.data ?? [];
+  const files = filesQuery.data ?? [];
 
   const handleOpenCreateModal = () => {
     setEditingRequirement(null);
@@ -216,6 +223,18 @@ export const ProjectDetailsPage = () => {
     });
   };
 
+  const handleUploadFile = async ({ file, documentType }: { file: File; documentType: ProjectFile['documentType'] }) => {
+    if (!projectId) return;
+    await uploadFileMutation.mutateAsync({ projectId, file, documentType });
+  };
+
+  const handleDeleteFile = async (file: ProjectFile) => {
+    if (!projectId) return;
+    const confirmed = window.confirm(`Delete ${file.originalName}?`);
+    if (!confirmed) return;
+    await deleteFileMutation.mutateAsync({ fileId: file._id, projectId });
+  };
+
   return (
     <div className="space-y-6 text-white">
       <div className="flex items-center justify-between gap-4">
@@ -268,7 +287,7 @@ export const ProjectDetailsPage = () => {
         </div>
       </section>
 
-      <nav className="grid gap-3 rounded-3xl border border-white/10 bg-black/70 p-3 md:grid-cols-3">
+      <nav className="grid gap-3 rounded-3xl border border-white/10 bg-black/70 p-3 md:grid-cols-4">
         {navItems.map(({ id, label, description, icon: Icon }) => {
           const isActive = activeSection === id;
           return (
@@ -419,6 +438,26 @@ export const ProjectDetailsPage = () => {
               />
             </Card>
           </div>
+        </section>
+      ) : null}
+
+      {activeSection === 'documents' ? (
+        <section className="space-y-5">
+          <PanelHeader
+            eyebrow="Project Documents"
+            title="Upload and manage project documents"
+            description="Persist supporting project files in Firebase Storage with metadata stored in MongoDB."
+          />
+          <Card className="border-white/10 bg-black/60 p-5">
+            <FileUploadPanel
+              files={files}
+              isUploading={uploadFileMutation.isPending}
+              isDeleting={deleteFileMutation.isPending}
+              errorMessage={uploadFileMutation.error?.message}
+              onUpload={handleUploadFile}
+              onDelete={handleDeleteFile}
+            />
+          </Card>
         </section>
       ) : null}
 
