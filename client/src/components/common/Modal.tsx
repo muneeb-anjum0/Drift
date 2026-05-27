@@ -45,12 +45,11 @@ export const Modal = ({ open, title, description, children, onClose, size = 'xl'
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ type: 'spring', stiffness: 260, damping: 24 }}
         className={cn(
-          'scrollbar-themed max-h-[92vh] w-full overflow-y-auto rounded-[2rem] border border-lime-400/20 bg-black shadow-[0_24px_100px_rgba(0,0,0,0.75)]',
-          sizeClasses[size],
-          density === 'compact' ? 'p-5 sm:p-6' : 'p-7'
+          'flex max-h-[92vh] w-full flex-col overflow-hidden rounded-[2rem] border border-lime-400/20 bg-black shadow-[0_24px_100px_rgba(0,0,0,0.75)]',
+          sizeClasses[size]
         )}
       >
-        <div className={cn('flex items-start justify-between gap-4', density === 'compact' ? 'mb-4' : 'mb-6')}>
+        <div className={cn('flex shrink-0 items-start justify-between gap-4', density === 'compact' ? 'px-5 pt-5 sm:px-6 sm:pt-6' : 'px-7 pt-7')}>
           <div>
             <h2 className={cn('font-semibold text-white', density === 'compact' ? 'text-xl' : 'text-2xl')}>{title}</h2>
             {description ? <p className={cn('mt-2 text-gray-400', density === 'compact' ? 'text-sm leading-6' : 'text-base leading-7')}>{description}</p> : null}
@@ -59,7 +58,9 @@ export const Modal = ({ open, title, description, children, onClose, size = 'xl'
             <X className="h-5 w-5" />
           </Button>
         </div>
-        {children}
+        <div className={cn('scrollbar-themed min-h-0 flex-1 overflow-y-auto', density === 'compact' ? 'px-5 pb-5 pt-4 sm:px-6 sm:pb-6' : 'px-7 pb-7 pt-6')}>
+          {children}
+        </div>
       </motion.div>
     </div>,
     document.body
