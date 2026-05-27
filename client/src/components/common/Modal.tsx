@@ -10,6 +10,7 @@ interface ModalProps {
   title: string;
   description?: string;
   children: ReactNode;
+  footer?: ReactNode;
   onClose: () => void;
   size?: 'md' | 'lg' | 'xl';
   density?: 'comfortable' | 'compact';
@@ -21,7 +22,7 @@ const sizeClasses: Record<NonNullable<ModalProps['size']>, string> = {
   xl: 'max-w-3xl',
 };
 
-export const Modal = ({ open, title, description, children, onClose, size = 'xl', density = 'comfortable' }: ModalProps) => {
+export const Modal = ({ open, title, description, children, footer, onClose, size = 'xl', density = 'comfortable' }: ModalProps) => {
   useEffect(() => {
     if (!open) return;
 
@@ -39,13 +40,13 @@ export const Modal = ({ open, title, description, children, onClose, size = 'xl'
   if (!open) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 px-4 py-6 backdrop-blur-md">
+    <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/75 px-4 py-6 backdrop-blur-md">
       <motion.div
         initial={{ opacity: 0, y: 18, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ type: 'spring', stiffness: 260, damping: 24 }}
         className={cn(
-          'flex max-h-[92vh] w-full flex-col overflow-hidden rounded-[2rem] border border-lime-400/20 bg-black shadow-[0_24px_100px_rgba(0,0,0,0.75)]',
+          'flex max-h-[calc(100dvh-3rem)] w-full flex-col overflow-hidden rounded-[2rem] border border-lime-400/20 bg-black shadow-[0_24px_100px_rgba(0,0,0,0.75)]',
           sizeClasses[size]
         )}
       >
@@ -58,8 +59,15 @@ export const Modal = ({ open, title, description, children, onClose, size = 'xl'
             <X className="h-5 w-5" />
           </Button>
         </div>
-        <div className={cn('scrollbar-themed min-h-0 flex-1 overflow-y-auto', density === 'compact' ? 'px-5 pb-5 pt-4 sm:px-6 sm:pb-6' : 'px-7 pb-7 pt-6')}>
-          {children}
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className={cn(density === 'compact' ? 'px-5 pb-5 pt-4 sm:px-6 sm:pb-6' : 'px-7 pb-7 pt-6')}>
+            {children}
+          </div>
+        </div>
+        {/** footer sits outside the scrollable area so it remains visible */}
+        {/** render footer with matching horizontal padding */}
+        <div className={cn('shrink-0', density === 'compact' ? 'px-5 pb-5 sm:px-6 sm:pb-6' : 'px-7 pb-7')}>
+          {footer}
         </div>
       </motion.div>
     </div>,

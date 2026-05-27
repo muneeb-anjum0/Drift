@@ -6,6 +6,7 @@ import { Button } from '../components/common/Button';
 import { Card } from '../components/common/Card';
 import { EmptyState } from '../components/common/EmptyState';
 import { Spinner } from '../components/common/Spinner';
+import { ThemedSelect } from '../components/common/ThemedSelect';
 import { WorkspaceSwitcher } from '../features/workspaces/WorkspaceSwitcher';
 import { ProjectForm } from '../features/projects/ProjectForm';
 import { ProjectList } from '../features/projects/ProjectList';
@@ -77,28 +78,23 @@ export const ProjectsPage = () => {
         </Button>
       </section>
 
-      <Card className="rounded-[2rem] border-white/10 bg-black/65 p-5">
+      <Card className="relative z-30 rounded-[2rem] border-white/10 bg-black/65 p-5">
         <div className="mb-4 flex items-center gap-2 text-lime-400">
           <SlidersHorizontal className="h-4 w-4" />
           <p className="text-xs font-semibold uppercase tracking-[0.2em]">Filters</p>
         </div>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-[1fr_1fr_auto]">
           <WorkspaceSwitcher workspaces={workspaces} selectedWorkspaceId={selectedWorkspaceId} onChange={setSelectedWorkspaceId} />
-          <label className="block space-y-2">
-            <span className="text-sm font-semibold text-gray-300">Status</span>
-            <select
-              value={statusFilter}
-              onChange={(event) => setStatusFilter(event.target.value as typeof statusFilter)}
-              className="h-10 w-full rounded-full border border-white/10 bg-black px-4 text-sm text-white shadow-sm outline-none transition focus:border-lime-400/40 focus:ring-2 focus:ring-lime-400/20"
-            >
-              <option value="all">All statuses</option>
-              <option value="planning">Planning</option>
-              <option value="active">Active</option>
-              <option value="paused">Paused</option>
-              <option value="completed">Completed</option>
-              <option value="archived">Archived</option>
-            </select>
-          </label>
+          <ThemedSelect
+            label="Status"
+            value={statusFilter}
+            onChange={(value) => setStatusFilter(value as typeof statusFilter)}
+            options={statusOptions.map((status) => ({
+              label: status === 'all' ? 'All statuses' : status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' '),
+              value: status,
+            }))}
+            placeholder="All statuses"
+          />
           <div className="flex items-end">
             <Button type="button" variant="secondary" onClick={() => setStatusFilter('all')} className="w-full xl:w-auto">
               Reset

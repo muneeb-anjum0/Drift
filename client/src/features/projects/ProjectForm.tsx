@@ -93,8 +93,18 @@ export const ProjectForm = ({
       onClose={onClose}
       size="lg"
       density="compact"
+      footer={
+        <div className="flex justify-end gap-3">
+          <Button type="button" variant="secondary" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit" form="project-form" disabled={isSubmitting || workspaces.length === 0}>
+            {isSubmitting ? <Spinner /> : mode === 'create' ? 'Create project' : 'Save changes'}
+          </Button>
+        </div>
+      }
     >
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form id="project-form" className="space-y-4" onSubmit={handleSubmit}>
         <div className="grid gap-3 md:grid-cols-2">
           <ThemedSelect
             className="md:col-span-2"
@@ -155,14 +165,6 @@ export const ProjectForm = ({
         </div>
         <Input label="Deadline" type="date" labelClassName="text-sm" className="h-10 text-sm" value={values.deadline} onChange={(event) => setValues((current) => ({ ...current, deadline: event.target.value }))} />
         {error ? <p className="text-sm text-lime-300">{error}</p> : null}
-        <div className="flex justify-end gap-3">
-          <Button type="button" variant="secondary" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button type="submit" disabled={isSubmitting || workspaces.length === 0}>
-            {isSubmitting ? <Spinner /> : mode === 'create' ? 'Create project' : 'Save changes'}
-          </Button>
-        </div>
       </form>
     </Modal>
   );
@@ -213,7 +215,7 @@ const ThemedSelect = <T extends string>({
 
       {isOpen && !disabled ? (
         <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-[120] overflow-hidden rounded-2xl border border-lime-400/25 bg-zinc-950 shadow-[0_18px_60px_rgba(0,0,0,0.75),0_0_0_1px_rgba(163,230,53,0.08)]">
-          <div className="scrollbar-themed max-h-48 overflow-y-auto p-1">
+          <div className="max-h-48 overflow-y-auto p-1">
             {options.map((option) => {
               const active = option.value === value;
               return (
