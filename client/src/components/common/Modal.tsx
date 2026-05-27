@@ -45,7 +45,7 @@ export const Modal = ({ open, title, description, children, onClose, size = 'xl'
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ type: 'spring', stiffness: 260, damping: 24 }}
         className={cn(
-          'max-h-[92vh] w-full overflow-y-auto rounded-[2rem] border border-lime-400/20 bg-black shadow-[0_24px_100px_rgba(0,0,0,0.75)]',
+          'scrollbar-themed max-h-[92vh] w-full overflow-y-auto rounded-[2rem] border border-lime-400/20 bg-black shadow-[0_24px_100px_rgba(0,0,0,0.75)]',
           sizeClasses[size],
           density === 'compact' ? 'p-5 sm:p-6' : 'p-7'
         )}

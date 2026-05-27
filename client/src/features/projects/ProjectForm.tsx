@@ -213,7 +213,7 @@ const ThemedSelect = <T extends string>({
 
       {isOpen && !disabled ? (
         <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-[120] overflow-hidden rounded-2xl border border-lime-400/25 bg-zinc-950 shadow-[0_18px_60px_rgba(0,0,0,0.75),0_0_0_1px_rgba(163,230,53,0.08)]">
-          <div className="max-h-48 overflow-y-auto p-1">
+          <div className="scrollbar-themed max-h-48 overflow-y-auto p-1">
             {options.map((option) => {
               const active = option.value === value;
               return (
