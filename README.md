@@ -41,6 +41,8 @@ README.md
 package.json
 ```
 
+The previous Node/Express backend has been removed after the Go migration was verified locally. `server-go/` is the only active backend.
+
 ## Environment
 
 Frontend:
@@ -131,6 +133,10 @@ OLLAMA_MODEL=llama3.1:8b
 ```
 
 If Ollama is disabled or unavailable, drift analysis and change request generation continue with deterministic rule-based logic.
+
+## Screenshots
+
+Screenshots are not committed yet. Add dashboard, project details, drift analysis, and change request screenshots before a public portfolio launch.
 
 ## Security Notes
 

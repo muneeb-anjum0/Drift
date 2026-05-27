@@ -3,6 +3,7 @@ package file
 import (
 	"errors"
 	"net/http"
+	"strings"
 
 	"driftledger/server-go/internal/middleware"
 	"driftledger/server-go/internal/response"
@@ -90,6 +91,10 @@ func (h Handler) err(c *gin.Context, err error) {
 		response.Error(c, http.StatusServiceUnavailable, storageSvc.ErrDisabled.Error(), nil)
 		return
 	}
+	if err.Error() == "file type is not allowed" || strings.Contains(err.Error(), "file exceeds maximum size") {
+		response.Error(c, http.StatusBadRequest, err.Error(), nil)
+		return
+	}
 	if errors.Is(err, utils.ErrNotFound) {
 		response.Error(c, http.StatusNotFound, "File not found", nil)
 		return
@@ -98,5 +103,5 @@ func (h Handler) err(c *gin.Context, err error) {
 		response.Error(c, http.StatusForbidden, "You do not have access to this file", nil)
 		return
 	}
-	response.Error(c, http.StatusInternalServerError, err.Error(), nil)
+	response.Error(c, http.StatusInternalServerError, "File request failed", nil)
 }

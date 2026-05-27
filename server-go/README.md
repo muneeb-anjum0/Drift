@@ -17,6 +17,33 @@ MongoDB is required for structured application data. Firebase Storage and Ollama
 
 See `.env.example` for all supported variables.
 
+```env
+PORT=5000
+MONGO_URI=mongodb://localhost:27017
+MONGO_DATABASE=driftledger
+JWT_SECRET=replace_with_strong_secret
+CLIENT_URL=http://localhost:5173
+FIREBASE_STORAGE_ENABLED=false
+OLLAMA_ENABLED=false
+```
+
+## Folder Structure
+
+```text
+cmd/api/main.go
+internal/config
+internal/database
+internal/middleware
+internal/modules
+internal/ollama
+internal/response
+internal/router
+internal/storage
+internal/utils
+```
+
+MongoDB stores structured app data. Firebase Storage stores uploaded file blobs only. The React frontend talks to this API through `/api/v1` and never receives Firebase credentials.
+
 ## API
 
 Base URL: `http://localhost:5000/api/v1`

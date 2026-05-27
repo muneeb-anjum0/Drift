@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"driftledger/server-go/internal/middleware"
+	"driftledger/server-go/internal/modules/activity"
 	"driftledger/server-go/internal/response"
 	"driftledger/server-go/internal/utils"
 	"github.com/gin-gonic/gin"
@@ -111,10 +112,8 @@ func (h Handler) Extract(c *gin.Context) {
 		return
 	}
 	suggestions := Extract(p.SourceText, p.Source)
-	activityMeta := bson.M{"suggestionCount": len(suggestions)}
-	_ = activityMeta
+	activity.Log(ctx, h.service.db, project.Workspace, middleware.CurrentUserID(c), "REQUIREMENTS_EXTRACTED", "Requirement", projectID.Hex(), bson.M{"suggestionCount": len(suggestions)})
 	response.Success(c, http.StatusOK, "Requirements extracted", gin.H{"suggestions": suggestions})
-	_ = project
 }
 func (h Handler) Baseline(c *gin.Context) {
 	var p BaselineRequest

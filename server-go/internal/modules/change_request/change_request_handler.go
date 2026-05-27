@@ -1,8 +1,10 @@
 package change_request
 
 import (
+	"context"
 	"errors"
 	"net/http"
+	"time"
 
 	"driftledger/server-go/internal/middleware"
 	"driftledger/server-go/internal/response"
@@ -24,7 +26,7 @@ func (h Handler) Generate(c *gin.Context) {
 		response.Error(c, http.StatusBadRequest, "Validation failed", nil)
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 35*time.Second)
 	defer cancel()
 	out, err := h.service.Generate(ctx, middleware.CurrentUserID(c), p)
 	if err != nil {

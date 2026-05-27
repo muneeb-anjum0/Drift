@@ -37,15 +37,22 @@ func (s Service) Register(ctx context.Context, payload RegisterRequest) (User, s
 		return User{}, "", err
 	}
 	now := time.Now().UTC()
-	user := User{ID: utils.NewID(), Name: strings.TrimSpace(payload.Name), Email: email, Password: hash, PasswordHash: hash, Avatar: "", IsEmailVerified: false, CreatedAt: now, UpdatedAt: now}
+	user := User{ID: utils.NewID(), Name: strings.TrimSpace(payload.Name), Email: email, PasswordHash: hash, Avatar: "", IsEmailVerified: false, CreatedAt: now, UpdatedAt: now}
 	if _, err := s.db.Collection("users").InsertOne(ctx, user); err != nil {
 		return User{}, "", err
 	}
 	workspaceID := utils.NewID()
 	workspace := bson.M{"_id": workspaceID, "name": fmt.Sprintf("%s's Workspace", user.Name), "slug": fmt.Sprintf("%s-%s", utils.Slug(user.Name), workspaceID.Hex()[18:]), "owner": user.ID, "createdBy": user.ID, "description": "Default workspace", "createdAt": now, "updatedAt": now}
 	member := bson.M{"_id": utils.NewID(), "workspace": workspaceID, "user": user.ID, "role": "owner", "createdAt": now, "updatedAt": now}
-	_, _ = s.db.Collection("workspaces").InsertOne(ctx, workspace)
-	_, _ = s.db.Collection("workspacemembers").InsertOne(ctx, member)
+	if _, err := s.db.Collection("workspaces").InsertOne(ctx, workspace); err != nil {
+		_, _ = s.db.Collection("users").DeleteOne(ctx, bson.M{"_id": user.ID})
+		return User{}, "", err
+	}
+	if _, err := s.db.Collection("workspacemembers").InsertOne(ctx, member); err != nil {
+		_, _ = s.db.Collection("users").DeleteOne(ctx, bson.M{"_id": user.ID})
+		_, _ = s.db.Collection("workspaces").DeleteOne(ctx, bson.M{"_id": workspaceID})
+		return User{}, "", err
+	}
 	_, _ = s.db.Collection("activitylogs").InsertOne(ctx, bson.M{"_id": utils.NewID(), "workspace": workspaceID, "user": user.ID, "action": "USER_REGISTERED", "entityType": "User", "entityId": user.ID.Hex(), "metadata": bson.M{"email": email}, "createdAt": now})
 	token, err := utils.SignJWT(user.ID, user.Email, s.cfg.JWTSecret, s.cfg.JWTExpiresInHours)
 	return user, token, err
@@ -60,11 +67,7 @@ func (s Service) Login(ctx context.Context, payload LoginRequest) (User, string,
 		}
 		return User{}, "", err
 	}
-	hash := user.Password
-	if hash == "" {
-		hash = user.PasswordHash
-	}
-	if hash == "" || !utils.CheckPassword(hash, payload.Password) {
+	if user.PasswordHash == "" || !utils.CheckPassword(user.PasswordHash, payload.Password) {
 		return User{}, "", ErrInvalidCredentials
 	}
 	token, err := utils.SignJWT(user.ID, user.Email, s.cfg.JWTSecret, s.cfg.JWTExpiresInHours)

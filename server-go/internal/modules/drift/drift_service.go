@@ -71,6 +71,7 @@ func detect(baseline []requirement.RequirementSnapshot, text string) []DetectedC
 		if !isAmbiguous && !isRemoval && !isReq {
 			continue
 		}
+		isExplicitRemove := strings.Contains(lower, "remove") || strings.Contains(lower, "no longer") || strings.Contains(lower, "cancel") || strings.Contains(lower, "disable") || strings.Contains(lower, "not required") || strings.Contains(lower, "don't need")
 		bestScore := 0.0
 		best := requirement.RequirementSnapshot{}
 		for _, req := range baseline {
@@ -82,8 +83,8 @@ func detect(baseline []requirement.RequirementSnapshot, text string) []DetectedC
 		changeType := "added"
 		if isAmbiguous {
 			changeType = "ambiguous"
-		} else if isRemoval && bestScore >= .35 {
-			if strings.Contains(lower, "remove") || strings.Contains(lower, "no longer") || strings.Contains(lower, "cancel") {
+		} else if isRemoval {
+			if isExplicitRemove {
 				changeType = "removed"
 			} else {
 				changeType = "contradiction"
