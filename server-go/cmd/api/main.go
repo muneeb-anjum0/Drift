@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"errors"
 	"log/slog"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
@@ -33,10 +35,23 @@ func main() {
 	storage := storageSvc.New(context.Background(), cfg)
 	app := router.New(mongoDB.DB, cfg, ollama.New(cfg), storage)
 	server := &http.Server{Addr: ":" + cfg.Port, Handler: app}
+	listener, err := net.Listen("tcp", server.Addr)
+	if err != nil {
+		if errors.Is(err, syscall.EADDRINUSE) {
+			logger.Error(
+				"port_in_use",
+				slog.String("port", cfg.Port),
+				slog.String("hint", "Stop the existing DriftLedger API process or set PORT to another value."),
+			)
+		} else {
+			logger.Error("server_listen_failed", slog.String("error", err.Error()))
+		}
+		os.Exit(1)
+	}
 
 	go func() {
 		logger.Info("api_listening", slog.String("url", "http://localhost:"+cfg.Port))
-		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		if err := server.Serve(listener); err != nil && err != http.ErrServerClosed {
 			logger.Error("server_failed", slog.String("error", err.Error()))
 			os.Exit(1)
 		}
