@@ -2,6 +2,8 @@ node_modules
 dist
 build
 coverage
+test-results
+playwright-report
 .env
 .env.local
 .env.*
@@ -14,6 +16,8 @@ coverage
 .vscode/tasks.json
 client/node_modules
 client/dist
+client/test-results
+client/playwright-report
 server/node_modules
 server/dist
 firebase-service-account.json

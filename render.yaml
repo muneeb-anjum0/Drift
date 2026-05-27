@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: driftledger-api
+    runtime: go
+    rootDir: server-go
+    buildCommand: go build -o driftledger-api ./cmd/api
+    startCommand: ./driftledger-api
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        sync: false
+      - key: MONGO_DATABASE
+        value: driftledger
+      - key: JWT_SECRET
+        sync: false
+      - key: CLIENT_URL
+        sync: false
+      - key: OLLAMA_ENABLED
+        value: "false"
+      - key: FIREBASE_STORAGE_ENABLED
+        value: "false"
+
+  - type: web
+    name: driftledger-client
+    runtime: static
+    rootDir: client
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        sync: false

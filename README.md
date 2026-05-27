@@ -88,6 +88,28 @@ Or run both together because `concurrently` is already installed:
 npm run dev:go
 ```
 
+## Tests
+
+Run Go tests:
+
+```bash
+cd server-go
+go test ./...
+```
+
+Run the frontend production build:
+
+```bash
+npm run build
+```
+
+Run browser smoke tests after MongoDB and the Go backend are running on port 5000:
+
+```bash
+cd client
+npm run test:e2e
+```
+
 ## API Overview
 
 Base URL: `http://localhost:5000/api/v1`
@@ -149,6 +171,8 @@ Screenshots are not committed yet. Add dashboard, project details, drift analysi
 ## Deployment Notes
 
 Deploy the React frontend separately from the Go API. Set `VITE_API_BASE_URL` to the deployed Go API URL. Configure MongoDB in the backend environment. Configure Firebase Storage only when document uploads are required.
+
+A Render blueprint is included in `render.yaml`. Keep `MONGO_URI`, `JWT_SECRET`, `CLIENT_URL`, and `VITE_API_BASE_URL` as provider-managed environment variables.
 
 ## Roadmap
 

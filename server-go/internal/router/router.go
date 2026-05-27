@@ -1,7 +1,9 @@
 package router
 
 import (
+	"log/slog"
 	"net/http"
+	"os"
 
 	"driftledger/server-go/internal/config"
 	"driftledger/server-go/internal/middleware"
@@ -21,11 +23,14 @@ import (
 )
 
 func New(db *mongo.Database, cfg config.Config, ollamaService ollama.Service, storage storageSvc.Service) *gin.Engine {
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+		Level: slog.LevelInfo,
+	}))
 	if cfg.AppEnv != "development" {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.New()
-	r.Use(gin.Logger(), middleware.Recovery(), middleware.CORS(cfg))
+	r.Use(middleware.RequestLogger(logger), middleware.Recovery(), middleware.CORS(cfg))
 	r.GET("/health", func(c *gin.Context) {
 		response.Success(c, http.StatusOK, "DriftLedger API is running", nil)
 	})

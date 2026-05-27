@@ -14,7 +14,9 @@
     "dev:server-go": "cd server-go && go run ./cmd/api",
     "build": "npm run build --workspace client",
     "build:client": "npm run build --workspace client",
-    "build:server": "cd server-go && go test ./..."
+    "build:server": "cd server-go && go test ./...",
+    "test:server": "cd server-go && go test ./...",
+    "test:e2e": "npm run test:e2e --workspace client"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

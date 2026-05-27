@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -17,10 +17,12 @@ import (
 )
 
 func main() {
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
 	cfg := config.Load()
 	mongoDB, err := database.Connect(cfg)
 	if err != nil {
-		log.Fatalf("mongo connection failed: %v", err)
+		logger.Error("mongo_connection_failed", slog.String("error", err.Error()))
+		os.Exit(1)
 	}
 	defer func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -33,9 +35,10 @@ func main() {
 	server := &http.Server{Addr: ":" + cfg.Port, Handler: app}
 
 	go func() {
-		log.Printf("DriftLedger Go API listening on http://localhost:%s", cfg.Port)
+		logger.Info("api_listening", slog.String("url", "http://localhost:"+cfg.Port))
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("server failed: %v", err)
+			logger.Error("server_failed", slog.String("error", err.Error()))
+			os.Exit(1)
 		}
 	}()
 
@@ -45,4 +48,5 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	_ = server.Shutdown(ctx)
+	logger.Info("api_shutdown_complete")
 }
