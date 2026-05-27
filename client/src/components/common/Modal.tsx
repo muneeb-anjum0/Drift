@@ -1,4 +1,5 @@
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from './Button';
@@ -21,9 +22,23 @@ const sizeClasses: Record<NonNullable<ModalProps['size']>, string> = {
 };
 
 export const Modal = ({ open, title, description, children, onClose, size = 'xl', density = 'comfortable' }: ModalProps) => {
+  useEffect(() => {
+    if (!open) return;
+
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+    };
+  }, [open]);
+
   if (!open) return null;
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 px-4 py-6 backdrop-blur-md">
       <motion.div
         initial={{ opacity: 0, y: 18, scale: 0.98 }}
@@ -46,6 +61,7 @@ export const Modal = ({ open, title, description, children, onClose, size = 'xl'
         </div>
         {children}
       </motion.div>
-    </div>
+    </div>,
+    document.body
   );
 };
