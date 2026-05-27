@@ -64,15 +64,17 @@ export const ProjectForm = ({
       title={mode === 'create' ? 'Create project' : 'Edit project'}
       description="Capture the original scope and delivery expectations for a client project."
       onClose={onClose}
+      size="lg"
+      density="compact"
     >
-      <form className="space-y-5" onSubmit={handleSubmit}>
-        <div className="grid gap-4 md:grid-cols-2">
-          <label className="block space-y-2 md:col-span-2">
-            <span className="text-base font-semibold text-gray-300">Workspace</span>
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <div className="grid gap-3 md:grid-cols-2">
+          <label className="block space-y-1.5 md:col-span-2">
+            <span className="text-sm font-semibold text-gray-300">Workspace</span>
             <select
               value={values.workspaceId}
               onChange={(event) => setValues((current) => ({ ...current, workspaceId: event.target.value }))}
-              className="h-12 w-full rounded-full border border-gray-700 bg-black px-4 text-base text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+              className="h-10 w-full rounded-full border border-gray-700 bg-black px-4 text-sm text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
               disabled={mode === 'edit'}
               required
             >
@@ -84,26 +86,16 @@ export const ProjectForm = ({
               ))}
             </select>
           </label>
-          <Input label="Project name" value={values.name} onChange={(event) => setValues((current) => ({ ...current, name: event.target.value }))} required />
-          <Input label="Client name" value={values.clientName} onChange={(event) => setValues((current) => ({ ...current, clientName: event.target.value }))} required />
+          <Input label="Project name" labelClassName="text-sm" className="h-10 text-sm" value={values.name} onChange={(event) => setValues((current) => ({ ...current, name: event.target.value }))} required />
+          <Input label="Client name" labelClassName="text-sm" className="h-10 text-sm" value={values.clientName} onChange={(event) => setValues((current) => ({ ...current, clientName: event.target.value }))} required />
         </div>
-        <label className="block space-y-2">
-          <span className="text-base font-semibold text-gray-300">Description</span>
-          <textarea
-            value={values.description}
-            onChange={(event) => setValues((current) => ({ ...current, description: event.target.value }))}
-            rows={4}
-            className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-base text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
-            placeholder="Describe the project in plain language"
-          />
-        </label>
-        <div className="grid gap-4 md:grid-cols-2">
-          <label className="block space-y-2">
-            <span className="text-base font-semibold text-gray-300">Status</span>
+        <div className="grid gap-3 md:grid-cols-2">
+          <label className="block space-y-1.5">
+            <span className="text-sm font-semibold text-gray-300">Status</span>
             <select
               value={values.status}
               onChange={(event) => setValues((current) => ({ ...current, status: event.target.value as ProjectFormValues['status'] }))}
-              className="h-12 w-full rounded-full border border-gray-700 bg-black px-4 text-base text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+              className="h-10 w-full rounded-full border border-gray-700 bg-black px-4 text-sm text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
             >
               <option value="planning">Planning</option>
               <option value="active">Active</option>
@@ -112,12 +104,12 @@ export const ProjectForm = ({
               <option value="archived">Archived</option>
             </select>
           </label>
-          <label className="block space-y-2">
-            <span className="text-base font-semibold text-gray-300">Priority</span>
+          <label className="block space-y-1.5">
+            <span className="text-sm font-semibold text-gray-300">Priority</span>
             <select
               value={values.priority}
               onChange={(event) => setValues((current) => ({ ...current, priority: event.target.value as ProjectFormValues['priority'] }))}
-              className="h-12 w-full rounded-full border border-gray-700 bg-black px-4 text-base text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+              className="h-10 w-full rounded-full border border-gray-700 bg-black px-4 text-sm text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
@@ -126,17 +118,29 @@ export const ProjectForm = ({
             </select>
           </label>
         </div>
-        <label className="block space-y-2">
-          <span className="text-base font-semibold text-gray-300">Original scope</span>
-          <textarea
-            value={values.originalScope}
-            onChange={(event) => setValues((current) => ({ ...current, originalScope: event.target.value }))}
-            rows={4}
-            className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-base text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
-            placeholder="Summarize what was originally promised"
-          />
-        </label>
-        <Input label="Deadline" type="date" value={values.deadline} onChange={(event) => setValues((current) => ({ ...current, deadline: event.target.value }))} />
+        <div className="grid gap-3 md:grid-cols-2">
+          <label className="block space-y-1.5">
+            <span className="text-sm font-semibold text-gray-300">Description</span>
+            <textarea
+              value={values.description}
+              onChange={(event) => setValues((current) => ({ ...current, description: event.target.value }))}
+              rows={3}
+              className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-2.5 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+              placeholder="Describe the project in plain language"
+            />
+          </label>
+          <label className="block space-y-1.5">
+            <span className="text-sm font-semibold text-gray-300">Original scope</span>
+            <textarea
+              value={values.originalScope}
+              onChange={(event) => setValues((current) => ({ ...current, originalScope: event.target.value }))}
+              rows={3}
+              className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-2.5 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+              placeholder="Summarize what was originally promised"
+            />
+          </label>
+        </div>
+        <Input label="Deadline" type="date" labelClassName="text-sm" className="h-10 text-sm" value={values.deadline} onChange={(event) => setValues((current) => ({ ...current, deadline: event.target.value }))} />
         {error ? <p className="text-sm text-lime-300">{error}</p> : null}
         <div className="flex justify-end gap-3">
           <Button type="button" variant="secondary" onClick={onClose}>

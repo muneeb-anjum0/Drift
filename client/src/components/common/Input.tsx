@@ -6,14 +6,15 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   helperText?: string;
   trailing?: ReactNode;
+  labelClassName?: string;
 }
 
-export const Input = ({ label, error, helperText, trailing, className, id, ...props }: InputProps) => {
+export const Input = ({ label, error, helperText, trailing, className, labelClassName, id, ...props }: InputProps) => {
   const inputId = id ?? props.name;
 
   return (
     <label className="block space-y-2" htmlFor={inputId}>
-      {label ? <span className="text-base font-semibold text-gray-300">{label}</span> : null}
+      {label ? <span className={cn('text-base font-semibold text-gray-300', labelClassName)}>{label}</span> : null}
       <div className="relative">
         <input
           id={inputId}
