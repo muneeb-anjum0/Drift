@@ -30,7 +30,8 @@ test('creates a project from the projects page', async ({ page }) => {
 
   await page.goto('/projects');
   await page.getByRole('button', { name: /new project/i }).click();
-  await page.getByLabel('Workspace').nth(1).selectOption({ index: 1 });
+  await page.getByRole('button', { name: /select workspace/i }).click();
+  await page.getByRole('button', { name: /project e2e user's workspace/i }).click();
   await page.getByLabel('Project name').fill('E2E Project');
   await page.getByLabel('Client name').fill('E2E Client');
   await page.getByPlaceholder('Describe the project in plain language').fill('Browser-created project');
