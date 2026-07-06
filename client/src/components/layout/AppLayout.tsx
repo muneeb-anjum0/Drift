@@ -25,7 +25,7 @@ export const AppLayout = ({ children }: { children?: ReactNode }) => {
         </div>
       </header>
 
-      <main className="app-main mx-auto max-w-[92rem] px-4 py-6 sm:px-6 lg:px-8">
+      <main className="app-main mx-auto max-w-[104rem] px-4 py-6 sm:px-6 lg:px-8">
         {children ?? <Outlet />}
       </main>
 
