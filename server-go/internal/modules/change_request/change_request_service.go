@@ -41,6 +41,9 @@ func (s Service) Generate(ctx context.Context, userID primitive.ObjectID, p Gene
 	if err != nil {
 		return Draft{}, err
 	}
+	if len(analysis.DetectedChanges) == 0 {
+		return Draft{}, errors.New("no change request is needed for an unchanged drift analysis")
+	}
 	changes := make([]ChangeRequestChange, 0, len(analysis.DetectedChanges))
 	for _, c := range analysis.DetectedChanges {
 		changes = append(changes, ChangeRequestChange{Title: c.Title, Description: c.Description, ChangeType: c.ChangeType, Impact: c.Impact, EstimatedEffort: c.EstimatedEffort})

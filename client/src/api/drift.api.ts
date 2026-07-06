@@ -26,6 +26,7 @@ export const driftApi = {
     inputText: string;
     inputType?: DriftInputType;
     detectedChanges: DriftAnalysisPreview['detectedChanges'];
+    requirementResults?: DriftAnalysisPreview['requirementResults'];
     driftScore: number;
     riskLevel: DriftAnalysisPreview['riskLevel'];
     summary: string;

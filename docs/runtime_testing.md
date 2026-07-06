@@ -287,15 +287,23 @@ The Model sandbox and the main Drift Analysis panel both use the same Qwen GGUF 
 POST /api/v1/drift/analyze-direct
 ```
 
-The model was trained on one `baseline_requirement` plus one `new_client_message`, so project-level analysis must not concatenate every baseline requirement into one prompt. The main panel now runs requirement-by-requirement:
+The model was trained on one `baseline_requirement` plus one `new_client_message`, and it has no `unrelated` label. Project-level analysis must not concatenate every baseline requirement into one prompt or blindly classify every requirement. The backend now runs relevance filtering before model calls:
 
 1. Read each requirement from the selected baseline version.
-2. Send one model request per requirement.
-3. Log the requirement title, model label, confidence, relevance score, and selected/displayed status.
-4. Select the relevant requirement-level results.
-5. Aggregate only impactful non-`unchanged` results into detected changes and drift score.
+2. Score relevance with tokens, synonyms, and domain keywords.
+3. Ignore unrelated requirements before model inference.
+4. Send only relevant candidates to the local Qwen GGUF model.
+5. Log the requirement title, status, model label, confidence, relevance score, and selected/displayed status.
+6. Aggregate only relevant non-`unchanged` results into detected changes and drift score.
 
 Unrelated requirements, such as password reset, should not pollute a monthly-report drift check.
+
+Defaults:
+
+```env
+DRIFT_RELEVANCE_THRESHOLD=0.25
+DRIFT_MAX_ANALYZED_REQUIREMENTS=3
+```
 
 Regression case:
 
@@ -364,10 +372,12 @@ The route consistency script checks:
 
 The project requirement analysis script checks:
 
-1. a two-requirement baseline with password reset and monthly report CSV export
-2. one direct model request per requirement
-3. relevance-based aggregation selects the monthly report requirement
-4. the final aggregate label remains `unchanged`
+1. an authenticated project baseline with password reset, monthly reports, invoice PDF export, admin 2FA, and subscription notifications
+2. `POST /api/v1/drift/analyze`, not local duplicate aggregation
+3. monthly report unchanged selects monthly reports and ignores password reset
+4. SMS OTP selects password reset and ignores monthly reports
+5. weekly/monthly report wording selects reporting and ignores password reset
+6. ignored requirements do not expose noisy model labels
 
 ## Docker Environment
 

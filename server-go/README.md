@@ -1,6 +1,6 @@
 # DriftLedger Go Backend
 
-Active backend for DriftLedger, built with Go, Gin, MongoDB, JWT auth, optional Firebase Storage uploads, and optional Ollama enhancement.
+Active backend for DriftLedger, built with Go, Gin, MongoDB, JWT auth, optional Firebase Storage uploads, and local Qwen GGUF drift inference.
 
 ## Setup
 
@@ -13,7 +13,7 @@ go run ./cmd/api
 
 ## Environment
 
-MongoDB is required for structured application data. Firebase Storage and Ollama are optional and disabled by default.
+MongoDB is required for structured application data. Firebase Storage is optional and disabled by default.
 
 See `.env.example` for all supported variables.
 
@@ -24,7 +24,10 @@ MONGO_DATABASE=driftledger
 JWT_SECRET=replace_with_strong_secret
 CLIENT_URL=http://localhost:5173
 FIREBASE_STORAGE_ENABLED=false
-OLLAMA_ENABLED=false
+DRIFT_INFERENCE_ENABLED=true
+DRIFT_INFERENCE_URL=http://localhost:8000
+DRIFT_RELEVANCE_THRESHOLD=0.25
+DRIFT_MAX_ANALYZED_REQUIREMENTS=3
 ```
 
 ## Folder Structure
@@ -35,7 +38,6 @@ internal/config
 internal/database
 internal/middleware
 internal/modules
-internal/ollama
 internal/response
 internal/router
 internal/storage
@@ -78,6 +80,6 @@ Set `FIREBASE_STORAGE_ENABLED=true`, `FIREBASE_STORAGE_BUCKET`, and `GOOGLE_APPL
 
 If Firebase Storage is disabled, upload requests return a clear disabled message while the rest of the SaaS app continues to run.
 
-## Ollama
+## Drift Inference
 
-Set `OLLAMA_ENABLED=true` to allow local enhancement through `POST /api/generate`. If Ollama is unavailable or returns invalid data, the backend falls back to rule-based logic.
+Project drift analysis uses the local FastAPI inference wrapper and llama.cpp Q3_K_M model. The backend relevance layer filters unrelated requirements before model calls, then sends only relevant single-requirement candidates to the model.

@@ -37,6 +37,11 @@ export const ChangeRequestPreview = ({ projectId, driftAnalyses }: { projectId: 
   const [error, setError] = useState('');
 
   const latestDriftAnalysisId = useMemo(() => driftAnalyses[0]?._id ?? '', [driftAnalyses]);
+  const selectedAnalysis = useMemo(
+    () => driftAnalyses.find((analysis) => analysis._id === selectedDriftAnalysisId),
+    [driftAnalyses, selectedDriftAnalysisId]
+  );
+  const hasMeaningfulDrift = Boolean(selectedAnalysis?.detectedChanges.length);
 
   useEffect(() => {
     if (!selectedDriftAnalysisId && latestDriftAnalysisId) {
@@ -57,6 +62,10 @@ export const ChangeRequestPreview = ({ projectId, driftAnalyses }: { projectId: 
   const handleGenerate = async () => {
     if (!selectedDriftAnalysisId) {
       setError('Select a saved drift analysis first.');
+      return;
+    }
+    if (!hasMeaningfulDrift) {
+      setError('No change request is needed for an unchanged or no-drift analysis.');
       return;
     }
 
@@ -103,9 +112,13 @@ export const ChangeRequestPreview = ({ projectId, driftAnalyses }: { projectId: 
             </select>
           </label>
 
-          <Button type="button" onClick={handleGenerate} disabled={generateMutation.isPending}>
+          <Button type="button" onClick={handleGenerate} disabled={generateMutation.isPending || !hasMeaningfulDrift}>
             {generateMutation.isPending ? <Spinner /> : 'Generate Change Request'}
           </Button>
+
+          {selectedAnalysis && !hasMeaningfulDrift ? (
+            <p className="text-sm text-gray-400">This saved analysis has no detected changes, so no change request is needed.</p>
+          ) : null}
 
           {error ? <p className="text-sm text-red-400">{error}</p> : null}
 

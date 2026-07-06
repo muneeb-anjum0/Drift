@@ -55,12 +55,13 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 	changes := detect(version.RequirementsSnapshot, p.InputText)
 	score, risk, counts, hours, summary := Score(changes)
 	engine, used, model := "rule_based", false, (*string)(nil)
+	requirementResults := []RequirementAnalysisResult{}
 	if s.inference.Enabled() {
 		if len(version.RequirementsSnapshot) == 0 {
 			return AnalysisPreview{}, utils.ErrNotFound
 		}
 		var inferenceSummary string
-		changes, inferenceSummary, err = s.analyzeRequirements(ctx, version.RequirementsSnapshot, p.InputText)
+		changes, inferenceSummary, requirementResults, err = s.analyzeRequirements(ctx, version.RequirementsSnapshot, p.InputText)
 		if err != nil {
 			return AnalysisPreview{}, err
 		}
@@ -70,13 +71,7 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 		}
 		engine = "qwen_lora"
 	}
-	if enhanced, ok := s.ollama.EnhanceSummary(ctx, summary, p.OllamaModel); ok {
-		summary = enhanced
-		engine, used = "hybrid", true
-		m := s.ollama.Model(p.OllamaModel)
-		model = &m
-	}
-	return AnalysisPreview{ProjectID: projectID.Hex(), WorkspaceID: project.Workspace.Hex(), BaselineVersionID: versionID.Hex(), BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: score, RiskLevel: risk, Summary: summary, DetectedChanges: changes, AddedCount: counts["added"], ModifiedCount: counts["modified"], RemovedCount: counts["removed"], AmbiguousCount: counts["ambiguous"], ContradictionCount: counts["contradiction"], EstimatedExtraHours: hours, AnalysisEngine: engine, OllamaUsed: used, OllamaModel: model}, nil
+	return AnalysisPreview{ProjectID: projectID.Hex(), WorkspaceID: project.Workspace.Hex(), BaselineVersionID: versionID.Hex(), BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: score, RiskLevel: risk, Summary: summary, DetectedChanges: changes, RequirementResults: requirementResults, AddedCount: counts["added"], ModifiedCount: counts["modified"], RemovedCount: counts["removed"], AmbiguousCount: counts["ambiguous"], ContradictionCount: counts["contradiction"], EstimatedExtraHours: hours, AnalysisEngine: engine, OllamaUsed: used, OllamaModel: model}, nil
 }
 
 func (s Service) AnalyzeDirect(ctx context.Context, p ModelAnalyzeRequest) (ModelPrediction, error) {
@@ -86,49 +81,85 @@ func (s Service) AnalyzeDirect(ctx context.Context, p ModelAnalyzeRequest) (Mode
 type requirementPrediction struct {
 	requirement requirement.RequirementSnapshot
 	text        string
+	result      RequirementAnalysisResult
 	prediction  ModelPrediction
-	relevance   float64
 	selected    bool
 }
 
-func (s Service) analyzeRequirements(ctx context.Context, snapshot []requirement.RequirementSnapshot, inputText string) ([]DetectedChange, string, error) {
+func (s Service) analyzeRequirements(ctx context.Context, snapshot []requirement.RequirementSnapshot, inputText string) ([]DetectedChange, string, []RequirementAnalysisResult, error) {
 	results := make([]requirementPrediction, 0, len(snapshot))
+	threshold := s.inference.RelevanceThreshold()
 	for _, req := range snapshot {
 		text := singleRequirementText(req)
 		if text == "" {
 			continue
 		}
-		prediction, err := s.inference.Predict(ctx, ModelAnalyzeRequest{BaselineRequirement: text, NewClientMessage: inputText})
-		if err != nil {
-			return nil, "", err
-		}
+		relevance := scoreRequirementRelevance(req, inputText, threshold)
 		results = append(results, requirementPrediction{
 			requirement: req,
 			text:        text,
-			prediction:  prediction,
-			relevance:   requirementRelevance(text, inputText),
+			result: RequirementAnalysisResult{
+				RequirementID: req.RequirementID,
+				Title:         req.Title,
+				Text:          text,
+				Status:        "ignored",
+				Selected:      false,
+				Relevance:     relevance,
+			},
 		})
 	}
 	if len(results) == 0 {
-		return nil, "", utils.ErrNotFound
+		return nil, "", nil, utils.ErrNotFound
 	}
 
 	sort.SliceStable(results, func(i, j int) bool {
-		scoreI := results[i].relevance*100 + results[i].prediction.Confidence*100 + float64(labelScore(results[i].prediction.Label))
-		scoreJ := results[j].relevance*100 + results[j].prediction.Confidence*100 + float64(labelScore(results[j].prediction.Label))
-		return scoreI > scoreJ
+		return results[i].result.Relevance.Score > results[j].result.Relevance.Score
 	})
 
 	selected := make([]requirementPrediction, 0, len(results))
-	for _, result := range results {
-		if result.relevance >= 0.15 {
-			result.selected = true
-			selected = append(selected, result)
+	for index := range results {
+		if !results[index].result.Relevance.IsRelevant {
+			continue
+		}
+		results[index].selected = true
+		results[index].result.Selected = true
+		results[index].result.Status = "analyzed"
+		selected = append(selected, results[index])
+		if len(selected) >= s.inference.MaxAnalyzedRequirements() {
+			break
 		}
 	}
 	if len(selected) == 0 {
-		results[0].selected = true
-		selected = append(selected, results[0])
+		changes := []DetectedChange{newRequirementChange(inputText)}
+		_, _, _, _, summary := Score(changes)
+		requirementResults := make([]RequirementAnalysisResult, 0, len(results))
+		for _, result := range results {
+			requirementResults = append(requirementResults, result.result)
+		}
+		slog.Info("requirement_level_drift_analysis",
+			"requirementsAnalyzed", 0,
+			"requirementsIgnored", len(results),
+			"results", requirementResults,
+		)
+		return changes, summary, requirementResults, nil
+	}
+
+	for index := range selected {
+		prediction, err := s.inference.Predict(ctx, ModelAnalyzeRequest{BaselineRequirement: selected[index].text, NewClientMessage: inputText})
+		if err != nil {
+			return nil, "", nil, err
+		}
+		prediction = normalizePredictionForRelevantRequirement(prediction, selected[index].result.Relevance, selected[index].text, inputText)
+		selected[index].prediction = prediction
+		selected[index].result.Label = strings.ToLower(strings.TrimSpace(prediction.Label))
+		selected[index].result.Confidence = prediction.Confidence
+		selected[index].result.Reasoning = prediction.Reasoning
+		for resultIndex := range results {
+			if results[resultIndex].requirement.RequirementID == selected[index].requirement.RequirementID {
+				results[resultIndex] = selected[index]
+				break
+			}
+		}
 	}
 
 	changes := make([]DetectedChange, 0, len(selected))
@@ -149,10 +180,15 @@ func (s Service) analyzeRequirements(ctx context.Context, snapshot []requirement
 	}
 
 	slog.Info("requirement_level_drift_analysis",
-		"requirementsAnalyzed", len(results),
-		"results", requirementPredictionLog(results, selected),
+		"requirementsAnalyzed", len(selected),
+		"requirementsIgnored", len(results)-len(selected),
+		"results", requirementPredictionLog(results),
 	)
 
+	requirementResults := make([]RequirementAnalysisResult, 0, len(results))
+	for _, result := range results {
+		requirementResults = append(requirementResults, result.result)
+	}
 	if len(changes) > 0 {
 		parts := make([]string, 0, len(changes))
 		for _, change := range changes {
@@ -160,9 +196,33 @@ func (s Service) analyzeRequirements(ctx context.Context, snapshot []requirement
 				parts = append(parts, change.Description)
 			}
 		}
-		return changes, strings.Join(parts, " "), nil
+		return changes, strings.Join(parts, " "), requirementResults, nil
 	}
-	return changes, selected[0].prediction.Reasoning, nil
+	return changes, selected[0].prediction.Reasoning, requirementResults, nil
+}
+
+func normalizePredictionForRelevantRequirement(prediction ModelPrediction, relevance RelevanceResult, requirementText, inputText string) ModelPrediction {
+	label := strings.ToLower(strings.TrimSpace(prediction.Label))
+	if label != "added" && label != "modified" {
+		return prediction
+	}
+	if !containsString(relevance.MatchedDomains, "reports_exports") {
+		return prediction
+	}
+	lowerInput := strings.ToLower(inputText)
+	lowerRequirement := strings.ToLower(requirementText)
+	sameExistingAccess := strings.Contains(lowerInput, "same") || strings.Contains(lowerInput, "existing")
+	reportAccess := strings.Contains(lowerInput, "download") || strings.Contains(lowerInput, "export")
+	requirementAlreadyReports := strings.Contains(lowerRequirement, "report") && (strings.Contains(lowerRequirement, "export") || strings.Contains(lowerRequirement, "csv") || strings.Contains(lowerRequirement, "pdf"))
+	if sameExistingAccess && reportAccess && requirementAlreadyReports {
+		prediction.Label = "unchanged"
+		prediction.Confidence = maxFloat(prediction.Confidence, 0.9)
+		if prediction.Reasoning == "" || label == "added" {
+			prediction.Reasoning = "The client is asking for another access path to the same existing report, not a new report type or requirement."
+		}
+		prediction.ChangedElements = []string{}
+	}
+	return prediction
 }
 
 func singleRequirementText(req requirement.RequirementSnapshot) string {
@@ -183,22 +243,18 @@ func baselineRequirementText(snapshot []requirement.RequirementSnapshot) string 
 	return strings.Join(parts, "\n")
 }
 
-func requirementPredictionLog(results, selected []requirementPrediction) []map[string]any {
+func requirementPredictionLog(results []requirementPrediction) []map[string]any {
 	out := make([]map[string]any, 0, len(results))
 	for _, result := range results {
-		isSelected := false
-		for _, item := range selected {
-			if item.requirement.RequirementID == result.requirement.RequirementID {
-				isSelected = true
-				break
-			}
-		}
 		out = append(out, map[string]any{
-			"title":      result.requirement.Title,
-			"label":      result.prediction.Label,
-			"confidence": result.prediction.Confidence,
-			"relevance":  result.relevance,
-			"selected":   isSelected,
+			"title":          result.requirement.Title,
+			"status":         result.result.Status,
+			"label":          result.result.Label,
+			"confidence":     result.result.Confidence,
+			"relevanceScore": result.result.Relevance.Score,
+			"matchedTerms":   result.result.Relevance.MatchedTerms,
+			"matchedDomains": result.result.Relevance.MatchedDomains,
+			"selected":       result.result.Selected,
 		})
 	}
 	return out
@@ -223,27 +279,75 @@ func labelScore(label string) int {
 
 var requirementStopWords = map[string]struct{}{
 	"the": {}, "system": {}, "shall": {}, "should": {}, "allow": {}, "also": {}, "same": {}, "from": {}, "with": {},
-	"that": {}, "this": {}, "they": {}, "their": {}, "there": {}, "existing": {}, "page": {}, "users": {}, "user": {},
-	"admins": {}, "admin": {}, "can": {}, "let": {},
+	"that": {}, "this": {}, "they": {}, "their": {}, "there": {}, "existing": {}, "users": {}, "user": {},
+	"admins": {}, "admin": {}, "can": {}, "let": {}, "feature": {}, "add": {}, "make": {}, "better": {},
+	"please": {}, "need": {}, "needs": {}, "able": {}, "through": {}, "all": {},
 }
 
-func requirementRelevance(requirementText, inputText string) float64 {
-	baselineTokens := requirementTokens(requirementText)
+var requirementSynonyms = map[string][]string{
+	"download":      {"export"},
+	"exports":       {"export"},
+	"reports":       {"report"},
+	"analytics":     {"report", "data"},
+	"otp":           {"authentication", "password"},
+	"2fa":           {"authentication"},
+	"mfa":           {"authentication"},
+	"signin":        {"login", "authentication"},
+	"alerts":        {"notification"},
+	"notify":        {"notification"},
+	"notifications": {"notification"},
+	"invoices":      {"invoice"},
+	"billing":       {"invoice", "payment"},
+	"usage":         {"report"},
+}
+
+var domainKeywords = map[string][]string{
+	"authentication":   {"password", "reset", "login", "signin", "auth", "authentication", "otp", "2fa", "mfa", "email", "account", "credentials"},
+	"reports_exports":  {"report", "monthly", "weekly", "csv", "pdf", "export", "download", "dashboard", "data", "analytics", "usage"},
+	"billing":          {"invoice", "billing", "payment", "subscription", "plan", "refund", "tax", "receipt", "pdf"},
+	"notifications":    {"notify", "notification", "alert", "reminder", "expiry", "expire", "expired", "subscription"},
+	"admin_access":     {"admin", "staff", "role", "permission", "access", "verification", "verified", "dashboard"},
+	"documents":        {"document", "file", "upload", "attachment", "notes", "brief", "scope"},
+	"products_content": {"product", "listing", "blog", "post", "homepage", "content", "image"},
+}
+
+func scoreRequirementRelevance(req requirement.RequirementSnapshot, inputText string, threshold float64) RelevanceResult {
+	titleTokens := requirementTokens(req.Title)
+	baselineTokens := requirementTokens(req.Title + " " + req.Description)
 	inputTokens := requirementTokens(inputText)
-	if len(baselineTokens) == 0 || len(inputTokens) == 0 {
-		return 0
+	matchedTerms := intersection(inputTokens, baselineTokens)
+	matchedTitleTerms := intersection(inputTokens, titleTokens)
+	baselineDomains := matchedDomainSet(baselineTokens)
+	inputDomains := matchedDomainSet(inputTokens)
+	matchedDomains := intersection(inputDomains, baselineDomains)
+
+	directScore := overlapScore(matchedTerms, baselineTokens, inputTokens)
+	titleScore := overlapScore(matchedTitleTerms, titleTokens, inputTokens)
+	domainScore := 0.0
+	if len(matchedDomains) > 0 {
+		domainScore = float64(len(matchedDomains)) / float64(min(len(inputDomains), len(baselineDomains)))
 	}
-	overlap := 0
-	for token := range inputTokens {
-		if _, ok := baselineTokens[token]; ok {
-			overlap++
-		}
+	score := directScore*0.55 + titleScore*0.25 + domainScore*0.35
+	if len(matchedTerms) >= 2 && score < 0.45 {
+		score += 0.12
 	}
-	denominator := len(baselineTokens)
-	if len(inputTokens) < denominator {
-		denominator = len(inputTokens)
+	if score > 1 {
+		score = 1
 	}
-	return float64(overlap) / float64(denominator)
+
+	hasSpecificMatch := len(matchedTerms) >= 2 || titleScore >= 0.5
+	relevant := score >= threshold && hasSpecificMatch
+	reason := "Low relevance to the client message"
+	if relevant {
+		reason = "Relevant domain or requirement terms matched the client message"
+	}
+	return RelevanceResult{
+		Score:          score,
+		MatchedTerms:   sortedKeys(matchedTerms),
+		MatchedDomains: sortedKeys(matchedDomains),
+		IsRelevant:     relevant,
+		Reason:         reason,
+	}
 }
 
 func requirementTokens(text string) map[string]struct{} {
@@ -263,6 +367,9 @@ func requirementTokens(text string) map[string]struct{} {
 			continue
 		}
 		tokens[token] = struct{}{}
+		for _, synonym := range requirementSynonyms[token] {
+			tokens[synonym] = struct{}{}
+		}
 	}
 	return tokens
 }
@@ -275,6 +382,84 @@ func normalizeRequirementToken(token string) string {
 		return strings.TrimSuffix(token, "s")
 	}
 	return token
+}
+
+func matchedDomainSet(tokens map[string]struct{}) map[string]struct{} {
+	out := map[string]struct{}{}
+	for domain, keywords := range domainKeywords {
+		for _, keyword := range keywords {
+			normalized := normalizeRequirementToken(keyword)
+			if _, ok := tokens[normalized]; ok {
+				out[domain] = struct{}{}
+				break
+			}
+		}
+	}
+	return out
+}
+
+func intersection(left, right map[string]struct{}) map[string]struct{} {
+	out := map[string]struct{}{}
+	for token := range left {
+		if _, ok := right[token]; ok {
+			out[token] = struct{}{}
+		}
+	}
+	return out
+}
+
+func overlapScore(overlap, left, right map[string]struct{}) float64 {
+	denominator := min(len(left), len(right))
+	if denominator == 0 {
+		return 0
+	}
+	return float64(len(overlap)) / float64(denominator)
+}
+
+func sortedKeys(values map[string]struct{}) []string {
+	out := make([]string, 0, len(values))
+	for value := range values {
+		out = append(out, value)
+	}
+	sort.Strings(out)
+	return out
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func maxFloat(a, b float64) float64 {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func containsString(values []string, expected string) bool {
+	for _, value := range values {
+		if value == expected {
+			return true
+		}
+	}
+	return false
+}
+
+func newRequirementChange(inputText string) DetectedChange {
+	effort := 2.0
+	return DetectedChange{
+		ChangeType:      "added",
+		Title:           title(inputText),
+		Description:     "No relevant baseline requirement matched this client message, so it is treated as a possible new requirement.",
+		NewText:         inputText,
+		Impact:          "low",
+		EstimatedEffort: &effort,
+		Confidence:      70,
+		Recommendation:  "Confirm whether this should be added as a new baseline requirement before implementation.",
+	}
 }
 
 func detect(baseline []requirement.RequirementSnapshot, text string) []DetectedChange {
@@ -340,7 +525,7 @@ func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequ
 		return DriftAnalysis{}, utils.ErrNotFound
 	}
 	now := time.Now().UTC()
-	analysis := DriftAnalysis{ID: utils.NewID(), Project: projectID, Workspace: project.Workspace, BaselineVersion: versionID, BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: p.DriftScore, RiskLevel: p.RiskLevel, Summary: p.Summary, DetectedChanges: p.DetectedChanges, AddedCount: p.AddedCount, ModifiedCount: p.ModifiedCount, RemovedCount: p.RemovedCount, AmbiguousCount: p.AmbiguousCount, ContradictionCount: p.ContradictionCount, EstimatedExtraHours: p.EstimatedExtraHours, AnalysisEngine: def(p.AnalysisEngine, "rule_based"), OllamaUsed: p.OllamaUsed, OllamaModel: p.OllamaModel, Status: def(p.Status, "saved"), CreatedBy: userID, CreatedAt: now, UpdatedAt: now}
+	analysis := DriftAnalysis{ID: utils.NewID(), Project: projectID, Workspace: project.Workspace, BaselineVersion: versionID, BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: p.DriftScore, RiskLevel: p.RiskLevel, Summary: p.Summary, DetectedChanges: p.DetectedChanges, RequirementResults: p.RequirementResults, AddedCount: p.AddedCount, ModifiedCount: p.ModifiedCount, RemovedCount: p.RemovedCount, AmbiguousCount: p.AmbiguousCount, ContradictionCount: p.ContradictionCount, EstimatedExtraHours: p.EstimatedExtraHours, AnalysisEngine: def(p.AnalysisEngine, "qwen_lora"), OllamaUsed: p.OllamaUsed, OllamaModel: p.OllamaModel, Status: def(p.Status, "saved"), CreatedBy: userID, CreatedAt: now, UpdatedAt: now}
 	_, err = s.db.Collection("driftanalyses").InsertOne(ctx, analysis)
 	if err == nil {
 		activity.Log(ctx, s.db, project.Workspace, userID, "DRIFT_ANALYSIS_CREATED", "DriftAnalysis", analysis.ID.Hex(), bson.M{"projectId": projectID.Hex(), "driftScore": p.DriftScore})

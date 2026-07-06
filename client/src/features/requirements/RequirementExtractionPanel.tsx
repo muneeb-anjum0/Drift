@@ -93,7 +93,7 @@ export const RequirementExtractionPanel = ({ projectId, workspaceId, defaultSour
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.24em] text-lime-400">Extraction</p>
           <h3 className="mt-1 text-lg font-semibold text-white">Extract from scope text</h3>
-          <p className="mt-2 text-sm leading-6 text-gray-400">Phase 2 uses a local rule-based extractor so you can review requirements before saving them.</p>
+          <p className="mt-2 text-sm leading-6 text-gray-400">Phase 2 uses a deterministic local extractor so you can review requirements before saving them.</p>
         </div>
         <div className="rounded-full border border-lime-400/20 bg-lime-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-lime-300">
           {suggestionCount} suggestions

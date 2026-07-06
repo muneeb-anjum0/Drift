@@ -25,6 +25,17 @@ DRIFT_LLAMA_SERVER_URL=http://llama:8080
 
 `Q3_K_M` is not training. It is quantization after merging the already trained DriftLedger LoRA adapter into the Qwen base model.
 
+Project-level drift analysis is local-only and requirement-aware. The model expects one `baseline_requirement` plus one `new_client_message`, so DriftLedger first scores each baseline requirement for relevance, sends only relevant candidates to the local Qwen GGUF model, and ignores unrelated requirements before aggregation.
+
+Default project-analysis tuning:
+
+```env
+DRIFT_RELEVANCE_THRESHOLD=0.25
+DRIFT_MAX_ANALYZED_REQUIREMENTS=3
+```
+
+Ignored requirements are stored only as muted metadata and never create detected changes or change requests.
+
 The build flow is:
 
 ```text
@@ -110,6 +121,8 @@ After Docker is running:
 ```powershell
 python tools\eval_q3km_smoke.py
 python tools\smoke_backend_direct.py
+python tools\test_model_route_consistency.py
+python tools\test_project_requirement_analysis.py
 ```
 
 Manual inference call:
@@ -132,6 +145,8 @@ DRIFT_LLAMA_MAX_TOKENS=120
 ```
 
 If startup fails with CUDA out of memory, lower `DRIFT_LLAMA_GPU_LAYERS` to `12`, then `8`, then `0`.
+
+Q3_K_M is compact enough for local testing, but it may be weaker than full PEFT inference on ambiguous wording. Relevance filtering keeps unrelated requirements away from the model so noisy labels do not pollute project results.
 
 ## More Docs
 

@@ -19,6 +19,26 @@ export interface DetectedChange {
   recommendation: string;
 }
 
+export interface RelevanceResult {
+  score: number;
+  matchedTerms: string[];
+  matchedDomains: string[];
+  isRelevant: boolean;
+  reason: string;
+}
+
+export interface RequirementAnalysisResult {
+  requirementId: string;
+  title: string;
+  text: string;
+  status: 'analyzed' | 'ignored';
+  selected: boolean;
+  relevance: RelevanceResult;
+  label?: ChangeType;
+  confidence?: number;
+  reasoning?: string;
+}
+
 export interface DriftAnalysis {
   _id?: string;
   project: string | Pick<Project, '_id' | 'name' | 'clientName' | 'status' | 'priority'>;
@@ -31,6 +51,7 @@ export interface DriftAnalysis {
   riskLevel: RiskLevel;
   summary: string;
   detectedChanges: DetectedChange[];
+  requirementResults?: RequirementAnalysisResult[];
   addedCount: number;
   modifiedCount: number;
   removedCount: number;
@@ -56,6 +77,7 @@ export interface DriftAnalysisPreview {
   riskLevel: RiskLevel;
   summary: string;
   detectedChanges: DetectedChange[];
+  requirementResults?: RequirementAnalysisResult[];
   addedCount: number;
   modifiedCount: number;
   removedCount: number;

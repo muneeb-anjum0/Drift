@@ -16,9 +16,11 @@ var ErrInferenceUnavailable = errors.New("drift inference service unavailable")
 var ErrInferenceBadResponse = errors.New("drift inference service returned an invalid response")
 
 type InferenceClient struct {
-	enabled bool
-	baseURL string
-	client  *http.Client
+	enabled            bool
+	baseURL            string
+	client             *http.Client
+	relevanceThreshold float64
+	maxAnalyzed        int
 }
 
 type ModelAnalyzeRequest struct {
@@ -35,14 +37,30 @@ type ModelPrediction struct {
 
 func NewInferenceClient(cfg config.Config) InferenceClient {
 	return InferenceClient{
-		enabled: cfg.DriftInferenceEnabled,
-		baseURL: strings.TrimRight(cfg.DriftInferenceURL, "/"),
-		client:  &http.Client{Timeout: cfg.DriftInferenceTimeout},
+		enabled:            cfg.DriftInferenceEnabled,
+		baseURL:            strings.TrimRight(cfg.DriftInferenceURL, "/"),
+		client:             &http.Client{Timeout: cfg.DriftInferenceTimeout},
+		relevanceThreshold: cfg.DriftRelevanceThreshold,
+		maxAnalyzed:        cfg.DriftMaxAnalyzedRequirements,
 	}
 }
 
 func (c InferenceClient) Enabled() bool {
 	return c.enabled
+}
+
+func (c InferenceClient) RelevanceThreshold() float64 {
+	if c.relevanceThreshold <= 0 {
+		return 0.25
+	}
+	return c.relevanceThreshold
+}
+
+func (c InferenceClient) MaxAnalyzedRequirements() int {
+	if c.maxAnalyzed <= 0 {
+		return 3
+	}
+	return c.maxAnalyzed
 }
 
 func (c InferenceClient) Predict(ctx context.Context, payload ModelAnalyzeRequest) (ModelPrediction, error) {

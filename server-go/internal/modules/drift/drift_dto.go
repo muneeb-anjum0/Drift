@@ -9,22 +9,23 @@ type AnalyzeRequest struct {
 }
 
 type SaveRequest struct {
-	ProjectID           string           `json:"projectId" validate:"required"`
-	BaselineVersionID   string           `json:"baselineVersionId" validate:"required"`
-	InputText           string           `json:"inputText" validate:"required"`
-	InputType           string           `json:"inputType"`
-	DetectedChanges     []DetectedChange `json:"detectedChanges"`
-	DriftScore          int              `json:"driftScore"`
-	RiskLevel           string           `json:"riskLevel"`
-	Summary             string           `json:"summary"`
-	AddedCount          int              `json:"addedCount"`
-	ModifiedCount       int              `json:"modifiedCount"`
-	RemovedCount        int              `json:"removedCount"`
-	AmbiguousCount      int              `json:"ambiguousCount"`
-	ContradictionCount  int              `json:"contradictionCount"`
-	EstimatedExtraHours float64          `json:"estimatedExtraHours"`
-	AnalysisEngine      string           `json:"analysisEngine"`
-	OllamaUsed          bool             `json:"ollamaUsed"`
-	OllamaModel         *string          `json:"ollamaModel"`
-	Status              string           `json:"status"`
+	ProjectID           string                      `json:"projectId" validate:"required"`
+	BaselineVersionID   string                      `json:"baselineVersionId" validate:"required"`
+	InputText           string                      `json:"inputText" validate:"required"`
+	InputType           string                      `json:"inputType"`
+	DetectedChanges     []DetectedChange            `json:"detectedChanges"`
+	RequirementResults  []RequirementAnalysisResult `json:"requirementResults"`
+	DriftScore          int                         `json:"driftScore"`
+	RiskLevel           string                      `json:"riskLevel"`
+	Summary             string                      `json:"summary"`
+	AddedCount          int                         `json:"addedCount"`
+	ModifiedCount       int                         `json:"modifiedCount"`
+	RemovedCount        int                         `json:"removedCount"`
+	AmbiguousCount      int                         `json:"ambiguousCount"`
+	ContradictionCount  int                         `json:"contradictionCount"`
+	EstimatedExtraHours float64                     `json:"estimatedExtraHours"`
+	AnalysisEngine      string                      `json:"analysisEngine"`
+	OllamaUsed          bool                        `json:"ollamaUsed"`
+	OllamaModel         *string                     `json:"ollamaModel"`
+	Status              string                      `json:"status"`
 }

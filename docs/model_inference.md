@@ -13,6 +13,8 @@ DriftLedger inference compares a baseline requirement with a new client message 
 
 Valid labels are `added`, `modified`, `removed`, `contradiction`, `ambiguous`, and `unchanged`.
 
+The model does not have an `unrelated` label. It was trained for exactly one baseline requirement and one client message at a time.
+
 ## Runtime Modes In This Project
 
 Default:
@@ -81,6 +83,22 @@ curl.exe -X POST http://localhost:5000/api/v1/drift/analyze-direct `
 
 Project baseline analysis is available at `POST /api/v1/drift/analyze` after login.
 
+Project analysis never concatenates the whole baseline into one model prompt. The Go backend:
+
+1. scores every baseline requirement with deterministic token/domain relevance,
+2. ignores unrelated requirements before model inference,
+3. sends only relevant candidates to the local Qwen GGUF model,
+4. aggregates only relevant model outputs into detected changes.
+
+Defaults:
+
+```env
+DRIFT_RELEVANCE_THRESHOLD=0.25
+DRIFT_MAX_ANALYZED_REQUIREMENTS=3
+```
+
+The response includes `requirementResults`. Ignored requirements have `status: "ignored"` and no model label; analyzed candidates include label, confidence, and reasoning.
+
 ## Malformed Output Handling
 
 If model output is malformed, the service tries to extract the first JSON object, validates the label, confidence, reasoning, and changed elements, then returns either normalized JSON or HTTP `502`.
@@ -90,6 +108,8 @@ If model output is malformed, the service tries to extract the first JSON object
 ```powershell
 python tools\eval_q3km_smoke.py
 python tools\smoke_backend_direct.py
+python tools\test_model_route_consistency.py
+python tools\test_project_requirement_analysis.py
 ```
 
 ## Troubleshooting
@@ -98,3 +118,4 @@ python tools\smoke_backend_direct.py
 - llama.cpp request failed: check `docker compose logs llama`.
 - CUDA out of memory: reduce `DRIFT_LLAMA_GPU_LAYERS`.
 - Bad JSON from model: lower temperature is already set to `0`; rebuild if the adapter merge used wrong files.
+- Noisy labels on unrelated requirements: project analysis should prefilter them. Run `python tools\test_project_requirement_analysis.py`.

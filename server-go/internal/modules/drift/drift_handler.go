@@ -64,7 +64,7 @@ func (h Handler) Analyze(c *gin.Context) {
 		response.Error(c, http.StatusBadRequest, "Validation failed", nil)
 		return
 	}
-	ctx, cancel := context.WithTimeout(c.Request.Context(), 35*time.Second)
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 120*time.Second)
 	defer cancel()
 	out, err := h.service.Analyze(ctx, middleware.CurrentUserID(c), p)
 	if err != nil {
