@@ -10,6 +10,7 @@ type DetectedChange struct {
 	ChangeType               string   `bson:"changeType" json:"changeType"`
 	Title                    string   `bson:"title" json:"title"`
 	Description              string   `bson:"description" json:"description"`
+	AffectedModules          []string `bson:"affectedModules,omitempty" json:"affectedModules,omitempty"`
 	BaselineRequirementID    string   `bson:"baselineRequirementId,omitempty" json:"baselineRequirementId,omitempty"`
 	BaselineRequirementTitle string   `bson:"baselineRequirementTitle,omitempty" json:"baselineRequirementTitle,omitempty"`
 	NewText                  string   `bson:"newText,omitempty" json:"newText,omitempty"`

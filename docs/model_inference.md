@@ -99,6 +99,17 @@ DRIFT_MAX_ANALYZED_REQUIREMENTS=3
 
 The response includes `requirementResults`. Ignored requirements have `status: "ignored"` and no model label; analyzed candidates include label, confidence, and reasoning.
 
+## Post-Processing
+
+The backend cleans model output before it becomes a saved analysis:
+
+1. removes repeated reasoning sentences,
+2. groups semantically similar detected changes,
+3. applies deterministic canonical titles for common drift patterns,
+4. recalculates score, impact, counts, and estimated hours from grouped changes.
+
+Examples include grouping parent-account matches into `Add Parent Portal Access`, keeping same-report page requests low/no drift, and treating interactive report cards as a larger report redesign. Ambiguous Q3_K_M outputs may still need human review, so vague cases are framed as clarification work.
+
 ## Malformed Output Handling
 
 If model output is malformed, the service tries to extract the first JSON object, validates the label, confidence, reasoning, and changed elements, then returns either normalized JSON or HTTP `502`.
@@ -110,6 +121,7 @@ python tools\eval_q3km_smoke.py
 python tools\smoke_backend_direct.py
 python tools\test_model_route_consistency.py
 python tools\test_project_requirement_analysis.py
+python tools\test_change_request_generation.py
 ```
 
 ## Troubleshooting

@@ -14,6 +14,8 @@ DriftLedger is a full-stack app for managing requirements, freezing baselines, a
 
 Project workspaces are organized into Requirements, Drift Analysis, History, Change Requests, and Documents.
 
+Saved drift analyses are post-processed into grouped client-facing changes before they are saved or used for change requests.
+
 ## Stack
 
 - React, Vite, TypeScript, Tailwind
@@ -67,6 +69,7 @@ Large model files are intentionally not committed.
 npm run build
 go test ./...
 python tools/test_runtime_stack.py
+python tools/test_change_request_generation.py
 ```
 
 More setup notes live in `docs/`.

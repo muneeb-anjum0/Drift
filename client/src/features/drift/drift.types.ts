@@ -9,6 +9,7 @@ export interface DetectedChange {
   changeType: ChangeType;
   title: string;
   description: string;
+  affectedModules?: string[];
   baselineRequirementId?: string;
   baselineRequirementTitle?: string;
   newText?: string;

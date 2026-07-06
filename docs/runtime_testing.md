@@ -379,6 +379,18 @@ The project requirement analysis script checks:
 5. weekly/monthly report wording selects reporting and ignores password reset
 6. ignored requirements do not expose noisy model labels
 
+## Change Request Generation Regression
+
+Saved analyses are cleaned before persistence and before change-request generation. The backend removes repeated reasoning, groups duplicate requirement-level matches into one client-facing change, and generates change-request language from grouped changes only.
+
+Run:
+
+```powershell
+python tools\test_change_request_generation.py
+```
+
+The script creates an EduTrack test project and checks parent portal access, SMS OTP password reset, same-report page access, interactive report cards, and card-payment removal. It verifies duplicate changes are grouped, parent portal impact is not low, same-report access stays low/no drift, and generated change-request text uses the grouped change title.
+
 ## Docker Environment
 
 Backend:
@@ -431,6 +443,7 @@ docker compose up --build
 python tools\test_runtime_stack.py
 python tools\smoke_test_inference.py
 python tools\eval_q3km_smoke.py
+python tools\test_change_request_generation.py
 ```
 
 App checks:

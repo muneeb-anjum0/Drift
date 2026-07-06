@@ -7,35 +7,50 @@ func Score(changes []DetectedChange) (int, string, map[string]int, float64, stri
 	score := 0
 	hours := 0.0
 	for _, change := range changes {
-		counts[change.ChangeType]++
-		switch change.ChangeType {
+		label := normalizeLabel(change.ChangeType)
+		counts[label]++
+		itemScore := 0
+		switch label {
 		case "added":
-			score += 12
+			itemScore = 14
 		case "modified":
-			score += 10
+			itemScore = 10
 		case "removed":
-			score += 8
+			itemScore = 28
 		case "ambiguous":
-			score += 6
+			itemScore = 24
 		case "contradiction":
-			score += 15
+			itemScore = 58
 		}
-		if change.Impact == "high" {
-			score += 8
-		}
-		if change.Impact == "critical" {
-			score += 15
+		switch change.Impact {
+		case "critical":
+			itemScore += 24
+		case "high":
+			itemScore += 18
+		case "medium":
+			itemScore += 10
 		}
 		if change.EstimatedEffort != nil {
 			hours += *change.EstimatedEffort
+			if *change.EstimatedEffort >= 16 {
+				itemScore += 12
+			} else if *change.EstimatedEffort >= 8 {
+				itemScore += 7
+			} else if *change.EstimatedEffort >= 4 {
+				itemScore += 3
+			}
+		}
+		if len(change.AffectedModules) >= 4 {
+			itemScore += 12
+		} else if len(change.AffectedModules) >= 2 {
+			itemScore += 6
+		}
+		if itemScore > score {
+			score = itemScore
 		}
 	}
-	if hours >= 30 {
-		score += 20
-	} else if hours >= 15 {
-		score += 10
-	} else if hours >= 5 {
-		score += 5
+	if len(changes) > 1 {
+		score += (len(changes) - 1) * 8
 	}
 	if score > 100 {
 		score = 100
