@@ -1,40 +1,15 @@
 import type { ReactNode } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { BriefcaseBusiness, FolderKanban, LayoutDashboard, LogOut, Settings } from 'lucide-react';
-import Dock, { type DockItemConfig } from '../navigation/Dock';
-import { NAV_ITEMS } from '../../utils/constants';
-import { cn } from '../../utils/cn';
+import Dock from '../navigation/Dock';
 import { useAuth } from '../../hooks/useAuth';
-
-const icons = [LayoutDashboard, BriefcaseBusiness, FolderKanban, Settings];
+import { buildDockItems, userHandle } from './appNavigation';
 
 export const AppLayout = ({ children }: { children?: ReactNode }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { logout, user } = useAuth();
-  const displayName = user?.email?.split('@')[0] || user?.name || 'user';
-
-  const dockItems: DockItemConfig[] = [
-    ...NAV_ITEMS.map((item, index) => {
-      const Icon = icons[index] ?? LayoutDashboard;
-      const isActive = item.to === '/projects'
-        ? location.pathname.startsWith('/projects')
-        : location.pathname === item.to;
-
-      return {
-        label: item.label,
-        icon: <Icon />,
-        onClick: () => navigate(item.to),
-        className: cn(isActive && 'active'),
-      };
-    }),
-    {
-      label: 'Logout',
-      icon: <LogOut />,
-      onClick: () => void logout(),
-      className: 'dock-logout',
-    },
-  ];
+  const displayName = userHandle(user);
+  const dockItems = buildDockItems({ pathname: location.pathname, navigate, logout });
 
   return (
     <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">

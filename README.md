@@ -2,6 +2,15 @@
 
 DriftLedger is a full-stack SaaS platform for detecting requirement drift, documenting scope changes, and generating client-ready change requests.
 
+## Repository Layout
+
+- `client/` - React/Vite frontend, feature UI, hooks, and API clients.
+- `server-go/` - Go/Gin API, MongoDB persistence, auth, projects, requirements, drift, and files.
+- `services/inference/` - FastAPI inference wrapper around the local GGUF/llama.cpp runtime.
+- `models/` - Local-only model assets mounted into Docker. Large files stay ignored by Git.
+- `tools/` - Setup, validation, model-build, and runtime smoke scripts.
+- `docs/` - Docker, model, runtime, and UI notes.
+
 ## Tech Stack
 
 - Frontend: React, Vite, TypeScript, Tailwind CSS
