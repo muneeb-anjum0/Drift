@@ -3,6 +3,8 @@ package drift
 import (
 	"context"
 	"errors"
+	"log/slog"
+	"sort"
 	"strings"
 	"time"
 
@@ -54,20 +56,17 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 	score, risk, counts, hours, summary := Score(changes)
 	engine, used, model := "rule_based", false, (*string)(nil)
 	if s.inference.Enabled() {
-		baseline := baselineRequirementText(version.RequirementsSnapshot)
-		if baseline == "" {
+		if len(version.RequirementsSnapshot) == 0 {
 			return AnalysisPreview{}, utils.ErrNotFound
 		}
-		prediction, err := s.inference.Predict(ctx, ModelAnalyzeRequest{BaselineRequirement: baseline, NewClientMessage: p.InputText})
+		var inferenceSummary string
+		changes, inferenceSummary, err = s.analyzeRequirements(ctx, version.RequirementsSnapshot, p.InputText)
 		if err != nil {
 			return AnalysisPreview{}, err
 		}
-		changes = predictionToChanges(prediction, p.InputText)
 		score, risk, counts, hours, summary = Score(changes)
-		if prediction.Label == "unchanged" {
-			summary = prediction.Reasoning
-		} else if prediction.Reasoning != "" {
-			summary = prediction.Reasoning
+		if inferenceSummary != "" {
+			summary = inferenceSummary
 		}
 		engine = "qwen_lora"
 	}
@@ -84,6 +83,95 @@ func (s Service) AnalyzeDirect(ctx context.Context, p ModelAnalyzeRequest) (Mode
 	return s.inference.Predict(ctx, p)
 }
 
+type requirementPrediction struct {
+	requirement requirement.RequirementSnapshot
+	text        string
+	prediction  ModelPrediction
+	relevance   float64
+	selected    bool
+}
+
+func (s Service) analyzeRequirements(ctx context.Context, snapshot []requirement.RequirementSnapshot, inputText string) ([]DetectedChange, string, error) {
+	results := make([]requirementPrediction, 0, len(snapshot))
+	for _, req := range snapshot {
+		text := singleRequirementText(req)
+		if text == "" {
+			continue
+		}
+		prediction, err := s.inference.Predict(ctx, ModelAnalyzeRequest{BaselineRequirement: text, NewClientMessage: inputText})
+		if err != nil {
+			return nil, "", err
+		}
+		results = append(results, requirementPrediction{
+			requirement: req,
+			text:        text,
+			prediction:  prediction,
+			relevance:   requirementRelevance(text, inputText),
+		})
+	}
+	if len(results) == 0 {
+		return nil, "", utils.ErrNotFound
+	}
+
+	sort.SliceStable(results, func(i, j int) bool {
+		scoreI := results[i].relevance*100 + results[i].prediction.Confidence*100 + float64(labelScore(results[i].prediction.Label))
+		scoreJ := results[j].relevance*100 + results[j].prediction.Confidence*100 + float64(labelScore(results[j].prediction.Label))
+		return scoreI > scoreJ
+	})
+
+	selected := make([]requirementPrediction, 0, len(results))
+	for _, result := range results {
+		if result.relevance >= 0.15 {
+			result.selected = true
+			selected = append(selected, result)
+		}
+	}
+	if len(selected) == 0 {
+		results[0].selected = true
+		selected = append(selected, results[0])
+	}
+
+	changes := make([]DetectedChange, 0, len(selected))
+	for _, result := range selected {
+		if strings.EqualFold(result.prediction.Label, "unchanged") || result.prediction.Confidence < 0.35 {
+			continue
+		}
+		predictedChanges := predictionToChanges(result.prediction, inputText)
+		for _, change := range predictedChanges {
+			change.BaselineRequirementID = result.requirement.RequirementID
+			change.BaselineRequirementTitle = result.requirement.Title
+			change.OldText = result.text
+			if change.Title == "" {
+				change.Title = result.requirement.Title
+			}
+			changes = append(changes, change)
+		}
+	}
+
+	slog.Info("requirement_level_drift_analysis",
+		"requirementsAnalyzed", len(results),
+		"results", requirementPredictionLog(results, selected),
+	)
+
+	if len(changes) > 0 {
+		parts := make([]string, 0, len(changes))
+		for _, change := range changes {
+			if change.Description != "" {
+				parts = append(parts, change.Description)
+			}
+		}
+		return changes, strings.Join(parts, " "), nil
+	}
+	return changes, selected[0].prediction.Reasoning, nil
+}
+
+func singleRequirementText(req requirement.RequirementSnapshot) string {
+	if text := strings.TrimSpace(req.Description); text != "" {
+		return text
+	}
+	return strings.TrimSpace(req.Title)
+}
+
 func baselineRequirementText(snapshot []requirement.RequirementSnapshot) string {
 	parts := make([]string, 0, len(snapshot))
 	for _, req := range snapshot {
@@ -93,6 +181,100 @@ func baselineRequirementText(snapshot []requirement.RequirementSnapshot) string 
 		}
 	}
 	return strings.Join(parts, "\n")
+}
+
+func requirementPredictionLog(results, selected []requirementPrediction) []map[string]any {
+	out := make([]map[string]any, 0, len(results))
+	for _, result := range results {
+		isSelected := false
+		for _, item := range selected {
+			if item.requirement.RequirementID == result.requirement.RequirementID {
+				isSelected = true
+				break
+			}
+		}
+		out = append(out, map[string]any{
+			"title":      result.requirement.Title,
+			"label":      result.prediction.Label,
+			"confidence": result.prediction.Confidence,
+			"relevance":  result.relevance,
+			"selected":   isSelected,
+		})
+	}
+	return out
+}
+
+func labelScore(label string) int {
+	switch strings.ToLower(strings.TrimSpace(label)) {
+	case "contradiction":
+		return 75
+	case "removed":
+		return 55
+	case "modified":
+		return 45
+	case "added":
+		return 35
+	case "ambiguous":
+		return 25
+	default:
+		return 0
+	}
+}
+
+var requirementStopWords = map[string]struct{}{
+	"the": {}, "system": {}, "shall": {}, "should": {}, "allow": {}, "also": {}, "same": {}, "from": {}, "with": {},
+	"that": {}, "this": {}, "they": {}, "their": {}, "there": {}, "existing": {}, "page": {}, "users": {}, "user": {},
+	"admins": {}, "admin": {}, "can": {}, "let": {},
+}
+
+func requirementRelevance(requirementText, inputText string) float64 {
+	baselineTokens := requirementTokens(requirementText)
+	inputTokens := requirementTokens(inputText)
+	if len(baselineTokens) == 0 || len(inputTokens) == 0 {
+		return 0
+	}
+	overlap := 0
+	for token := range inputTokens {
+		if _, ok := baselineTokens[token]; ok {
+			overlap++
+		}
+	}
+	denominator := len(baselineTokens)
+	if len(inputTokens) < denominator {
+		denominator = len(inputTokens)
+	}
+	return float64(overlap) / float64(denominator)
+}
+
+func requirementTokens(text string) map[string]struct{} {
+	cleaned := strings.Map(func(r rune) rune {
+		if (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') {
+			return r
+		}
+		return ' '
+	}, strings.ToLower(text))
+	tokens := map[string]struct{}{}
+	for _, token := range strings.Fields(cleaned) {
+		token = normalizeRequirementToken(token)
+		if len(token) <= 2 {
+			continue
+		}
+		if _, stop := requirementStopWords[token]; stop {
+			continue
+		}
+		tokens[token] = struct{}{}
+	}
+	return tokens
+}
+
+func normalizeRequirementToken(token string) string {
+	if strings.HasSuffix(token, "ies") && len(token) > 4 {
+		return strings.TrimSuffix(token, "ies") + "y"
+	}
+	if strings.HasSuffix(token, "s") && len(token) > 4 {
+		return strings.TrimSuffix(token, "s")
+	}
+	return token
 }
 
 func detect(baseline []requirement.RequirementSnapshot, text string) []DetectedChange {

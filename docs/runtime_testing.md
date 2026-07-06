@@ -287,7 +287,15 @@ The Model sandbox and the main Drift Analysis panel both use the same Qwen GGUF 
 POST /api/v1/drift/analyze-direct
 ```
 
-The main panel builds the baseline text from the selected baseline version and sends it with the new client message to the same route used by the sandbox. It does not use the older rule-based analyzer unless a future fallback is explicitly added.
+The model was trained on one `baseline_requirement` plus one `new_client_message`, so project-level analysis must not concatenate every baseline requirement into one prompt. The main panel now runs requirement-by-requirement:
+
+1. Read each requirement from the selected baseline version.
+2. Send one model request per requirement.
+3. Log the requirement title, model label, confidence, relevance score, and selected/displayed status.
+4. Select the relevant requirement-level results.
+5. Aggregate only impactful non-`unchanged` results into detected changes and drift score.
+
+Unrelated requirements, such as password reset, should not pollute a monthly-report drift check.
 
 Regression case:
 
@@ -309,12 +317,14 @@ Run the automated route consistency check:
 
 ```powershell
 python tools\test_model_route_consistency.py
+python tools\test_project_requirement_analysis.py
 ```
 
 Expected output:
 
 ```text
 PASS model routes agree on the monthly-report unchanged case
+PASS project requirement analysis ignores unrelated baselines and returns unchanged
 ```
 
 ## H. Test Multiple Label Cases
@@ -333,6 +343,7 @@ PASS model routes agree on the monthly-report unchanged case
 ```powershell
 python tools\test_runtime_stack.py
 python tools\test_model_route_consistency.py
+python tools\test_project_requirement_analysis.py
 ```
 
 The script checks:
@@ -350,6 +361,13 @@ The route consistency script checks:
 2. backend compatibility `/api/drift/analyze`
 3. frontend-used `/api/v1/drift/analyze-direct`
 4. all labels match the expected `unchanged` result for the monthly-report regression case
+
+The project requirement analysis script checks:
+
+1. a two-requirement baseline with password reset and monthly report CSV export
+2. one direct model request per requirement
+3. relevance-based aggregation selects the monthly report requirement
+4. the final aggregate label remains `unchanged`
 
 ## Docker Environment
 
