@@ -12,6 +12,7 @@ export const AppLayout = ({ children }: { children?: ReactNode }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { logout, user } = useAuth();
+  const displayName = user?.email?.split('@')[0] || user?.name || 'user';
 
   const dockItems: DockItemConfig[] = [
     ...NAV_ITEMS.map((item, index) => {
@@ -37,15 +38,14 @@ export const AppLayout = ({ children }: { children?: ReactNode }) => {
 
   return (
     <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
-      <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg-soft)]/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-text-soft)]">DriftLedger</p>
-            <h1 className="text-xl font-semibold text-[var(--color-text)] sm:text-2xl">Requirement drift workspace</h1>
+      <header className="sticky top-0 z-40 px-4 py-3">
+        <div className="app-top-island mx-auto flex max-w-2xl items-center justify-between gap-4 px-4 py-3">
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold text-[var(--color-text)]">DriftLedger</p>
+            <p className="truncate text-xs text-[var(--color-text-muted)]">Requirement drift workspace</p>
           </div>
-          <div className="hidden min-w-0 text-right sm:block">
-            <p className="truncate text-sm font-semibold text-[var(--color-text)]">{user?.name || 'DriftLedger user'}</p>
-            <p className="truncate text-xs text-[var(--color-text-muted)]">{user?.email || 'Signed in'}</p>
+          <div className="shrink-0 rounded-[var(--radius-control)] bg-[var(--color-primary)] px-3 py-2 text-sm font-semibold text-[var(--color-primary-text)]">
+            {displayName}
           </div>
         </div>
       </header>
