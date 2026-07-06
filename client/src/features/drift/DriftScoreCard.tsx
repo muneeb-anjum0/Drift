@@ -21,9 +21,11 @@ type DriftScoreCardAnalysis = Pick<
   Pick<DriftAnalysisPreview, 'inputType'>;
 
 const statBlock = (label: string, value: number | string) => (
-  <div className="min-w-[8.75rem] shrink-0 rounded-2xl border border-gray-800 bg-black/40 p-4">
-    <p className="whitespace-nowrap text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-gray-500">{label}</p>
-    <p className="mt-3 break-words text-lg font-semibold leading-6 text-white">{value}</p>
+  <div className="min-w-0 rounded-2xl border border-gray-800 bg-black/40 px-3 py-3">
+    <p className="truncate whitespace-nowrap text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-gray-500" title={label}>
+      {label}
+    </p>
+    <p className="mt-2 break-words text-base font-semibold leading-6 text-white">{value}</p>
   </div>
 );
 
@@ -39,7 +41,7 @@ export const DriftScoreCard = ({ analysis }: { analysis: DriftScoreCardAnalysis 
         <DriftBadges riskLevel={analysis.riskLevel} analysisEngine={analysis.analysisEngine} ollamaUsed={analysis.ollamaUsed} />
       </div>
 
-      <div className="mt-5 flex gap-3 overflow-x-auto pb-2">
+      <div className="mt-5 grid grid-cols-2 gap-3 2xl:grid-cols-4">
         {statBlock('Added', analysis.addedCount)}
         {statBlock('Modified', analysis.modifiedCount)}
         {statBlock('Removed', analysis.removedCount)}
