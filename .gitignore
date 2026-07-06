@@ -18,6 +18,7 @@ client/node_modules
 client/dist
 client/test-results
 client/playwright-report
+*.tsbuildinfo
 server/node_modules
 server/dist
 firebase-service-account.json
