@@ -20,6 +20,9 @@ type Config struct {
 	OllamaBaseURL          string
 	OllamaModel            string
 	OllamaTimeout          time.Duration
+	DriftInferenceEnabled  bool
+	DriftInferenceURL      string
+	DriftInferenceTimeout  time.Duration
 	FirebaseStorageEnabled bool
 	FirebaseStorageBucket  string
 	MaxUploadSizeMB        int64
@@ -39,6 +42,9 @@ func Load() Config {
 		OllamaBaseURL:          get("OLLAMA_BASE_URL", "http://localhost:11434"),
 		OllamaModel:            get("OLLAMA_MODEL", "llama3.1:8b"),
 		OllamaTimeout:          time.Duration(getInt("OLLAMA_TIMEOUT_MS", 30000)) * time.Millisecond,
+		DriftInferenceEnabled:  getBool("DRIFT_INFERENCE_ENABLED", false),
+		DriftInferenceURL:      get("DRIFT_INFERENCE_URL", "http://localhost:8000"),
+		DriftInferenceTimeout:  time.Duration(getInt("DRIFT_INFERENCE_TIMEOUT_MS", 65000)) * time.Millisecond,
 		FirebaseStorageEnabled: getBool("FIREBASE_STORAGE_ENABLED", false),
 		FirebaseStorageBucket:  get("FIREBASE_STORAGE_BUCKET", ""),
 		MaxUploadSizeMB:        int64(getInt("MAX_UPLOAD_SIZE_MB", 10)),

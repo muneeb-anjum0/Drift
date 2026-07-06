@@ -24,3 +24,23 @@ firebase-service-account.json
 *.firebase-service-account.json
 server-go/firebase-service-account.json
 server-go/*.firebase-service-account.json
+
+# DriftLedger model artifacts and caches
+DriftLedger_v5_qwen2.5_7b_LoRA.zip
+models/base/
+models/merged/
+models/gguf/
+models/adapters/*.zip
+models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA/
+models/huggingface/
+.cache/
+.cache/huggingface/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Docker/build artifacts
+*.tar
+docker-compose.override.yml
+tools/vendor/llama.cpp/build/
+tools/vendor/llama.cpp/

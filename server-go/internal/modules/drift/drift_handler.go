@@ -20,6 +20,23 @@ type Handler struct {
 }
 
 func NewHandler(service Service) Handler { return Handler{service: service, validate: validator.New()} }
+
+func (h Handler) AnalyzeDirect(c *gin.Context) {
+	var p ModelAnalyzeRequest
+	if c.ShouldBindJSON(&p) != nil || h.validate.Struct(p) != nil {
+		response.Error(c, http.StatusBadRequest, "Validation failed", nil)
+		return
+	}
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 70*time.Second)
+	defer cancel()
+	out, err := h.service.AnalyzeDirect(ctx, p)
+	if err != nil {
+		h.err(c, err)
+		return
+	}
+	response.Success(c, http.StatusOK, "Drift model analysis completed", gin.H{"prediction": out})
+}
+
 func (h Handler) Analyze(c *gin.Context) {
 	var p AnalyzeRequest
 	if c.ShouldBindJSON(&p) != nil || h.validate.Struct(p) != nil {
@@ -106,6 +123,14 @@ func (h Handler) err(c *gin.Context, err error) {
 	}
 	if errors.Is(err, utils.ErrForbidden) {
 		response.Error(c, http.StatusForbidden, "You do not have access to this resource", nil)
+		return
+	}
+	if errors.Is(err, ErrInferenceUnavailable) {
+		response.Error(c, http.StatusBadGateway, "Drift inference service is unavailable", nil)
+		return
+	}
+	if errors.Is(err, ErrInferenceBadResponse) {
+		response.Error(c, http.StatusBadGateway, "Drift inference service returned an invalid response", nil)
 		return
 	}
 	response.Error(c, http.StatusInternalServerError, "Drift request failed", nil)

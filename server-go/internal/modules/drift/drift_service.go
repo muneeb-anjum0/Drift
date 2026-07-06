@@ -17,12 +17,13 @@ import (
 )
 
 type Service struct {
-	db     *mongo.Database
-	ollama ollama.Service
+	db        *mongo.Database
+	ollama    ollama.Service
+	inference InferenceClient
 }
 
-func NewService(db *mongo.Database, ollama ollama.Service) Service {
-	return Service{db: db, ollama: ollama}
+func NewService(db *mongo.Database, ollama ollama.Service, inference InferenceClient) Service {
+	return Service{db: db, ollama: ollama, inference: inference}
 }
 
 var addKeys = []string{"should", "must", "needs to", "allow", "support", "include", "add", "create", "implement", "integrate", "generate", "export", "import", "dashboard", "report", "analytics", "notification", "payment", "role", "permission", "login", "signup", "email", "api", "admin", "user"}
@@ -52,6 +53,24 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 	changes := detect(version.RequirementsSnapshot, p.InputText)
 	score, risk, counts, hours, summary := Score(changes)
 	engine, used, model := "rule_based", false, (*string)(nil)
+	if s.inference.Enabled() {
+		baseline := baselineRequirementText(version.RequirementsSnapshot)
+		if baseline == "" {
+			return AnalysisPreview{}, utils.ErrNotFound
+		}
+		prediction, err := s.inference.Predict(ctx, ModelAnalyzeRequest{BaselineRequirement: baseline, NewClientMessage: p.InputText})
+		if err != nil {
+			return AnalysisPreview{}, err
+		}
+		changes = predictionToChanges(prediction, p.InputText)
+		score, risk, counts, hours, summary = Score(changes)
+		if prediction.Label == "unchanged" {
+			summary = prediction.Reasoning
+		} else if prediction.Reasoning != "" {
+			summary = prediction.Reasoning
+		}
+		engine = "qwen_lora"
+	}
 	if enhanced, ok := s.ollama.EnhanceSummary(ctx, summary, p.OllamaModel); ok {
 		summary = enhanced
 		engine, used = "hybrid", true
@@ -59,6 +78,21 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 		model = &m
 	}
 	return AnalysisPreview{ProjectID: projectID.Hex(), WorkspaceID: project.Workspace.Hex(), BaselineVersionID: versionID.Hex(), BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: score, RiskLevel: risk, Summary: summary, DetectedChanges: changes, AddedCount: counts["added"], ModifiedCount: counts["modified"], RemovedCount: counts["removed"], AmbiguousCount: counts["ambiguous"], ContradictionCount: counts["contradiction"], EstimatedExtraHours: hours, AnalysisEngine: engine, OllamaUsed: used, OllamaModel: model}, nil
+}
+
+func (s Service) AnalyzeDirect(ctx context.Context, p ModelAnalyzeRequest) (ModelPrediction, error) {
+	return s.inference.Predict(ctx, p)
+}
+
+func baselineRequirementText(snapshot []requirement.RequirementSnapshot) string {
+	parts := make([]string, 0, len(snapshot))
+	for _, req := range snapshot {
+		text := strings.TrimSpace(req.Title + ": " + req.Description)
+		if text != ":" && text != "" {
+			parts = append(parts, text)
+		}
+	}
+	return strings.Join(parts, "\n")
 }
 
 func detect(baseline []requirement.RequirementSnapshot, text string) []DetectedChange {

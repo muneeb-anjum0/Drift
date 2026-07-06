@@ -1,6 +1,6 @@
 import { api } from './axios';
 import type { ApiResponse } from '../types/api.types';
-import type { DriftAnalysis, DriftAnalysisPreview, DriftInputType } from '../features/drift/drift.types';
+import type { DriftAnalysis, DriftAnalysisPreview, DriftInputType, ModelPrediction } from '../features/drift/drift.types';
 
 export const driftApi = {
   analyzeDrift: async (payload: {
@@ -12,6 +12,13 @@ export const driftApi = {
   }) => {
     const response = await api.post<ApiResponse<{ analysis: DriftAnalysisPreview }>>('/drift/analyze', payload);
     return response.data.data.analysis;
+  },
+  analyzeDirect: async (payload: {
+    baseline_requirement: string;
+    new_client_message: string;
+  }) => {
+    const response = await api.post<ApiResponse<{ prediction: ModelPrediction }>>('/drift/analyze-direct', payload);
+    return response.data.data.prediction;
   },
   saveDriftAnalysis: async (payload: {
     projectId: string;

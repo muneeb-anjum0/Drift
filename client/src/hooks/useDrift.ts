@@ -19,6 +19,11 @@ export const useAnalyzeDrift = () =>
     mutationFn: (payload: Parameters<typeof driftApi.analyzeDrift>[0]) => driftApi.analyzeDrift(payload),
   });
 
+export const useAnalyzeDirectDrift = () =>
+  useMutation({
+    mutationFn: (payload: Parameters<typeof driftApi.analyzeDirect>[0]) => driftApi.analyzeDirect(payload),
+  });
+
 export const useSaveDriftAnalysis = () => {
   const queryClient = useQueryClient();
 

@@ -1,0 +1,122 @@
+name: Drift
+
+services:
+  frontend:
+    container_name: drift-frontend
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+      args:
+        VITE_API_BASE_URL: /api/v1
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      - "5173:80"
+    restart: unless-stopped
+
+  backend:
+    container_name: drift-backend
+    build:
+      context: .
+      dockerfile: server-go/Dockerfile
+    environment:
+      APP_ENV: production
+      PORT: 5000
+      MONGO_URI: mongodb://db:27017
+      MONGO_DATABASE: driftledger
+      JWT_SECRET: ${JWT_SECRET:-replace_with_strong_secret}
+      JWT_EXPIRES_IN_HOURS: ${JWT_EXPIRES_IN_HOURS:-168}
+      CLIENT_URL: http://localhost:5173
+      DRIFT_INFERENCE_ENABLED: "true"
+      DRIFT_INFERENCE_URL: http://inference:8000
+      DRIFT_INFERENCE_TIMEOUT_MS: ${DRIFT_INFERENCE_TIMEOUT_MS:-65000}
+      OLLAMA_ENABLED: ${OLLAMA_ENABLED:-false}
+      FIREBASE_STORAGE_ENABLED: ${FIREBASE_STORAGE_ENABLED:-false}
+      FIREBASE_STORAGE_BUCKET: ${FIREBASE_STORAGE_BUCKET:-}
+      GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS:-}
+      MAX_UPLOAD_SIZE_MB: ${MAX_UPLOAD_SIZE_MB:-10}
+    depends_on:
+      db:
+        condition: service_started
+      inference:
+        condition: service_started
+      llama:
+        condition: service_started
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+
+  inference:
+    container_name: drift-inference
+    build:
+      context: .
+      dockerfile: services/inference/Dockerfile
+    environment:
+      DRIFT_MODEL_MODE: local
+      DRIFT_LOCAL_ENGINE: ${DRIFT_LOCAL_ENGINE:-gguf}
+      DRIFT_BASE_MODEL_PATH: /app/models/base/Qwen2.5-7B-Instruct
+      DRIFT_ADAPTER_ZIP_PATH: /app/models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA.zip
+      DRIFT_ADAPTER_DIR: /app/models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA
+      DRIFT_GGUF_MODEL_PATH: /app/models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf
+      DRIFT_LLAMA_SERVER_URL: http://llama:8080
+      DRIFT_LLAMA_CTX_SIZE: ${DRIFT_LLAMA_CTX_SIZE:-768}
+      DRIFT_LLAMA_GPU_LAYERS: ${DRIFT_LLAMA_GPU_LAYERS:-16}
+      DRIFT_LLAMA_THREADS: ${DRIFT_LLAMA_THREADS:-6}
+      DRIFT_LLAMA_MAX_TOKENS: ${DRIFT_LLAMA_MAX_TOKENS:-120}
+      DRIFT_MAX_NEW_TOKENS: ${DRIFT_MAX_NEW_TOKENS:-224}
+      DRIFT_ALLOW_CPU: ${DRIFT_ALLOW_CPU:-false}
+    volumes:
+      - ./models:/app/models
+    ports:
+      - "127.0.0.1:8000:8000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
+
+  llama:
+    image: ghcr.io/ggml-org/llama.cpp:full-cuda
+    container_name: drift-llama
+    command:
+      - --server
+      - --model
+      - /app/models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - --ctx-size
+      - ${DRIFT_LLAMA_CTX_SIZE:-768}
+      - --n-gpu-layers
+      - ${DRIFT_LLAMA_GPU_LAYERS:-16}
+      - --threads
+      - ${DRIFT_LLAMA_THREADS:-6}
+    volumes:
+      - ./models:/app/models
+    ports:
+      - "127.0.0.1:8080:8080"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
+
+  db:
+    image: mongo:7
+    container_name: drift-db
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "127.0.0.1:27017:27017"
+    restart: unless-stopped
+
+volumes:
+  mongo-data:

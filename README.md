@@ -1,183 +1,141 @@
 # DriftLedger
 
-DriftLedger is a full-stack SaaS platform for freelancers, agencies, and software teams to detect scope drift, document requirement changes, and generate client-ready change requests.
-
-## Overview
-
-Client projects often drift after the original scope is approved. New features, vague improvements, and quiet requirement changes can create unpaid work and delivery risk. DriftLedger helps teams preserve the original scope, structure requirements, create baselines, compare new client input, score scope creep risk, and generate approval drafts.
+DriftLedger is a full-stack SaaS platform for detecting requirement drift, documenting scope changes, and generating client-ready change requests.
 
 ## Tech Stack
 
 - Frontend: React, Vite, TypeScript, Tailwind CSS
-- Backend: Go / Golang with Gin
+- Backend: Go/Gin
 - Database: MongoDB
-- File storage: Firebase Storage through backend-only Google Cloud Storage APIs
-- Optional AI: Ollama local LLM through plain HTTP
+- Drift inference: FastAPI wrapper plus llama.cpp GGUF inference by default
+- Model source: local `Qwen2.5-7B-Instruct` base model plus the trained DriftLedger LoRA adapter
 
-This is no longer a pure MERN app after the Go backend migration. The backend lives in `server-go/`.
+The active backend lives in `server-go/`.
 
-## Features
+## Current Model Runtime
 
-Phase 1 includes authentication, JWT-protected routes, workspaces, projects, dashboard views, activity logs, a SaaS landing page, and the black, white, and lime green UI.
+The default runtime is now GGUF:
 
-Phase 2 adds structured requirements, requirement version history, local requirement extraction, immutable baselines, and requirement activity logs.
+```env
+DRIFT_MODEL_MODE=local
+DRIFT_LOCAL_ENGINE=gguf
+DRIFT_GGUF_MODEL_PATH=models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf
+DRIFT_LLAMA_SERVER_URL=http://llama:8080
+```
 
-Phase 3 adds rule-based drift detection, deterministic scope creep scoring, optional Ollama enhancement, saved drift history, change request generation, and change request history.
+`Q3_K_M` is not training. It is quantization after merging the already trained DriftLedger LoRA adapter into the Qwen base model.
 
-The Go backend also adds project document persistence:
-
-- MongoDB stores file metadata.
-- Firebase Storage stores uploaded files.
-- Firebase Storage is optional; the app still starts without it.
-- Service account credentials stay backend-only.
-
-## Folder Structure
+The build flow is:
 
 ```text
-client/      React + Vite frontend
-server-go/   Go backend
-README.md
-.gitignore
-package.json
+Qwen/Qwen2.5-7B-Instruct + DriftLedger LoRA
+  -> merged Hugging Face model
+  -> F16 GGUF
+  -> Q3_K_M GGUF
 ```
 
-The previous Node/Express backend has been removed after the Go migration was verified locally. `server-go/` is the only active backend.
+## Required Local Files
 
-## Environment
-
-Frontend:
-
-```env
-VITE_API_BASE_URL=http://localhost:5000/api/v1
-```
-
-Go backend variables are documented in `server-go/.env.example`.
-
-MongoDB is required for structured app data. Firebase Storage and Ollama are optional.
-
-## Running Locally
-
-Install frontend dependencies if needed:
-
-```bash
-npm install
-```
-
-Install Go module dependencies:
-
-```bash
-cd server-go
-go mod tidy
-```
-
-Start the active Go backend:
-
-```bash
-npm run dev:server-go
-```
-
-Start the frontend:
-
-```bash
-npm run dev:client
-```
-
-Or run both together because `concurrently` is already installed:
-
-```bash
-npm run dev:go
-```
-
-## Tests
-
-Run Go tests:
-
-```bash
-cd server-go
-go test ./...
-```
-
-Run the frontend production build:
-
-```bash
-npm run build
-```
-
-Run browser smoke tests after MongoDB and the Go backend are running on port 5000:
-
-```bash
-cd client
-npm run test:e2e
-```
-
-## API Overview
-
-Base URL: `http://localhost:5000/api/v1`
-
-- `POST /auth/register`
-- `POST /auth/login`
-- `GET /auth/me`
-- `POST /auth/logout`
-- `/workspaces`
-- `/projects`
-- `/activities`
-- `/requirements`
-- `/drift`
-- `/change-requests`
-- `/files`
-
-Responses use `{ success, message, data }`. Errors use `{ success, message, errors }`.
-
-## File Upload Setup
-
-Set these backend variables only when Firebase Storage should be enabled:
-
-```env
-FIREBASE_STORAGE_ENABLED=true
-FIREBASE_STORAGE_BUCKET=your-project-id.appspot.com
-GOOGLE_APPLICATION_CREDENTIALS=./firebase-service-account.json
-```
-
-Never commit service account files. If Firebase Storage is disabled, upload endpoints return:
+Base model:
 
 ```text
-Firebase Storage is not enabled. Configure Firebase Storage to upload files.
+models/base/Qwen2.5-7B-Instruct
 ```
 
-## Ollama
+Adapter zip:
 
-Ollama is optional. Enable it with:
+```text
+models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA.zip
+```
+
+Quantized runtime model:
+
+```text
+models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf
+```
+
+Large model files are ignored by Git.
+
+## Build The Q3_K_M Model
+
+After the base model and LoRA zip are present:
+
+```powershell
+cd D:\Desktop\Projects\Drift\Drift-app
+python -m pip install -r tools\requirements-q3km.txt
+python tools\build_q3km_model.py
+```
+
+That command validates files, merges the LoRA, builds llama.cpp if needed, converts to GGUF, and quantizes to Q3_K_M. If your machine does not have enough system RAM for the merge, run the same repo and command on a larger machine or free notebook, then copy this file back:
+
+```text
+models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf
+```
+
+## Validate
+
+```powershell
+python tools\check_local_drift_setup.py
+```
+
+The check intentionally fails when `DRIFT_LOCAL_ENGINE=gguf` and the Q3_K_M GGUF file is missing.
+
+## Docker
+
+The Compose stack is named `Drift`.
+
+```powershell
+docker compose up --build
+```
+
+Open:
+
+- Frontend: `http://localhost:5173`
+- Backend health: `http://localhost:5000/health`
+- Inference health: `http://localhost:8000/health`
+- llama.cpp health/UI: `http://localhost:8080`
+
+Stop:
+
+```powershell
+docker compose down
+```
+
+Docker mounts `./models` into the containers at `/app/models`.
+
+## Smoke Tests
+
+After Docker is running:
+
+```powershell
+python tools\eval_q3km_smoke.py
+python tools\smoke_backend_direct.py
+```
+
+Manual inference call:
+
+```powershell
+curl.exe -X POST http://localhost:8000/predict-drift `
+  -H "Content-Type: application/json" `
+  -d "{\"baseline_requirement\":\"The system shall allow admins to export monthly reports as CSV.\",\"new_client_message\":\"Can admins download the same monthly report from the reports page?\"}"
+```
+
+## GPU Notes
+
+Your 6GB GPU is too small for the previous PEFT 4-bit runtime. GGUF Q3_K_M through llama.cpp is the intended local path for this machine. Start with:
 
 ```env
-OLLAMA_ENABLED=true
-OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_MODEL=llama3.1:8b
+DRIFT_LLAMA_CTX_SIZE=768
+DRIFT_LLAMA_GPU_LAYERS=16
+DRIFT_LLAMA_THREADS=6
+DRIFT_LLAMA_MAX_TOKENS=120
 ```
 
-If Ollama is disabled or unavailable, drift analysis and change request generation continue with deterministic rule-based logic.
+If startup fails with CUDA out of memory, lower `DRIFT_LLAMA_GPU_LAYERS` to `12`, then `8`, then `0`.
 
-## Screenshots
+## More Docs
 
-Screenshots are not committed yet. Add dashboard, project details, drift analysis, and change request screenshots before a public portfolio launch.
-
-## Security Notes
-
-- Authentication remains JWT-based in the Go backend.
-- MongoDB stores structured SaaS data.
-- Firebase Storage stores only uploaded file blobs.
-- Firebase credentials are never exposed to the frontend.
-- Secrets, `.env` files, and service account JSON files are ignored by Git.
-
-## Deployment Notes
-
-Deploy the React frontend separately from the Go API. Set `VITE_API_BASE_URL` to the deployed Go API URL. Configure MongoDB in the backend environment. Configure Firebase Storage only when document uploads are required.
-
-A Render blueprint is included in `render.yaml`. Keep `MONGO_URI`, `JWT_SECRET`, `CLIENT_URL`, and `VITE_API_BASE_URL` as provider-managed environment variables.
-
-## Roadmap
-
-- Team invitations and role management
-- Document text extraction
-- Exportable change request PDFs
-- More detailed estimate workflows
-- Deployment hardening and CI checks
+- `docs/local_model_setup.md`
+- `docs/model_inference.md`
+- `docs/docker.md`
+- `docs/gguf_q3km_setup.md`
