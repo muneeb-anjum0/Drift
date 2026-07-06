@@ -111,13 +111,15 @@ export const RequirementExtractionPanel = ({ projectId, workspaceId, defaultSour
         />
       </label>
 
-      <div className="mt-4 flex flex-wrap gap-3">
-        <Button type="button" onClick={handleExtract} disabled={!canExtract || extractMutation.isPending}>
+      <div className="mt-4 grid grid-cols-2 gap-3">
+        <Button type="button" className="min-w-0 whitespace-nowrap px-3 text-xs sm:text-sm" onClick={handleExtract} disabled={!canExtract || extractMutation.isPending}>
           {extractMutation.isPending ? <Spinner /> : <Sparkles className="mr-2 h-4 w-4" />}
-          Extract Requirements
+          <span className="hidden min-[420px]:inline">Extract Requirements</span>
+          <span className="min-[420px]:hidden">Extract</span>
         </Button>
-        <Button type="button" variant="secondary" onClick={() => setSourceText(defaultSourceText)} disabled={!defaultSourceText}>
-          Reset to project scope
+        <Button type="button" variant="secondary" className="min-w-0 whitespace-nowrap px-3 text-xs sm:text-sm" onClick={() => setSourceText(defaultSourceText)} disabled={!defaultSourceText}>
+          <span className="hidden min-[420px]:inline">Reset to project scope</span>
+          <span className="min-[420px]:hidden">Reset scope</span>
         </Button>
       </div>
 
@@ -129,9 +131,9 @@ export const RequirementExtractionPanel = ({ projectId, workspaceId, defaultSour
           <p className="text-sm font-semibold text-white">Review suggestions</p>
           <p className="mt-1 text-sm text-gray-400">Add one or save them all after checking the extracted text.</p>
         </div>
-        <Button type="button" variant="secondary" onClick={handleAddAll} disabled={!suggestions.length || savingAll}>
+        <Button type="button" variant="secondary" className="shrink-0 whitespace-nowrap px-4" onClick={handleAddAll} disabled={!suggestions.length || savingAll}>
           {savingAll ? <Spinner /> : <Plus className="mr-2 h-4 w-4" />}
-          Add All
+          Add all
         </Button>
       </div>
 
