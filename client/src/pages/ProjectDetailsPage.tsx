@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
 import {
@@ -11,7 +11,6 @@ import {
   Layers3,
   ListChecks,
   Plus,
-  Upload,
   User2,
 } from 'lucide-react';
 import { projectApi } from '../api/project.api';
@@ -26,7 +25,7 @@ import { RequirementExtractionPanel } from '../features/requirements/Requirement
 import { RequirementFormModal } from '../features/requirements/RequirementFormModal';
 import { RequirementTable } from '../features/requirements/RequirementTable';
 import { RequirementVersionHistory } from '../features/requirements/RequirementVersionHistory';
-import type { Requirement, RequirementFormSubmitValues, RequirementFormValues } from '../features/requirements/requirement.types';
+import type { Requirement, RequirementFormSubmitValues } from '../features/requirements/requirement.types';
 import { DriftAnalysisPanel } from '../features/drift/DriftAnalysisPanel';
 import { DriftHistory } from '../features/drift/DriftHistory';
 import { ChangeRequestPreview } from '../features/change-requests/ChangeRequestPreview';
@@ -46,76 +45,21 @@ import { useDeleteChangeRequest, useProjectChangeRequests, useUpdateChangeReques
 import { FileUploadPanel } from '../features/files/FileUploadPanel';
 import type { ProjectFile } from '../features/files/file.types';
 import { useDeleteFile, useProjectFiles, useUploadFile } from '../hooks/useFiles';
-
-type ActiveSection = 'requirements' | 'drift' | 'changes' | 'documents';
-
-const navItems: Array<{ id: ActiveSection; label: string; description: string; icon: typeof ListChecks }> = [
-  { id: 'requirements', label: 'Requirements', description: 'Scope, extraction, baselines', icon: ListChecks },
-  { id: 'drift', label: 'Drift Analysis', description: 'Compare new client input', icon: GitCompareArrows },
-  { id: 'changes', label: 'Change Requests', description: 'Client-ready approvals', icon: FileText },
-  { id: 'documents', label: 'Documents', description: 'Briefs, scope files, notes', icon: Upload },
-];
-
-const toRequirementFormValues = (requirement: Requirement): Partial<RequirementFormValues> => ({
-  title: requirement.title,
-  description: requirement.description,
-  type: requirement.type,
-  priority: requirement.priority,
-  status: requirement.status,
-  source: requirement.source,
-  sourceText: requirement.sourceText ?? '',
-  acceptanceCriteria: requirement.acceptanceCriteria.join('\n'),
-  tags: requirement.tags.join(', '),
-  estimatedEffort: requirement.estimatedEffort?.toString() ?? '',
-});
-
-const formatValue = (value: string) => value.replace(/_/g, ' ');
-
-const PanelHeader = ({
-  eyebrow,
-  title,
-  description,
-  action,
-}: {
-  eyebrow: string;
-  title: string;
-  description?: string;
-  action?: ReactNode;
-}) => (
-  <div className="flex flex-wrap items-start justify-between gap-4">
-    <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-lime-400">{eyebrow}</p>
-      <h3 className="mt-1 text-xl font-semibold text-white">{title}</h3>
-      {description ? <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-400">{description}</p> : null}
-    </div>
-    {action}
-  </div>
-);
-
-const MetricTile = ({ label, value, icon: Icon }: { label: string; value: ReactNode; icon: typeof ListChecks }) => (
-  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-    <div className="flex items-center justify-between gap-3">
-      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">{label}</p>
-      <Icon className="h-4 w-4 text-lime-400" />
-    </div>
-    <div className="mt-3 text-lg font-semibold text-white">{value}</div>
-  </div>
-);
-
-const ScopeBlock = ({ title, value }: { title: string; value: string }) => (
-  <div className="rounded-2xl border border-white/10 bg-black/40 p-4">
-    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-lime-400">{title}</p>
-    <p className="mt-3 max-h-36 overflow-y-auto whitespace-pre-line pr-2 text-sm leading-6 text-gray-300">
-      {value || `No ${title.toLowerCase()} recorded.`}
-    </p>
-  </div>
-);
+import {
+  formatProjectValue,
+  MetricTile,
+  PanelHeader,
+  projectSectionTabs,
+  requirementToFormValues,
+  ScopeBlock,
+  type ActiveProjectSection,
+} from '../features/projects/projectDetailsUi';
 
 export const ProjectDetailsPage = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const [isRequirementModalOpen, setIsRequirementModalOpen] = useState(false);
   const [editingRequirement, setEditingRequirement] = useState<Requirement | null>(null);
-  const [activeSection, setActiveSection] = useState<ActiveSection>('requirements');
+  const [activeSection, setActiveSection] = useState<ActiveProjectSection>('requirements');
 
   const projectQuery = useQuery({
     queryKey: ['project', projectId],
@@ -255,10 +199,10 @@ export const ProjectDetailsPage = () => {
           <div className="border-b border-white/10 p-6 xl:border-b-0 xl:border-r">
             <div className="flex flex-wrap items-center gap-2">
               <span className="rounded-full border border-lime-400/20 bg-lime-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-lime-300">
-                {formatValue(project.status)}
+                {formatProjectValue(project.status)}
               </span>
               <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-gray-300">
-                {formatValue(project.priority)} priority
+                {formatProjectValue(project.priority)} priority
               </span>
               <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-gray-300">
                 {workspaceName}
@@ -288,7 +232,7 @@ export const ProjectDetailsPage = () => {
       </section>
 
       <nav className="grid gap-3 rounded-3xl border border-white/10 bg-black/70 p-3 md:grid-cols-4">
-        {navItems.map(({ id, label, description, icon: Icon }) => {
+        {projectSectionTabs.map(({ id, label, description, icon: Icon }) => {
           const isActive = activeSection === id;
           return (
             <button
@@ -468,7 +412,7 @@ export const ProjectDetailsPage = () => {
           setEditingRequirement(null);
         }}
         onSubmit={editingRequirement ? handleUpdateRequirement : handleCreateRequirement}
-        initialValues={editingRequirement ? toRequirementFormValues(editingRequirement) : undefined}
+        initialValues={editingRequirement ? requirementToFormValues(editingRequirement) : undefined}
         mode={editingRequirement ? 'edit' : 'create'}
         isSubmitting={createRequirementMutation.isPending || updateRequirementMutation.isPending}
       />

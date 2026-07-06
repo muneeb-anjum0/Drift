@@ -8,7 +8,7 @@ export const useProjects = (workspaceId?: string) => {
   const query = useQuery({
     queryKey: ['projects', workspaceId ?? 'all'],
     queryFn: () => projectApi.list(workspaceId),
-    enabled: !!user, // Only fetch when user is authenticated
+    enabled: !!user,
   });
 
   const createMutation = useMutation({

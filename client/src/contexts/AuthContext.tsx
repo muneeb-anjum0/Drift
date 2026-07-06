@@ -74,13 +74,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const result = await authApi.login({ email, password });
-    persistAuth(result.token, result.user);
+    const authSession = await authApi.login({ email, password });
+    persistAuth(authSession.token, authSession.user);
   };
 
   const signup = async (name: string, email: string, password: string) => {
-    const result = await authApi.register({ name, email, password });
-    persistAuth(result.token, result.user);
+    const authSession = await authApi.register({ name, email, password });
+    persistAuth(authSession.token, authSession.user);
   };
 
   const logout = async () => {

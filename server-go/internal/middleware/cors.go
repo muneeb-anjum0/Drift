@@ -7,10 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const localViteOrigin = "http://localhost:5173"
+
 func CORS(cfg config.Config) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		origin := c.Request.Header.Get("Origin")
-		if origin == cfg.ClientURL || origin == "http://localhost:5173" {
+		if origin == cfg.ClientURL || origin == localViteOrigin {
 			c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
 		}
 		c.Writer.Header().Set("Vary", "Origin")

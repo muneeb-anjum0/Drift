@@ -16,6 +16,7 @@ import (
 )
 
 const UserIDKey = "userId"
+const userLookupTimeout = 5 * time.Second
 
 func Auth(db *mongo.Database, cfg config.Config) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -37,7 +38,7 @@ func Auth(db *mongo.Database, cfg config.Config) gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
+		ctx, cancel := context.WithTimeout(c.Request.Context(), userLookupTimeout)
 		defer cancel()
 		count, err := db.Collection("users").CountDocuments(ctx, bson.M{"_id": userID})
 		if err != nil || count == 0 {
