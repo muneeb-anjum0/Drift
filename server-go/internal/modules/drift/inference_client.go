@@ -126,7 +126,7 @@ func predictionToChanges(pred ModelPrediction, inputText string) []DetectedChang
 	effort := effort(impact)
 	titleText := title(inputText)
 	if len(pred.ChangedElements) > 0 {
-		titleText = title(pred.ChangedElements[0])
+		titleText = title(sanitizeChangedElementTitle(pred.ChangedElements[0], label, inputText))
 	}
 	return []DetectedChange{{
 		ChangeType:      label,
@@ -138,4 +138,20 @@ func predictionToChanges(pred ModelPrediction, inputText string) []DetectedChang
 		Confidence:      confidence,
 		Recommendation:  recommendation(label, titleText),
 	}}
+}
+
+func sanitizeChangedElementTitle(element, label, fallback string) string {
+	cleaned := strings.TrimSpace(element)
+	lower := strings.ToLower(cleaned)
+	for _, status := range []string{"added", "modified", "removed", "contradiction", "ambiguous", "unchanged"} {
+		suffix := " (" + status + ")"
+		if strings.HasSuffix(lower, suffix) {
+			cleaned = strings.TrimSpace(cleaned[:len(cleaned)-len(suffix)])
+			break
+		}
+	}
+	if cleaned == "" || strings.EqualFold(cleaned, label) {
+		return fallback
+	}
+	return cleaned
 }

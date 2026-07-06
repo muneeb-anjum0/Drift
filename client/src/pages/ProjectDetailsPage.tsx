@@ -276,7 +276,7 @@ export const ProjectDetailsPage = () => {
               <MetricTile label="Client" value={project.clientName} icon={User2} />
               <MetricTile label="Deadline" value={formatDate(project.deadline)} icon={CalendarDays} />
               <MetricTile label="Updated" value={<span className="text-base">{formatDate(project.updatedAt)}</span>} icon={Clock3} />
-              <MetricTile label="AI engine" value="Ollama" icon={Bot} />
+              <MetricTile label="AI engine" value="Qwen GGUF" icon={Bot} />
             </div>
           </div>
 
@@ -369,7 +369,7 @@ export const ProjectDetailsPage = () => {
         <section className="space-y-5">
           <PanelHeader
             eyebrow="Drift analysis"
-            title="Analyze new client input with Ollama"
+            title="Analyze new client input with Qwen GGUF"
             description="Compare incoming scope changes against the selected baseline and save reviewed analyses for change requests."
           />
 

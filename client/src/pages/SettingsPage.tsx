@@ -53,15 +53,15 @@ export const SettingsPage = () => {
             <div className="mb-5 flex items-center justify-between gap-4">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-lime-400">Local AI</p>
-                <h3 className="mt-1 text-xl font-semibold text-white">Ollama drift engine</h3>
+                <h3 className="mt-1 text-xl font-semibold text-white">Local Qwen drift engine</h3>
               </div>
               <Bot className="h-5 w-5 text-lime-400" />
             </div>
             <div className="grid gap-3 md:grid-cols-2">
-              <SettingRow label="Provider" value="Ollama" />
-              <SettingRow label="Model" value="llama3.1:8b" />
-              <SettingRow label="Endpoint" value="localhost:11434" />
-              <SettingRow label="Drift mode" value="AI first" />
+              <SettingRow label="Provider" value="llama.cpp" />
+              <SettingRow label="Model" value="Qwen2.5-7B + DriftLedger LoRA" />
+              <SettingRow label="Quantization" value="GGUF Q3_K_M" />
+              <SettingRow label="Drift mode" value="Model first" />
             </div>
           </Card>
 

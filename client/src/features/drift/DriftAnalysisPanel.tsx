@@ -7,9 +7,9 @@ import { Spinner } from '../../components/common/Spinner';
 import { BaselineSelector } from './BaselineSelector';
 import { DriftScoreCard } from './DriftScoreCard';
 import { DetectedChangesList } from './DetectedChangesList';
-import type { DriftAnalysisFormValues, DriftAnalysisPreview, DriftInputType, ModelPrediction } from './drift.types';
+import type { ChangeType, DetectedChange, DriftAnalysisFormValues, DriftAnalysisPreview, DriftInputType, ModelPrediction, RiskLevel } from './drift.types';
 import type { RequirementVersion } from '../requirements/requirement.types';
-import { useAnalyzeDirectDrift, useAnalyzeDrift, useSaveDriftAnalysis } from '../../hooks/useDrift';
+import { useAnalyzeDirectDrift, useSaveDriftAnalysis } from '../../hooks/useDrift';
 
 const selectClass =
   'h-11 w-full rounded-2xl border border-gray-700 bg-black px-4 text-sm text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30';
@@ -19,6 +19,139 @@ const defaultFormValues: DriftAnalysisFormValues = {
   inputType: 'client_message',
   inputText: '',
 };
+
+const modelDisplayName = 'Qwen2.5-7B + DriftLedger LoRA (GGUF Q3_K_M)';
+
+const labelScores: Record<ChangeType, number> = {
+  added: 35,
+  modified: 45,
+  removed: 55,
+  ambiguous: 25,
+  contradiction: 75,
+  unchanged: 0,
+};
+
+const labelEffort: Record<ChangeType, number> = {
+  added: 2,
+  modified: 4,
+  removed: 3,
+  ambiguous: 1,
+  contradiction: 8,
+  unchanged: 0,
+};
+
+const labelImpact: Record<ChangeType, DetectedChange['impact']> = {
+  added: 'low',
+  modified: 'medium',
+  removed: 'medium',
+  ambiguous: 'medium',
+  contradiction: 'high',
+  unchanged: 'low',
+};
+
+const labelTitle: Record<ChangeType, string> = {
+  added: 'Added requirement',
+  modified: 'Modified requirement',
+  removed: 'Removed requirement',
+  ambiguous: 'Ambiguous request',
+  contradiction: 'Contradictory request',
+  unchanged: 'No scope change',
+};
+
+const recommendationForLabel = (label: ChangeType) => {
+  if (label === 'added') return 'Confirm whether this should be added to the approved baseline and update the estimate.';
+  if (label === 'modified') return 'Review whether the approved baseline needs an update before implementation.';
+  if (label === 'removed') return 'Confirm removal before changing the implementation scope.';
+  if (label === 'contradiction') return 'Resolve this contradiction before work continues.';
+  if (label === 'ambiguous') return 'Clarify this request before adding it to scope.';
+  return 'No baseline change is needed for this input.';
+};
+
+const riskForScore = (score: number): RiskLevel => {
+  if (score >= 70) return 'critical';
+  if (score >= 50) return 'high';
+  if (score >= 25) return 'medium';
+  return 'low';
+};
+
+const confidencePercent = (confidence: number) => {
+  const normalized = confidence > 1 ? confidence : confidence * 100;
+  return Math.max(0, Math.min(100, Math.round(normalized)));
+};
+
+const cleanChangedElement = (element: string, label: ChangeType) => {
+  const withoutStatus = element.replace(/\s*\((added|modified|removed|contradiction|ambiguous|unchanged)\)\s*$/i, '').trim();
+  return withoutStatus || labelTitle[label];
+};
+
+const baselineTextFromVersion = (version?: RequirementVersion) => {
+  if (!version) return '';
+
+  const lines = version.requirementsSnapshot
+    .map((requirement) => (requirement.description || requirement.title || '').trim())
+    .filter(Boolean);
+
+  return lines.length ? lines.join('\n') : [version.label, version.description].filter(Boolean).join('\n').trim();
+};
+
+const previewFromPrediction = ({
+  projectId,
+  version,
+  values,
+  baselineText,
+  prediction,
+}: {
+  projectId: string;
+  version: RequirementVersion;
+  values: DriftAnalysisFormValues;
+  baselineText: string;
+  prediction: ModelPrediction;
+}): DriftAnalysisPreview => {
+  const label = prediction.label;
+  const score = labelScores[label];
+  const confidence = confidencePercent(prediction.confidence);
+  const reasoning = prediction.reasoning || (label === 'unchanged' ? 'The model found no baseline drift.' : 'The model detected requirement drift.');
+  const firstChangedElement = prediction.changed_elements.find((element) => element.trim().length > 0);
+
+  const detectedChanges: DetectedChange[] =
+    label === 'unchanged'
+      ? []
+      : [
+          {
+            changeType: label,
+            title: firstChangedElement ? cleanChangedElement(firstChangedElement, label) : labelTitle[label],
+            description: reasoning,
+            oldText: baselineText,
+            newText: values.inputText.trim(),
+            impact: labelImpact[label],
+            estimatedEffort: labelEffort[label],
+            confidence,
+            recommendation: recommendationForLabel(label),
+          },
+        ];
+
+  return {
+    projectId,
+    baselineVersionId: version._id,
+    baselineVersionNumber: version.versionNumber,
+    inputType: values.inputType,
+    inputText: values.inputText.trim(),
+    driftScore: score,
+    riskLevel: riskForScore(score),
+    summary: reasoning,
+    detectedChanges,
+    addedCount: label === 'added' ? 1 : 0,
+    modifiedCount: label === 'modified' ? 1 : 0,
+    removedCount: label === 'removed' ? 1 : 0,
+    ambiguousCount: label === 'ambiguous' ? 1 : 0,
+    contradictionCount: label === 'contradiction' ? 1 : 0,
+    estimatedExtraHours: labelEffort[label],
+    analysisEngine: 'qwen_lora',
+    ollamaUsed: false,
+    ollamaModel: null,
+  };
+};
+
 const inputTypes: Array<{ label: string; value: DriftInputType }> = [
   { label: 'Client message', value: 'client_message' },
   { label: 'Meeting note', value: 'meeting_note' },
@@ -36,7 +169,7 @@ export const DriftAnalysisPanel = ({
   versions: RequirementVersion[];
   hasRequirements: boolean;
 }) => {
-  const analyzeMutation = useAnalyzeDrift();
+  const analyzeMutation = useAnalyzeDirectDrift();
   const directAnalyzeMutation = useAnalyzeDirectDrift();
   const saveMutation = useSaveDriftAnalysis();
   const [values, setValues] = useState<DriftAnalysisFormValues>(defaultFormValues);
@@ -80,15 +213,20 @@ export const DriftAnalysisPanel = ({
       return;
     }
 
+    const selectedVersion = versions.find((version) => version._id === values.baselineVersionId);
+    const baselineText = baselineTextFromVersion(selectedVersion);
+    if (!selectedVersion || !baselineText) {
+      setError('The selected baseline does not contain requirement text.');
+      return;
+    }
+
     setError('');
     try {
-      const analysis = await analyzeMutation.mutateAsync({
-        projectId,
-        baselineVersionId: values.baselineVersionId,
-        inputText: values.inputText.trim(),
-        inputType: values.inputType,
+      const prediction = await analyzeMutation.mutateAsync({
+        baseline_requirement: baselineText,
+        new_client_message: values.inputText.trim(),
       });
-      setResult(analysis);
+      setResult(previewFromPrediction({ projectId, version: selectedVersion, values, baselineText, prediction }));
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : 'Unable to analyze drift');
     }
@@ -153,11 +291,11 @@ export const DriftAnalysisPanel = ({
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-lime-400">AI drift analysis</p>
           <h3 className="mt-1 text-xl font-semibold text-white">Compare new client input against the approved baseline</h3>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-400">
-            DriftLedger runs this analysis through the Qwen2.5-7B DriftLedger LoRA inference service when enabled.
+            DriftLedger runs this analysis through the same local Qwen GGUF model route used by the sandbox.
           </p>
         </div>
         <div className="rounded-full border border-lime-400/20 bg-lime-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-lime-300">
-          Qwen LoRA
+          Local Q3_K_M
         </div>
       </div>
 
@@ -190,7 +328,7 @@ export const DriftAnalysisPanel = ({
 
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-lime-400/20 bg-lime-400/10 px-4 py-3">
           <p className="text-sm text-lime-100">
-            Model: <span className="font-semibold text-lime-300">Qwen/Qwen2.5-7B-Instruct + DriftLedger LoRA</span>
+            Model used: <span className="font-semibold text-lime-300">{modelDisplayName}</span>
           </p>
 
           <div className="flex flex-wrap items-center gap-3">

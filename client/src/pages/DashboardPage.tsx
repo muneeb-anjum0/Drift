@@ -101,7 +101,7 @@ export const DashboardPage = () => {
               {[
                 { title: 'Capture', text: 'Create projects and preserve original scope.', icon: FolderKanban },
                 { title: 'Baseline', text: 'Structure requirements into approved snapshots.', icon: ListChecks },
-                { title: 'Analyze', text: 'Run Ollama drift analysis on new input.', icon: GitCompareArrows },
+                { title: 'Analyze', text: 'Run Qwen GGUF drift analysis on new input.', icon: GitCompareArrows },
               ].map(({ title, text, icon: Icon }, index) => (
                 <motion.div
                   key={title}

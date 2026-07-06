@@ -279,6 +279,44 @@ VITE_API_BASE_URL=/api/v1
 POST /api/v1/drift/analyze-direct
 ```
 
+## G.1 Frontend Regression: Main Panel Matches Model Sandbox
+
+The Model sandbox and the main Drift Analysis panel both use the same Qwen GGUF model-backed route:
+
+```text
+POST /api/v1/drift/analyze-direct
+```
+
+The main panel builds the baseline text from the selected baseline version and sends it with the new client message to the same route used by the sandbox. It does not use the older rule-based analyzer unless a future fallback is explicitly added.
+
+Regression case:
+
+```text
+Baseline requirement:
+The system shall allow admins to export monthly reports as CSV.
+
+New client message:
+Can we also let admins download the same monthly report from the existing reports page?
+```
+
+Expected result in both Model sandbox and main Drift Analysis:
+
+```text
+label=unchanged
+```
+
+Run the automated route consistency check:
+
+```powershell
+python tools\test_model_route_consistency.py
+```
+
+Expected output:
+
+```text
+PASS model routes agree on the monthly-report unchanged case
+```
+
 ## H. Test Multiple Label Cases
 
 | Expected | Baseline requirement | New client message | Why |
@@ -294,6 +332,7 @@ POST /api/v1/drift/analyze-direct
 
 ```powershell
 python tools\test_runtime_stack.py
+python tools\test_model_route_consistency.py
 ```
 
 The script checks:
@@ -304,6 +343,13 @@ The script checks:
 4. backend health
 5. backend `/api/drift/analyze`
 6. frontend root
+
+The route consistency script checks:
+
+1. inference `/predict-drift`
+2. backend compatibility `/api/drift/analyze`
+3. frontend-used `/api/v1/drift/analyze-direct`
+4. all labels match the expected `unchanged` result for the monthly-report regression case
 
 ## Docker Environment
 

@@ -8,9 +8,17 @@ const riskClassName = (riskLevel: RiskLevel) => {
 };
 
 const engineLabel = (analysisEngine: AnalysisEngine) => {
-  if (analysisEngine === 'rule_based') return 'Rule based';
-  if (analysisEngine === 'ollama') return 'Ollama';
-  return 'Hybrid';
+  if (analysisEngine === 'qwen_lora') return 'Qwen GGUF';
+  if (analysisEngine === 'rule_based') return 'Fallback mode';
+  if (analysisEngine === 'hybrid') return 'Qwen GGUF';
+  return 'Legacy engine';
+};
+
+const runtimeLabel = (analysisEngine: AnalysisEngine, ollamaUsed: boolean) => {
+  if (analysisEngine === 'rule_based') return 'Fallback mode';
+  if (analysisEngine === 'qwen_lora') return 'Fallback not used';
+  if (analysisEngine === 'hybrid') return ollamaUsed ? 'Summary enhanced' : 'Model used';
+  return 'Legacy analysis';
 };
 
 export const DriftBadges = ({ riskLevel, analysisEngine, ollamaUsed }: { riskLevel: RiskLevel; analysisEngine: AnalysisEngine; ollamaUsed: boolean }) => {
@@ -23,7 +31,7 @@ export const DriftBadges = ({ riskLevel, analysisEngine, ollamaUsed }: { riskLev
         {engineLabel(analysisEngine)}
       </span>
       <span className="rounded-full border border-gray-700 bg-black/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-gray-300">
-        Ollama {ollamaUsed ? 'used' : 'not used'}
+        {runtimeLabel(analysisEngine, ollamaUsed)}
       </span>
     </div>
   );
