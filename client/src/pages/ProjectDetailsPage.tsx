@@ -254,16 +254,27 @@ export const ProjectDetailsPage = () => {
               type="button"
               onClick={() => setActiveSection(id)}
               className={cn(
-                'flex min-h-20 items-center gap-3 rounded-2xl border px-4 py-3 text-left transition',
+                'group flex min-h-20 items-center gap-3 rounded-2xl border px-4 py-3 text-left transition',
                 isDriftPair && 'md:relative',
                 id === 'drift' && 'md:rounded-r-none',
-                id === 'history' && 'md:-ml-3 md:rounded-l-none md:border-l-0',
-                isActive
-                  ? 'border-lime-400/40 bg-lime-400/15 text-white shadow-[0_0_30px_rgba(163,230,53,0.08)]'
-                  : 'border-transparent bg-white/[0.02] text-gray-400 hover:border-lime-400/20 hover:bg-lime-400/5 hover:text-white'
+                id === 'history' && 'md:-ml-3 md:rounded-l-none',
+                isDriftPair
+                  ? 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[#b7ad98]'
+                  : isActive
+                    ? 'border-lime-400/40 bg-lime-400/15 text-white shadow-[0_0_30px_rgba(163,230,53,0.08)]'
+                    : 'border-transparent bg-white/[0.02] text-gray-400 hover:border-lime-400/20 hover:bg-lime-400/5 hover:text-white'
               )}
             >
-              <span className={cn('flex h-10 w-10 shrink-0 items-center justify-center rounded-full border', isActive ? 'border-lime-400/40 bg-black text-lime-300' : 'border-white/10 bg-black/60 text-gray-400')}>
+              <span
+                className={cn(
+                  'flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition',
+                  isDriftPair
+                    ? 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] group-hover:border-[#b7ad98]'
+                    : isActive
+                      ? 'border-lime-400/40 bg-black text-lime-300'
+                      : 'border-white/10 bg-black/60 text-gray-400'
+                )}
+              >
                 <Icon className="h-5 w-5" />
               </span>
               <span>
