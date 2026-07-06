@@ -40,20 +40,20 @@ export const Modal = ({ open, title, description, children, footer, onClose, siz
   if (!open) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/75 px-4 py-6 backdrop-blur-md">
+    <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-[rgba(17,17,17,0.42)] px-4 py-6 backdrop-blur-sm">
       <motion.div
         initial={{ opacity: 0, y: 18, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ type: 'spring', stiffness: 260, damping: 24 }}
         className={cn(
-          'flex max-h-[calc(100dvh-3rem)] w-full flex-col overflow-hidden rounded-[2rem] border border-lime-400/20 bg-black shadow-[0_24px_100px_rgba(0,0,0,0.75)]',
+          'flex max-h-[calc(100dvh-3rem)] w-full flex-col overflow-hidden rounded-[var(--radius-modal)] border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] shadow-[var(--shadow-floating)]',
           sizeClasses[size]
         )}
       >
         <div className={cn('flex shrink-0 items-start justify-between gap-4', density === 'compact' ? 'px-5 pt-5 sm:px-6 sm:pt-6' : 'px-7 pt-7')}>
           <div>
-            <h2 className={cn('font-semibold text-white', density === 'compact' ? 'text-xl' : 'text-2xl')}>{title}</h2>
-            {description ? <p className={cn('mt-2 text-gray-400', density === 'compact' ? 'text-sm leading-6' : 'text-base leading-7')}>{description}</p> : null}
+            <h2 className={cn('font-semibold text-[var(--color-text)]', density === 'compact' ? 'text-xl' : 'text-2xl')}>{title}</h2>
+            {description ? <p className={cn('mt-2 text-[var(--color-text-muted)]', density === 'compact' ? 'text-sm leading-6' : 'text-base leading-7')}>{description}</p> : null}
           </div>
           <Button type="button" variant="ghost" size="sm" onClick={onClose} className="h-10 w-10 shrink-0 px-0">
             <X className="h-5 w-5" />

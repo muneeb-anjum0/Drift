@@ -4,43 +4,63 @@
 
 :root {
   color-scheme: light;
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #a3e635 #050505;
-}
-
-html {
-  scroll-behavior: smooth;
-  min-height: 100%;
-  background: #000000;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-body {
-  margin: 0;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #000000;
-  color: #0f172a;
-  min-height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-*::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-#root {
-  min-height: 100%;
-  background: #000000;
+  --color-bg: #f3f0e7;
+  --color-bg-soft: #f8f6ef;
+  --color-surface: #fffdf8;
+  --color-surface-muted: #ece6d8;
+  --color-border: #d6cdbb;
+  --color-text: #111111;
+  --color-text-muted: #59564e;
+  --color-text-soft: #777266;
+  --color-primary: #111111;
+  --color-primary-hover: #2a2a2a;
+  --color-primary-text: #ffffff;
+  --color-accent: #c9bea7;
+  --color-accent-soft: #e8dfcf;
+  --color-danger: #9f1d1d;
+  --color-success: #166534;
+  --color-warning: #92400e;
+  --color-focus: rgba(17, 17, 17, 0.16);
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-card: 10px;
+  --radius-control: 8px;
+  --radius-modal: 12px;
+  --shadow-card: 0 1px 2px rgba(17, 17, 17, 0.04), 0 8px 24px rgba(17, 17, 17, 0.06);
+  --shadow-floating: 0 14px 38px rgba(17, 17, 17, 0.14);
+  --shadow-button: 0 8px 18px rgba(17, 17, 17, 0.12);
 }
 
 * {
   box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent) var(--color-bg-soft);
+}
+
+html {
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--color-bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+#root {
+  min-height: 100%;
+  background: var(--color-bg);
 }
 
 a {
@@ -55,19 +75,182 @@ select {
   font: inherit;
 }
 
+input,
+textarea,
+select {
+  background: var(--color-surface);
+  color: var(--color-text);
+  caret-color: var(--color-text);
+}
+
+::placeholder {
+  color: var(--color-text-soft);
+}
+
+::selection {
+  background: var(--color-primary);
+  color: var(--color-primary-text);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
 *::-webkit-scrollbar-track {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+  border: 2px solid var(--color-bg);
   border-radius: 999px;
-  border: 2px solid #050505;
+  background: var(--color-bg-soft);
 }
 
 *::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #ffffff 0%, #d9f99d 40%, #a3e635 100%);
+  border: 1px solid var(--color-bg);
   border-radius: 999px;
-  border: 1px solid #050505;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+  background: var(--color-accent);
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #ffffff 0%, #bef264 35%, #84cc16 100%);
+  background: #b7ad98;
+}
+
+.app-main {
+  padding-bottom: 120px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@layer components {
+  .app-panel {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    background: var(--color-surface);
+    color: var(--color-text);
+    box-shadow: var(--shadow-card);
+  }
+
+  .app-eyebrow {
+    color: var(--color-text-soft);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .app-badge {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-bg-soft);
+    color: var(--color-text);
+    padding: 0.25rem 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+}
+
+@layer utilities {
+  .bg-black,
+  .bg-zinc-950,
+  .bg-gray-900,
+  .bg-black\/30,
+  .bg-black\/40,
+  .bg-black\/50,
+  .bg-black\/55,
+  .bg-black\/60,
+  .bg-black\/65,
+  .bg-black\/70,
+  .bg-black\/75,
+  .bg-white\/\[0\.02\],
+  .bg-white\/\[0\.03\],
+  .bg-white\/\[0\.04\],
+  .bg-lime-400\/5,
+  .bg-lime-400\/10,
+  .bg-lime-400\/15,
+  .bg-lime-400\/20,
+  .hover\:bg-lime-400\/5:hover,
+  .hover\:bg-lime-400\/10:hover,
+  .hover\:bg-lime-400\/15:hover,
+  .hover\:bg-lime-400\/\[0\.04\]:hover {
+    background-color: var(--color-surface) !important;
+    background-image: none !important;
+  }
+
+  .bg-gradient-to-b,
+  .bg-gradient-to-br {
+    background-image: none !important;
+    background-color: var(--color-surface) !important;
+  }
+
+  .bg-lime-400,
+  .hover\:bg-lime-300:hover {
+    background-color: var(--color-primary) !important;
+  }
+
+  .text-white,
+  .text-gray-100,
+  .text-gray-200,
+  .text-gray-300,
+  .text-lime-100,
+  .text-lime-200,
+  .text-lime-300,
+  .text-lime-400,
+  .hover\:text-white:hover,
+  .hover\:text-lime-200:hover,
+  .hover\:text-lime-300:hover,
+  .hover\:text-lime-400:hover {
+    color: var(--color-text) !important;
+  }
+
+  .text-gray-400,
+  .text-gray-500 {
+    color: var(--color-text-muted) !important;
+  }
+
+  .bg-lime-400.text-black,
+  .bg-\[var\(--color-primary\)\] {
+    color: var(--color-primary-text) !important;
+  }
+
+  .border-white\/10,
+  .border-gray-700,
+  .border-gray-800,
+  .border-lime-400\/10,
+  .border-lime-400\/15,
+  .border-lime-400\/20,
+  .border-lime-400\/25,
+  .border-lime-400\/30,
+  .border-lime-400\/35,
+  .border-lime-400\/40,
+  .border-lime-600\/20,
+  .hover\:border-lime-400\/20:hover,
+  .hover\:border-lime-400\/25:hover,
+  .hover\:border-lime-400\/30:hover,
+  .hover\:border-lime-400\/35:hover,
+  .hover\:border-lime-400\/40:hover,
+  .hover\:border-lime-400\/50:hover {
+    border-color: var(--color-border) !important;
+  }
+
+  .rounded-2xl,
+  .rounded-3xl,
+  .rounded-\[1\.5rem\],
+  .rounded-\[1\.75rem\],
+  .rounded-\[2rem\],
+  .rounded-\[2\.25rem\] {
+    border-radius: var(--radius-card) !important;
+  }
+
+  .rounded-full {
+    border-radius: var(--radius-control) !important;
+  }
 }

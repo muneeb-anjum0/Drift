@@ -111,8 +111,9 @@ export const RegisterForm = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
         >
-          <label className="block text-sm font-semibold text-white mb-2">Name</label>
+          <label htmlFor="register-name" className="block text-sm font-semibold text-white mb-2">Name</label>
           <input
+            id="register-name"
             type="text"
             value={values.name}
             onChange={(event) => onChange('name', event.target.value)}
@@ -127,8 +128,9 @@ export const RegisterForm = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <label className="block text-sm font-semibold text-white mb-2">Email Address</label>
+          <label htmlFor="register-email" className="block text-sm font-semibold text-white mb-2">Email Address</label>
           <input
+            id="register-email"
             type="email"
             value={values.email}
             onChange={(event) => onChange('email', event.target.value)}
@@ -143,9 +145,10 @@ export const RegisterForm = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <label className="block text-sm font-semibold text-white mb-2">Password</label>
+          <label htmlFor="register-password" className="block text-sm font-semibold text-white mb-2">Password</label>
           <div className="relative">
             <input
+              id="register-password"
               type={showPassword ? 'text' : 'password'}
               value={values.password}
               onChange={(event) => onChange('password', event.target.value)}
@@ -170,9 +173,10 @@ export const RegisterForm = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.55 }}
         >
-          <label className="block text-sm font-semibold text-white mb-2">Confirm Password</label>
+          <label htmlFor="register-confirm-password" className="block text-sm font-semibold text-white mb-2">Confirm Password</label>
           <div className="relative">
             <input
+              id="register-confirm-password"
               type={showConfirmPassword ? 'text' : 'password'}
               value={values.confirmPassword}
               onChange={(event) => onChange('confirmPassword', event.target.value)}
@@ -206,7 +210,7 @@ export const RegisterForm = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          whileHover={{ scale: 1.02, boxShadow: '0 0 20px rgba(34, 255, 0, 0.3)' }}
+          whileHover={{ y: -2 }}
           whileTap={{ scale: 0.98 }}
           type="submit"
           disabled={isSubmitting}

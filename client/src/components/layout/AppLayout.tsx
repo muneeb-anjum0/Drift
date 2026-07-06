@@ -1,38 +1,61 @@
 import type { ReactNode } from 'react';
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import { Sidebar } from './Sidebar';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { BriefcaseBusiness, FolderKanban, LayoutDashboard, LogOut, Settings } from 'lucide-react';
+import Dock, { type DockItemConfig } from '../navigation/Dock';
+import { NAV_ITEMS } from '../../utils/constants';
+import { cn } from '../../utils/cn';
+import { useAuth } from '../../hooks/useAuth';
+
+const icons = [LayoutDashboard, BriefcaseBusiness, FolderKanban, Settings];
 
 export const AppLayout = ({ children }: { children?: ReactNode }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { logout, user } = useAuth();
+
+  const dockItems: DockItemConfig[] = [
+    ...NAV_ITEMS.map((item, index) => {
+      const Icon = icons[index] ?? LayoutDashboard;
+      const isActive = item.to === '/projects'
+        ? location.pathname.startsWith('/projects')
+        : location.pathname === item.to;
+
+      return {
+        label: item.label,
+        icon: <Icon />,
+        onClick: () => navigate(item.to),
+        className: cn(isActive && 'active'),
+      };
+    }),
+    {
+      label: 'Logout',
+      icon: <LogOut />,
+      onClick: () => void logout(),
+      className: 'dock-logout',
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-black">
-      <Sidebar
-        isOpen={sidebarOpen}
-        setIsOpen={setSidebarOpen}
-        isCollapsed={sidebarCollapsed}
-        setIsCollapsed={setSidebarCollapsed}
-      />
-      <div
-        className={
-          sidebarCollapsed
-            ? 'flex min-h-screen flex-1 flex-col transition-[padding] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:pl-40'
-            : 'flex min-h-screen flex-1 flex-col transition-[padding] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:pl-80'
-        }
-      >
-        <button
-          type="button"
-          onClick={() => setSidebarOpen(true)}
-          className="fixed left-4 top-4 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-lime-400/20 bg-black text-lime-300 shadow-2xl lg:hidden"
-        >
-          <span className="sr-only">Open navigation</span>
-          <span className="h-0.5 w-5 rounded-full bg-lime-300 shadow-[0_7px_0_#bef264,0_-7px_0_#bef264]" />
-        </button>
-        <main className="flex-1 px-5 py-6 pt-20 text-white sm:px-8 lg:px-10 lg:pt-8">
-          {children ?? <Outlet />}
-        </main>
+    <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
+      <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg-soft)]/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-text-soft)]">DriftLedger</p>
+            <h1 className="text-xl font-semibold text-[var(--color-text)] sm:text-2xl">Requirement drift workspace</h1>
+          </div>
+          <div className="hidden min-w-0 text-right sm:block">
+            <p className="truncate text-sm font-semibold text-[var(--color-text)]">{user?.name || 'DriftLedger user'}</p>
+            <p className="truncate text-xs text-[var(--color-text-muted)]">{user?.email || 'Signed in'}</p>
+          </div>
+        </div>
+      </header>
+
+      <main className="app-main mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        {children ?? <Outlet />}
+      </main>
+
+      <div className="app-dock-shell">
+        <Dock items={dockItems} panelHeight={58} baseItemSize={42} magnification={54} distance={130} />
       </div>
     </div>
   );

@@ -44,8 +44,8 @@ export const ProjectCard = ({
       <Card className="h-full rounded-[2rem] border-white/10 bg-black/65 p-6 hover:border-lime-400/35">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
-            <motion.button 
-              whileHover={{ color: '#22ff00' }}
+            <motion.button
+              whileHover={{ color: 'var(--color-text-muted)' }}
               className="text-left transition-colors"
               onClick={onOpen}
             >

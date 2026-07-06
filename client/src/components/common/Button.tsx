@@ -8,12 +8,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const Button = ({ variant = 'primary', size = 'md', className, children, ...props }: ButtonProps) => {
-  const base = 'inline-flex items-center justify-center rounded-full font-semibold tracking-normal transition-all duration-200 hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-lime-400/40 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:scale-100';
+  const base = 'inline-flex items-center justify-center rounded-[var(--radius-control)] font-semibold tracking-normal transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-[var(--color-focus)] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0';
   const variants = {
-    primary: 'bg-lime-400 text-black shadow-[0_10px_30px_rgba(163,230,53,0.22)] hover:bg-lime-300 hover:shadow-[0_14px_38px_rgba(163,230,53,0.32)]',
-    secondary: 'border border-white/10 bg-white/[0.03] text-white hover:border-lime-400/40 hover:bg-lime-400/10 hover:text-lime-200',
-    ghost: 'bg-transparent text-gray-300 hover:bg-lime-400/10 hover:text-lime-200',
-    danger: 'border border-white/10 bg-black text-gray-300 hover:border-lime-400/40 hover:bg-lime-400/10 hover:text-lime-200',
+    primary: 'border border-[var(--color-primary)] bg-[var(--color-primary)] text-[var(--color-primary-text)] shadow-[var(--shadow-button)] hover:bg-[var(--color-primary-hover)]',
+    secondary: 'border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[var(--color-text)] hover:bg-[var(--color-bg-soft)]',
+    ghost: 'bg-transparent text-[var(--color-text-muted)] hover:bg-[var(--color-accent-soft)] hover:text-[var(--color-text)]',
+    danger: 'border border-[var(--color-danger)] bg-[var(--color-surface)] text-[var(--color-danger)] hover:bg-[rgba(159,29,29,0.08)]',
   };
   const sizes = {
     sm: 'h-8 px-3 text-xs',

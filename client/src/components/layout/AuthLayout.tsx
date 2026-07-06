@@ -3,42 +3,26 @@ import { motion } from 'framer-motion';
 
 export const AuthLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden">
-      {/* Animated background */}
-      <div className="fixed inset-0 opacity-5">
-        <svg className="w-full h-full" width="100%" height="100%">
-          <defs>
-            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#22ff00" strokeWidth="0.5"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
-      </div>
-
-      <div className="relative z-10 mx-auto min-h-screen max-w-7xl lg:grid lg:grid-cols-[1fr_1fr] gap-0">
-        {/* Left side - Brand */}
-        <motion.section 
+    <div className="min-h-screen overflow-hidden bg-[var(--color-bg)] text-[var(--color-text)]">
+      <div className="relative z-10 mx-auto min-h-screen max-w-7xl gap-0 lg:grid lg:grid-cols-[1fr_1fr]">
+        <motion.section
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          className="hidden lg:flex flex-col justify-between px-14 py-20 border-r border-lime-400/20"
+          className="hidden flex-col justify-between border-r border-[var(--color-border)] px-14 py-20 lg:flex"
         >
           <div>
-            <motion.div 
-              whileHover={{ scale: 1.05 }}
-              className="text-3xl font-bold tracking-wider mb-12"
-            >
-              <span className="text-lime-400">Drift</span>
-              <span>Ledger</span>
+            <motion.div whileHover={{ y: -2 }} className="mb-12 text-3xl font-bold tracking-normal">
+              <span>Drift</span>
+              <span className="text-[var(--color-text-muted)]">Ledger</span>
             </motion.div>
 
             <div className="space-y-8">
-              <motion.h1 
+              <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-5xl font-bold leading-tight"
+                className="text-5xl font-bold leading-tight text-[var(--color-text)]"
               >
                 Welcome Back
               </motion.h1>
@@ -47,31 +31,31 @@ export const AuthLayout = ({ children }: { children: ReactNode }) => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="text-xl text-gray-300 leading-relaxed max-w-md"
+                className="max-w-md text-xl leading-relaxed text-[var(--color-text-muted)]"
               >
-                Manage your workspaces, projects, and track code changes with DriftLedger.
+                Manage workspaces, project scope, baselines, and requirement drift from one clean control surface.
               </motion.p>
 
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
                 className="grid gap-4"
               >
                 {[
-                  { title: 'Workspaces', desc: 'Organize your projects' },
-                  { title: 'Projects', desc: 'Track your code changes' },
-                  { title: 'Activity Logs', desc: 'Full audit trail' },
-                ].map((item, i) => (
+                  { title: 'Workspaces', desc: 'Organize client environments' },
+                  { title: 'Requirements', desc: 'Preserve agreed scope' },
+                  { title: 'Drift Analysis', desc: 'Review Qwen GGUF model output' },
+                ].map((item) => (
                   <motion.div
-                    key={i}
-                    whileHover={{ x: 5 }}
-                    className="flex gap-3 p-3 rounded-lg border border-lime-400/20 hover:border-lime-400/50 transition-colors"
+                    key={item.title}
+                    whileHover={{ x: 4 }}
+                    className="flex gap-3 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 transition-colors hover:border-[var(--color-text)]"
                   >
-                    <div className="w-1 h-1 bg-lime-400 rounded-full mt-2"></div>
+                    <div className="mt-2 h-1 w-1 rounded-full bg-[var(--color-text)]" />
                     <div>
-                      <p className="font-semibold">{item.title}</p>
-                      <p className="text-sm text-gray-400">{item.desc}</p>
+                      <p className="font-semibold text-[var(--color-text)]">{item.title}</p>
+                      <p className="text-sm text-[var(--color-text-muted)]">{item.desc}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -79,24 +63,20 @@ export const AuthLayout = ({ children }: { children: ReactNode }) => {
             </div>
           </div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="text-sm text-gray-500"
-          >
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-sm text-[var(--color-text-soft)]">
             © 2026 DriftLedger. All rights reserved.
           </motion.p>
         </motion.section>
 
-        {/* Right side - Form */}
-        <motion.section 
+        <motion.section
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
           className="flex items-center justify-center px-6 py-14 sm:px-10 lg:px-14"
         >
-          <div className="w-full max-w-md">{children}</div>
+          <div className="w-full max-w-md rounded-[var(--radius-modal)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-card)] sm:p-8">
+            {children}
+          </div>
         </motion.section>
       </div>
     </div>

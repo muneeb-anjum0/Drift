@@ -89,8 +89,9 @@ export const LoginForm = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <label className="block text-sm font-semibold text-white mb-2">Email Address</label>
+          <label htmlFor="login-email" className="block text-sm font-semibold text-white mb-2">Email Address</label>
           <input
+            id="login-email"
             type="email"
             value={values.email}
             onChange={(event) => onChange('email', event.target.value)}
@@ -105,9 +106,10 @@ export const LoginForm = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <label className="block text-sm font-semibold text-white mb-2">Password</label>
+          <label htmlFor="login-password" className="block text-sm font-semibold text-white mb-2">Password</label>
           <div className="relative">
             <input
+              id="login-password"
               type={showPassword ? 'text' : 'password'}
               value={values.password}
               onChange={(event) => onChange('password', event.target.value)}
@@ -141,7 +143,7 @@ export const LoginForm = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          whileHover={{ scale: 1.02, boxShadow: '0 0 20px rgba(34, 255, 0, 0.3)' }}
+          whileHover={{ y: -2 }}
           whileTap={{ scale: 0.98 }}
           type="submit"
           disabled={isSubmitting}

@@ -16,7 +16,7 @@ const SettingsPage = lazy(() => import('../pages/SettingsPage').then((module) =>
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage').then((module) => ({ default: module.NotFoundPage })));
 
 const routeFallback = (
-  <div className="flex min-h-screen items-center justify-center bg-black text-white">
+  <div className="flex min-h-screen items-center justify-center bg-[var(--color-bg)] text-[var(--color-text)]">
     <Spinner />
   </div>
 );
