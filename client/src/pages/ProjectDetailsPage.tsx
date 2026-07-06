@@ -317,7 +317,7 @@ export const ProjectDetailsPage = () => {
             description="Compare incoming scope changes against the selected baseline and save reviewed analyses for change requests."
           />
 
-          <div className="grid gap-5 2xl:grid-cols-[minmax(0,1fr)_430px]">
+          <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px] min-[1500px]:grid-cols-[minmax(0,1fr)_420px]">
             <div className="min-w-0">
               {requirements.length === 0 ? (
                 <EmptyState
