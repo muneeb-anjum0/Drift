@@ -124,6 +124,23 @@ select {
   box-shadow: var(--shadow-card);
 }
 
+input[type='file']::file-selector-button {
+  margin-right: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  padding: 0.35rem 0.75rem;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+input[type='file']::file-selector-button:hover {
+  background: var(--color-accent-soft);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

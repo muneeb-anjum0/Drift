@@ -38,13 +38,13 @@ export const AppLayout = ({ children }: { children?: ReactNode }) => {
 
   return (
     <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
-      <header className="sticky top-0 z-40 px-4 py-3">
-        <div className="app-top-island mx-auto flex max-w-2xl items-center justify-between gap-4 px-4 py-3">
+      <header className="sticky top-0 z-40 px-4 py-2">
+        <div className="app-top-island mx-auto flex max-w-xl items-center justify-between gap-4 px-4 py-2">
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-[var(--color-text)]">DriftLedger</p>
             <p className="truncate text-xs text-[var(--color-text-muted)]">Requirement drift workspace</p>
           </div>
-          <div className="shrink-0 rounded-[var(--radius-control)] bg-[var(--color-primary)] px-3 py-2 text-sm font-semibold text-[var(--color-primary-text)]">
+          <div className="shrink-0 truncate pl-3 text-sm font-semibold text-[var(--color-text)]">
             {displayName}
           </div>
         </div>

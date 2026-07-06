@@ -46,9 +46,9 @@ export const FileUploadPanel = ({
           type="file"
           accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.webp"
           onChange={(event) => setFile(event.target.files?.[0] ?? null)}
-          className="min-h-10 rounded-full border border-white/10 bg-black px-4 py-2 text-sm text-gray-300 file:mr-4 file:rounded-full file:border-0 file:bg-lime-400 file:px-3 file:py-1 file:text-xs file:font-semibold file:text-black"
+          className="min-h-10 rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 text-sm text-[var(--color-text)]"
         />
-        <select value={documentType} onChange={(event) => setDocumentType(event.target.value as DocumentType)} className="h-10 rounded-full border border-white/10 bg-black px-4 text-sm text-gray-300">
+        <select value={documentType} onChange={(event) => setDocumentType(event.target.value as DocumentType)} className="h-10 rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 text-sm text-[var(--color-text)]">
           {documentTypes.map((type) => (
             <option key={type.value} value={type.value}>
               {type.label}
