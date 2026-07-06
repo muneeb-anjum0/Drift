@@ -8,6 +8,7 @@ export interface ChangeRequestChange {
   description: string;
   changeType: 'added' | 'modified' | 'removed' | 'ambiguous' | 'contradiction';
   impact: 'low' | 'medium' | 'high' | 'critical';
+  affectedModules?: string[];
   estimatedEffort?: number;
 }
 

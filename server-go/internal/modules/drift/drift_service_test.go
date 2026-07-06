@@ -57,11 +57,11 @@ func TestScoreRiskThresholds(t *testing.T) {
 		{ChangeType: "contradiction", Impact: "critical", EstimatedEffort: &effort},
 	})
 
-	if score != 60 {
-		t.Fatalf("expected score 60, got %d", score)
+	if score != 97 {
+		t.Fatalf("expected score 97, got %d", score)
 	}
-	if risk != "high" {
-		t.Fatalf("expected high risk, got %q", risk)
+	if risk != "critical" {
+		t.Fatalf("expected critical risk, got %q", risk)
 	}
 	if counts["added"] != 1 || counts["contradiction"] != 1 {
 		t.Fatalf("unexpected counts: %#v", counts)

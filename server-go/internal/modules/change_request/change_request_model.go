@@ -11,6 +11,7 @@ type ChangeRequestChange struct {
 	Description     string   `bson:"description" json:"description"`
 	ChangeType      string   `bson:"changeType" json:"changeType"`
 	Impact          string   `bson:"impact" json:"impact"`
+	AffectedModules []string `bson:"affectedModules,omitempty" json:"affectedModules,omitempty"`
 	EstimatedEffort *float64 `bson:"estimatedEffort,omitempty" json:"estimatedEffort,omitempty"`
 }
 

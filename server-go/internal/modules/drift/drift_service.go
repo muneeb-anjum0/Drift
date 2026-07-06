@@ -53,7 +53,7 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 		return AnalysisPreview{}, err
 	}
 	changes := detect(version.RequirementsSnapshot, p.InputText)
-	score, risk, counts, hours, summary := Score(changes)
+	changes, score, risk, counts, hours, summary := CleanAnalysis(changes, p.InputText)
 	engine, used, model := "rule_based", false, (*string)(nil)
 	requirementResults := []RequirementAnalysisResult{}
 	if s.inference.Enabled() {
@@ -65,9 +65,9 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 		if err != nil {
 			return AnalysisPreview{}, err
 		}
-		score, risk, counts, hours, summary = Score(changes)
-		if inferenceSummary != "" {
-			summary = inferenceSummary
+		changes, score, risk, counts, hours, summary = CleanAnalysis(changes, p.InputText)
+		if inferenceSummary != "" && len(changes) == 0 {
+			summary = CleanReasoning(summary + " " + inferenceSummary)
 		}
 		engine = "qwen_lora"
 	}
@@ -296,6 +296,10 @@ var requirementSynonyms = map[string][]string{
 	"alerts":        {"notification"},
 	"notify":        {"notification"},
 	"notifications": {"notification"},
+	"fees":          {"fee", "payment", "billing"},
+	"children":      {"student"},
+	"parents":       {"parent", "account", "role"},
+	"guardians":     {"parent", "account", "role"},
 	"invoices":      {"invoice"},
 	"billing":       {"invoice", "payment"},
 	"usage":         {"report"},
@@ -304,8 +308,9 @@ var requirementSynonyms = map[string][]string{
 var domainKeywords = map[string][]string{
 	"authentication":   {"password", "reset", "login", "signin", "auth", "authentication", "otp", "2fa", "mfa", "email", "account", "credentials"},
 	"reports_exports":  {"report", "monthly", "weekly", "csv", "pdf", "export", "download", "dashboard", "data", "analytics", "usage"},
-	"billing":          {"invoice", "billing", "payment", "subscription", "plan", "refund", "tax", "receipt", "pdf"},
+	"billing":          {"invoice", "billing", "payment", "subscription", "plan", "refund", "tax", "receipt", "pdf", "fee", "fees"},
 	"notifications":    {"notify", "notification", "alert", "reminder", "expiry", "expire", "expired", "subscription"},
+	"student_records":  {"student", "attendance", "grade", "grades", "assessment", "course", "children", "parent", "guardian"},
 	"admin_access":     {"admin", "staff", "role", "permission", "access", "verification", "verified", "dashboard"},
 	"documents":        {"document", "file", "upload", "attachment", "notes", "brief", "scope"},
 	"products_content": {"product", "listing", "blog", "post", "homepage", "content", "image"},
@@ -525,7 +530,8 @@ func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequ
 		return DriftAnalysis{}, utils.ErrNotFound
 	}
 	now := time.Now().UTC()
-	analysis := DriftAnalysis{ID: utils.NewID(), Project: projectID, Workspace: project.Workspace, BaselineVersion: versionID, BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: p.DriftScore, RiskLevel: p.RiskLevel, Summary: p.Summary, DetectedChanges: p.DetectedChanges, RequirementResults: p.RequirementResults, AddedCount: p.AddedCount, ModifiedCount: p.ModifiedCount, RemovedCount: p.RemovedCount, AmbiguousCount: p.AmbiguousCount, ContradictionCount: p.ContradictionCount, EstimatedExtraHours: p.EstimatedExtraHours, AnalysisEngine: def(p.AnalysisEngine, "qwen_lora"), OllamaUsed: p.OllamaUsed, OllamaModel: p.OllamaModel, Status: def(p.Status, "saved"), CreatedBy: userID, CreatedAt: now, UpdatedAt: now}
+	changes, score, risk, counts, hours, summary := CleanAnalysis(p.DetectedChanges, p.InputText)
+	analysis := DriftAnalysis{ID: utils.NewID(), Project: projectID, Workspace: project.Workspace, BaselineVersion: versionID, BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: score, RiskLevel: risk, Summary: summary, DetectedChanges: changes, RequirementResults: p.RequirementResults, AddedCount: counts["added"], ModifiedCount: counts["modified"], RemovedCount: counts["removed"], AmbiguousCount: counts["ambiguous"], ContradictionCount: counts["contradiction"], EstimatedExtraHours: hours, AnalysisEngine: def(p.AnalysisEngine, "qwen_lora"), OllamaUsed: p.OllamaUsed, OllamaModel: p.OllamaModel, Status: def(p.Status, "saved"), CreatedBy: userID, CreatedAt: now, UpdatedAt: now}
 	_, err = s.db.Collection("driftanalyses").InsertOne(ctx, analysis)
 	if err == nil {
 		activity.Log(ctx, s.db, project.Workspace, userID, "DRIFT_ANALYSIS_CREATED", "DriftAnalysis", analysis.ID.Hex(), bson.M{"projectId": projectID.Hex(), "driftScore": p.DriftScore})

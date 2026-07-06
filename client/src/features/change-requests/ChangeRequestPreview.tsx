@@ -174,6 +174,9 @@ export const ChangeRequestPreview = ({ projectId, driftAnalyses }: { projectId: 
                       <div key={`${change.title}-${index}`} className="rounded-2xl border border-gray-800 bg-black/40 p-4">
                         <p className="font-semibold text-white">{change.title}</p>
                         <p className="mt-1 text-gray-400">{change.description}</p>
+                        {change.affectedModules?.length ? (
+                          <p className="mt-2 text-xs text-gray-500">Affected modules: {change.affectedModules.join(', ')}</p>
+                        ) : null}
                         <p className="mt-2 text-xs uppercase tracking-[0.14em] text-gray-500">
                           {change.changeType} / {change.impact} / {change.estimatedEffort ?? 0}h
                         </p>
