@@ -86,7 +86,7 @@ export const DashboardPage = () => {
         />
       ) : null}
 
-      <div className="grid gap-6 xl:grid-cols-[1fr_420px]">
+      <div className="space-y-6">
         <motion.section {...sectionMotion} transition={{ ...sectionMotion.transition, delay: 0.12 }}>
           <Card className="rounded-[2rem] border-white/10 bg-black/65 p-6">
             <div className="mb-5 flex items-center justify-between gap-4">

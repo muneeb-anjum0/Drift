@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
   ArrowLeft,
   Bot,
@@ -57,9 +57,22 @@ import {
 
 export const ProjectDetailsPage = () => {
   const { projectId } = useParams<{ projectId: string }>();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isRequirementModalOpen, setIsRequirementModalOpen] = useState(false);
   const [editingRequirement, setEditingRequirement] = useState<Requirement | null>(null);
-  const [activeSection, setActiveSection] = useState<ActiveProjectSection>('requirements');
+  const sectionParam = searchParams.get('section');
+  const activeSection = projectSectionTabs.some((tab) => tab.id === sectionParam) ? (sectionParam as ActiveProjectSection) : 'requirements';
+
+  const setActiveSection = (section: ActiveProjectSection) => {
+    setSearchParams(
+      (current) => {
+        const nextParams = new URLSearchParams(current);
+        nextParams.set('section', section);
+        return nextParams;
+      },
+      { replace: true }
+    );
+  };
 
   const projectQuery = useQuery({
     queryKey: ['project', projectId],
