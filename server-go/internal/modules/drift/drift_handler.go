@@ -37,6 +37,27 @@ func (h Handler) AnalyzeDirect(c *gin.Context) {
 	response.Success(c, http.StatusOK, "Drift model analysis completed", gin.H{"prediction": out})
 }
 
+func (h Handler) AnalyzeModel(c *gin.Context) {
+	var p ModelAnalyzeRequest
+	if c.ShouldBindJSON(&p) != nil || h.validate.Struct(p) != nil {
+		response.Error(c, http.StatusBadRequest, "Validation failed", nil)
+		return
+	}
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 70*time.Second)
+	defer cancel()
+	out, err := h.service.AnalyzeDirect(ctx, p)
+	if err != nil {
+		h.err(c, err)
+		return
+	}
+	response.Success(c, http.StatusOK, "Drift model analysis completed", gin.H{
+		"label":            out.Label,
+		"confidence":       out.Confidence,
+		"reasoning":        out.Reasoning,
+		"changed_elements": out.ChangedElements,
+	})
+}
+
 func (h Handler) Analyze(c *gin.Context) {
 	var p AnalyzeRequest
 	if c.ShouldBindJSON(&p) != nil || h.validate.Struct(p) != nil {

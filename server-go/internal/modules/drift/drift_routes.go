@@ -18,3 +18,8 @@ func RegisterRoutes(group *gin.RouterGroup, db *mongo.Database, cfg config.Confi
 	group.GET("/:driftAnalysisId", handler.Get)
 	group.DELETE("/:driftAnalysisId", handler.Delete)
 }
+
+func RegisterModelRoutes(group *gin.RouterGroup, db *mongo.Database, cfg config.Config, ollamaService ollama.Service) {
+	handler := NewHandler(NewService(db, ollamaService, NewInferenceClient(cfg)))
+	group.POST("/analyze", handler.AnalyzeModel)
+}

@@ -47,6 +47,16 @@ func New(db *mongo.Database, cfg config.Config, ollamaService ollama.Service, st
 	drift.RegisterRoutes(api.Group("/drift"), db, cfg, ollamaService)
 	change_request.RegisterRoutes(api.Group("/change-requests"), db, cfg, ollamaService)
 	filemodule.RegisterRoutes(api.Group("/files"), db, cfg, storage)
+	drift.RegisterModelRoutes(r.Group("/api/drift"), db, cfg, ollamaService)
+	if cfg.AppEnv == "development" {
+		api.GET("/debug/routes", func(c *gin.Context) {
+			routes := make([]gin.H, 0, len(r.Routes()))
+			for _, route := range r.Routes() {
+				routes = append(routes, gin.H{"method": route.Method, "path": route.Path})
+			}
+			response.Success(c, http.StatusOK, "Routes fetched", gin.H{"routes": routes})
+		})
+	}
 	r.NoRoute(func(c *gin.Context) {
 		response.Error(c, http.StatusNotFound, "Route not found", nil)
 	})
