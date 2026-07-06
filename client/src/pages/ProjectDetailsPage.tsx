@@ -244,9 +244,10 @@ export const ProjectDetailsPage = () => {
         </div>
       </section>
 
-      <nav className="grid gap-3 rounded-3xl border border-white/10 bg-black/70 p-3 md:grid-cols-4">
+      <nav className="grid gap-3 rounded-3xl border border-white/10 bg-black/70 p-3 md:grid-cols-5">
         {projectSectionTabs.map(({ id, label, description, icon: Icon }) => {
           const isActive = activeSection === id;
+          const isDriftPair = id === 'drift' || id === 'history';
           return (
             <button
               key={id}
@@ -254,6 +255,9 @@ export const ProjectDetailsPage = () => {
               onClick={() => setActiveSection(id)}
               className={cn(
                 'flex min-h-20 items-center gap-3 rounded-2xl border px-4 py-3 text-left transition',
+                isDriftPair && 'md:relative',
+                id === 'drift' && 'md:rounded-r-none',
+                id === 'history' && 'md:-ml-3 md:rounded-l-none md:border-l-0',
                 isActive
                   ? 'border-lime-400/40 bg-lime-400/15 text-white shadow-[0_0_30px_rgba(163,230,53,0.08)]'
                   : 'border-transparent bg-white/[0.02] text-gray-400 hover:border-lime-400/20 hover:bg-lime-400/5 hover:text-white'
@@ -330,41 +334,45 @@ export const ProjectDetailsPage = () => {
             description="Compare incoming scope changes against the selected baseline and save reviewed analyses for change requests."
           />
 
-          <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px] min-[1500px]:grid-cols-[minmax(0,1fr)_420px]">
-            <div className="min-w-0">
-              {requirements.length === 0 ? (
-                <EmptyState
-                  title="Add requirements and create a baseline before analyzing drift."
-                  description="Drift analysis needs approved requirements so it can compare future client input against the original scope."
-                  icon={<GitCompareArrows className="h-5 w-5" />}
-                />
-              ) : versions.length === 0 ? (
-                <EmptyState
-                  title="Create a requirement baseline before running drift analysis."
-                  description="Baseline versions are required so the drift engine has approved scope to compare against."
-                  actionLabel="Create Baseline"
-                  onAction={() => {
-                    void handleCreateBaseline();
-                  }}
-                  icon={<Layers3 className="h-5 w-5" />}
-                />
-              ) : (
-                <DriftAnalysisPanel projectId={project._id} versions={versions} hasRequirements={requirements.length > 0} />
-              )}
-            </div>
-
-            <Card className="border-white/10 bg-black/60 p-5">
-              <div className="mb-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-lime-400">History</p>
-                <h3 className="mt-1 text-lg font-semibold text-white">Saved analyses</h3>
-              </div>
-              <DriftHistory
-                analyses={driftAnalysesQuery.isLoading ? [] : driftAnalyses}
-                onDelete={handleDeleteDriftAnalysis}
-                isDeleting={deleteDriftAnalysisMutation.isPending}
+          <div className="min-w-0">
+            {requirements.length === 0 ? (
+              <EmptyState
+                title="Add requirements and create a baseline before analyzing drift."
+                description="Drift analysis needs approved requirements so it can compare future client input against the original scope."
+                icon={<GitCompareArrows className="h-5 w-5" />}
               />
-            </Card>
+            ) : versions.length === 0 ? (
+              <EmptyState
+                title="Create a requirement baseline before running drift analysis."
+                description="Baseline versions are required so the drift engine has approved scope to compare against."
+                actionLabel="Create Baseline"
+                onAction={() => {
+                  void handleCreateBaseline();
+                }}
+                icon={<Layers3 className="h-5 w-5" />}
+              />
+            ) : (
+              <DriftAnalysisPanel projectId={project._id} versions={versions} hasRequirements={requirements.length > 0} />
+            )}
           </div>
+        </section>
+      ) : null}
+
+      {activeSection === 'history' ? (
+        <section className="space-y-5">
+          <PanelHeader
+            eyebrow="Drift history"
+            title="Saved analyses"
+            description="Review previously saved drift analyses from this project."
+          />
+
+          <Card className="border-white/10 bg-black/60 p-5">
+            <DriftHistory
+              analyses={driftAnalysesQuery.isLoading ? [] : driftAnalyses}
+              onDelete={handleDeleteDriftAnalysis}
+              isDeleting={deleteDriftAnalysisMutation.isPending}
+            />
+          </Card>
         </section>
       ) : null}
 
