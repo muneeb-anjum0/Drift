@@ -12,6 +12,8 @@ Make scope changes easy to compare, explain, approve, and document from the firs
 
 DriftLedger is a full-stack app for managing requirements, freezing baselines, analyzing client messages for drift, and generating change-request drafts.
 
+Project workspaces are organized into Requirements, Drift Analysis, History, Change Requests, and Documents.
+
 ## Stack
 
 - React, Vite, TypeScript, Tailwind
