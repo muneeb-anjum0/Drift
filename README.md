@@ -76,3 +76,4 @@ python tools/test_change_request_generation.py
 ```
 
 More setup notes live in `docs/`.
+Q3/Q4 comparison workflow: `docs/model_comparison.md`.

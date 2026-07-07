@@ -39,6 +39,7 @@ models/huggingface/
 __pycache__/
 *.pyc
 .pytest_cache/
+reports/model_comparison/
 
 # Docker/build artifacts
 *.tar
