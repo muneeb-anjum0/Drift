@@ -1,37 +1,38 @@
 import { motion } from 'framer-motion';
+import { Fragment } from 'react';
 import {
   ArrowRight,
   BarChart3,
   CheckCircle2,
   ClipboardCheck,
-  FileCheck2,
+  Github,
   GitCompareArrows,
   Layers,
   ListChecks,
   LockKeyhole,
-  Shield,
+  Mail,
   Workflow,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/common/Button';
 
 const features = [
-  { icon: Layers, title: 'Structured scope', desc: 'Keep requirements, baselines, and client intent in one calm workspace.' },
-  { icon: GitCompareArrows, title: 'Model-backed drift', desc: 'Compare new client messages against approved requirements using the local Qwen GGUF engine.' },
-  { icon: Workflow, title: 'Change requests', desc: 'Turn material drift into reviewed client approval drafts.' },
+  { icon: Layers, title: 'Baseline control', desc: 'Organize requirements and approved versions before client scope starts shifting.' },
+  { icon: GitCompareArrows, title: 'Requirement-level drift', desc: 'Compare new client input against the right baseline requirement using the local Qwen GGUF engine.' },
+  { icon: Workflow, title: 'Approval-ready output', desc: 'Turn material drift into change requests with impact, cost, timeline, and decision history.' },
 ];
 
 const stats = [
-  { label: 'Requirement-first analysis', value: '1:1' },
-  { label: 'Local model path', value: 'Q4_K_M' },
-  { label: 'Primary workflow', value: 'Drift' },
+  { label: 'Comparison pattern', value: '1 requirement' },
+  { label: 'Runtime artifact', value: 'Q4_K_M' },
+  { label: 'Workflow focus', value: 'Baseline to approval' },
 ];
 
 const steps = [
-  'Capture requirements',
-  'Freeze a baseline',
-  'Compare new client input',
-  'Generate approval-ready change requests',
+  { title: 'Capture scope', text: 'Write or extract requirements.' },
+  { title: 'Freeze baseline', text: 'Save an approved version.' },
+  { title: 'Compare input', text: 'Analyze the new client message.' },
+  { title: 'Prepare approval', text: 'Generate the change request.' },
 ];
 
 const modules = [
@@ -49,6 +50,12 @@ const planFeatures = [
   'Change request and approval workflows',
   'Evaluation dashboard',
   'Local Q4_K_M inference',
+];
+
+const runtimeNotes = [
+  { title: 'Merged local model', text: 'Qwen2.5-7B + DriftLedger LoRA runs as one GGUF Q4_K_M artifact.' },
+  { title: 'Docker runtime', text: 'llama.cpp, inference, backend, frontend, and MongoDB run together in Compose.' },
+  { title: 'Local-first project data', text: 'Project records live in the app database for this demo instead of a hosted AI workflow.' },
 ];
 
 export default function LandingPage() {
@@ -112,7 +119,15 @@ export default function LandingPage() {
 
         <section className="border-y border-[var(--color-border)] bg-[var(--color-bg-soft)] py-16">
           <div className="mx-auto max-w-7xl px-6">
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="max-w-3xl">
+              <p className="app-eyebrow">Product shape</p>
+              <h2 className="mt-2 text-3xl font-semibold">A focused workspace for controlled scope decisions.</h2>
+              <p className="mt-4 text-base leading-7 text-[var(--color-text-muted)]">
+                DriftLedger keeps the product loop narrow: preserve the baseline, detect the drift, and turn real changes into approval-ready work.
+              </p>
+            </div>
+
+            <div className="mt-8 grid gap-4 md:grid-cols-3">
               {features.map(({ icon: Icon, title, desc }) => (
                 <motion.div key={title} whileHover={{ y: -4 }} className="app-panel p-5">
                   <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-accent-soft)]">
@@ -124,11 +139,11 @@ export default function LandingPage() {
               ))}
             </div>
 
-            <div className="mt-10 grid gap-4 md:grid-cols-3">
+            <div className="mt-5 grid gap-3 md:grid-cols-3">
               {stats.map((stat) => (
-                <div key={stat.label} className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-                  <p className="text-3xl font-semibold">{stat.value}</p>
-                  <p className="mt-2 text-sm text-[var(--color-text-muted)]">{stat.label}</p>
+                <div key={stat.label} className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-text-soft)]">{stat.label}</p>
+                  <p className="mt-1 text-base font-semibold">{stat.value}</p>
                 </div>
               ))}
             </div>
@@ -144,12 +159,24 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-4 md:grid-cols-4">
+          <div className="mt-8 grid gap-3 md:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] md:items-center">
             {steps.map((step, index) => (
-              <div key={step} className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-                <span className="app-badge">{index + 1}</span>
-                <p className="mt-5 font-semibold">{step}</p>
-              </div>
+              <Fragment key={step.title}>
+                <div key={step.title} className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-control)] border border-[var(--color-border)] text-sm font-semibold">
+                      {index + 1}
+                    </span>
+                    <div>
+                      <p className="font-semibold">{step.title}</p>
+                      <p className="mt-1 text-xs leading-5 text-[var(--color-text-muted)]">{step.text}</p>
+                    </div>
+                  </div>
+                </div>
+                {index < steps.length - 1 ? (
+                  <ArrowRight key={`${step.title}-arrow`} className="hidden h-5 w-5 text-[var(--color-text-muted)] md:block" />
+                ) : null}
+              </Fragment>
             ))}
           </div>
         </section>
@@ -172,17 +199,20 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="mx-auto grid max-w-7xl gap-6 px-6 py-16 lg:grid-cols-[1fr_0.8fr]">
+        <section className="mx-auto grid max-w-7xl gap-6 px-6 py-16 lg:grid-cols-[1.05fr_0.8fr]">
           <div className="app-panel p-6">
             <p className="app-eyebrow">Local AI and privacy</p>
-            <h2 className="mt-2 text-3xl font-semibold">Local-first inference, no hosted AI dependency.</h2>
+            <h2 className="mt-2 text-3xl font-semibold">Private by posture, practical by design.</h2>
             <p className="mt-4 text-sm leading-7 text-[var(--color-text-muted)]">
-              DriftLedger runs Qwen2.5-7B + DriftLedger LoRA as a merged GGUF Q4_K_M artifact through llama.cpp and Docker. Project data is stored in the local app database for this demo workflow, which makes the architecture suitable for portfolio reviews and academic demos.
+              The model runtime is packaged for local demos: no hosted AI endpoint, no separate base-model download at runtime, and no client requirement text sent to third-party inference services.
             </p>
-            <div className="mt-5 flex flex-wrap gap-2">
-              <span className="app-badge">GGUF Q4_K_M</span>
-              <span className="app-badge">Docker runtime</span>
-              <span className="app-badge">Local-first data</span>
+            <div className="mt-6 grid gap-3 md:grid-cols-3">
+              {runtimeNotes.map((item) => (
+                <div key={item.title} className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-bg-soft)] p-4">
+                  <p className="text-sm font-semibold">{item.title}</p>
+                  <p className="mt-2 text-xs leading-5 text-[var(--color-text-muted)]">{item.text}</p>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -206,21 +236,24 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="border-t border-[var(--color-border)] bg-[var(--color-bg-soft)] py-12">
+        <footer className="border-t border-[var(--color-border)] bg-[var(--color-bg-soft)] py-8">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-5 px-6">
             <div>
-              <h2 className="text-2xl font-semibold">Start detecting scope drift before it becomes unpaid work.</h2>
-              <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-[var(--color-text-muted)]">
-                <span className="inline-flex items-center gap-2"><Shield className="h-4 w-4" /> Local-first runtime</span>
-                <span className="inline-flex items-center gap-2"><FileCheck2 className="h-4 w-4" /> Approval-ready workflow</span>
-              </div>
+              <p className="text-base font-semibold">DriftLedger</p>
+              <p className="mt-1 text-sm text-[var(--color-text-muted)]">Requirement drift workspace built by Muneeb Anjum.</p>
             </div>
-            <div className="flex flex-wrap gap-3">
-              <Button type="button" onClick={() => navigate('/projects')}>Create Project</Button>
-              <Button type="button" variant="secondary" onClick={() => navigate('/evaluation')}>View Evaluation</Button>
+            <div className="flex flex-wrap items-center gap-4 text-sm text-[var(--color-text-muted)]">
+              <a href="https://github.com/muneeb-anjum0" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 transition hover:text-[var(--color-text)]">
+                <Github className="h-4 w-4" />
+                github.com/muneeb-anjum0
+              </a>
+              <a href="mailto:muneeb.anjum0@gmail.com" className="inline-flex items-center gap-2 transition hover:text-[var(--color-text)]">
+                <Mail className="h-4 w-4" />
+                muneeb.anjum0@gmail.com
+              </a>
             </div>
           </div>
-        </section>
+        </footer>
       </main>
     </div>
   );
