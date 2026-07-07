@@ -56,20 +56,8 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
-      <header className="border-b border-[var(--color-border)] bg-[var(--color-bg-soft)]">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <motion.div whileHover={{ y: -2 }} className="text-2xl font-bold tracking-normal">
-            <span>Drift</span>
-            <span className="text-[var(--color-text-muted)]">Ledger</span>
-          </motion.div>
-          <Button type="button" onClick={() => navigate('/login')}>
-            Get Started
-          </Button>
-        </nav>
-      </header>
-
       <main>
-        <section className="mx-auto grid min-h-[calc(100vh-73px)] max-w-7xl items-center gap-10 px-6 py-16 lg:grid-cols-[1fr_0.92fr]">
+        <section className="mx-auto grid min-h-screen max-w-7xl items-center gap-10 px-6 py-16 lg:grid-cols-[1fr_0.92fr]">
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <p className="app-eyebrow">Requirement drift control</p>
             <h1 className="mt-4 max-w-3xl text-5xl font-semibold leading-tight tracking-normal sm:text-6xl">
