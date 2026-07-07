@@ -22,6 +22,17 @@ type Service struct {
 	ollama ollama.Service
 }
 
+const (
+	ApprovalDraft         = "draft"
+	ApprovalPending       = "pending_approval"
+	ApprovalApproved      = "approved"
+	ApprovalRejected      = "rejected"
+	ApprovalNeedsRevision = "needs_revision"
+	maxApprovalNoteLength = 1200
+)
+
+var ErrInvalidApprovalAction = errors.New("invalid approval action")
+
 func NewService(db *mongo.Database, ollama ollama.Service) Service {
 	return Service{db: db, ollama: ollama}
 }
@@ -222,7 +233,7 @@ func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequ
 		return ChangeRequest{}, err
 	}
 	now := time.Now().UTC()
-	cr := ChangeRequest{ID: utils.NewID(), Project: analysis.Project, Workspace: analysis.Workspace, DriftAnalysis: driftID, Title: p.Title, ClientName: p.ClientName, Summary: p.Summary, ChangesRequested: p.ChangesRequested, BusinessReason: p.BusinessReason, TimelineImpact: p.TimelineImpact, CostImpact: p.CostImpact, RecommendedAction: p.RecommendedAction, ApprovalNote: p.ApprovalNote, Status: def(p.Status, "draft"), GeneratedBy: def(p.GeneratedBy, analysis.AnalysisEngine), CreatedBy: userID, CreatedAt: now, UpdatedAt: now}
+	cr := ChangeRequest{ID: utils.NewID(), Project: analysis.Project, Workspace: analysis.Workspace, DriftAnalysis: driftID, Title: p.Title, ClientName: p.ClientName, Summary: p.Summary, ChangesRequested: p.ChangesRequested, BusinessReason: p.BusinessReason, TimelineImpact: p.TimelineImpact, CostImpact: p.CostImpact, RecommendedAction: p.RecommendedAction, ApprovalNote: p.ApprovalNote, Status: def(p.Status, "draft"), ApprovalStatus: ApprovalDraft, GeneratedBy: def(p.GeneratedBy, analysis.AnalysisEngine), CreatedBy: userID, CreatedAt: now, UpdatedAt: now}
 	_, err = s.db.Collection("changerequests").InsertOne(ctx, cr)
 	if err == nil {
 		activity.Log(ctx, s.db, analysis.Workspace, userID, "CHANGE_REQUEST_CREATED", "ChangeRequest", cr.ID.Hex(), bson.M{"title": cr.Title})
@@ -240,6 +251,7 @@ func (s Service) Get(ctx context.Context, id, userID primitive.ObjectID) (Change
 		return cr, err
 	}
 	_, err = utils.RequireProjectAccess(ctx, s.db, cr.Project, userID)
+	cr.normalizeApproval()
 	return cr, err
 }
 func (s Service) List(ctx context.Context, projectID, userID primitive.ObjectID) ([]ChangeRequest, error) {
@@ -252,8 +264,31 @@ func (s Service) List(ctx context.Context, projectID, userID primitive.ObjectID)
 	}
 	var out []ChangeRequest
 	err = cursor.All(ctx, &out)
+	normalizeApprovals(out)
 	return out, err
 }
+
+func (s Service) ListApprovals(ctx context.Context, userID primitive.ObjectID) ([]ChangeRequest, error) {
+	cursor, err := s.db.Collection("changerequests").Find(ctx, bson.M{}, options.Find().SetSort(bson.D{{Key: "updatedAt", Value: -1}}))
+	if err != nil {
+		return nil, err
+	}
+	var all []ChangeRequest
+	if err := cursor.All(ctx, &all); err != nil {
+		return nil, err
+	}
+	out := make([]ChangeRequest, 0, len(all))
+	for _, cr := range all {
+		if _, err := utils.RequireProjectAccess(ctx, s.db, cr.Project, userID); err == nil {
+			cr.normalizeApproval()
+			out = append(out, cr)
+		} else if !errors.Is(err, utils.ErrForbidden) && !errors.Is(err, utils.ErrNotFound) {
+			return nil, err
+		}
+	}
+	return out, nil
+}
+
 func (s Service) Update(ctx context.Context, id, userID primitive.ObjectID, p UpdateRequest) (ChangeRequest, error) {
 	cr, err := s.Get(ctx, id, userID)
 	if err != nil {
@@ -293,6 +328,110 @@ func (s Service) Update(ctx context.Context, id, userID primitive.ObjectID, p Up
 	}
 	return s.Get(ctx, id, userID)
 }
+
+func (s Service) SubmitForApproval(ctx context.Context, id, userID primitive.ObjectID, note string) (ChangeRequest, error) {
+	return s.setApprovalStatus(ctx, id, userID, ApprovalPending, note)
+}
+
+func (s Service) Approve(ctx context.Context, id, userID primitive.ObjectID, note string) (ChangeRequest, error) {
+	return s.setApprovalStatus(ctx, id, userID, ApprovalApproved, note)
+}
+
+func (s Service) Reject(ctx context.Context, id, userID primitive.ObjectID, note string) (ChangeRequest, error) {
+	return s.setApprovalStatus(ctx, id, userID, ApprovalRejected, note)
+}
+
+func (s Service) NeedsRevision(ctx context.Context, id, userID primitive.ObjectID, note string) (ChangeRequest, error) {
+	return s.setApprovalStatus(ctx, id, userID, ApprovalNeedsRevision, note)
+}
+
+func (s Service) setApprovalStatus(ctx context.Context, id, userID primitive.ObjectID, nextStatus, note string) (ChangeRequest, error) {
+	cr, err := s.Get(ctx, id, userID)
+	if err != nil {
+		return cr, err
+	}
+	note = strings.TrimSpace(note)
+	if len(note) > maxApprovalNoteLength {
+		return cr, ErrInvalidApprovalAction
+	}
+	if err := validateApprovalTransition(cr.ApprovalStatus, nextStatus); err != nil {
+		return cr, err
+	}
+	now := time.Now().UTC()
+	actorName := s.actorName(ctx, userID)
+	event := ApprovalEvent{Status: nextStatus, Note: note, Actor: userID, ActorName: actorName, CreatedAt: now}
+	set := bson.M{"approvalStatus": nextStatus, "updatedAt": now}
+	if nextStatus == ApprovalPending {
+		set["submittedAt"] = now
+		set["decisionBy"] = nil
+		set["decisionByName"] = ""
+		set["decisionAt"] = nil
+		set["decisionNote"] = ""
+	} else {
+		set["decisionBy"] = userID
+		set["decisionByName"] = actorName
+		set["decisionAt"] = now
+		set["decisionNote"] = note
+	}
+	_, err = s.db.Collection("changerequests").UpdateOne(ctx, bson.M{"_id": id}, bson.M{"$set": set, "$push": bson.M{"approvalHistory": event}})
+	if err != nil {
+		return cr, err
+	}
+	activity.Log(ctx, s.db, cr.Workspace, userID, "CHANGE_REQUEST_APPROVAL_UPDATED", "ChangeRequest", id.Hex(), bson.M{"approvalStatus": nextStatus})
+	return s.Get(ctx, id, userID)
+}
+
+func validateApprovalTransition(current, next string) error {
+	current = normalizedApprovalStatus(current)
+	switch next {
+	case ApprovalPending:
+		if current == ApprovalDraft || current == ApprovalNeedsRevision || current == ApprovalRejected {
+			return nil
+		}
+	case ApprovalApproved, ApprovalRejected, ApprovalNeedsRevision:
+		if current == ApprovalPending {
+			return nil
+		}
+	}
+	return ErrInvalidApprovalAction
+}
+
+func (s Service) actorName(ctx context.Context, userID primitive.ObjectID) string {
+	var user struct {
+		Name  string `bson:"name"`
+		Email string `bson:"email"`
+	}
+	if err := s.db.Collection("users").FindOne(ctx, bson.M{"_id": userID}).Decode(&user); err != nil {
+		return "Approver"
+	}
+	if strings.TrimSpace(user.Name) != "" {
+		return user.Name
+	}
+	if parts := strings.Split(user.Email, "@"); len(parts) > 0 && strings.TrimSpace(parts[0]) != "" {
+		return parts[0]
+	}
+	return "Approver"
+}
+
+func normalizeApprovals(changeRequests []ChangeRequest) {
+	for i := range changeRequests {
+		changeRequests[i].normalizeApproval()
+	}
+}
+
+func (cr *ChangeRequest) normalizeApproval() {
+	cr.ApprovalStatus = normalizedApprovalStatus(cr.ApprovalStatus)
+}
+
+func normalizedApprovalStatus(status string) string {
+	switch status {
+	case ApprovalPending, ApprovalApproved, ApprovalRejected, ApprovalNeedsRevision:
+		return status
+	default:
+		return ApprovalDraft
+	}
+}
+
 func (s Service) Delete(ctx context.Context, id, userID primitive.ObjectID) error {
 	cr, err := s.Get(ctx, id, userID)
 	if err != nil {

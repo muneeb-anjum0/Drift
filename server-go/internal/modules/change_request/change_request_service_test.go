@@ -1,6 +1,7 @@
 package change_request
 
 import (
+	"errors"
 	"strings"
 	"testing"
 
@@ -86,5 +87,26 @@ func TestChangeRequestDraftUsesFamilyPortalLanguage(t *testing.T) {
 	reason := strings.ToLower(businessReason(changes))
 	if !strings.Contains(reason, "family member access") || !strings.Contains(reason, "privacy") {
 		t.Fatalf("expected family portal business reason, got %q", reason)
+	}
+}
+
+func TestApprovalTransitionRequiresPendingBeforeDecision(t *testing.T) {
+	if err := validateApprovalTransition("", ApprovalPending); err != nil {
+		t.Fatalf("expected draft request to submit for approval: %v", err)
+	}
+	if err := validateApprovalTransition(ApprovalPending, ApprovalApproved); err != nil {
+		t.Fatalf("expected pending request to approve: %v", err)
+	}
+	if err := validateApprovalTransition(ApprovalApproved, ApprovalRejected); !errors.Is(err, ErrInvalidApprovalAction) {
+		t.Fatalf("expected approved request to reject invalidly, got %v", err)
+	}
+}
+
+func TestNeedsRevisionCanBeResubmitted(t *testing.T) {
+	if err := validateApprovalTransition(ApprovalPending, ApprovalNeedsRevision); err != nil {
+		t.Fatalf("expected pending request to move to revision: %v", err)
+	}
+	if err := validateApprovalTransition(ApprovalNeedsRevision, ApprovalPending); err != nil {
+		t.Fatalf("expected revision request to resubmit: %v", err)
 	}
 }

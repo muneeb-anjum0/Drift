@@ -10,7 +10,7 @@ Make scope comparison, approvals, and change-request writing feel like one calm 
 
 ## What It Is
 
-DriftLedger is a portfolio SaaS app for requirements, baselines, drift analysis, saved history, change requests, documents, and Q4 model evaluation.
+DriftLedger is a portfolio SaaS app for requirements, baselines, drift analysis, saved history, change requests, approvals, documents, and Q4 model evaluation.
 
 ## Stack
 
@@ -31,6 +31,7 @@ Open:
 - Frontend: `http://localhost:5173`
 - Backend health: `http://localhost:5000/health`
 - Inference health: `http://localhost:8000/health`
+- Approvals: `http://localhost:5173/approvals`
 
 Stop:
 
@@ -55,6 +56,7 @@ npm run build
 cd server-go && go test ./...
 python tools/check_local_drift_setup.py
 python tools/test_q4km_config.py
+python tools/test_approval_workflow.py
 python tools/evaluate_q4_quality.py --help
 ```
 

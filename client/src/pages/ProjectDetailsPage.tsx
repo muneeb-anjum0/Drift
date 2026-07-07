@@ -41,7 +41,7 @@ import {
   useUpdateRequirement,
 } from '../hooks/useRequirements';
 import { useDeleteDriftAnalysis, useProjectDriftAnalyses } from '../hooks/useDrift';
-import { useDeleteChangeRequest, useProjectChangeRequests, useUpdateChangeRequest } from '../hooks/useChangeRequests';
+import { useApprovalDecision, useDeleteChangeRequest, useProjectChangeRequests, useUpdateChangeRequest } from '../hooks/useChangeRequests';
 import { FileUploadPanel } from '../features/files/FileUploadPanel';
 import type { ProjectFile } from '../features/files/file.types';
 import { useDeleteFile, useProjectFiles, useUploadFile } from '../hooks/useFiles';
@@ -92,6 +92,7 @@ export const ProjectDetailsPage = () => {
   const deleteDriftAnalysisMutation = useDeleteDriftAnalysis();
   const deleteChangeRequestMutation = useDeleteChangeRequest();
   const updateChangeRequestMutation = useUpdateChangeRequest();
+  const approvalDecisionMutation = useApprovalDecision();
   const uploadFileMutation = useUploadFile();
   const deleteFileMutation = useDeleteFile();
 
@@ -177,6 +178,16 @@ export const ProjectDetailsPage = () => {
       changeRequestId: changeRequest._id,
       projectId,
       payload: { status },
+    });
+  };
+
+  const handleSubmitChangeRequestApproval = async (changeRequest: ChangeRequest) => {
+    if (!projectId || !changeRequest._id) return;
+    await approvalDecisionMutation.mutateAsync({
+      action: 'submit',
+      changeRequestId: changeRequest._id,
+      projectId,
+      note: 'Submitted from the project change request workspace.',
     });
   };
 
@@ -408,8 +419,10 @@ export const ProjectDetailsPage = () => {
               <ChangeRequestHistory
                 changeRequests={changeRequestsQuery.isLoading ? [] : changeRequests}
                 onUpdate={handleUpdateChangeRequestStatus}
+                onSubmitApproval={handleSubmitChangeRequestApproval}
                 onDelete={handleDeleteChangeRequest}
                 isUpdating={updateChangeRequestMutation.isPending}
+                isApprovalUpdating={approvalDecisionMutation.isPending}
                 isDeleting={deleteChangeRequestMutation.isPending}
               />
             </Card>

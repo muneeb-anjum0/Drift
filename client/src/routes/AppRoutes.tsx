@@ -13,6 +13,7 @@ const WorkspacesPage = lazy(() => import('../pages/WorkspacesPage').then((module
 const ProjectsPage = lazy(() => import('../pages/ProjectsPage').then((module) => ({ default: module.ProjectsPage })));
 const ProjectDetailsPage = lazy(() => import('../pages/ProjectDetailsPage').then((module) => ({ default: module.ProjectDetailsPage })));
 const EvaluationPage = lazy(() => import('../pages/EvaluationPage').then((module) => ({ default: module.EvaluationPage })));
+const ApprovalsPage = lazy(() => import('../pages/ApprovalsPage').then((module) => ({ default: module.ApprovalsPage })));
 const SettingsPage = lazy(() => import('../pages/SettingsPage').then((module) => ({ default: module.SettingsPage })));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage').then((module) => ({ default: module.NotFoundPage })));
 
@@ -51,6 +52,7 @@ export const AppRoutes = () => {
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
             <Route path="/evaluation" element={<EvaluationPage />} />
+            <Route path="/approvals" element={<ApprovalsPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Route>
