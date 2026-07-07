@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../hooks/useAuth';
 import type { LoginFormValues } from './auth.types';
 
 export const LoginForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
   const [values, setValues] = useState<LoginFormValues>({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
@@ -23,7 +24,8 @@ export const LoginForm = () => {
     setIsSubmitting(true);
     try {
       await login(values.email, values.password);
-      navigate('/dashboard');
+      const redirectTo = typeof location.state?.from?.pathname === 'string' ? `${location.state.from.pathname}${location.state.from.search ?? ''}` : '/dashboard';
+      navigate(redirectTo, { replace: true });
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : 'Unable to log in');
     } finally {
