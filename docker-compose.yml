@@ -65,7 +65,7 @@ services:
       DRIFT_GGUF_MODEL_PATH: ${DRIFT_GGUF_MODEL_PATH:-/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf}
       DRIFT_LLAMA_SERVER_URL: http://llama:8080
       DRIFT_LLAMA_CTX_SIZE: ${DRIFT_LLAMA_CTX_SIZE:-768}
-      DRIFT_LLAMA_GPU_LAYERS: ${DRIFT_LLAMA_GPU_LAYERS:-16}
+      DRIFT_LLAMA_GPU_LAYERS: ${DRIFT_LLAMA_GPU_LAYERS:-0}
       DRIFT_LLAMA_THREADS: ${DRIFT_LLAMA_THREADS:-6}
       DRIFT_LLAMA_MAX_TOKENS: ${DRIFT_LLAMA_MAX_TOKENS:-120}
       DRIFT_MAX_NEW_TOKENS: ${DRIFT_MAX_NEW_TOKENS:-224}
@@ -97,7 +97,7 @@ services:
       - --ctx-size
       - ${DRIFT_LLAMA_CTX_SIZE:-768}
       - --n-gpu-layers
-      - ${DRIFT_LLAMA_GPU_LAYERS:-16}
+      - ${DRIFT_LLAMA_GPU_LAYERS:-0}
       - --threads
       - ${DRIFT_LLAMA_THREADS:-6}
     volumes:

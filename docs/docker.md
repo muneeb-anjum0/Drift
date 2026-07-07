@@ -43,16 +43,16 @@ The backend calls `http://inference:8000` inside Docker. The inference wrapper c
 
 ## GPU Notes
 
-Q4_K_M can run on CPU, but it is slow. For a 6GB NVIDIA GPU, start with:
+Q4_K_M can run on CPU, but it is slow. The checked-in default is CPU-safe:
 
 ```env
 DRIFT_LLAMA_CTX_SIZE=768
-DRIFT_LLAMA_GPU_LAYERS=16
+DRIFT_LLAMA_GPU_LAYERS=0
 DRIFT_LLAMA_THREADS=6
 DRIFT_LLAMA_MAX_TOKENS=120
 ```
 
-If Docker runs out of VRAM, lower `DRIFT_LLAMA_GPU_LAYERS` to `12`, `8`, or `0`.
+If Docker GPU offload is confirmed, raise `DRIFT_LLAMA_GPU_LAYERS` gradually, for example `8`, `12`, then `16`. If Docker hangs or runs out of VRAM, return it to `0`.
 
 ## Reports
 
