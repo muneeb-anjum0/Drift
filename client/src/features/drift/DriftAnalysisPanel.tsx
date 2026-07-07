@@ -307,6 +307,9 @@ export const DriftAnalysisPanel = ({
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-lime-400">Model sandbox</p>
               <h4 className="mt-1 text-base font-semibold text-white">Test a single baseline against one client message</h4>
+              <p className="mt-2 max-w-xl text-sm leading-6 text-gray-400">
+                Developer test area. Compare one baseline requirement against one client message; project analysis still runs requirement-by-requirement.
+              </p>
             </div>
             <Button type="button" variant="secondary" onClick={handleDirectAnalyze} disabled={directAnalyzeMutation.isPending}>
               {directAnalyzeMutation.isPending ? <Spinner /> : 'Analyze'}

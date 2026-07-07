@@ -65,6 +65,7 @@ python tools\test_model_route_consistency.py
 python tools\test_project_requirement_analysis.py
 python tools\test_change_request_generation.py
 python tools\test_approval_workflow.py
+python tools\test_billing_summary.py
 ```
 
 The monthly-report case should remain `unchanged` even when unrelated password-reset requirements exist in the same baseline.
@@ -116,6 +117,7 @@ npm run build
 python tools\check_local_drift_setup.py
 python tools\test_q4km_config.py
 python tools\test_approval_workflow.py
+python tools\test_billing_summary.py
 python tools\evaluate_q4_quality.py --help
 python -m py_compile tools\evaluate_q4_quality.py
 ```

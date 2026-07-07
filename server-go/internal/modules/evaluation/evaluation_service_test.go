@@ -1,16 +1,19 @@
 package evaluation
 
 import (
+	"context"
 	"os"
 	"path/filepath"
 	"testing"
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func TestSummaryReturnsEmptyStateWhenReportFolderIsMissing(t *testing.T) {
 	service := Service{reportDir: filepath.Join(t.TempDir(), "missing")}
 
-	summary, err := service.Summary()
+	summary, err := service.Summary(context.Background(), primitive.NilObjectID)
 
 	if err != nil {
 		t.Fatalf("expected empty summary without error, got %v", err)
@@ -34,7 +37,7 @@ func TestSummaryReadsLatestEvaluationReport(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	summary, err := (Service{reportDir: dir}).Summary()
+	summary, err := (Service{reportDir: dir}).Summary(context.Background(), primitive.NilObjectID)
 
 	if err != nil {
 		t.Fatalf("expected summary, got %v", err)

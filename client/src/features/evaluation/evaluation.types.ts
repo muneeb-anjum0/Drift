@@ -29,6 +29,14 @@ export interface EvaluationReportFile {
   createdAt: string;
 }
 
+export interface ApprovalQuality {
+  pending: number;
+  approved: number;
+  rejected: number;
+  needsRevision: number;
+  averageApprovedScore: number;
+}
+
 export interface EvaluationSummary {
   hasReport: boolean;
   latestReportPath?: string;
@@ -41,4 +49,5 @@ export interface EvaluationSummary {
   recommendation?: string;
   cases: EvaluationCase[];
   reports: EvaluationReportFile[];
+  approvalQuality: ApprovalQuality;
 }

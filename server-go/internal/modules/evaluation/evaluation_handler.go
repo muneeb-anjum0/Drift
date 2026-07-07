@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"driftledger/server-go/internal/middleware"
 	"driftledger/server-go/internal/response"
 	"github.com/gin-gonic/gin"
 )
@@ -17,7 +18,7 @@ func NewHandler(service Service) Handler {
 }
 
 func (h Handler) Summary(c *gin.Context) {
-	summary, err := h.service.Summary()
+	summary, err := h.service.Summary(c.Request.Context(), middleware.CurrentUserID(c))
 	if err != nil {
 		response.Error(c, http.StatusInternalServerError, "Could not read evaluation summary", []string{err.Error()})
 		return

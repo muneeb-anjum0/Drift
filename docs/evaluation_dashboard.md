@@ -38,6 +38,15 @@ reports/evaluation
 
 The report checks portfolio demo cases for labels, score ranges, grouped change titles, affected modules, and rough latency.
 
+The summary endpoint also includes approval quality counts for the authenticated workspace:
+
+```text
+pending approvals
+approved changes
+rejected changes
+needs revision
+```
+
 ## Empty Dashboard
 
 If `/evaluation` says no report exists, generate one with:
@@ -45,3 +54,5 @@ If `/evaluation` says no report exists, generate one with:
 ```powershell
 python tools\evaluate_q4_quality.py
 ```
+
+The empty state should show this command instead of throwing an error.

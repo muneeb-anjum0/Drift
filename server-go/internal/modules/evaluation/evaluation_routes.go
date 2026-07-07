@@ -8,7 +8,7 @@ import (
 )
 
 func RegisterRoutes(r *gin.RouterGroup, db *mongo.Database, cfg config.Config) {
-	handler := NewHandler(NewService())
+	handler := NewHandler(NewService(db))
 	protected := r.Group("", middleware.Auth(db, cfg))
 	protected.GET("/summary", handler.Summary)
 	protected.GET("/reports", handler.Reports)
