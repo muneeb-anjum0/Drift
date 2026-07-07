@@ -10,6 +10,8 @@ models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf
 
 This file is the merged DriftLedger LoRA quantized to Q4_K_M. It is not committed to Git.
 
+Q4_K_M is quantization after merging. It is not training.
+
 ## Build Inputs
 
 Only needed when rebuilding the GGUF:
@@ -20,7 +22,7 @@ models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA
 models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA.zip
 ```
 
-The Docker runtime does not need the base model folder when the Q4 GGUF exists.
+The Docker runtime does not need the base model folder or extracted LoRA adapter when the Q4 GGUF exists.
 
 ## What Not To Commit
 

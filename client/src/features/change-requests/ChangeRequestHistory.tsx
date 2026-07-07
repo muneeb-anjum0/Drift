@@ -9,6 +9,7 @@ import type { ChangeRequest, ChangeRequestStatus } from './changeRequest.types';
 import { ChangeRequestStatusBadge } from './ChangeRequestStatusBadge';
 import { ApprovalStatusBadge } from '../approvals/ApprovalStatusBadge';
 import { normalizeApprovalStatus } from '../approvals/approvalDisplay';
+import { generatedByLabel } from './changeRequestDisplay';
 
 const selectClass =
   'h-11 w-full rounded-2xl border border-gray-700 bg-black px-4 text-sm text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30';
@@ -50,7 +51,7 @@ const ChangeRequestHistoryItem = ({
           <ChangeRequestStatusBadge status={changeRequest.status} />
           <ApprovalStatusBadge status={changeRequest.approvalStatus} />
           <span className="rounded-full border border-gray-700 bg-black/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-gray-300">
-            {changeRequest.generatedBy}
+            {generatedByLabel(changeRequest.generatedBy)}
           </span>
         </div>
       </div>

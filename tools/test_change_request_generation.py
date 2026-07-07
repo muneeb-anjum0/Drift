@@ -144,13 +144,13 @@ def data_at(response: dict[str, Any], key: str) -> Any:
     return response.get("data", {}).get(key)
 
 
-def setup_project(base_url: str, timeout: int) -> tuple[str, str, str]:
+def setup_project(base_url: str, timeout: int, email_prefix: str = "clinic-change-regression") -> tuple[str, str, str]:
     stamp = int(time.time())
     token = data_at(
         request_json(
             "POST",
             f"{base_url}/api/v1/auth/register",
-            {"name": "Clinic Change Regression", "email": f"clinic-change-regression-{stamp}@example.test", "password": "TestPass123!"},
+            {"name": "Clinic Change Regression", "email": f"{email_prefix}-{stamp}@example.test", "password": "TestPass123!"},
             timeout=timeout,
         ),
         "token",

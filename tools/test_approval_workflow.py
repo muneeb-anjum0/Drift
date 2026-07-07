@@ -59,7 +59,7 @@ def main() -> int:
 
     try:
         request_json("GET", f"{base_url}/health", timeout=args.timeout)
-        token, project_id, version_id = setup_project(base_url, args.timeout)
+        token, project_id, version_id = setup_project(base_url, args.timeout, email_prefix="approval-workflow")
         _analysis, draft = analyze_save_generate(base_url, token, project_id, version_id, APPROVAL_MESSAGE, args.timeout)
         if not draft:
             raise AssertionError("expected approval test to generate a change request draft")

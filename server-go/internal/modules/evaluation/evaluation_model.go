@@ -44,16 +44,25 @@ type ReportFile struct {
 	CreatedAt string `json:"createdAt"`
 }
 
+type ApprovalQuality struct {
+	Pending       int64   `json:"pending"`
+	Approved      int64   `json:"approved"`
+	Rejected      int64   `json:"rejected"`
+	NeedsRevision int64   `json:"needsRevision"`
+	AverageScore  float64 `json:"averageApprovedScore"`
+}
+
 type Summary struct {
-	HasReport        bool         `json:"hasReport"`
-	LatestReportPath string       `json:"latestReportPath,omitempty"`
-	GeneratedAt      string       `json:"generatedAt,omitempty"`
-	Model            ModelInfo    `json:"model"`
-	PassCount        int          `json:"passCount"`
-	CaseCount        int          `json:"caseCount"`
-	PassRate         float64      `json:"passRate"`
-	AverageLatencyMs float64      `json:"averageLatencyMs"`
-	Recommendation   string       `json:"recommendation,omitempty"`
-	Cases            []CaseResult `json:"cases"`
-	Reports          []ReportFile `json:"reports"`
+	HasReport        bool            `json:"hasReport"`
+	LatestReportPath string          `json:"latestReportPath,omitempty"`
+	GeneratedAt      string          `json:"generatedAt,omitempty"`
+	Model            ModelInfo       `json:"model"`
+	PassCount        int             `json:"passCount"`
+	CaseCount        int             `json:"caseCount"`
+	PassRate         float64         `json:"passRate"`
+	AverageLatencyMs float64         `json:"averageLatencyMs"`
+	Recommendation   string          `json:"recommendation,omitempty"`
+	Cases            []CaseResult    `json:"cases"`
+	Reports          []ReportFile    `json:"reports"`
+	ApprovalQuality  ApprovalQuality `json:"approvalQuality"`
 }

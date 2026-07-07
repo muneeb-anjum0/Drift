@@ -119,6 +119,10 @@ export const EvaluationPage = () => {
         {metric('Change requests generated', 'Report-only')}
         {metric('Ambiguous cases', summary.cases.filter((item) => item.actualLabel === 'ambiguous').length)}
         {metric('Contradiction cases', summary.cases.filter((item) => item.actualLabel === 'contradiction').length)}
+        {metric('Pending approvals', summary.approvalQuality?.pending ?? 0)}
+        {metric('Approved changes', summary.approvalQuality?.approved ?? 0)}
+        {metric('Rejected changes', summary.approvalQuality?.rejected ?? 0)}
+        {metric('Needs revision', summary.approvalQuality?.needsRevision ?? 0)}
       </div>
 
       <Card className="p-5">

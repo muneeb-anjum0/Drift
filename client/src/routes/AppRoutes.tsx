@@ -14,6 +14,7 @@ const ProjectsPage = lazy(() => import('../pages/ProjectsPage').then((module) =>
 const ProjectDetailsPage = lazy(() => import('../pages/ProjectDetailsPage').then((module) => ({ default: module.ProjectDetailsPage })));
 const EvaluationPage = lazy(() => import('../pages/EvaluationPage').then((module) => ({ default: module.EvaluationPage })));
 const ApprovalsPage = lazy(() => import('../pages/ApprovalsPage').then((module) => ({ default: module.ApprovalsPage })));
+const BillingPage = lazy(() => import('../pages/BillingPage').then((module) => ({ default: module.BillingPage })));
 const SettingsPage = lazy(() => import('../pages/SettingsPage').then((module) => ({ default: module.SettingsPage })));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage').then((module) => ({ default: module.NotFoundPage })));
 
@@ -53,6 +54,7 @@ export const AppRoutes = () => {
             <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
             <Route path="/evaluation" element={<EvaluationPage />} />
             <Route path="/approvals" element={<ApprovalsPage />} />
+            <Route path="/billing" element={<BillingPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Route>

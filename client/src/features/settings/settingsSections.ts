@@ -20,6 +20,17 @@ export const getSettingsSections = (user?: User | null): SettingsSection[] => [
     ],
   },
   {
+    id: 'plan',
+    title: 'Plan and billing',
+    description: 'Demo plan status for the local-first SaaS workflow.',
+    rows: [
+      { label: 'Plan', value: 'DriftLedger Local Pro' },
+      { label: 'Billing status', value: 'Active demo' },
+      { label: 'Price display', value: '$19/month placeholder' },
+      { label: 'Billing page', value: '/billing' },
+    ],
+  },
+  {
     id: 'model',
     title: 'Local model runtime',
     description: 'The drift engine currently used by analysis routes.',
