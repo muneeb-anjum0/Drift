@@ -33,7 +33,7 @@ REQUIREMENTS = [
 CASES = [
     {
         "id": "same_prescription_pdf",
-        "name": "Same prescription PDF access",
+        "name": "Existing prescription PDF moved to visit history",
         "message": "Can patients also download the same prescription PDF from their visit history page?",
         "expected_label": "modified",
         "max_score": 15,
@@ -41,7 +41,7 @@ CASES = [
     },
     {
         "id": "sms_otp",
-        "name": "SMS OTP password reset",
+        "name": "Add SMS OTP as a password reset option",
         "message": "Also allow patients to reset their password through SMS OTP.",
         "expected_label": "added",
         "min_score": 30,
@@ -50,7 +50,7 @@ CASES = [
     },
     {
         "id": "card_payment_removal",
-        "name": "Card payment removal",
+        "name": "Remove card payments from the first release",
         "message": "Remove card payment from the first release. Patients will only view invoice and payment status for now.",
         "expected_label": "removed",
         "min_score": 40,
@@ -59,7 +59,7 @@ CASES = [
     },
     {
         "id": "family_portal",
-        "name": "Family member portal",
+        "name": "Add family access to patient records",
         "message": "Add family member accounts so relatives can log in and view appointments, prescriptions, invoices, payment status, and notifications for the patient.",
         "expected_label": "added",
         "min_score": 50,
@@ -69,7 +69,7 @@ CASES = [
     },
     {
         "id": "appointment_cancel_window",
-        "name": "Appointment cancellation window",
+        "name": "Shorten the appointment cancellation window",
         "message": "Allow patients to cancel appointments up to 2 hours before the scheduled time instead of 24 hours.",
         "expected_label": "modified",
         "min_score": 30,
@@ -78,7 +78,7 @@ CASES = [
     },
     {
         "id": "appointment_cancel_contradiction",
-        "name": "Appointment cancellation contradiction",
+        "name": "Allow cancellations after scheduled time",
         "message": "Patients should be able to cancel appointments anytime, even after the scheduled appointment time.",
         "expected_label": "contradiction",
         "min_score": 65,
@@ -87,7 +87,7 @@ CASES = [
     },
     {
         "id": "vague_dashboard",
-        "name": "Vague dashboard request",
+        "name": "Clarify an undefined dashboard improvement",
         "message": "Make the patient dashboard smarter and easier to use.",
         "expected_label": "ambiguous",
         "min_score": 20,
@@ -97,7 +97,7 @@ CASES = [
     },
     {
         "id": "clinic_analytics",
-        "name": "Clinic analytics redesign",
+        "name": "Replace CSV exports with clinic analytics dashboards",
         "message": "Instead of CSV exports, create interactive clinic analytics dashboards with charts, filters, doctor-wise summaries, and downloadable snapshots.",
         "expected_label": "modified",
         "min_score": 45,

@@ -22,35 +22,35 @@ REQUIREMENTS = [
 
 REGRESSIONS = [
     {
-        "name": "monthly report unchanged",
+        "name": "Existing monthly CSV report moved to reports page",
         "message": "Can we also let admins download the same monthly report from the existing reports page?",
         "selected": "Monthly report CSV export",
         "ignored": "Email password reset",
         "expected_detected": [],
     },
     {
-        "name": "SMS OTP added",
+        "name": "Add SMS OTP to password reset",
         "message": "Also add password reset through SMS OTP.",
         "selected": "Email password reset",
         "ignored": "Monthly report CSV export",
         "expected_detected": ["added"],
     },
     {
-        "name": "weekly monthly modified",
+        "name": "Change usage reports from weekly to monthly",
         "message": "Make the usage reports monthly instead of weekly.",
         "selected": "Monthly report CSV export",
         "ignored": "Email password reset",
         "expected_detected": ["modified"],
     },
     {
-        "name": "invoice PDF removed",
+        "name": "Remove invoice PDF export",
         "message": "Remove the invoice PDF export feature.",
         "selected": "Invoice PDF export",
         "ignored": "Email password reset",
         "expected_detected": ["removed"],
     },
     {
-        "name": "2FA contradiction",
+        "name": "Contradict required admin two-factor authentication",
         "message": "Admins should be able to log in without two-factor authentication.",
         "selected": "Admin two-factor authentication",
         "ignored": "Monthly report CSV export",
