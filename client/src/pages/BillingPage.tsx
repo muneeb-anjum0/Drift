@@ -1,10 +1,9 @@
-import { BarChart3, CheckCircle2, CreditCard, Database, GitCompareArrows, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, CreditCard, LockKeyhole } from 'lucide-react';
 import { Button } from '../components/common/Button';
 import { Card } from '../components/common/Card';
 import { EmptyState } from '../components/common/EmptyState';
 import { Spinner } from '../components/common/Spinner';
 import { useBillingSummary } from '../hooks/useBilling';
-import type { BillingSummary } from '../features/billing/billing.types';
 
 const planFeatures = [
   'Unlimited local projects',
@@ -17,14 +16,6 @@ const planFeatures = [
   'Local Q4_K_M inference',
   'No hosted AI dependency',
   'Data stays local-first',
-];
-
-const usageCards = (summary: BillingSummary) => [
-  { label: 'Projects', value: summary.projects, icon: Database },
-  { label: 'Saved analyses', value: summary.savedAnalyses, icon: GitCompareArrows },
-  { label: 'Change requests', value: summary.changeRequests, icon: CreditCard },
-  { label: 'Approvals', value: summary.approvals, icon: ShieldCheck },
-  { label: 'Evaluation pass rate', value: summary.evaluationPassRate ? `${Math.round(summary.evaluationPassRate)}%` : 'No report', icon: BarChart3 },
 ];
 
 export const BillingPage = () => {
@@ -97,18 +88,22 @@ export const BillingPage = () => {
         </Card>
 
         <Card className="p-6">
-          <p className="app-eyebrow">Usage summary</p>
-          <h2 className="mt-2 text-xl font-semibold">Workspace activity</h2>
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            {usageCards(summary).map(({ label, value, icon: Icon }) => (
-              <div key={label} className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-bg-soft)] p-4">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm text-[var(--color-text-muted)]">{label}</p>
-                  <Icon className="h-4 w-4 text-[var(--color-text-muted)]" />
-                </div>
-                <p className="mt-2 text-2xl font-semibold">{value}</p>
+          <p className="app-eyebrow">Stripe placeholder</p>
+          <h2 className="mt-2 text-xl font-semibold">Payment area reserved</h2>
+          <p className="mt-3 text-sm leading-6 text-[var(--color-text-muted)]">
+            This space is prepared for a future Stripe customer portal, subscription checkout, invoices, and payment-method management.
+          </p>
+
+          <div className="mt-5 rounded-[var(--radius-card)] border border-dashed border-[var(--color-border)] bg-[var(--color-bg-soft)] p-5">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-surface)]">
+                <LockKeyhole className="h-5 w-5 text-[var(--color-text-muted)]" />
               </div>
-            ))}
+              <div>
+                <p className="font-semibold">Stripe integration not connected</p>
+                <p className="mt-1 text-sm text-[var(--color-text-muted)]">Demo billing only. No cards are charged.</p>
+              </div>
+            </div>
           </div>
 
           <div className="mt-5 rounded-[var(--radius-card)] border border-[var(--color-border)] p-4">
