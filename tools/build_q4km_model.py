@@ -49,7 +49,7 @@ def check_python_dependencies() -> None:
         raise SystemExit(
             "Q4_K_M build dependencies are not ready: "
             + "; ".join(problems)
-            + ". Install them with `python -m pip install -r tools/requirements-q3km.txt`."
+            + ". Install them with `python -m pip install -r tools/requirements-local-model.txt`."
         )
 
 

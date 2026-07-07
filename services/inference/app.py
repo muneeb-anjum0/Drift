@@ -35,15 +35,13 @@ DEFAULT_GGUF_MODEL_PATH = Path("models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf")
 
 
 def cuda_available() -> bool:
-	return bool(torch is not None and torch.cuda.is_available())
+    return bool(torch is not None and torch.cuda.is_available())
 
 
 def quantization_label(path: Path) -> str:
     name = path.name.upper()
     if "Q4_K_M" in name:
         return "Q4_K_M"
-    if "Q3_K_M" in name:
-        return "Q3_K_M"
     return "GGUF"
 
 
@@ -52,6 +50,23 @@ def model_label(path: Path) -> str:
     if quant == "GGUF":
         return "Qwen2.5-7B + DriftLedger LoRA (GGUF)"
     return f"Qwen2.5-7B + DriftLedger LoRA (GGUF {quant})"
+
+
+def llama_health(settings: "Settings") -> dict[str, Any]:
+    if settings.local_engine != "gguf":
+        return {"connected": None, "status": None, "error": None}
+    url = settings.llama_server_url.rstrip("/") + "/health"
+    try:
+        response = httpx.get(url, timeout=2)
+        if response.status_code == 200:
+            return {"connected": True, "status": "ok", "error": None}
+        detail = response.text[:300]
+        status = "loading" if response.status_code == 503 and "Loading model" in detail else "error"
+        return {"connected": False, "status": status, "error": detail}
+    except httpx.HTTPError as exc:
+        return {"connected": False, "status": "error", "error": str(exc)}
+
+
 REQUIRED_ADAPTER_FILES = {
     "adapter_config.json",
     "adapter_model.safetensors",
@@ -148,7 +163,7 @@ class ModelRuntime:
             if not self.settings.gguf_model_path.exists():
                 raise RuntimeError(
                     f"{quantization_label(self.settings.gguf_model_path)} GGUF not found at {self.settings.gguf_model_path}. "
-                    "Run `python tools/build_q4km_model.py` first, or set DRIFT_GGUF_MODEL_PATH to the Q3_K_M fallback."
+                    "Restore models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf or rebuild it with `python tools/build_q4km_model.py`."
                 )
             self.loaded = True
             return
@@ -421,19 +436,26 @@ def load_model() -> None:
 
 @app.get("/health")
 def health() -> dict[str, Any]:
-    status = "ok" if runtime.loaded else "loading" if runtime.loading else "error"
+    llama = llama_health(settings)
+    gguf_ready = settings.local_engine != "gguf" or bool(llama["connected"])
+    status = "ok" if runtime.loaded and gguf_ready else "loading" if runtime.loading or llama["status"] == "loading" else "error"
     return {
         "status": status,
         "model_mode": settings.model_mode,
         "local_engine": settings.local_engine,
-        "base_model_path": str(settings.base_model_path).replace("\\", "/"),
-        "adapter_path": str((runtime.adapter_path or settings.adapter_dir)).replace("\\", "/"),
+        "base_model_path": None if settings.local_engine == "gguf" else str(settings.base_model_path).replace("\\", "/"),
+        "base_model_required": settings.local_engine != "gguf",
+        "adapter_path": None if settings.local_engine == "gguf" else str((runtime.adapter_path or settings.adapter_dir)).replace("\\", "/"),
+        "adapter_required": settings.local_engine != "gguf",
         "gguf_model_path": str(settings.gguf_model_path).replace("\\", "/"),
         "model_label": model_label(settings.gguf_model_path),
         "quantization_label": quantization_label(settings.gguf_model_path),
         "llama_server_url": settings.llama_server_url,
+        "llama_connected": llama["connected"],
+        "llama_status": llama["status"],
+        "llama_error": llama["error"],
         "cuda_available": cuda_available(),
-        "model_loaded": runtime.loaded,
+        "model_loaded": runtime.loaded and gguf_ready,
         "error": runtime.load_error or None,
     }
 

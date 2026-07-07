@@ -82,7 +82,7 @@ def main() -> None:
     if not quantize or not server:
         print(
             "llama.cpp checkout is ready for conversion, but local binaries are missing. "
-            "Quantization can still use the Docker fallback in tools/quantize_gguf_q4km.py or tools/quantize_gguf_q3km.py.",
+            "Quantization can still use the Docker fallback in tools/quantize_gguf_q4km.py.",
             flush=True,
         )
 

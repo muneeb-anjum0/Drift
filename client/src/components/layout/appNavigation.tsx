@@ -1,11 +1,11 @@
-import { BriefcaseBusiness, FolderKanban, LayoutDashboard, LogOut, Settings } from 'lucide-react';
+import { BriefcaseBusiness, FolderKanban, Gauge, LayoutDashboard, LogOut, Settings } from 'lucide-react';
 import type { NavigateFunction } from 'react-router-dom';
 import type { DockItemConfig } from '../navigation/Dock';
 import { NAV_ITEMS } from '../../utils/constants';
 import { cn } from '../../utils/cn';
 import type { User } from '../../types';
 
-const dockIcons = [LayoutDashboard, BriefcaseBusiness, FolderKanban, Settings];
+const dockIcons = [LayoutDashboard, BriefcaseBusiness, FolderKanban, Gauge, Settings];
 
 export const userHandle = (user?: User | null) => user?.email?.split('@')[0] || user?.name || 'user';
 

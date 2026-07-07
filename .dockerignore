@@ -13,7 +13,9 @@ server-go/firebase-service-account.json
 models/adapters/*.zip
 models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA/
 models/base/
+models/gguf/
 models/huggingface/
+reports/evaluation/
 .cache/
 __pycache__/
 *.pyc

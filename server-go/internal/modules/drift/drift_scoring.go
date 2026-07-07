@@ -1,6 +1,9 @@
 package drift
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func Score(changes []DetectedChange) (int, string, map[string]int, float64, string) {
 	counts := map[string]int{"added": 0, "modified": 0, "removed": 0, "ambiguous": 0, "contradiction": 0}
@@ -61,6 +64,11 @@ func Score(changes []DetectedChange) (int, string, map[string]int, float64, stri
 		case "contradiction":
 			if score > 85 {
 				score = 85
+			}
+		case "modified":
+			text := strings.ToLower(changes[0].Title + " " + changes[0].Description)
+			if changes[0].Impact == "low" && (strings.Contains(text, "same existing") || strings.Contains(text, "another access point") || strings.HasPrefix(text, "expose existing")) && score > 15 {
+				score = 15
 			}
 		}
 	}

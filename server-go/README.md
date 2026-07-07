@@ -61,6 +61,7 @@ Base URL: `http://localhost:5000/api/v1`
 - `/drift`
 - `/change-requests`
 - `/files`
+- `/evaluation`
 
 Responses use:
 
@@ -82,4 +83,4 @@ If Firebase Storage is disabled, upload requests return a clear disabled message
 
 ## Drift Inference
 
-Project drift analysis uses the local FastAPI inference wrapper and llama.cpp GGUF model. Q4_K_M is the default, with Q3_K_M available as a lighter fallback. The backend relevance layer filters unrelated requirements before model calls, then sends only relevant single-requirement candidates to the model.
+Project drift analysis uses the local FastAPI inference wrapper and llama.cpp Q4_K_M GGUF model. The backend relevance layer filters unrelated requirements before model calls, then sends only relevant single-requirement candidates to the model.

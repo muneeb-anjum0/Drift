@@ -1,0 +1,59 @@
+package evaluation
+
+type ModelInfo struct {
+	Label         string `json:"label"`
+	Quantization  string `json:"quantization"`
+	Runtime       string `json:"runtime"`
+	Health        string `json:"health"`
+	ModelLoaded   bool   `json:"modelLoaded"`
+	GGUFModelPath string `json:"ggufModelPath"`
+}
+
+type CaseResult struct {
+	ID             string   `json:"id"`
+	Name           string   `json:"name"`
+	ExpectedLabel  string   `json:"expectedLabel"`
+	ActualLabel    string   `json:"actualLabel"`
+	Score          int      `json:"score"`
+	Impact         string   `json:"impact"`
+	EstimatedHours float64  `json:"estimatedHours"`
+	LatencyMs      int64    `json:"latencyMs"`
+	Passed         bool     `json:"passed"`
+	Title          string   `json:"title"`
+	Summary        string   `json:"summary"`
+	Reasoning      string   `json:"reasoning"`
+	Notes          []string `json:"notes"`
+}
+
+type Report struct {
+	SchemaVersion    int          `json:"schemaVersion"`
+	GeneratedAt      string       `json:"generatedAt"`
+	Mode             string       `json:"mode"`
+	Model            ModelInfo    `json:"model"`
+	PassCount        int          `json:"passCount"`
+	CaseCount        int          `json:"caseCount"`
+	PassRate         float64      `json:"passRate"`
+	AverageLatencyMs float64      `json:"averageLatencyMs"`
+	Recommendation   string       `json:"recommendation"`
+	Cases            []CaseResult `json:"cases"`
+}
+
+type ReportFile struct {
+	Name      string `json:"name"`
+	Path      string `json:"path"`
+	CreatedAt string `json:"createdAt"`
+}
+
+type Summary struct {
+	HasReport        bool         `json:"hasReport"`
+	LatestReportPath string       `json:"latestReportPath,omitempty"`
+	GeneratedAt      string       `json:"generatedAt,omitempty"`
+	Model            ModelInfo    `json:"model"`
+	PassCount        int          `json:"passCount"`
+	CaseCount        int          `json:"caseCount"`
+	PassRate         float64      `json:"passRate"`
+	AverageLatencyMs float64      `json:"averageLatencyMs"`
+	Recommendation   string       `json:"recommendation,omitempty"`
+	Cases            []CaseResult `json:"cases"`
+	Reports          []ReportFile `json:"reports"`
+}

@@ -156,6 +156,33 @@ func TestSameReportAccessStaysLowImpact(t *testing.T) {
 	}
 }
 
+func TestSamePrescriptionAccessStaysPortfolioTrivial(t *testing.T) {
+	message := "Can patients also download the same prescription PDF from their visit history page?"
+	effort := 2.0
+
+	grouped, score, _, _, hours, _ := CleanAnalysis([]DetectedChange{{
+		ChangeType:      "modified",
+		Title:           "same prescription PDF",
+		Description:     "same prescription PDF from visit history",
+		Impact:          "low",
+		EstimatedEffort: &effort,
+		Confidence:      90,
+		NewText:         message,
+	}}, message)
+
+	if len(grouped) != 1 {
+		t.Fatalf("expected one minor grouped change, got %#v", grouped)
+	}
+	if grouped[0].Title != "Expose Existing Prescription PDF From Visit History" || grouped[0].Impact != "low" {
+		t.Fatalf("unexpected same-prescription grouping %#v", grouped[0])
+	}
+	if score > 15 || hours > 3 {
+		t.Fatalf("expected same-prescription access to stay trivial, got score=%d hours=%.1f", score, hours)
+	}
+	assertHasModule(t, grouped[0], "Prescriptions")
+	assertHasModule(t, grouped[0], "Documents")
+}
+
 func TestFamilyPortalDoesNotBecomeCardPaymentRemoval(t *testing.T) {
 	message := "Add family member accounts so relatives can log in and view appointments, prescriptions, invoices, payment status, and notifications for the patient."
 	effort := 2.0
@@ -181,6 +208,7 @@ func TestFamilyPortalDoesNotBecomeCardPaymentRemoval(t *testing.T) {
 		t.Fatalf("expected family portal hours 12-24, got %.1f", hours)
 	}
 	assertHasModule(t, grouped[0], "Payment Status")
+	assertHasModule(t, grouped[0], "Role Management")
 }
 
 func TestAppointmentCancellationWindowIsSingleModifiedChange(t *testing.T) {

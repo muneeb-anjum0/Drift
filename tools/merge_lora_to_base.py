@@ -12,7 +12,7 @@ try:
     from transformers import AutoModelForCausalLM, AutoTokenizer
 except ImportError as exc:
     raise SystemExit(
-        "Missing merge dependency. Install with `python -m pip install -r tools/requirements-q3km.txt`."
+        "Missing merge dependency. Install with `python -m pip install -r tools/requirements-local-model.txt`."
     ) from exc
 
 from local_model_utils import (
