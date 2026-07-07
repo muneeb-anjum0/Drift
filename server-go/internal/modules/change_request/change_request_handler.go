@@ -78,6 +78,16 @@ func (h Handler) Get(c *gin.Context) {
 	}
 	response.Success(c, http.StatusOK, "Change request fetched", gin.H{"changeRequest": out})
 }
+func (h Handler) ListApprovals(c *gin.Context) {
+	ctx, cancel := utils.Context(c.Request.Context())
+	defer cancel()
+	out, err := h.service.ListApprovals(ctx, middleware.CurrentUserID(c))
+	if err != nil {
+		h.err(c, err)
+		return
+	}
+	response.Success(c, http.StatusOK, "Approvals fetched", gin.H{"changeRequests": out})
+}
 func (h Handler) Update(c *gin.Context) {
 	id, ok := parseID(c, "changeRequestId")
 	if !ok {
@@ -94,6 +104,18 @@ func (h Handler) Update(c *gin.Context) {
 	}
 	response.Success(c, http.StatusOK, "Change request updated", gin.H{"changeRequest": out})
 }
+func (h Handler) SubmitForApproval(c *gin.Context) {
+	h.handleApprovalDecision(c, h.service.SubmitForApproval, "Change request submitted for approval")
+}
+func (h Handler) Approve(c *gin.Context) {
+	h.handleApprovalDecision(c, h.service.Approve, "Change request approved")
+}
+func (h Handler) Reject(c *gin.Context) {
+	h.handleApprovalDecision(c, h.service.Reject, "Change request rejected")
+}
+func (h Handler) NeedsRevision(c *gin.Context) {
+	h.handleApprovalDecision(c, h.service.NeedsRevision, "Change request marked as needing revision")
+}
 func (h Handler) Delete(c *gin.Context) {
 	id, ok := parseID(c, "changeRequestId")
 	if !ok {
@@ -106,6 +128,26 @@ func (h Handler) Delete(c *gin.Context) {
 		return
 	}
 	response.Success(c, http.StatusOK, "Change request deleted", gin.H{})
+}
+func (h Handler) handleApprovalDecision(
+	c *gin.Context,
+	action func(context.Context, primitive.ObjectID, primitive.ObjectID, string) (ChangeRequest, error),
+	message string,
+) {
+	id, ok := parseID(c, "changeRequestId")
+	if !ok {
+		return
+	}
+	var p ApprovalDecisionRequest
+	_ = c.ShouldBindJSON(&p)
+	ctx, cancel := utils.Context(c.Request.Context())
+	defer cancel()
+	out, err := action(ctx, id, middleware.CurrentUserID(c), p.Note)
+	if err != nil {
+		h.err(c, err)
+		return
+	}
+	response.Success(c, http.StatusOK, message, gin.H{"changeRequest": out})
 }
 func parseID(c *gin.Context, key string) (primitive.ObjectID, bool) {
 	id, err := utils.ObjectID(c.Param(key))
@@ -122,6 +164,10 @@ func (h Handler) err(c *gin.Context, err error) {
 	}
 	if errors.Is(err, utils.ErrForbidden) {
 		response.Error(c, http.StatusForbidden, "You do not have access to this resource", nil)
+		return
+	}
+	if errors.Is(err, ErrInvalidApprovalAction) {
+		response.Error(c, http.StatusBadRequest, "Invalid approval action", nil)
 		return
 	}
 	response.Error(c, http.StatusInternalServerError, "Change request failed", nil)

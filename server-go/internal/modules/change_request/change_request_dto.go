@@ -19,3 +19,7 @@ type UpdateRequest struct {
 	ApprovalNote      string `json:"approvalNote"`
 	Status            string `json:"status"`
 }
+
+type ApprovalDecisionRequest struct {
+	Note string `json:"note"`
+}

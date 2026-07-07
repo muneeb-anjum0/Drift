@@ -15,6 +15,14 @@ type ChangeRequestChange struct {
 	EstimatedEffort *float64 `bson:"estimatedEffort,omitempty" json:"estimatedEffort,omitempty"`
 }
 
+type ApprovalEvent struct {
+	Status    string             `bson:"status" json:"status"`
+	Note      string             `bson:"note,omitempty" json:"note,omitempty"`
+	Actor     primitive.ObjectID `bson:"actor" json:"actor"`
+	ActorName string             `bson:"actorName,omitempty" json:"actorName,omitempty"`
+	CreatedAt time.Time          `bson:"createdAt" json:"createdAt"`
+}
+
 type ChangeRequest struct {
 	ID                primitive.ObjectID    `bson:"_id,omitempty" json:"_id"`
 	Project           primitive.ObjectID    `bson:"project" json:"project"`
@@ -30,6 +38,13 @@ type ChangeRequest struct {
 	RecommendedAction string                `bson:"recommendedAction" json:"recommendedAction"`
 	ApprovalNote      string                `bson:"approvalNote" json:"approvalNote"`
 	Status            string                `bson:"status" json:"status"`
+	ApprovalStatus    string                `bson:"approvalStatus" json:"approvalStatus"`
+	SubmittedAt       *time.Time            `bson:"submittedAt,omitempty" json:"submittedAt,omitempty"`
+	DecisionBy        *primitive.ObjectID   `bson:"decisionBy,omitempty" json:"decisionBy,omitempty"`
+	DecisionByName    string                `bson:"decisionByName,omitempty" json:"decisionByName,omitempty"`
+	DecisionAt        *time.Time            `bson:"decisionAt,omitempty" json:"decisionAt,omitempty"`
+	DecisionNote      string                `bson:"decisionNote,omitempty" json:"decisionNote,omitempty"`
+	ApprovalHistory   []ApprovalEvent       `bson:"approvalHistory,omitempty" json:"approvalHistory,omitempty"`
 	GeneratedBy       string                `bson:"generatedBy" json:"generatedBy"`
 	CreatedBy         primitive.ObjectID    `bson:"createdBy" json:"createdBy"`
 	CreatedAt         time.Time             `bson:"createdAt" json:"createdAt"`

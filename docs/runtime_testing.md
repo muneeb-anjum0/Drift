@@ -64,9 +64,26 @@ Run:
 python tools\test_model_route_consistency.py
 python tools\test_project_requirement_analysis.py
 python tools\test_change_request_generation.py
+python tools\test_approval_workflow.py
 ```
 
 The monthly-report case should remain `unchanged` even when unrelated password-reset requirements exist in the same baseline.
+
+## Approval Workflow Regression
+
+Saved change requests move through a separate approval lifecycle:
+
+```text
+draft -> pending_approval -> approved/rejected/needs_revision
+```
+
+Run:
+
+```powershell
+python tools\test_approval_workflow.py
+```
+
+This verifies submit, approve, reject, approval history, and `GET /api/v1/change-requests/approvals`.
 
 ## Q4 Evaluation Report
 
@@ -98,6 +115,7 @@ cd ..
 npm run build
 python tools\check_local_drift_setup.py
 python tools\test_q4km_config.py
+python tools\test_approval_workflow.py
 python tools\evaluate_q4_quality.py --help
 python -m py_compile tools\evaluate_q4_quality.py
 ```
