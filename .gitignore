@@ -40,6 +40,7 @@ __pycache__/
 *.pyc
 .pytest_cache/
 reports/model_comparison/
+reports/evaluation/
 
 # Docker/build artifacts
 *.tar

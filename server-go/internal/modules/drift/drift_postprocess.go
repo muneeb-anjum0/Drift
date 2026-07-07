@@ -29,7 +29,7 @@ var canonicalRules = []canonicalRule{
 		label:          "added",
 		impact:         "high",
 		hours:          18,
-		modules:        []string{"Authentication", "Roles", "Appointments", "Prescriptions", "Invoices", "Payment Status", "Notifications"},
+		modules:        []string{"Authentication", "Role Management", "Appointments", "Prescriptions", "Billing", "Payment Status", "Notifications"},
 		summary:        "The client requested family member accounts so relatives can log in and view appointments, prescriptions, invoices, payment status, and notifications for the patient.",
 		recommendation: "Approve this as a scope addition because it introduces delegated access, privacy controls, and family-facing patient data views.",
 		terms:          []string{"family member", "family members", "relative", "relatives", "family account", "family accounts"},
@@ -40,7 +40,7 @@ var canonicalRules = []canonicalRule{
 		label:          "added",
 		impact:         "high",
 		hours:          18,
-		modules:        []string{"Authentication", "Role management", "Student access control", "Attendance", "Grades", "Fees", "Notifications"},
+		modules:        []string{"Authentication", "Role Management", "Access Control", "Attendance", "Grades", "Billing", "Notifications"},
 		summary:        "The client requested parent accounts so parents can log in and view relevant student information for their children.",
 		recommendation: "Approve this as a scope addition before implementation because it introduces a new actor, permissions, privacy considerations, and parent-facing views.",
 		terms:          []string{"parent", "parents", "parent account", "parent accounts", "parent portal", "parent access", "children", "child", "guardian"},
@@ -51,7 +51,7 @@ var canonicalRules = []canonicalRule{
 		label:          "added",
 		impact:         "medium",
 		hours:          6,
-		modules:        []string{"Authentication", "Password recovery", "Notifications/SMS"},
+		modules:        []string{"Authentication", "Notifications"},
 		summary:        "The client requested SMS OTP as an additional password recovery method.",
 		recommendation: "Confirm the SMS provider, verification rules, and delivery/error handling before implementation.",
 		terms:          []string{"sms otp", "otp", "password reset", "reset through sms", "authentication method"},
@@ -62,7 +62,7 @@ var canonicalRules = []canonicalRule{
 		label:          "modified",
 		impact:         "medium",
 		hours:          8,
-		modules:        []string{"Assignments", "Deadline rules", "Penalty calculation"},
+		modules:        []string{"Assignments", "Deadline Rules", "Penalty Calculation"},
 		summary:        "The client requested a deadline policy change that allows late assignment submissions with a penalty.",
 		recommendation: "Approve the new late-submission policy and confirm penalty rules before implementation.",
 		terms:          []string{"late submission", "24 hours after due date", "late penalty", "due date", "assignment submission"},
@@ -84,7 +84,7 @@ var canonicalRules = []canonicalRule{
 		label:          "modified",
 		impact:         "medium",
 		hours:          8,
-		modules:        []string{"Appointments", "Cancellation policy", "Notifications"},
+		modules:        []string{"Appointments", "Notifications"},
 		summary:        "The client requested changing the appointment cancellation window from 24 hours before the scheduled time to 2 hours before the scheduled time.",
 		recommendation: "Confirm the new cancellation cutoff, patient notification copy, and any clinic override rules before implementation.",
 		terms:          []string{"cancel appointments", "cancellation window", "2 hours", "24 hours", "scheduled time"},
@@ -95,7 +95,7 @@ var canonicalRules = []canonicalRule{
 		label:          "contradiction",
 		impact:         "high",
 		hours:          12,
-		modules:        []string{"Appointments", "Cancellation policy", "Notifications"},
+		modules:        []string{"Appointments", "Notifications"},
 		summary:        "The client requested allowing appointment cancellations anytime, even after the scheduled appointment time, which contradicts the approved cancellation cutoff policy.",
 		recommendation: "Resolve the cancellation policy conflict before implementation because this changes patient behavior, clinic scheduling, and notification rules.",
 		terms:          []string{"cancel appointments anytime", "after the scheduled appointment time", "cancel anytime"},
@@ -106,7 +106,7 @@ var canonicalRules = []canonicalRule{
 		label:          "ambiguous",
 		impact:         "medium",
 		hours:          4,
-		modules:        []string{"Patient dashboard", "Product discovery"},
+		modules:        []string{"Dashboard", "Product Discovery"},
 		summary:        "The client asked to make the patient dashboard smarter and easier to use, but the request does not define specific behavior, data, or acceptance criteria.",
 		recommendation: "Ask the client to clarify the dashboard goals, affected widgets, user actions, and acceptance criteria before estimating implementation.",
 		terms:          []string{"dashboard smarter", "dashboard easier", "smarter and easier", "make the patient dashboard"},
@@ -117,7 +117,7 @@ var canonicalRules = []canonicalRule{
 		label:          "modified",
 		impact:         "high",
 		hours:          18,
-		modules:        []string{"Reports", "Clinic analytics", "Dashboards", "Downloads"},
+		modules:        []string{"Reports", "Analytics", "Dashboard", "Documents"},
 		summary:        "The client requested replacing CSV exports with interactive clinic analytics dashboards that include charts, filters, doctor-wise summaries, and downloadable snapshots.",
 		recommendation: "Approve this as a reporting redesign because it expands clinic reporting from static CSV export into dashboard, filtering, analytics, and snapshot download scope.",
 		terms:          []string{"interactive clinic analytics", "clinic analytics", "doctor-wise summaries", "csv exports", "downloadable snapshots"},
@@ -128,7 +128,7 @@ var canonicalRules = []canonicalRule{
 		label:          "modified",
 		impact:         "high",
 		hours:          18,
-		modules:        []string{"Reports", "Analytics", "Student dashboard", "Downloads"},
+		modules:        []string{"Reports", "Analytics", "Dashboard", "Documents"},
 		summary:        "The client requested replacing static PDF academic reports with interactive web-based report cards including charts, filters, and downloadable summaries.",
 		recommendation: "Approve this as a reporting redesign because it expands UI, filtering, visualization, and download scope.",
 		terms:          []string{"interactive report", "web-based report card", "charts", "filters", "downloadable summaries", "instead of pdf", "pdf reports", "academic reports"},
@@ -139,7 +139,7 @@ var canonicalRules = []canonicalRule{
 		label:          "modified",
 		impact:         "low",
 		hours:          2,
-		modules:        []string{"Reports", "Downloads"},
+		modules:        []string{"Reports", "Documents"},
 		summary:        "The client is asking for another access point to the same existing report rather than a new reporting capability.",
 		recommendation: "Treat this as a minor placement or navigation adjustment if the same report download already exists.",
 		terms:          []string{"same report", "download same report", "reports page", "existing report", "from dashboard", "from reports page"},
@@ -150,7 +150,7 @@ var canonicalRules = []canonicalRule{
 		label:          "modified",
 		impact:         "low",
 		hours:          2,
-		modules:        []string{"Prescriptions", "Visit history"},
+		modules:        []string{"Prescriptions", "Documents"},
 		summary:        "The client is asking for another access point to the same existing prescription PDF rather than a new prescription capability.",
 		recommendation: "Treat this as a minor placement or navigation adjustment if the same prescription PDF download already exists.",
 		terms:          []string{"same prescription", "prescription pdf", "visit history"},
@@ -236,7 +236,7 @@ func CleanReasoning(text string) string {
 }
 
 func AffectedModules(change DetectedChange) []string {
-	return append([]string{}, change.AffectedModules...)
+	return NormalizeModules(change.AffectedModules)
 }
 
 func primaryIntentKey(inputText string) string {
@@ -317,7 +317,7 @@ func buildGroupedChange(key string, group []DetectedChange, inputText string) De
 		if grouped.ChangeType == "contradiction" && impactRank(grouped.Impact) < impactRank("high") {
 			grouped.Impact = "high"
 		}
-		grouped.AffectedModules = append([]string{}, rule.modules...)
+		grouped.AffectedModules = NormalizeModules(rule.modules)
 		grouped.Description = rule.summary
 		grouped.Recommendation = rule.recommendation
 		grouped.EstimatedEffort = &rule.hours
@@ -325,6 +325,7 @@ func buildGroupedChange(key string, group []DetectedChange, inputText string) De
 		grouped.Title = title(first.Title)
 		grouped.ChangeType = normalizeLabel(first.ChangeType)
 		grouped.Impact = maxImpact(group)
+		grouped.AffectedModules = NormalizeModules(groupModules(group))
 		hours := estimateGroupedHours(grouped.ChangeType, grouped.Impact, len(grouped.AffectedModules), strings.ToLower(inputText+" "+grouped.Title+" "+grouped.Description))
 		grouped.EstimatedEffort = &hours
 		grouped.Recommendation = recommendation(grouped.ChangeType, grouped.Title)
@@ -333,6 +334,64 @@ func buildGroupedChange(key string, group []DetectedChange, inputText string) De
 		grouped.Description = grouped.Title
 	}
 	return grouped
+}
+
+func NormalizeModules(modules []string) []string {
+	seen := map[string]struct{}{}
+	out := []string{}
+	for _, module := range modules {
+		for _, part := range strings.Split(module, ",") {
+			canonical := canonicalModule(part)
+			if canonical == "" {
+				continue
+			}
+			if _, exists := seen[canonical]; exists {
+				continue
+			}
+			seen[canonical] = struct{}{}
+			out = append(out, canonical)
+		}
+	}
+	sort.Strings(out)
+	return out
+}
+
+func canonicalModule(module string) string {
+	key := normalizeSentence(module)
+	switch key {
+	case "", "none":
+		return ""
+	case "role", "roles", "role management", "parent role", "family role":
+		return "Role Management"
+	case "student access control", "access control", "permissions", "permission":
+		return "Access Control"
+	case "fees", "fee", "billing", "invoice", "invoices":
+		return "Billing"
+	case "payment status", "invoice status":
+		return "Payment Status"
+	case "notifications sms", "sms", "alerts", "notification":
+		return "Notifications"
+	case "password recovery", "authentication method":
+		return "Authentication"
+	case "cancellation policy", "appointment cancellation":
+		return "Appointments"
+	case "clinic analytics", "dashboards", "patient dashboard", "student dashboard":
+		return "Dashboard"
+	case "downloads", "download", "visit history", "files", "file":
+		return "Documents"
+	case "reports exports", "csv exports":
+		return "Reports"
+	default:
+		return strings.TrimSpace(module)
+	}
+}
+
+func groupModules(changes []DetectedChange) []string {
+	modules := []string{}
+	for _, change := range changes {
+		modules = append(modules, change.AffectedModules...)
+	}
+	return modules
 }
 
 func canonicalRuleByKey(key string) (canonicalRule, bool) {

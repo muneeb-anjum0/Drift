@@ -2,20 +2,15 @@
 
 ## Mission
 
-Help teams catch requirement drift before small client requests quietly become unpaid scope.
+Protect project scope by turning client messages into clear requirement-drift decisions before work quietly expands.
 
 ## Vision
 
-Make scope changes easy to compare, explain, approve, and document from the first message to the final change request.
+Make scope comparison, approvals, and change-request writing feel like one calm workflow instead of scattered notes.
 
-## What It Does
+## What It Is
 
-DriftLedger is a full-stack app for managing requirements, freezing baselines, analyzing client messages for drift, and generating change-request drafts.
-
-Project workspaces are organized into Requirements, Drift Analysis, History, Change Requests, and Documents.
-
-Saved drift analyses are post-processed into grouped client-facing changes before they are saved or used for change requests.
-Project-level model results are aggregated by primary client intent, so related baseline requirements become affected modules instead of noisy duplicate changes.
+DriftLedger is a portfolio SaaS app for requirements, baselines, drift analysis, saved history, change requests, documents, and Q4 model evaluation.
 
 ## Stack
 
@@ -23,18 +18,7 @@ Project-level model results are aggregated by primary client intent, so related 
 - Go/Gin API
 - MongoDB
 - FastAPI inference wrapper
-- llama.cpp GGUF runtime for local DriftLedger model inference
-
-## Structure
-
-```text
-client/              Frontend app
-server-go/           Backend API
-services/inference/  Model inference service
-models/              Local model assets, ignored by Git
-tools/               Setup and validation scripts
-docs/                Supporting notes
-```
+- llama.cpp running `Qwen2.5-7B + DriftLedger LoRA (GGUF Q4_K_M)`
 
 ## Run
 
@@ -54,26 +38,24 @@ Stop:
 docker compose down
 ```
 
-## Local Model
+## Model Artifact
 
-The local runtime defaults to the Q4_K_M GGUF model:
+The only supported local runtime artifact is:
 
 ```text
 models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf
 ```
 
-Build it with `python tools/build_q4km_model.py`. Q3_K_M remains available as a lighter fallback by setting `DRIFT_GGUF_MODEL_PATH=/app/models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf`.
-
-Large model files are intentionally not committed.
+Large model files are ignored by Git.
 
 ## Useful Checks
 
 ```bash
 npm run build
-go test ./...
-python tools/test_runtime_stack.py
-python tools/test_change_request_generation.py
+cd server-go && go test ./...
+python tools/check_local_drift_setup.py
+python tools/test_q4km_config.py
+python tools/evaluate_q4_quality.py --help
 ```
 
-More setup notes live in `docs/`.
-Q3/Q4 comparison workflow: `docs/model_comparison.md`.
+Focused notes live in `docs/`.

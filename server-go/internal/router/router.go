@@ -11,6 +11,7 @@ import (
 	"driftledger/server-go/internal/modules/auth"
 	change_request "driftledger/server-go/internal/modules/change_request"
 	"driftledger/server-go/internal/modules/drift"
+	"driftledger/server-go/internal/modules/evaluation"
 	filemodule "driftledger/server-go/internal/modules/file"
 	"driftledger/server-go/internal/modules/project"
 	"driftledger/server-go/internal/modules/requirement"
@@ -47,6 +48,7 @@ func New(db *mongo.Database, cfg config.Config, ollamaService ollama.Service, st
 	drift.RegisterRoutes(api.Group("/drift"), db, cfg, ollamaService)
 	change_request.RegisterRoutes(api.Group("/change-requests"), db, cfg, ollamaService)
 	filemodule.RegisterRoutes(api.Group("/files"), db, cfg, storage)
+	evaluation.RegisterRoutes(api.Group("/evaluation"), db, cfg)
 	drift.RegisterModelRoutes(r.Group("/api/drift"), db, cfg, ollamaService)
 	if cfg.AppEnv == "development" {
 		api.GET("/debug/routes", func(c *gin.Context) {

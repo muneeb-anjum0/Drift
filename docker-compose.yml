@@ -38,6 +38,9 @@ services:
       FIREBASE_STORAGE_BUCKET: ${FIREBASE_STORAGE_BUCKET:-}
       GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS:-}
       MAX_UPLOAD_SIZE_MB: ${MAX_UPLOAD_SIZE_MB:-10}
+      DRIFT_EVALUATION_REPORT_DIR: /app/reports/evaluation
+    volumes:
+      - ./reports:/app/reports
     depends_on:
       db:
         condition: service_started
@@ -57,7 +60,6 @@ services:
     environment:
       DRIFT_MODEL_MODE: local
       DRIFT_LOCAL_ENGINE: ${DRIFT_LOCAL_ENGINE:-gguf}
-      DRIFT_BASE_MODEL_PATH: /app/models/base/Qwen2.5-7B-Instruct
       DRIFT_ADAPTER_ZIP_PATH: /app/models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA.zip
       DRIFT_ADAPTER_DIR: /app/models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA
       DRIFT_GGUF_MODEL_PATH: ${DRIFT_GGUF_MODEL_PATH:-/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf}
