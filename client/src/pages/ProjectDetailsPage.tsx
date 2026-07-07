@@ -204,11 +204,11 @@ export const ProjectDetailsPage = () => {
   };
 
   return (
-    <div className="space-y-6 text-white">
+    <div className="space-y-5 text-white">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-400">Project workspace</p>
-          <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white">{project.name}</h2>
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-lime-400">Project workspace</p>
+          <h2 className="mt-1.5 text-2xl font-semibold tracking-normal text-white">{project.name}</h2>
         </div>
         <Link to="/projects">
           <Button type="button" variant="secondary">
@@ -218,29 +218,29 @@ export const ProjectDetailsPage = () => {
         </Link>
       </div>
 
-      <section className="overflow-hidden rounded-3xl border border-lime-400/20 bg-black/70 shadow-[0_18px_80px_rgba(163,230,53,0.06)]">
+      <section className="overflow-hidden rounded-[1.5rem] border border-lime-400/20 bg-black/70 shadow-[0_14px_60px_rgba(163,230,53,0.05)]">
         <div className="grid gap-0 xl:grid-cols-[1.25fr_0.75fr]">
-          <div className="border-b border-white/10 p-6 xl:border-b-0 xl:border-r">
+          <div className="border-b border-white/10 p-4 xl:border-b-0 xl:border-r">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full border border-lime-400/20 bg-lime-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-lime-300">
+              <span className="rounded-full border border-lime-400/20 bg-lime-400/10 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-lime-300">
                 {formatProjectValue(project.status)}
               </span>
-              <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-gray-300">
+              <span className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-gray-300">
                 {formatProjectValue(project.priority)} priority
               </span>
-              <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-gray-300">
+              <span className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-gray-300">
                 {workspaceName}
               </span>
             </div>
 
-            <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-4 grid gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
               <MetricTile label="Requirements" value={requirements.length} icon={ListChecks} />
               <MetricTile label="Baselines" value={versions.length} icon={Layers3} />
               <MetricTile label="Drift runs" value={driftAnalyses.length} icon={GitCompareArrows} />
               <MetricTile label="Change requests" value={changeRequests.length} icon={FileText} />
             </div>
 
-            <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-2.5 grid gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
               <MetricTile label="Client" value={project.clientName} icon={User2} />
               <MetricTile label="Deadline" value={formatDate(project.deadline)} icon={CalendarDays} />
               <MetricTile label="Updated" value={<span className="text-base">{formatDate(project.updatedAt)}</span>} icon={Clock3} />
@@ -248,14 +248,14 @@ export const ProjectDetailsPage = () => {
             </div>
           </div>
 
-          <div className="space-y-3 bg-white/[0.02] p-6">
+          <div className="space-y-2.5 bg-white/[0.02] p-4">
             <ScopeBlock title="Original scope" value={project.originalScope} />
             <ScopeBlock title="Description" value={project.description} />
           </div>
         </div>
       </section>
 
-      <nav className="grid gap-3 rounded-3xl border border-white/10 bg-black/70 p-3 md:grid-cols-5">
+      <nav className="grid gap-2 rounded-[1.5rem] border border-white/10 bg-black/70 p-2 md:grid-cols-5">
         {projectSectionTabs.map(({ id, label, description, icon: Icon }) => {
           const isActive = activeSection === id;
           const isDriftPair = id === 'drift' || id === 'history';
@@ -265,10 +265,7 @@ export const ProjectDetailsPage = () => {
               type="button"
               onClick={() => setActiveSection(id)}
               className={cn(
-                'group flex min-h-20 items-center gap-3 rounded-2xl border px-4 py-3 text-left transition',
-                isDriftPair && 'md:relative',
-                id === 'drift' && 'md:rounded-r-none',
-                id === 'history' && 'md:-ml-3 md:rounded-l-none',
+                'group flex min-h-16 items-center gap-2.5 rounded-[1.15rem] border px-3 py-2.5 text-left transition',
                 isDriftPair
                   ? 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[#b7ad98]'
                   : isActive
@@ -278,7 +275,7 @@ export const ProjectDetailsPage = () => {
             >
               <span
                 className={cn(
-                  'flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition',
+                  'flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border transition',
                   isDriftPair
                     ? 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] group-hover:border-[#b7ad98]'
                     : isActive
@@ -286,11 +283,11 @@ export const ProjectDetailsPage = () => {
                       : 'border-white/10 bg-black/60 text-gray-400'
                 )}
               >
-                <Icon className="h-5 w-5" />
+                <Icon className="h-4 w-4" />
               </span>
-              <span>
+              <span className="min-w-0">
                 <span className="block text-sm font-semibold">{label}</span>
-                <span className="mt-1 block text-xs leading-5 text-gray-500">{description}</span>
+                <span className="mt-0.5 block text-xs leading-4 text-gray-500">{description}</span>
               </span>
             </button>
           );

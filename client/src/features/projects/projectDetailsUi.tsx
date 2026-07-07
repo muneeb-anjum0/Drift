@@ -49,19 +49,19 @@ export const PanelHeader = ({
 );
 
 export const MetricTile = ({ label, value, icon: Icon }: { label: string; value: ReactNode; icon: LucideIcon }) => (
-  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-    <div className="flex items-center justify-between gap-3">
-      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">{label}</p>
+  <div className="rounded-[1.1rem] border border-white/10 bg-white/[0.03] p-3">
+    <div className="flex items-center justify-between gap-2.5">
+      <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-gray-500">{label}</p>
       <Icon className="h-4 w-4 text-lime-400" />
     </div>
-    <div className="mt-3 text-lg font-semibold text-white">{value}</div>
+    <div className="mt-2 text-base font-semibold text-white">{value}</div>
   </div>
 );
 
 export const ScopeBlock = ({ title, value }: { title: string; value: string }) => (
-  <div className="rounded-2xl border border-white/10 bg-black/40 p-4">
-    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-lime-400">{title}</p>
-    <p className="mt-3 max-h-36 overflow-y-auto whitespace-pre-line pr-2 text-sm leading-6 text-gray-300">
+  <div className="rounded-[1.1rem] border border-white/10 bg-black/40 p-3">
+    <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-lime-400">{title}</p>
+    <p className="mt-2 max-h-28 overflow-y-auto whitespace-pre-line pr-2 text-xs leading-5 text-gray-300">
       {value || `No ${title.toLowerCase()} recorded.`}
     </p>
   </div>
