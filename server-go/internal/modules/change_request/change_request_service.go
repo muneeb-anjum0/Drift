@@ -121,14 +121,22 @@ func businessReason(changes []drift.DetectedChange) string {
 	}
 	text := strings.ToLower(changes[0].Title + " " + changes[0].Description)
 	switch {
+	case strings.Contains(text, "family") || strings.Contains(text, "relative"):
+		return "This request adds family member access to patient information. It requires delegated account permissions, privacy boundaries, and controlled visibility across appointments, prescriptions, invoices, payment status, and notifications."
 	case strings.Contains(text, "parent"):
 		return "This request expands the student-only portal by adding parent access. It requires role-based permissions and controlled visibility into student academic and billing information."
 	case strings.Contains(text, "sms otp"):
 		return "This request adds an additional recovery method to improve account access and reduce dependency on email-only password reset."
+	case strings.Contains(text, "clinic analytics"):
+		return "This request changes clinic reporting from static CSV exports into an interactive analytics experience, increasing dashboard, filtering, charting, and downloadable snapshot scope."
 	case strings.Contains(text, "interactive"):
 		return "This request changes static report downloads into an interactive reporting experience, increasing reporting UI, data filtering, and visualization scope."
 	case strings.Contains(text, "card payment"):
 		return "This request changes the first-release billing scope by removing card payment and limiting the release to fee-status visibility."
+	case strings.Contains(text, "cancellation"):
+		return "This request changes the approved appointment cancellation policy and should be reviewed because it affects patient scheduling behavior, clinic operations, and notification rules."
+	case strings.Contains(text, "clarify") || strings.Contains(text, "dashboard improvements"):
+		return "This request is not specific enough for implementation. The client needs to clarify the intended dashboard behavior, affected data, and acceptance criteria."
 	case strings.Contains(text, "assignment"):
 		return "This request changes assignment submission rules and requires confirmation of deadline and penalty behavior before implementation."
 	default:

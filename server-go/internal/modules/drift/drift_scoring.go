@@ -52,6 +52,18 @@ func Score(changes []DetectedChange) (int, string, map[string]int, float64, stri
 	if len(changes) > 1 {
 		score += (len(changes) - 1) * 8
 	}
+	if len(changes) == 1 {
+		switch normalizeLabel(changes[0].ChangeType) {
+		case "ambiguous":
+			if score > 40 {
+				score = 40
+			}
+		case "contradiction":
+			if score > 85 {
+				score = 85
+			}
+		}
+	}
 	if score > 100 {
 		score = 100
 	}

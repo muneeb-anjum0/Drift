@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""End-to-end regression checks for grouped drift change request generation."""
+"""End-to-end regression checks for grouped clinic change request generation."""
 
 from __future__ import annotations
 
@@ -13,62 +13,110 @@ from typing import Any
 
 
 REQUIREMENTS = [
-    ("Student email login", "The system shall allow students to log in using their registered email and password."),
-    ("Course enrollment", "The system shall allow students to enroll in available courses before the enrollment deadline."),
-    ("Attendance view", "The system shall allow students to view their attendance percentage for each enrolled course."),
-    ("Assignment submission", "The system shall allow students to upload assignment files before the due date."),
-    ("Grade viewing", "The system shall allow students to view published grades for completed assessments."),
-    ("Semester fee payment", "The system shall allow students to pay semester fees using a card payment method."),
-    ("Academic report PDF download", "The system shall allow students to download academic reports as PDF files."),
-    ("Admin course management", "The system shall allow admins to create, update, and archive courses."),
-    ("Student notifications", "The system shall notify students about enrollment deadlines, assignment deadlines, and published grades."),
-    ("Admin report CSV export", "The system shall allow admins to export student performance reports as CSV files."),
+    ("Patient email login", "The system shall allow patients to log in using their registered email and password."),
+    ("Appointment booking", "The system shall allow patients to book appointments with doctors from available clinic slots."),
+    ("Appointment cancellation", "The system shall allow patients to cancel appointments up to 24 hours before the scheduled time."),
+    ("Prescription PDF download", "The system shall allow patients to download prescription PDFs from their visit history."),
+    ("Invoice card payment", "The system shall allow patients to pay invoices using a card payment method."),
+    ("Invoice status view", "The system shall allow patients to view invoice and payment status."),
+    ("Appointment notifications", "The system shall notify patients about appointment bookings, changes, and cancellations."),
+    ("Clinic CSV export", "The system shall allow admins to export clinic reports as CSV files."),
+    ("Patient dashboard", "The system shall allow patients to view a dashboard with appointments, prescriptions, invoices, and notifications."),
 ]
 
 CASES = [
     {
-        "name": "parent portal",
-        "message": "Add parent accounts so parents can log in and view attendance, grades, fee status, and notifications for their children.",
-        "title_terms": ["parent"],
-        "label": "added",
-        "max_changes": 1,
-        "impact_not": "low",
-        "min_hours": 12,
-        "requires_change_request": True,
-    },
-    {
-        "name": "SMS OTP",
-        "message": "Also allow students to reset their password through SMS OTP.",
-        "title_terms": ["sms", "password"],
-        "label": "added",
-        "max_changes": 1,
-        "requires_change_request": True,
-    },
-    {
-        "name": "same report page",
-        "message": "Can students also download the same academic report from the reports page instead of only from the dashboard?",
+        "name": "same prescription pdf",
+        "message": "Can patients also download the same prescription PDF from their visit history page?",
         "max_score": 20,
         "max_changes": 1,
         "requires_change_request": False,
     },
     {
-        "name": "interactive reports",
-        "message": "Instead of PDF academic reports, generate interactive web-based report cards with charts, filters, and downloadable summaries.",
-        "title_terms": ["interactive", "report"],
-        "label": "modified",
+        "name": "SMS OTP",
+        "message": "Also allow patients to reset their password through SMS OTP.",
+        "title_terms": ["sms", "password"],
+        "label": "added",
         "max_changes": 1,
-        "impact_not": "low",
-        "min_hours": 12,
+        "min_score": 30,
+        "max_score": 40,
         "requires_change_request": True,
     },
     {
-        "name": "card payment",
-        "message": "Remove card payment from the first release. Students will only view fee status for now.",
+        "name": "card payment removal",
+        "message": "Remove card payment from the first release. Patients will only view invoice and payment status for now.",
         "title_terms": ["card", "payment"],
         "label": "removed",
         "max_changes": 1,
         "min_score": 40,
         "max_score": 70,
+        "min_hours": 2,
+        "max_hours": 8,
+        "requires_change_request": True,
+    },
+    {
+        "name": "family member portal",
+        "message": "Add family member accounts so relatives can log in and view appointments, prescriptions, invoices, payment status, and notifications for the patient.",
+        "title_terms": ["family", "portal"],
+        "label": "added",
+        "max_changes": 1,
+        "min_score": 50,
+        "max_score": 75,
+        "min_hours": 12,
+        "max_hours": 24,
+        "required_modules": ["Payment Status", "Notifications"],
+        "forbidden_titles": ["Remove Card Payment From First Release"],
+        "no_removed": True,
+        "requires_change_request": True,
+    },
+    {
+        "name": "appointment cancellation 2 hours",
+        "message": "Allow patients to cancel appointments up to 2 hours before the scheduled time instead of 24 hours.",
+        "title_terms": ["cancellation", "window"],
+        "label": "modified",
+        "max_changes": 1,
+        "min_score": 30,
+        "max_score": 55,
+        "min_hours": 6,
+        "max_hours": 12,
+        "requires_change_request": True,
+    },
+    {
+        "name": "appointment cancellation contradiction",
+        "message": "Patients should be able to cancel appointments anytime, even after the scheduled appointment time.",
+        "title_terms": ["cancellation", "policy"],
+        "label": "contradiction",
+        "max_changes": 1,
+        "min_score": 65,
+        "max_score": 85,
+        "min_hours": 8,
+        "max_hours": 18,
+        "requires_change_request": True,
+    },
+    {
+        "name": "vague dashboard",
+        "message": "Make the patient dashboard smarter and easier to use.",
+        "title_terms": ["clarify", "dashboard"],
+        "label": "ambiguous",
+        "max_changes": 1,
+        "min_score": 20,
+        "max_score": 40,
+        "max_hours": 6,
+        "summary_not_contains": ["implementation-ready", "charts", "filters"],
+        "requires_change_request": True,
+    },
+    {
+        "name": "clinic analytics",
+        "message": "Instead of CSV exports, create interactive clinic analytics dashboards with charts, filters, doctor-wise summaries, and downloadable snapshots.",
+        "title_terms": ["csv", "clinic", "analytics"],
+        "label": "modified",
+        "max_changes": 1,
+        "min_score": 45,
+        "max_score": 70,
+        "min_hours": 12,
+        "max_hours": 24,
+        "summary_contains": ["csv", "clinic analytics"],
+        "summary_not_contains": ["academic", "report card"],
         "requires_change_request": True,
     },
 ]
@@ -102,7 +150,7 @@ def setup_project(base_url: str, timeout: int) -> tuple[str, str, str]:
         request_json(
             "POST",
             f"{base_url}/api/v1/auth/register",
-            {"name": "Change Request Regression", "email": f"change-regression-{stamp}@example.test", "password": "TestPass123!"},
+            {"name": "Clinic Change Regression", "email": f"clinic-change-regression-{stamp}@example.test", "password": "TestPass123!"},
             timeout=timeout,
         ),
         "token",
@@ -111,7 +159,7 @@ def setup_project(base_url: str, timeout: int) -> tuple[str, str, str]:
         request_json(
             "POST",
             f"{base_url}/api/v1/workspaces",
-            {"name": f"Change Regression Workspace {stamp}", "description": "Change request regression tests"},
+            {"name": f"Clinic Regression Workspace {stamp}", "description": "Change request regression tests"},
             token=token,
             timeout=timeout,
         ),
@@ -123,12 +171,12 @@ def setup_project(base_url: str, timeout: int) -> tuple[str, str, str]:
             f"{base_url}/api/v1/projects",
             {
                 "workspaceId": workspace["_id"],
-                "name": "EduTrack Student Portal",
-                "clientName": "BrightPath Academy",
-                "description": "Student portal regression project",
+                "name": "MediCare Clinic Portal",
+                "clientName": "MediCare Clinic",
+                "description": "Clinic portal regression project",
                 "status": "active",
                 "priority": "medium",
-                "originalScope": "EduTrack student portal baseline",
+                "originalScope": "MediCare clinic portal baseline",
             },
             token=token,
             timeout=timeout,
@@ -158,7 +206,7 @@ def setup_project(base_url: str, timeout: int) -> tuple[str, str, str]:
         request_json(
             "POST",
             f"{base_url}/api/v1/requirements/baseline",
-            {"projectId": project["_id"], "label": "EduTrack baseline"},
+            {"projectId": project["_id"], "label": "MediCare baseline"},
             token=token,
             timeout=timeout,
         ),
@@ -208,7 +256,7 @@ def analyze_save_generate(base_url: str, token: str, project_id: str, version_id
         ),
         "analysis",
     )
-    if not saved.get("detectedChanges"):
+    if not saved.get("detectedChanges") or saved.get("driftScore", 0) <= 20:
         return saved, None
     draft = data_at(
         request_json(
@@ -231,9 +279,13 @@ def assert_case(case: dict[str, Any], analysis: dict[str, Any], draft: dict[str,
         raise AssertionError(f"{case['name']}: score too low {analysis['driftScore']}")
     if "max_score" in case and analysis["driftScore"] > case["max_score"]:
         raise AssertionError(f"{case['name']}: score too high {analysis['driftScore']}")
+    if "max_hours" in case and analysis.get("estimatedExtraHours", 0) > case["max_hours"]:
+        raise AssertionError(f"{case['name']}: hours too high {analysis.get('estimatedExtraHours')}")
+    if case.get("no_removed") and analysis.get("removedCount", 0) != 0:
+        raise AssertionError(f"{case['name']}: should not include removed/card-payment drift {analysis}")
     if case.get("requires_change_request") is False:
-        if draft and analysis["driftScore"] > 20:
-            raise AssertionError(f"{case['name']}: generated major change request for low/no drift")
+        if draft:
+            raise AssertionError(f"{case['name']}: generated change request for low/no drift")
         print(f"PASS {case['name']} unchanged/low")
         return
     if not draft:
@@ -246,18 +298,26 @@ def assert_case(case: dict[str, Any], analysis: dict[str, Any], draft: dict[str,
     for term in case.get("title_terms", []):
         if term.lower() not in title_text:
             raise AssertionError(f"{case['name']}: missing title term {term!r} in {title_text!r}")
+    for forbidden in case.get("forbidden_titles", []):
+        if forbidden.lower() in title_text:
+            raise AssertionError(f"{case['name']}: forbidden title appeared in {title_text!r}")
     if case.get("label") and first.get("changeType") != case["label"]:
         raise AssertionError(f"{case['name']}: expected label {case['label']}, got {first.get('changeType')}")
-    if case.get("impact_not") and first.get("impact") == case["impact_not"]:
-        raise AssertionError(f"{case['name']}: impact should not be {case['impact_not']}")
     if case.get("min_hours") and analysis.get("estimatedExtraHours", 0) < case["min_hours"]:
         raise AssertionError(f"{case['name']}: hours too low {analysis.get('estimatedExtraHours')}")
-    summary = draft.get("summary", "")
-    sentences = [item.strip().lower() for item in summary.replace("!", ".").replace("?", ".").split(".") if item.strip()]
+    for module in case.get("required_modules", []):
+        if module not in first.get("affectedModules", []):
+            raise AssertionError(f"{case['name']}: missing module {module!r} in {first.get('affectedModules')}")
+    combined_summary = " ".join([draft.get("summary", ""), first.get("description", ""), draft.get("businessReason", "")]).lower()
+    for term in case.get("summary_contains", []):
+        if term.lower() not in combined_summary:
+            raise AssertionError(f"{case['name']}: missing summary term {term!r} in {combined_summary!r}")
+    for term in case.get("summary_not_contains", []):
+        if term.lower() in combined_summary:
+            raise AssertionError(f"{case['name']}: forbidden summary term {term!r} in {combined_summary!r}")
+    sentences = [item.strip().lower() for item in draft.get("summary", "").replace("!", ".").replace("?", ".").split(".") if item.strip()]
     if len(sentences) != len(set(sentences)):
-        raise AssertionError(f"{case['name']}: duplicate summary sentence {summary!r}")
-    if case["name"] == "parent portal" and len(first.get("affectedModules", [])) < 4:
-        raise AssertionError(f"{case['name']}: expected multi-module affectedModules, got {first}")
+        raise AssertionError(f"{case['name']}: duplicate summary sentence {draft.get('summary')!r}")
     print(f"PASS {case['name']} grouped")
 
 

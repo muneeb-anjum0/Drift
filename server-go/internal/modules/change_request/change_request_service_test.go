@@ -53,3 +53,38 @@ func TestChangeRequestDraftFramesAmbiguousAsClarification(t *testing.T) {
 		t.Fatalf("expected clarification approval note, got %q", note)
 	}
 }
+
+func TestChangeRequestDraftUsesClinicDomainLanguage(t *testing.T) {
+	hours := 18.0
+	changes := []drift.DetectedChange{{
+		Title:           "Replace CSV Reports With Interactive Clinic Analytics",
+		Description:     "The client requested replacing CSV exports with interactive clinic analytics dashboards.",
+		ChangeType:      "modified",
+		Impact:          "high",
+		EstimatedEffort: &hours,
+	}}
+
+	reason := strings.ToLower(businessReason(changes))
+	if !strings.Contains(reason, "clinic reporting") || !strings.Contains(reason, "csv") {
+		t.Fatalf("expected clinic reporting business reason, got %q", reason)
+	}
+	if strings.Contains(reason, "student") || strings.Contains(reason, "academic") {
+		t.Fatalf("business reason leaked education wording: %q", reason)
+	}
+}
+
+func TestChangeRequestDraftUsesFamilyPortalLanguage(t *testing.T) {
+	hours := 18.0
+	changes := []drift.DetectedChange{{
+		Title:           "Add Family Member Portal Access",
+		Description:     "The client requested family member accounts so relatives can log in and view patient information.",
+		ChangeType:      "added",
+		Impact:          "high",
+		EstimatedEffort: &hours,
+	}}
+
+	reason := strings.ToLower(businessReason(changes))
+	if !strings.Contains(reason, "family member access") || !strings.Contains(reason, "privacy") {
+		t.Fatalf("expected family portal business reason, got %q", reason)
+	}
+}

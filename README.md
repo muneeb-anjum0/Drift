@@ -15,6 +15,7 @@ DriftLedger is a full-stack app for managing requirements, freezing baselines, a
 Project workspaces are organized into Requirements, Drift Analysis, History, Change Requests, and Documents.
 
 Saved drift analyses are post-processed into grouped client-facing changes before they are saved or used for change requests.
+Project-level model results are aggregated by primary client intent, so related baseline requirements become affected modules instead of noisy duplicate changes.
 
 ## Stack
 
