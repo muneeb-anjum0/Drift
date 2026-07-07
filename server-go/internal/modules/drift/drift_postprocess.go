@@ -24,6 +24,17 @@ var nonWord = regexp.MustCompile(`[^a-z0-9]+`)
 
 var canonicalRules = []canonicalRule{
 	{
+		key:            "family_portal",
+		title:          "Add Family Member Portal Access",
+		label:          "added",
+		impact:         "high",
+		hours:          18,
+		modules:        []string{"Authentication", "Roles", "Appointments", "Prescriptions", "Invoices", "Payment Status", "Notifications"},
+		summary:        "The client requested family member accounts so relatives can log in and view appointments, prescriptions, invoices, payment status, and notifications for the patient.",
+		recommendation: "Approve this as a scope addition because it introduces delegated access, privacy controls, and family-facing patient data views.",
+		terms:          []string{"family member", "family members", "relative", "relatives", "family account", "family accounts"},
+	},
+	{
 		key:            "parent_portal",
 		title:          "Add Parent Portal Access",
 		label:          "added",
@@ -65,7 +76,51 @@ var canonicalRules = []canonicalRule{
 		modules:        []string{"Payments", "Fees", "Billing"},
 		summary:        "The client requested removing card payment from the first release and keeping fee status visibility only.",
 		recommendation: "Confirm the release scope reduction and update billing/payment expectations before implementation continues.",
-		terms:          []string{"remove card payment", "card payment", "first release", "fee status only", "payment removal"},
+		terms:          []string{"remove card payment", "payment removal"},
+	},
+	{
+		key:            "appointment_cancel_window",
+		title:          "Modify Appointment Cancellation Window",
+		label:          "modified",
+		impact:         "medium",
+		hours:          8,
+		modules:        []string{"Appointments", "Cancellation policy", "Notifications"},
+		summary:        "The client requested changing the appointment cancellation window from 24 hours before the scheduled time to 2 hours before the scheduled time.",
+		recommendation: "Confirm the new cancellation cutoff, patient notification copy, and any clinic override rules before implementation.",
+		terms:          []string{"cancel appointments", "cancellation window", "2 hours", "24 hours", "scheduled time"},
+	},
+	{
+		key:            "appointment_cancel_contradiction",
+		title:          "Contradict Appointment Cancellation Policy",
+		label:          "contradiction",
+		impact:         "high",
+		hours:          12,
+		modules:        []string{"Appointments", "Cancellation policy", "Notifications"},
+		summary:        "The client requested allowing appointment cancellations anytime, even after the scheduled appointment time, which contradicts the approved cancellation cutoff policy.",
+		recommendation: "Resolve the cancellation policy conflict before implementation because this changes patient behavior, clinic scheduling, and notification rules.",
+		terms:          []string{"cancel appointments anytime", "after the scheduled appointment time", "cancel anytime"},
+	},
+	{
+		key:            "vague_dashboard",
+		title:          "Clarify Patient Dashboard Improvements",
+		label:          "ambiguous",
+		impact:         "medium",
+		hours:          4,
+		modules:        []string{"Patient dashboard", "Product discovery"},
+		summary:        "The client asked to make the patient dashboard smarter and easier to use, but the request does not define specific behavior, data, or acceptance criteria.",
+		recommendation: "Ask the client to clarify the dashboard goals, affected widgets, user actions, and acceptance criteria before estimating implementation.",
+		terms:          []string{"dashboard smarter", "dashboard easier", "smarter and easier", "make the patient dashboard"},
+	},
+	{
+		key:            "clinic_analytics",
+		title:          "Replace CSV Reports With Interactive Clinic Analytics",
+		label:          "modified",
+		impact:         "high",
+		hours:          18,
+		modules:        []string{"Reports", "Clinic analytics", "Dashboards", "Downloads"},
+		summary:        "The client requested replacing CSV exports with interactive clinic analytics dashboards that include charts, filters, doctor-wise summaries, and downloadable snapshots.",
+		recommendation: "Approve this as a reporting redesign because it expands clinic reporting from static CSV export into dashboard, filtering, analytics, and snapshot download scope.",
+		terms:          []string{"interactive clinic analytics", "clinic analytics", "doctor-wise summaries", "csv exports", "downloadable snapshots"},
 	},
 	{
 		key:            "interactive_reports",
@@ -89,17 +144,30 @@ var canonicalRules = []canonicalRule{
 		recommendation: "Treat this as a minor placement or navigation adjustment if the same report download already exists.",
 		terms:          []string{"same report", "download same report", "reports page", "existing report", "from dashboard", "from reports page"},
 	},
+	{
+		key:            "same_prescription_access",
+		title:          "Expose Existing Prescription PDF From Visit History",
+		label:          "modified",
+		impact:         "low",
+		hours:          2,
+		modules:        []string{"Prescriptions", "Visit history"},
+		summary:        "The client is asking for another access point to the same existing prescription PDF rather than a new prescription capability.",
+		recommendation: "Treat this as a minor placement or navigation adjustment if the same prescription PDF download already exists.",
+		terms:          []string{"same prescription", "prescription pdf", "visit history"},
+	},
 }
 
 func CleanDetectedChanges(changes []DetectedChange, inputText string) []DetectedChange {
 	if len(changes) == 0 {
 		return []DetectedChange{}
 	}
+	if key := primaryIntentKey(inputText); key != "" {
+		normalized := normalizeChanges(changes)
+		return []DetectedChange{buildGroupedChange(key, normalized, inputText)}
+	}
 	groups := map[string][]DetectedChange{}
 	groupOrder := []string{}
-	for _, change := range changes {
-		change.ChangeType = normalizeLabel(change.ChangeType)
-		change.Description = CleanReasoning(change.Description)
+	for _, change := range normalizeChanges(changes) {
 		key := canonicalKey(change, inputText)
 		if key == "" {
 			key = "generic:" + normalizeChangeText(change.Title+" "+change.ChangeType)
@@ -171,9 +239,37 @@ func AffectedModules(change DetectedChange) []string {
 	return append([]string{}, change.AffectedModules...)
 }
 
+func primaryIntentKey(inputText string) string {
+	text := strings.ToLower(inputText)
+	switch {
+	case isFamilyPortalRequest(text):
+		return "family_portal"
+	case isAppointmentCancelContradiction(text):
+		return "appointment_cancel_contradiction"
+	case isAppointmentCancelWindowChange(text):
+		return "appointment_cancel_window"
+	case isVagueDashboardRequest(text):
+		return "vague_dashboard"
+	case isClinicAnalyticsRequest(text):
+		return "clinic_analytics"
+	case isExplicitCardPaymentRemoval(text):
+		return "remove_card_payment"
+	case containsAll(text, "sms", "otp") && strings.Contains(text, "password"):
+		return "sms_otp"
+	case strings.Contains(text, "same") && strings.Contains(text, "report") && (strings.Contains(text, "reports page") || strings.Contains(text, "download")):
+		return "same_report_access"
+	case strings.Contains(text, "same") && strings.Contains(text, "prescription") && strings.Contains(text, "pdf"):
+		return "same_prescription_access"
+	}
+	return ""
+}
+
 func canonicalKey(change DetectedChange, inputText string) string {
 	text := strings.ToLower(inputText + " " + change.Title + " " + change.Description + " " + change.OldText + " " + change.NewText)
 	for _, rule := range canonicalRules {
+		if rule.key == "remove_card_payment" && !isExplicitCardPaymentRemoval(text) {
+			continue
+		}
 		for _, term := range rule.terms {
 			if strings.Contains(text, term) {
 				return rule.key
@@ -217,9 +313,6 @@ func buildGroupedChange(key string, group []DetectedChange, inputText string) De
 	if hasRule {
 		grouped.Title = rule.title
 		grouped.ChangeType = rule.label
-		if hasGroupLabel(group, "contradiction") {
-			grouped.ChangeType = "contradiction"
-		}
 		grouped.Impact = rule.impact
 		if grouped.ChangeType == "contradiction" && impactRank(grouped.Impact) < impactRank("high") {
 			grouped.Impact = "high"
@@ -242,15 +335,6 @@ func buildGroupedChange(key string, group []DetectedChange, inputText string) De
 	return grouped
 }
 
-func hasGroupLabel(changes []DetectedChange, label string) bool {
-	for _, change := range changes {
-		if normalizeLabel(change.ChangeType) == label {
-			return true
-		}
-	}
-	return false
-}
-
 func canonicalRuleByKey(key string) (canonicalRule, bool) {
 	for _, rule := range canonicalRules {
 		if rule.key == key {
@@ -261,7 +345,7 @@ func canonicalRuleByKey(key string) (canonicalRule, bool) {
 }
 
 func estimateGroupedHours(label, impact string, moduleCount int, text string) float64 {
-	if strings.Contains(text, "parent") || strings.Contains(text, "interactive") || strings.Contains(text, "charts") {
+	if strings.Contains(text, "parent") || strings.Contains(text, "family") || strings.Contains(text, "interactive") || strings.Contains(text, "charts") {
 		return 18
 	}
 	switch normalizeLabel(label) {
@@ -295,6 +379,72 @@ func estimateGroupedHours(label, impact string, moduleCount int, text string) fl
 	default:
 		return 2
 	}
+}
+
+func normalizeChanges(changes []DetectedChange) []DetectedChange {
+	out := make([]DetectedChange, 0, len(changes))
+	for _, change := range changes {
+		change.ChangeType = normalizeLabel(change.ChangeType)
+		change.Description = CleanReasoning(change.Description)
+		out = append(out, change)
+	}
+	return out
+}
+
+func isFamilyPortalRequest(text string) bool {
+	return containsAny(text, "family member", "family members", "relative", "relatives") &&
+		containsAny(text, "account", "accounts", "log in", "login", "view")
+}
+
+func isAppointmentCancelWindowChange(text string) bool {
+	return containsAny(text, "cancel appointment", "cancel appointments", "cancellation") &&
+		containsAny(text, "2 hours", "two hours") &&
+		containsAny(text, "24 hours", "twenty four hours", "instead of")
+}
+
+func isAppointmentCancelContradiction(text string) bool {
+	return containsAny(text, "cancel appointment", "cancel appointments", "cancellation") &&
+		containsAny(text, "anytime", "any time", "after the scheduled appointment time", "after the scheduled time", "even after")
+}
+
+func isVagueDashboardRequest(text string) bool {
+	if !strings.Contains(text, "dashboard") {
+		return false
+	}
+	if !containsAny(text, "smarter", "easier", "better", "improve", "improved", "enhance", "enhanced") {
+		return false
+	}
+	return !containsAny(text, "chart", "filter", "download", "appointment", "prescription", "invoice", "payment", "notification", "doctor-wise", "csv")
+}
+
+func isClinicAnalyticsRequest(text string) bool {
+	return containsAny(text, "clinic analytics", "analytics dashboard", "analytics dashboards", "doctor-wise") ||
+		(strings.Contains(text, "csv") && containsAny(text, "interactive", "dashboard", "charts", "filters"))
+}
+
+func isExplicitCardPaymentRemoval(text string) bool {
+	if !containsAny(text, "card payment", "payment method", "online payment") {
+		return false
+	}
+	return containsAny(text, "remove", "removing", "removed", "without", "exclude", "excludes", "disabled", "disable", "no card payment", "first release")
+}
+
+func containsAll(text string, terms ...string) bool {
+	for _, term := range terms {
+		if !strings.Contains(text, term) {
+			return false
+		}
+	}
+	return true
+}
+
+func containsAny(text string, terms ...string) bool {
+	for _, term := range terms {
+		if strings.Contains(text, term) {
+			return true
+		}
+	}
+	return false
 }
 
 func maxImpact(changes []DetectedChange) string {

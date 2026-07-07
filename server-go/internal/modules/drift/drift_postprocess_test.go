@@ -155,3 +155,150 @@ func TestSameReportAccessStaysLowImpact(t *testing.T) {
 		t.Fatalf("expected same-report access to stay low/trivial, got score=%d change=%#v", score, grouped[0])
 	}
 }
+
+func TestFamilyPortalDoesNotBecomeCardPaymentRemoval(t *testing.T) {
+	message := "Add family member accounts so relatives can log in and view appointments, prescriptions, invoices, payment status, and notifications for the patient."
+	effort := 2.0
+
+	grouped, score, _, counts, hours, _ := CleanAnalysis([]DetectedChange{
+		{ChangeType: "added", Title: "Family accounts", Description: "Relatives can view appointments.", Impact: "low", EstimatedEffort: &effort, Confidence: 94},
+		{ChangeType: "removed", Title: "Payment status", Description: "The message mentions payment status.", Impact: "low", EstimatedEffort: &effort, Confidence: 88},
+	}, message)
+
+	if len(grouped) != 1 {
+		t.Fatalf("expected one family portal change, got %#v", grouped)
+	}
+	if grouped[0].Title != "Add Family Member Portal Access" || grouped[0].ChangeType != "added" {
+		t.Fatalf("unexpected grouped change %#v", grouped[0])
+	}
+	if counts["removed"] != 0 {
+		t.Fatalf("payment status should not count as removed/card payment drift: %#v", counts)
+	}
+	if score < 50 || score > 75 {
+		t.Fatalf("expected family portal score 50-75, got %d", score)
+	}
+	if hours < 12 || hours > 24 {
+		t.Fatalf("expected family portal hours 12-24, got %.1f", hours)
+	}
+	assertHasModule(t, grouped[0], "Payment Status")
+}
+
+func TestAppointmentCancellationWindowIsSingleModifiedChange(t *testing.T) {
+	message := "Allow patients to cancel appointments up to 2 hours before the scheduled time instead of 24 hours."
+	effort := 2.0
+
+	grouped, score, _, _, hours, _ := CleanAnalysis([]DetectedChange{
+		{ChangeType: "modified", Title: "Appointment cancellation", Description: "Cancellation cutoff changes.", Impact: "low", EstimatedEffort: &effort, Confidence: 93},
+		{ChangeType: "contradiction", Title: "Appointment notifications", Description: "Notification rules may change.", Impact: "low", EstimatedEffort: &effort, Confidence: 82},
+	}, message)
+
+	if len(grouped) != 1 {
+		t.Fatalf("expected one cancellation change, got %#v", grouped)
+	}
+	if grouped[0].Title != "Modify Appointment Cancellation Window" || grouped[0].ChangeType != "modified" {
+		t.Fatalf("unexpected grouped change %#v", grouped[0])
+	}
+	if score < 30 || score > 55 {
+		t.Fatalf("expected cancellation score 30-55, got %d", score)
+	}
+	if hours < 6 || hours > 12 {
+		t.Fatalf("expected cancellation hours 6-12, got %.1f", hours)
+	}
+}
+
+func TestAppointmentCancellationAnytimeIsCappedContradiction(t *testing.T) {
+	message := "Patients should be able to cancel appointments anytime, even after the scheduled appointment time."
+	effort := 2.0
+
+	grouped, score, _, _, hours, _ := CleanAnalysis([]DetectedChange{
+		{ChangeType: "contradiction", Title: "Appointment cancellation", Description: "Contradicts cutoff.", Impact: "critical", EstimatedEffort: &effort, Confidence: 95},
+		{ChangeType: "modified", Title: "Appointment scheduling", Description: "Changes scheduling behavior.", Impact: "high", EstimatedEffort: &effort, Confidence: 90},
+	}, message)
+
+	if len(grouped) != 1 {
+		t.Fatalf("expected one cancellation contradiction, got %#v", grouped)
+	}
+	if grouped[0].Title != "Contradict Appointment Cancellation Policy" || grouped[0].ChangeType != "contradiction" {
+		t.Fatalf("unexpected grouped change %#v", grouped[0])
+	}
+	if score < 65 || score > 85 {
+		t.Fatalf("expected capped contradiction score 65-85, got %d", score)
+	}
+	if hours < 8 || hours > 18 {
+		t.Fatalf("expected contradiction hours 8-18, got %.1f", hours)
+	}
+}
+
+func TestVagueDashboardRequestStaysAmbiguous(t *testing.T) {
+	message := "Make the patient dashboard smarter and easier to use."
+	effort := 2.0
+
+	grouped, score, _, _, hours, _ := CleanAnalysis([]DetectedChange{{
+		ChangeType:      "modified",
+		Title:           "Patient dashboard",
+		Description:     "The dashboard should be improved.",
+		Impact:          "high",
+		EstimatedEffort: &effort,
+		Confidence:      90,
+	}}, message)
+
+	if len(grouped) != 1 {
+		t.Fatalf("expected one ambiguous change, got %#v", grouped)
+	}
+	if grouped[0].Title != "Clarify Patient Dashboard Improvements" || grouped[0].ChangeType != "ambiguous" {
+		t.Fatalf("unexpected grouped change %#v", grouped[0])
+	}
+	if score < 20 || score > 40 {
+		t.Fatalf("expected ambiguous score 20-40, got %d", score)
+	}
+	if hours < 2 || hours > 6 {
+		t.Fatalf("expected vague dashboard hours 2-6, got %.1f", hours)
+	}
+	if strings.Contains(strings.ToLower(grouped[0].Description), "implementation-ready") {
+		t.Fatalf("vague dashboard summary should not imply concrete implementation: %q", grouped[0].Description)
+	}
+}
+
+func TestClinicAnalyticsSummaryIsDomainSafe(t *testing.T) {
+	message := "Instead of CSV exports, create interactive clinic analytics dashboards with charts, filters, doctor-wise summaries, and downloadable snapshots."
+	effort := 2.0
+
+	grouped, score, _, _, hours, summary := CleanAnalysis([]DetectedChange{{
+		ChangeType:      "modified",
+		Title:           "Interactive reports",
+		Description:     "Charts and filters replace CSV exports.",
+		Impact:          "low",
+		EstimatedEffort: &effort,
+		Confidence:      95,
+	}}, message)
+
+	if len(grouped) != 1 {
+		t.Fatalf("expected one clinic analytics change, got %#v", grouped)
+	}
+	if grouped[0].Title != "Replace CSV Reports With Interactive Clinic Analytics" || grouped[0].ChangeType != "modified" {
+		t.Fatalf("unexpected grouped change %#v", grouped[0])
+	}
+	if score < 45 || score > 70 {
+		t.Fatalf("expected clinic analytics score 45-70, got %d", score)
+	}
+	if hours < 12 || hours > 24 {
+		t.Fatalf("expected clinic analytics hours 12-24, got %.1f", hours)
+	}
+	lowerSummary := strings.ToLower(summary)
+	if !strings.Contains(lowerSummary, "csv") || !strings.Contains(lowerSummary, "clinic analytics") {
+		t.Fatalf("expected clinic CSV analytics summary, got %q", summary)
+	}
+	if strings.Contains(lowerSummary, "academic") || strings.Contains(lowerSummary, "report card") {
+		t.Fatalf("summary leaked education/report-card wording: %q", summary)
+	}
+}
+
+func assertHasModule(t *testing.T, change DetectedChange, module string) {
+	t.Helper()
+	for _, got := range change.AffectedModules {
+		if got == module {
+			return
+		}
+	}
+	t.Fatalf("expected module %q in %#v", module, change.AffectedModules)
+}

@@ -125,7 +125,7 @@ GET /api/v1/debug/routes
 ## A. Start Stack
 
 ```powershell
-cd D:\Desktop\Projects\Drift\Drift-app
+cd "D:\Desktop\2. PROJECTS\Drift\Drift-app"
 docker compose up --build
 ```
 
@@ -381,7 +381,9 @@ The project requirement analysis script checks:
 
 ## Change Request Generation Regression
 
-Saved analyses are cleaned before persistence and before change-request generation. The backend removes repeated reasoning, groups duplicate requirement-level matches into one client-facing change, and generates change-request language from grouped changes only.
+Saved analyses are cleaned before persistence and before change-request generation. The backend removes repeated reasoning, chooses the primary client intent from the message, groups duplicate requirement-level matches into one client-facing change, and keeps secondary requirements as affected modules instead of separate drift items.
+
+This matters because the model analyzes one requirement at a time. For project-level analysis, the backend aggregates results after inference. The post-processing layer prevents related baseline requirements such as invoices, payment status, and notifications from becoming duplicate changes when the primary request is family member access.
 
 Run:
 
@@ -389,7 +391,16 @@ Run:
 python tools\test_change_request_generation.py
 ```
 
-The script creates an EduTrack test project and checks parent portal access, SMS OTP password reset, same-report page access, interactive report cards, and card-payment removal. It verifies duplicate changes are grouped, parent portal impact is not low, same-report access stays low/no drift, and generated change-request text uses the grouped change title.
+The script creates a MediCare Clinic Portal test project and checks:
+
+- same prescription PDF access stays unchanged/low and does not create a change request
+- SMS OTP remains a grouped password reset addition
+- explicit card payment removal still works
+- family member portal access does not trigger false card-payment removal from `payment status`
+- appointment cancellation window changes group into one modified change
+- cancellation after scheduled time groups into one capped contradiction
+- vague dashboard requests stay ambiguous and low effort
+- clinic analytics summaries mention CSV and clinic analytics, not academic report cards
 
 ## Docker Environment
 
