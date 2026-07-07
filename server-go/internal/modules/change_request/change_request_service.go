@@ -236,7 +236,12 @@ func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequ
 	cr := ChangeRequest{ID: utils.NewID(), Project: analysis.Project, Workspace: analysis.Workspace, DriftAnalysis: driftID, Title: p.Title, ClientName: p.ClientName, Summary: p.Summary, ChangesRequested: p.ChangesRequested, BusinessReason: p.BusinessReason, TimelineImpact: p.TimelineImpact, CostImpact: p.CostImpact, RecommendedAction: p.RecommendedAction, ApprovalNote: p.ApprovalNote, Status: def(p.Status, "draft"), ApprovalStatus: ApprovalDraft, GeneratedBy: def(p.GeneratedBy, analysis.AnalysisEngine), CreatedBy: userID, CreatedAt: now, UpdatedAt: now}
 	_, err = s.db.Collection("changerequests").InsertOne(ctx, cr)
 	if err == nil {
-		activity.Log(ctx, s.db, analysis.Workspace, userID, "CHANGE_REQUEST_CREATED", "ChangeRequest", cr.ID.Hex(), bson.M{"title": cr.Title})
+		activity.Log(ctx, s.db, analysis.Workspace, userID, "CHANGE_REQUEST_CREATED", "ChangeRequest", cr.ID.Hex(), bson.M{
+			"projectId":      cr.Project.Hex(),
+			"title":          cr.Title,
+			"summary":        activitySnippet(cr.Summary),
+			"approvalStatus": cr.ApprovalStatus,
+		})
 	}
 	return cr, err
 }
@@ -324,7 +329,12 @@ func (s Service) Update(ctx context.Context, id, userID primitive.ObjectID, p Up
 	}
 	_, err = s.db.Collection("changerequests").UpdateOne(ctx, bson.M{"_id": id}, bson.M{"$set": update})
 	if err == nil {
-		activity.Log(ctx, s.db, cr.Workspace, userID, "CHANGE_REQUEST_UPDATED", "ChangeRequest", id.Hex(), bson.M{})
+		activity.Log(ctx, s.db, cr.Workspace, userID, "CHANGE_REQUEST_UPDATED", "ChangeRequest", id.Hex(), bson.M{
+			"projectId":      cr.Project.Hex(),
+			"title":          def(updateString(update, "title"), cr.Title),
+			"summary":        activitySnippet(def(updateString(update, "summary"), cr.Summary)),
+			"approvalStatus": cr.ApprovalStatus,
+		})
 	}
 	return s.Get(ctx, id, userID)
 }
@@ -377,7 +387,7 @@ func (s Service) setApprovalStatus(ctx context.Context, id, userID primitive.Obj
 	if err != nil {
 		return cr, err
 	}
-	activity.Log(ctx, s.db, cr.Workspace, userID, "CHANGE_REQUEST_APPROVAL_UPDATED", "ChangeRequest", id.Hex(), bson.M{"approvalStatus": nextStatus})
+	activity.Log(ctx, s.db, cr.Workspace, userID, "CHANGE_REQUEST_APPROVAL_UPDATED", "ChangeRequest", id.Hex(), bson.M{"projectId": cr.Project.Hex(), "title": cr.Title, "approvalStatus": nextStatus})
 	return s.Get(ctx, id, userID)
 }
 
@@ -439,7 +449,12 @@ func (s Service) Delete(ctx context.Context, id, userID primitive.ObjectID) erro
 	}
 	_, err = s.db.Collection("changerequests").DeleteOne(ctx, bson.M{"_id": id})
 	if err == nil {
-		activity.Log(ctx, s.db, cr.Workspace, userID, "CHANGE_REQUEST_DELETED", "ChangeRequest", id.Hex(), bson.M{})
+		activity.Log(ctx, s.db, cr.Workspace, userID, "CHANGE_REQUEST_DELETED", "ChangeRequest", id.Hex(), bson.M{
+			"projectId":      cr.Project.Hex(),
+			"title":          cr.Title,
+			"summary":        activitySnippet(cr.Summary),
+			"approvalStatus": cr.ApprovalStatus,
+		})
 	}
 	return err
 }
@@ -448,4 +463,19 @@ func def(value, fallback string) string {
 		return fallback
 	}
 	return value
+}
+
+func updateString(update bson.M, key string) string {
+	if value, ok := update[key].(string); ok {
+		return value
+	}
+	return ""
+}
+
+func activitySnippet(value string) string {
+	text := strings.Join(strings.Fields(value), " ")
+	if len(text) <= 120 {
+		return text
+	}
+	return strings.TrimSpace(text[:117]) + "..."
 }

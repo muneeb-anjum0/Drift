@@ -67,5 +67,6 @@ func (h Handler) listByFilter(c *gin.Context, filter bson.M) {
 	}
 	var activities []ActivityLog
 	_ = cursor.All(ctx, &activities)
+	h.enrichActivities(ctx, activities)
 	response.Success(c, http.StatusOK, "Activities fetched", gin.H{"activities": activities})
 }

@@ -46,16 +46,16 @@ export const DashboardPage = () => {
   const isEmpty = workspaces.length === 0 && projects.length === 0 && activities.length === 0;
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-7">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-5">
       <motion.section
         {...sectionMotion}
-        className="overflow-hidden rounded-[2.25rem] border border-lime-400/20 bg-black/75 p-6 shadow-[0_24px_90px_rgba(163,230,53,0.07)] sm:p-8"
+        className="overflow-hidden rounded-[1.75rem] border border-lime-400/20 bg-black/75 p-4 shadow-[0_18px_70px_rgba(163,230,53,0.06)] sm:p-5"
       >
-        <div className="flex flex-wrap items-start justify-between gap-5">
+        <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.26em] text-lime-400">Command center</p>
-            <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-white sm:text-5xl">Track scope before it turns into unpaid work.</h1>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-gray-400">
+            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-lime-400">Command center</p>
+            <h1 className="mt-2 max-w-3xl text-3xl font-semibold leading-tight text-white sm:text-4xl">Track scope before it turns into unpaid work.</h1>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-gray-400">
               Monitor workspaces, projects, requirement baselines, and drift activity from one focused dashboard.
             </p>
           </div>
@@ -69,7 +69,7 @@ export const DashboardPage = () => {
           </div>
         </div>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, index) => (
             <motion.div key={stat.label} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.06 }}>
               <StatCard label={stat.label} value={stat.value} icon={stat.icon} />
@@ -86,18 +86,18 @@ export const DashboardPage = () => {
         />
       ) : null}
 
-      <div className="space-y-6">
+      <div className="space-y-5">
         <motion.section {...sectionMotion} transition={{ ...sectionMotion.transition, delay: 0.12 }}>
-          <Card className="rounded-[2rem] border-white/10 bg-black/65 p-6">
-            <div className="mb-5 flex items-center justify-between gap-4">
+          <Card className="rounded-[1.5rem] border-white/10 bg-black/65 p-4 sm:p-5">
+            <div className="mb-4 flex items-center justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-lime-400">Workflow</p>
-                <h2 className="mt-1 text-xl font-semibold text-white">Scope protection pipeline</h2>
+                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-lime-400">Workflow</p>
+                <h2 className="mt-1 text-lg font-semibold text-white">Scope protection pipeline</h2>
               </div>
-              <GitCompareArrows className="h-5 w-5 text-lime-400" />
+              <GitCompareArrows className="h-4 w-4 text-lime-400" />
             </div>
 
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-3 md:grid-cols-3">
               {[
                 { title: 'Capture', text: 'Create projects and preserve original scope.', icon: FolderKanban },
                 { title: 'Baseline', text: 'Structure requirements into approved snapshots.', icon: ListChecks },
@@ -108,14 +108,14 @@ export const DashboardPage = () => {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.18 + index * 0.07 }}
-                  whileHover={{ y: -5, scale: 1.015 }}
-                  className="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5 transition-colors hover:border-lime-400/35 hover:bg-lime-400/10"
+                  whileHover={{ y: -3, scale: 1.01 }}
+                  className="rounded-[1.25rem] border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-lime-400/35 hover:bg-lime-400/10"
                 >
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full border border-lime-400/25 bg-lime-400/10">
-                    <Icon className="h-5 w-5 text-lime-300" />
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full border border-lime-400/25 bg-lime-400/10">
+                    <Icon className="h-4 w-4 text-lime-300" />
                   </div>
-                  <p className="mt-5 font-semibold text-white">{title}</p>
-                  <p className="mt-2 text-sm leading-6 text-gray-400">{text}</p>
+                  <p className="mt-3 font-semibold text-white">{title}</p>
+                  <p className="mt-1.5 text-xs leading-5 text-gray-400">{text}</p>
                 </motion.div>
               ))}
             </div>

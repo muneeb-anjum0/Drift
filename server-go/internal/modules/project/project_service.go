@@ -107,7 +107,11 @@ func (s Service) Update(ctx context.Context, projectID, userID primitive.ObjectI
 	}
 	_, err = s.db.Collection("projects").UpdateOne(ctx, bson.M{"_id": projectID}, bson.M{"$set": update})
 	if err == nil {
-		activity.Log(ctx, s.db, project.Workspace, userID, "PROJECT_UPDATED", "Project", projectID.Hex(), bson.M{})
+		activity.Log(ctx, s.db, project.Workspace, userID, "PROJECT_UPDATED", "Project", projectID.Hex(), bson.M{
+			"name":       def(updateString(update, "name"), project.Name),
+			"status":     def(updateString(update, "status"), project.Status),
+			"clientName": def(updateString(update, "clientName"), project.ClientName),
+		})
 	}
 	return s.Get(ctx, projectID, userID)
 }
@@ -129,6 +133,13 @@ func def(value, fallback string) string {
 		return fallback
 	}
 	return value
+}
+
+func updateString(update bson.M, key string) string {
+	if value, ok := update[key].(string); ok {
+		return value
+	}
+	return ""
 }
 func parseDate(value string) *time.Time {
 	if value == "" {

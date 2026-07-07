@@ -534,7 +534,15 @@ func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequ
 	analysis := DriftAnalysis{ID: utils.NewID(), Project: projectID, Workspace: project.Workspace, BaselineVersion: versionID, BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: score, RiskLevel: risk, Summary: summary, DetectedChanges: changes, RequirementResults: p.RequirementResults, AddedCount: counts["added"], ModifiedCount: counts["modified"], RemovedCount: counts["removed"], AmbiguousCount: counts["ambiguous"], ContradictionCount: counts["contradiction"], EstimatedExtraHours: hours, AnalysisEngine: def(p.AnalysisEngine, "qwen_lora"), OllamaUsed: p.OllamaUsed, OllamaModel: p.OllamaModel, Status: def(p.Status, "saved"), CreatedBy: userID, CreatedAt: now, UpdatedAt: now}
 	_, err = s.db.Collection("driftanalyses").InsertOne(ctx, analysis)
 	if err == nil {
-		activity.Log(ctx, s.db, project.Workspace, userID, "DRIFT_ANALYSIS_CREATED", "DriftAnalysis", analysis.ID.Hex(), bson.M{"projectId": projectID.Hex(), "driftScore": p.DriftScore})
+		activity.Log(ctx, s.db, project.Workspace, userID, "DRIFT_ANALYSIS_CREATED", "DriftAnalysis", analysis.ID.Hex(), bson.M{
+			"projectId":   projectID.Hex(),
+			"projectName": project.Name,
+			"inputType":   analysis.InputType,
+			"inputText":   activitySnippet(analysis.InputText),
+			"summary":     activitySnippet(analysis.Summary),
+			"driftScore":  analysis.DriftScore,
+			"riskLevel":   analysis.RiskLevel,
+		})
 	}
 	return analysis, err
 }
@@ -570,7 +578,14 @@ func (s Service) Delete(ctx context.Context, id, userID primitive.ObjectID) erro
 	}
 	_, err = s.db.Collection("driftanalyses").DeleteOne(ctx, bson.M{"_id": id})
 	if err == nil {
-		activity.Log(ctx, s.db, a.Workspace, userID, "DRIFT_ANALYSIS_DELETED", "DriftAnalysis", id.Hex(), bson.M{})
+		activity.Log(ctx, s.db, a.Workspace, userID, "DRIFT_ANALYSIS_DELETED", "DriftAnalysis", id.Hex(), bson.M{
+			"projectId":  a.Project.Hex(),
+			"inputType":  a.InputType,
+			"inputText":  activitySnippet(a.InputText),
+			"summary":    activitySnippet(a.Summary),
+			"driftScore": a.DriftScore,
+			"riskLevel":  a.RiskLevel,
+		})
 	}
 	return err
 }
@@ -626,4 +641,12 @@ func def(value, fallback string) string {
 		return fallback
 	}
 	return value
+}
+
+func activitySnippet(value string) string {
+	text := strings.Join(strings.Fields(value), " ")
+	if len(text) <= 120 {
+		return text
+	}
+	return strings.TrimSpace(text[:117]) + "..."
 }
