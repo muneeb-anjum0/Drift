@@ -6,14 +6,9 @@ import { Button } from '../../components/common/Button';
 import { formatDate } from '../../utils/formatDate';
 import { cn } from '../../utils/cn';
 import type { DriftAnalysis } from './drift.types';
+import { driftAnalysisTitle } from './driftDisplay';
 import { DriftScoreCard } from './DriftScoreCard';
 import { DetectedChangesList } from './DetectedChangesList';
-
-const analysisTitle = (inputText: string) => {
-  const words = inputText.trim().split(/\s+/).filter(Boolean);
-  if (!words.length) return 'Saved client input';
-  return `${words.slice(0, 8).join(' ')}${words.length > 8 ? '...' : ''}`;
-};
 
 export const DriftHistory = ({
   analyses,
@@ -51,9 +46,9 @@ export const DriftHistory = ({
               aria-expanded={isOpen}
             >
               <span className="min-w-0">
-                <span className="block truncate text-base font-semibold text-[var(--color-text)]">{analysisTitle(analysis.inputText)}</span>
+                <span className="block truncate text-base font-semibold text-[var(--color-text)]">{driftAnalysisTitle(analysis.inputText)}</span>
                 <span className="mt-1 block text-sm text-[var(--color-text-muted)]">
-                  Baseline version {analysis.baselineVersionNumber} · Created {formatDate(analysis.createdAt)}
+                  Baseline version {analysis.baselineVersionNumber} - Created {formatDate(analysis.createdAt)}
                 </span>
               </span>
               <span className="flex shrink-0 items-center gap-2">

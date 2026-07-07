@@ -6,6 +6,7 @@ import { EmptyState } from '../../components/common/EmptyState';
 import { Spinner } from '../../components/common/Spinner';
 import type { ChangeRequest, ChangeRequestDraft } from './changeRequest.types';
 import type { DriftAnalysis } from '../drift/drift.types';
+import { driftAnalysisTitle } from '../drift/driftDisplay';
 import { useGenerateChangeRequest, useSaveChangeRequest } from '../../hooks/useChangeRequests';
 import { ChangeRequestStatusBadge } from './ChangeRequestStatusBadge';
 
@@ -106,7 +107,7 @@ export const ChangeRequestPreview = ({ projectId, driftAnalyses }: { projectId: 
             <select value={selectedDriftAnalysisId} onChange={(event) => setSelectedDriftAnalysisId(event.target.value)} className={selectClass}>
               {driftAnalyses.map((analysis) => (
                 <option key={analysis._id} value={analysis._id}>
-                  Baseline version {analysis.baselineVersionNumber} - {analysis.driftScore}/100
+                  {driftAnalysisTitle(analysis.inputText)} - {analysis.driftScore}/100
                 </option>
               ))}
             </select>
