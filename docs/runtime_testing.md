@@ -420,8 +420,10 @@ DRIFT_LLAMA_SERVER_URL=http://llama:8080
 llama model path:
 
 ```text
-/app/models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf
+/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf
 ```
+
+Q3_K_M is still available as a manual fallback with `DRIFT_GGUF_MODEL_PATH=/app/models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf`.
 
 ## GTX 1060 Max-Q Runtime Tuning
 
@@ -436,7 +438,7 @@ DRIFT_LLAMA_MAX_TOKENS=120
 
 The FastAPI `/health` field `cuda_available:false` only describes the FastAPI container. In GGUF mode, the model runs in `drift-llama`, not in `drift-inference`.
 
-The current llama logs do not show CUDA layer offload lines, and throughput is around 8-9 generated tokens/sec, so treat the current runtime as CPU-only or mostly CPU-bound. This is acceptable for local testing because the Q3_K_M model is answering successfully.
+The current llama logs may not show CUDA layer offload lines, so treat the runtime as CPU-only or mostly CPU-bound unless Docker logs prove GPU offload. Q4_K_M improves quality over Q3_K_M but may be slower or tighter on 6GB GPUs.
 
 For GPU acceleration later:
 
@@ -456,6 +458,8 @@ python tools\smoke_test_inference.py
 python tools\eval_q3km_smoke.py
 python tools\test_change_request_generation.py
 ```
+
+`eval_q3km_smoke.py` is an older script name; it exercises the currently configured GGUF route.
 
 App checks:
 

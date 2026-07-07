@@ -27,8 +27,10 @@ DRIFT_LOCAL_ENGINE=gguf
 The FastAPI inference wrapper validates requests, calls llama.cpp at `DRIFT_LLAMA_SERVER_URL`, parses the model output, and returns normalized JSON. The llama.cpp server loads:
 
 ```text
-models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf
+models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf
 ```
+
+Q3_K_M remains available as a fallback by setting `DRIFT_GGUF_MODEL_PATH=/app/models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf` before starting Docker.
 
 PEFT is still present as a fallback/dev engine:
 
@@ -108,7 +110,7 @@ The backend cleans model output before it becomes a saved analysis:
 3. applies deterministic canonical titles for common drift patterns,
 4. recalculates score, impact, counts, and estimated hours from grouped changes.
 
-Examples include grouping parent-account matches into `Add Parent Portal Access`, keeping same-report page requests low/no drift, and treating interactive report cards as a larger report redesign. Ambiguous Q3_K_M outputs may still need human review, so vague cases are framed as clarification work.
+Examples include grouping parent-account matches into `Add Parent Portal Access`, keeping same-report page requests low/no drift, and treating interactive report cards as a larger report redesign. Ambiguous GGUF outputs may still need human review, so vague cases are framed as clarification work.
 
 ## Malformed Output Handling
 
@@ -126,7 +128,7 @@ python tools\test_change_request_generation.py
 
 ## Troubleshooting
 
-- `Q3_K_M GGUF not found`: build or copy `models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf`.
+- `Q4_K_M GGUF not found`: run `python tools\build_q4km_model.py`, or temporarily switch `DRIFT_GGUF_MODEL_PATH` back to the Q3_K_M fallback.
 - llama.cpp request failed: check `docker compose logs llama`.
 - CUDA out of memory: reduce `DRIFT_LLAMA_GPU_LAYERS`.
 - Bad JSON from model: lower temperature is already set to `0`; rebuild if the adapter merge used wrong files.

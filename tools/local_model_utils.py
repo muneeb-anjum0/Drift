@@ -12,6 +12,7 @@ ADAPTER_DIR_RELATIVE = Path("models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA")
 MERGED_MODEL_RELATIVE = Path("models/merged/DriftLedger-Qwen2.5-7B-Merged")
 GGUF_F16_RELATIVE = Path("models/gguf/DriftLedger-Qwen2.5-7B-F16.gguf")
 GGUF_Q3KM_RELATIVE = Path("models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf")
+GGUF_Q4KM_RELATIVE = Path("models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf")
 LLAMA_CPP_RELATIVE = Path("tools/vendor/llama.cpp")
 REQUIRED_BASE_FILES = {
     "config.json",
@@ -67,6 +68,10 @@ def gguf_f16_path(root: Path | None = None) -> Path:
 
 def gguf_q3km_path(root: Path | None = None) -> Path:
     return (root or project_root()) / GGUF_Q3KM_RELATIVE
+
+
+def gguf_q4km_path(root: Path | None = None) -> Path:
+    return (root or project_root()) / GGUF_Q4KM_RELATIVE
 
 
 def llama_cpp_dir(root: Path | None = None) -> Path:

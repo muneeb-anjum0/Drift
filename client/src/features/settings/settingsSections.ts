@@ -26,7 +26,7 @@ export const getSettingsSections = (user?: User | null): SettingsSection[] => [
     rows: [
       { label: 'Provider', value: 'llama.cpp' },
       { label: 'Model', value: 'Qwen2.5-7B + DriftLedger LoRA' },
-      { label: 'Quantization', value: 'GGUF Q3_K_M' },
+      { label: 'Quantization', value: 'GGUF Q4_K_M' },
       { label: 'Drift mode', value: 'Model first' },
     ],
   },

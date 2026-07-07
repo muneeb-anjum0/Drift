@@ -11,7 +11,7 @@ const features = [
 
 const stats = [
   { label: 'Requirement-first analysis', value: '1:1' },
-  { label: 'Local model path', value: 'Q3_K_M' },
+  { label: 'Local model path', value: 'Q4_K_M' },
   { label: 'Primary workflow', value: 'Drift' },
 ];
 

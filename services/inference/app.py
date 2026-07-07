@@ -31,10 +31,27 @@ except ImportError:  # pragma: no cover
 
 
 LABELS = {"added", "modified", "removed", "contradiction", "ambiguous", "unchanged"}
+DEFAULT_GGUF_MODEL_PATH = Path("models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf")
 
 
 def cuda_available() -> bool:
-    return bool(torch is not None and torch.cuda.is_available())
+	return bool(torch is not None and torch.cuda.is_available())
+
+
+def quantization_label(path: Path) -> str:
+    name = path.name.upper()
+    if "Q4_K_M" in name:
+        return "Q4_K_M"
+    if "Q3_K_M" in name:
+        return "Q3_K_M"
+    return "GGUF"
+
+
+def model_label(path: Path) -> str:
+    quant = quantization_label(path)
+    if quant == "GGUF":
+        return "Qwen2.5-7B + DriftLedger LoRA (GGUF)"
+    return f"Qwen2.5-7B + DriftLedger LoRA (GGUF {quant})"
 REQUIRED_ADAPTER_FILES = {
     "adapter_config.json",
     "adapter_model.safetensors",
@@ -65,7 +82,7 @@ class Settings(BaseModel):
     adapter_dir: Path = Field(default=Path("models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA"))
     max_new_tokens: int = Field(default=224)
     allow_cpu: bool = Field(default=False)
-    gguf_model_path: Path = Field(default=Path("models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf"))
+    gguf_model_path: Path = Field(default=DEFAULT_GGUF_MODEL_PATH)
     llama_server_url: str = Field(default="http://llama:8080")
     llama_ctx_size: int = Field(default=768)
     llama_gpu_layers: int = Field(default=16)
@@ -83,7 +100,7 @@ class Settings(BaseModel):
             adapter_dir=Path(os.getenv("DRIFT_ADAPTER_DIR", "models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA")),
             max_new_tokens=int(os.getenv("DRIFT_MAX_NEW_TOKENS", "224")),
             allow_cpu=os.getenv("DRIFT_ALLOW_CPU", "false").lower() == "true",
-            gguf_model_path=Path(os.getenv("DRIFT_GGUF_MODEL_PATH", "models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf")),
+            gguf_model_path=Path(os.getenv("DRIFT_GGUF_MODEL_PATH", str(DEFAULT_GGUF_MODEL_PATH))),
             llama_server_url=os.getenv("DRIFT_LLAMA_SERVER_URL", "http://llama:8080"),
             llama_ctx_size=int(os.getenv("DRIFT_LLAMA_CTX_SIZE", "768")),
             llama_gpu_layers=int(os.getenv("DRIFT_LLAMA_GPU_LAYERS", "16")),
@@ -130,8 +147,8 @@ class ModelRuntime:
         if self.settings.local_engine == "gguf":
             if not self.settings.gguf_model_path.exists():
                 raise RuntimeError(
-                    f"Q3_K_M GGUF not found at {self.settings.gguf_model_path}. "
-                    "Run `python tools/build_q3km_model.py` first."
+                    f"{quantization_label(self.settings.gguf_model_path)} GGUF not found at {self.settings.gguf_model_path}. "
+                    "Run `python tools/build_q4km_model.py` first, or set DRIFT_GGUF_MODEL_PATH to the Q3_K_M fallback."
                 )
             self.loaded = True
             return
@@ -412,6 +429,8 @@ def health() -> dict[str, Any]:
         "base_model_path": str(settings.base_model_path).replace("\\", "/"),
         "adapter_path": str((runtime.adapter_path or settings.adapter_dir)).replace("\\", "/"),
         "gguf_model_path": str(settings.gguf_model_path).replace("\\", "/"),
+        "model_label": model_label(settings.gguf_model_path),
+        "quantization_label": quantization_label(settings.gguf_model_path),
         "llama_server_url": settings.llama_server_url,
         "cuda_available": cuda_available(),
         "model_loaded": runtime.loaded,

@@ -13,6 +13,7 @@ from local_model_utils import (
     file_size_gb,
     format_base_model_status,
     gguf_q3km_path,
+    gguf_q4km_path,
     merged_model_dir,
     project_root,
     verify_base_model,
@@ -106,9 +107,16 @@ def check_env_paths(failures: list[str]) -> None:
             "DRIFT_BASE_MODEL_PATH=models/base/Qwen2.5-7B-Instruct",
             "DRIFT_ADAPTER_ZIP_PATH=models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA.zip",
             "DRIFT_ADAPTER_DIR=models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA",
+            "DRIFT_GGUF_Q3KM_PATH=models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf",
+            "DRIFT_GGUF_Q4KM_PATH=models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf",
         ]:
             if required not in text:
                 fail(f"{env_file} does not contain {required}", failures)
+        if (
+            "DRIFT_GGUF_MODEL_PATH=/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf" not in text
+            and "DRIFT_GGUF_MODEL_PATH=models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf" not in text
+        ):
+            fail(f"{env_file} does not point DRIFT_GGUF_MODEL_PATH at Q4_K_M by default", failures)
         for forbidden in FORBIDDEN_STRINGS:
             if forbidden in text:
                 fail(f"{env_file} still contains forbidden value {forbidden}", failures)
@@ -156,12 +164,18 @@ def main() -> None:
     check_adapter(failures)
     merged_exists = merged_model_dir(ROOT).exists()
     q3_path = gguf_q3km_path(ROOT)
+    q4_path = gguf_q4km_path(ROOT)
     q3_exists = q3_path.exists() and q3_path.stat().st_size > 0
+    q4_exists = q4_path.exists() and q4_path.stat().st_size > 0
     print(f"Merged model exists: {str(merged_exists).lower()}")
     print(f"Q3_K_M GGUF exists: {str(q3_exists).lower()}")
-    print(f"GGUF file size: {file_size_gb(q3_path)} GB")
-    if local_engine == "gguf" and not q3_exists:
-        fail("DRIFT_LOCAL_ENGINE=gguf but Q3_K_M GGUF is missing", failures)
+    print(f"Q3_K_M file size: {file_size_gb(q3_path)} GB")
+    print(f"Q4_K_M GGUF exists: {str(q4_exists).lower()}")
+    print(f"Q4_K_M file size: {file_size_gb(q4_path)} GB")
+    if q3_exists and not q4_exists:
+        print("[warn] Q3_K_M fallback exists, but Q4_K_M default is missing. Run `python tools/build_q4km_model.py`.")
+    if local_engine == "gguf" and not q4_exists:
+        fail("DRIFT_LOCAL_ENGINE=gguf but default Q4_K_M GGUF is missing. Run `python tools/build_q4km_model.py`.", failures)
     for path in [
         "services/inference/app.py",
         "services/inference/requirements.txt",
