@@ -579,12 +579,13 @@ func (s Service) Delete(ctx context.Context, id, userID primitive.ObjectID) erro
 	_, err = s.db.Collection("driftanalyses").DeleteOne(ctx, bson.M{"_id": id})
 	if err == nil {
 		activity.Log(ctx, s.db, a.Workspace, userID, "DRIFT_ANALYSIS_DELETED", "DriftAnalysis", id.Hex(), bson.M{
-			"projectId":  a.Project.Hex(),
-			"inputType":  a.InputType,
-			"inputText":  activitySnippet(a.InputText),
-			"summary":    activitySnippet(a.Summary),
-			"driftScore": a.DriftScore,
-			"riskLevel":  a.RiskLevel,
+			"projectId":   a.Project.Hex(),
+			"projectName": s.projectName(ctx, a.Project),
+			"inputType":   a.InputType,
+			"inputText":   activitySnippet(a.InputText),
+			"summary":     activitySnippet(a.Summary),
+			"driftScore":  a.DriftScore,
+			"riskLevel":   a.RiskLevel,
 		})
 	}
 	return err
@@ -649,4 +650,14 @@ func activitySnippet(value string) string {
 		return text
 	}
 	return strings.TrimSpace(text[:117]) + "..."
+}
+
+func (s Service) projectName(ctx context.Context, projectID primitive.ObjectID) string {
+	var project struct {
+		Name string `bson:"name"`
+	}
+	if s.db.Collection("projects").FindOne(ctx, bson.M{"_id": projectID}).Decode(&project) != nil {
+		return ""
+	}
+	return project.Name
 }

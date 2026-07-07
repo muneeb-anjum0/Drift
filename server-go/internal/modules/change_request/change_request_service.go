@@ -451,6 +451,7 @@ func (s Service) Delete(ctx context.Context, id, userID primitive.ObjectID) erro
 	if err == nil {
 		activity.Log(ctx, s.db, cr.Workspace, userID, "CHANGE_REQUEST_DELETED", "ChangeRequest", id.Hex(), bson.M{
 			"projectId":      cr.Project.Hex(),
+			"projectName":    s.projectName(ctx, cr.Project),
 			"title":          cr.Title,
 			"summary":        activitySnippet(cr.Summary),
 			"approvalStatus": cr.ApprovalStatus,
@@ -478,4 +479,14 @@ func activitySnippet(value string) string {
 		return text
 	}
 	return strings.TrimSpace(text[:117]) + "..."
+}
+
+func (s Service) projectName(ctx context.Context, projectID primitive.ObjectID) string {
+	var project struct {
+		Name string `bson:"name"`
+	}
+	if s.db.Collection("projects").FindOne(ctx, bson.M{"_id": projectID}).Decode(&project) != nil {
+		return ""
+	}
+	return project.Name
 }

@@ -35,6 +35,20 @@ const readableAction = (action: string) =>
 
 const projectCopy = (metadata: Record<string, unknown>, fallbackId: string) => cleanText(metadata.name) || `Project ${fallbackId.slice(-6)}`;
 
+const scoreCopy = (score: string, riskLevel: string, projectRef: string) => {
+  const parts = [];
+  if (score) {
+    parts.push(`Score ${score}/100`);
+  }
+  if (riskLevel) {
+    parts.push(`${riskLevel} risk`);
+  }
+  if (projectRef) {
+    parts.push(projectRef);
+  }
+  return parts.join(' · ');
+};
+
 const describeActivity = (activity: ActivityLog) => {
   const metadata = activity.metadata ?? {};
   const projectName = cleanText(metadata.projectName);
@@ -44,6 +58,9 @@ const describeActivity = (activity: ActivityLog) => {
   const summary = compact(metadata.summary);
   const title = cleanText(metadata.title);
   const score = numberText(metadata.driftScore);
+  const riskLevel = cleanText(metadata.riskLevel);
+  const driftSubject = inputText || summary;
+  const driftDetail = scoreCopy(score, riskLevel, projectRef);
 
   switch (activity.action) {
     case 'WORKSPACE_CREATED':
@@ -69,17 +86,23 @@ const describeActivity = (activity: ActivityLog) => {
     case 'REQUIREMENTS_EXTRACTED':
       return { title: 'Requirements extracted from scope text', detail: `${numberText(metadata.suggestionCount) || 'New'} suggestions${projectRef ? ` for ${projectRef}` : ''}` };
     case 'DRIFT_ANALYSIS_CREATED':
-      return { title: `Drift analysis saved${score ? `: ${score}/100` : ''}`, detail: inputText || summary || projectRef || 'New client input was analyzed.' };
+      return {
+        title: driftSubject ? `Drift analysis saved: ${compact(driftSubject, 64)}` : 'Drift analysis saved',
+        detail: driftDetail || 'Older analysis did not store client-input context.',
+      };
     case 'DRIFT_ANALYSIS_DELETED':
-      return { title: `Drift analysis deleted${score ? `: ${score}/100` : ''}`, detail: inputText || summary || projectRef || 'Saved analysis was removed.' };
+      return {
+        title: driftSubject ? `Drift analysis deleted: ${compact(driftSubject, 64)}` : 'Drift analysis deleted',
+        detail: driftDetail || 'Older deletion did not store analysis context.',
+      };
     case 'CHANGE_REQUEST_CREATED':
-      return { title: `Change request drafted: ${title || activity.entityId}`, detail: summary || projectRef || 'Approval-ready client change request created.' };
+      return { title: `Change request drafted: ${title || 'Untitled draft'}`, detail: summary || projectRef || 'Approval-ready client change request created.' };
     case 'CHANGE_REQUEST_UPDATED':
-      return { title: `Change request updated: ${title || activity.entityId}`, detail: summary || projectRef || 'Draft details changed.' };
+      return { title: `Change request updated: ${title || 'Untitled draft'}`, detail: summary || projectRef || 'Draft details changed.' };
     case 'CHANGE_REQUEST_APPROVAL_UPDATED':
       return { title: `Approval updated: ${cleanText(metadata.approvalStatus) || 'status changed'}`, detail: title || projectRef || 'Change request approval state changed.' };
     case 'CHANGE_REQUEST_DELETED':
-      return { title: `Change request deleted: ${title || activity.entityId}`, detail: projectRef || 'Draft was removed.' };
+      return { title: title ? `Change request deleted: ${title}` : 'Change request deleted', detail: summary || projectRef || 'Older deletion did not store draft context.' };
     case 'FILE_UPLOADED':
       return { title: `Document uploaded: ${cleanText(metadata.originalName) || activity.entityId}`, detail: projectRef || 'Project document attached.' };
     case 'FILE_DELETED':
