@@ -56,11 +56,13 @@ docker compose down
 
 ## Local Model
 
-The local runtime expects the quantized GGUF model at:
+The local runtime defaults to the Q4_K_M GGUF model:
 
 ```text
-models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf
+models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf
 ```
+
+Build it with `python tools/build_q4km_model.py`. Q3_K_M remains available as a lighter fallback by setting `DRIFT_GGUF_MODEL_PATH=/app/models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf`.
 
 Large model files are intentionally not committed.
 

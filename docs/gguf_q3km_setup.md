@@ -2,6 +2,8 @@
 
 `Q3_K_M` is quantization after merging. It is not model training.
 
+Q4_K_M is now the default DriftLedger runtime. Keep this page for the lighter Q3_K_M fallback on weaker machines.
+
 ## Pipeline
 
 1. Start with the local base model:

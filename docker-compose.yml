@@ -8,6 +8,7 @@ services:
       dockerfile: client/Dockerfile
       args:
         VITE_API_BASE_URL: /api/v1
+        VITE_DRIFT_MODEL_LABEL: ${VITE_DRIFT_MODEL_LABEL:-Qwen2.5-7B + DriftLedger LoRA (GGUF Q4_K_M)}
     depends_on:
       backend:
         condition: service_started
@@ -59,7 +60,7 @@ services:
       DRIFT_BASE_MODEL_PATH: /app/models/base/Qwen2.5-7B-Instruct
       DRIFT_ADAPTER_ZIP_PATH: /app/models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA.zip
       DRIFT_ADAPTER_DIR: /app/models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA
-      DRIFT_GGUF_MODEL_PATH: /app/models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf
+      DRIFT_GGUF_MODEL_PATH: ${DRIFT_GGUF_MODEL_PATH:-/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf}
       DRIFT_LLAMA_SERVER_URL: http://llama:8080
       DRIFT_LLAMA_CTX_SIZE: ${DRIFT_LLAMA_CTX_SIZE:-768}
       DRIFT_LLAMA_GPU_LAYERS: ${DRIFT_LLAMA_GPU_LAYERS:-16}
@@ -86,7 +87,7 @@ services:
     command:
       - --server
       - --model
-      - /app/models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf
+      - ${DRIFT_GGUF_MODEL_PATH:-/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf}
       - --host
       - 0.0.0.0
       - --port

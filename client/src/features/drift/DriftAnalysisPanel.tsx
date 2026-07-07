@@ -20,7 +20,7 @@ const defaultFormValues: DriftAnalysisFormValues = {
   inputText: '',
 };
 
-const modelDisplayName = 'Qwen2.5-7B + DriftLedger LoRA (GGUF Q3_K_M)';
+const modelDisplayName = import.meta.env.VITE_DRIFT_MODEL_LABEL || 'Qwen2.5-7B + DriftLedger LoRA (GGUF Q4_K_M)';
 
 const confidencePercent = (confidence: number) => {
   const normalized = confidence > 1 ? confidence : confidence * 100;
@@ -177,7 +177,7 @@ export const DriftAnalysisPanel = ({
           </p>
         </div>
         <div className="rounded-full border border-lime-400/20 bg-lime-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-lime-300">
-          Local Q3_K_M
+          Local Q4_K_M
         </div>
       </div>
 

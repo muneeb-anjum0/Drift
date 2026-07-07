@@ -5,7 +5,7 @@ The Compose stack is named `Drift` and runs:
 - `drift-frontend`: React/Vite app served by Nginx
 - `drift-backend`: Go/Gin API
 - `drift-inference`: FastAPI normalization and backend-facing inference API
-- `drift-llama`: llama.cpp `full-cuda` image running the Q3_K_M GGUF server
+- `drift-llama`: llama.cpp `full-cuda` image running the Q4_K_M GGUF server by default
 - `drift-db`: MongoDB
 
 ## Model Paths
@@ -15,7 +15,7 @@ Host paths:
 ```text
 D:\Desktop\Projects\Drift\Drift-app\models\base\Qwen2.5-7B-Instruct
 D:\Desktop\Projects\Drift\Drift-app\models\adapters\DriftLedger_v5_qwen2.5_7b_LoRA.zip
-D:\Desktop\Projects\Drift\Drift-app\models\gguf\DriftLedger-Qwen2.5-7B-Q3_K_M.gguf
+D:\Desktop\2. PROJECTS\Drift\Drift-app\models\gguf\DriftLedger-Qwen2.5-7B-Q4_K_M.gguf
 ```
 
 Container paths:
@@ -23,7 +23,7 @@ Container paths:
 ```text
 /app/models/base/Qwen2.5-7B-Instruct
 /app/models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA.zip
-/app/models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf
+/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf
 ```
 
 Compose mount:
@@ -38,7 +38,7 @@ Build the quantized model first:
 
 ```powershell
 python -m pip install -r tools\requirements-q3km.txt
-python tools\build_q3km_model.py
+python tools\build_q4km_model.py
 ```
 
 Validate local files:
@@ -51,6 +51,13 @@ Start the full stack:
 
 ```powershell
 docker compose up --build
+```
+
+If Q4_K_M is too heavy, switch back to Q3_K_M in `.env`:
+
+```env
+DRIFT_GGUF_MODEL_PATH=/app/models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf
+VITE_DRIFT_MODEL_LABEL=Qwen2.5-7B + DriftLedger LoRA (GGUF Q3_K_M)
 ```
 
 Stop it:
@@ -90,8 +97,8 @@ If CUDA runs out of memory, lower `DRIFT_LLAMA_GPU_LAYERS` to `12`, then `8`, th
 
 ## Troubleshooting
 
-- `drift-llama` exits immediately: confirm `models/gguf/DriftLedger-Qwen2.5-7B-Q3_K_M.gguf` exists.
+- `drift-llama` exits immediately: confirm `models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf` exists, or set `DRIFT_GGUF_MODEL_PATH` back to the Q3_K_M fallback.
 - Docker image cannot use GPU: install/update NVIDIA drivers, Docker Desktop GPU support, and NVIDIA Container Toolkit.
 - Backend cannot reach inference: run `docker compose ps` and check `docker compose logs inference`.
 - Inference cannot reach llama.cpp: check `docker compose logs llama`.
-- Model outputs bad JSON: run `python tools\eval_q3km_smoke.py` and inspect labels.
+- Model outputs bad JSON: run `python tools\eval_q3km_smoke.py` and inspect labels. The script name is old, but it exercises the configured local GGUF route.
