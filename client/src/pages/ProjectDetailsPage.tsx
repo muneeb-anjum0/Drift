@@ -311,13 +311,13 @@ export const ProjectDetailsPage = () => {
           <BaselineButton requirementCount={requirements.length} isLoading={createBaselineMutation.isPending} onCreateBaseline={handleCreateBaseline} />
 
           <div className="grid gap-5 2xl:grid-cols-[minmax(0,1fr)_420px]">
-            <Card className="min-w-0 border-white/10 bg-black/60 p-5">
-              <div className="mb-4 flex items-center justify-between gap-4">
+            <Card className="min-w-0 border-white/10 bg-black/60 p-4">
+              <div className="mb-3 flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-lime-400">Requirement list</p>
-                  <h3 className="mt-1 text-lg font-semibold text-white">Structured requirements</h3>
+                  <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-lime-400">Requirement list</p>
+                  <h3 className="mt-1 text-base font-semibold text-white">Structured requirements</h3>
                 </div>
-                <span className="rounded-full border border-lime-400/20 bg-lime-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-lime-300">
+                <span className="rounded-full border border-lime-400/20 bg-lime-400/10 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.1em] text-lime-300">
                   {requirements.length} total
                 </span>
               </div>

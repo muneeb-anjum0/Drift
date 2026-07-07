@@ -24,20 +24,20 @@ export const DetectedChangesList = ({ changes }: { changes: DetectedChange[] }) 
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {groupedTypes.map((group) => {
         const groupedChanges = visibleChanges.filter((change) => group.changeType.includes(change.changeType));
         if (!groupedChanges.length) return null;
 
         return (
-          <section key={group.label} className="space-y-3">
+          <section key={group.label} className="space-y-2.5">
             <div className="flex items-center justify-between gap-3">
-              <h4 className="text-sm font-semibold uppercase tracking-[0.22em] text-lime-400">{group.label}</h4>
-              <span className="rounded-full border border-gray-700 bg-black/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-gray-300">
+              <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-lime-400">{group.label}</h4>
+              <span className="rounded-full border border-gray-700 bg-black/70 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.1em] text-gray-300">
                 {groupedChanges.length}
               </span>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {groupedChanges.map((change, index) => (
                 <DetectedChangeCard key={`${change.title}-${index}`} change={change} />
               ))}

@@ -12,15 +12,13 @@ import type { RequirementVersion } from '../requirements/requirement.types';
 import { useAnalyzeDirectDrift, useAnalyzeDrift, useSaveDriftAnalysis } from '../../hooks/useDrift';
 
 const selectClass =
-  'h-11 w-full rounded-2xl border border-gray-700 bg-black px-4 text-sm text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30';
+  'h-10 w-full rounded-[1rem] border border-gray-700 bg-black px-3 text-sm text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30';
 
 const defaultFormValues: DriftAnalysisFormValues = {
   baselineVersionId: '',
   inputType: 'client_message',
   inputText: '',
 };
-
-const modelDisplayName = import.meta.env.VITE_DRIFT_MODEL_LABEL || 'Qwen2.5-7B + DriftLedger LoRA (GGUF Q4_K_M)';
 
 const confidencePercent = (confidence: number) => {
   const normalized = confidence > 1 ? confidence : confidence * 100;
@@ -167,26 +165,26 @@ export const DriftAnalysisPanel = ({
   };
 
   return (
-    <Card className="border-white/10 bg-black/60 p-5">
+    <Card className="border-white/10 bg-black/60 p-4">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-lime-400">AI drift analysis</p>
-          <h3 className="mt-1 text-xl font-semibold text-white">Compare new client input against the approved baseline</h3>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-400">
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-lime-400">AI drift analysis</p>
+          <h3 className="mt-1 text-lg font-semibold text-white">Compare new client input against the approved baseline</h3>
+          <p className="mt-1.5 max-w-2xl text-xs leading-5 text-gray-400">
             DriftLedger runs this analysis through the same local Qwen GGUF model route used by the sandbox.
           </p>
         </div>
-        <div className="rounded-full border border-lime-400/20 bg-lime-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-lime-300">
+        <div className="rounded-full border border-lime-400/20 bg-lime-400/10 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.1em] text-lime-300">
           Local Q4_K_M
         </div>
       </div>
 
-      <div className="mt-6 space-y-5">
-        <div className="grid gap-4 xl:grid-cols-2">
+      <div className="mt-4 space-y-4">
+        <div className="grid gap-3 xl:grid-cols-2">
           <BaselineSelector versions={versions} value={values.baselineVersionId} onChange={(baselineVersionId) => setValues((current) => ({ ...current, baselineVersionId }))} />
 
-          <label className="block space-y-2">
-            <span className="text-sm font-semibold text-gray-300">Input type</span>
+          <label className="block space-y-1.5">
+            <span className="text-xs font-semibold text-gray-300">Input type</span>
             <select value={values.inputType} onChange={(event) => setValues((current) => ({ ...current, inputType: event.target.value as DriftInputType }))} className={selectClass}>
               {inputTypes.map((type) => (
                 <option key={type.value} value={type.value}>
@@ -197,46 +195,40 @@ export const DriftAnalysisPanel = ({
           </label>
         </div>
 
-        <label className="block space-y-2">
-          <span className="text-sm font-semibold text-gray-300">New client message</span>
+        <label className="block space-y-1.5">
+          <span className="text-xs font-semibold text-gray-300">New client message</span>
           <textarea
             value={values.inputText}
             onChange={(event) => setValues((current) => ({ ...current, inputText: event.target.value }))}
-            rows={7}
-            className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+            rows={5}
+            className="w-full rounded-[1rem] border border-gray-700 bg-black px-3 py-2.5 text-sm leading-6 text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
             placeholder="Paste the latest client message, meeting note, or scope update here"
           />
         </label>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-lime-400/20 bg-lime-400/10 px-4 py-3">
-          <p className="text-sm text-lime-100">
-            Model used: <span className="font-semibold text-lime-300">{modelDisplayName}</span>
-          </p>
-
-          <div className="flex flex-wrap items-center gap-3">
-            <Button type="button" onClick={handleAnalyze} disabled={analyzeMutation.isPending || saveMutation.isPending}>
-              {analyzeMutation.isPending ? <Spinner /> : 'Run Drift Analysis'}
+        <div className="flex flex-wrap items-center justify-end gap-3">
+          <Button type="button" onClick={handleAnalyze} disabled={analyzeMutation.isPending || saveMutation.isPending}>
+            {analyzeMutation.isPending ? <Spinner /> : 'Run Drift Analysis'}
+          </Button>
+          {result ? (
+            <Button type="button" variant="secondary" onClick={handleSave} disabled={saveMutation.isPending}>
+              {saveMutation.isPending ? <Spinner /> : <CheckCircle2 className="mr-2 h-4 w-4" />}
+              Save Analysis
             </Button>
-            {result ? (
-              <Button type="button" variant="secondary" onClick={handleSave} disabled={saveMutation.isPending}>
-                {saveMutation.isPending ? <Spinner /> : <CheckCircle2 className="mr-2 h-4 w-4" />}
-                Save Analysis
-              </Button>
-            ) : null}
-          </div>
+          ) : null}
         </div>
 
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
 
         {result ? (
           <div className="space-y-4">
-            <div className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+            <div className="grid items-stretch gap-3 xl:grid-cols-2">
               <div className="min-w-0">
                 <DriftScoreCard analysis={result} />
               </div>
-              <Card className="min-w-0 border-gray-800 bg-black/50 p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-lime-400">Detected changes</p>
-                <div className="mt-4">
+              <Card className="h-full min-w-0 border-gray-800 bg-black/50 p-4">
+                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-lime-400">Detected changes</p>
+                <div className="mt-3">
                   <DetectedChangesList changes={result.detectedChanges} />
                 </div>
               </Card>
@@ -295,14 +287,10 @@ export const DriftAnalysisPanel = ({
             ) : null}
           </div>
         ) : (
-          <EmptyState
-            title="Run a drift analysis to see results."
-            description="The preview will show score, risk, detected changes, and a save option after analysis completes."
-            icon={<Sparkles className="h-5 w-5" />}
-          />
+          null
         )}
 
-        <Card className="border-gray-800 bg-black/50 p-5">
+        <Card className="border-gray-800 bg-black/50 p-4">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-lime-400">Model sandbox</p>

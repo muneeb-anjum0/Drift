@@ -12,19 +12,19 @@ const changeStyles: Record<DetectedChange['changeType'], string> = {
 
 export const DetectedChangeCard = ({ change }: { change: DetectedChange }) => {
   return (
-    <Card className="border-gray-800 bg-black/50 p-5">
+    <Card className="border-gray-800 bg-black/50 p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <div className="flex flex-wrap gap-2">
-            <span className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] ${changeStyles[change.changeType]}`}>
+            <span className={`rounded-full border px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.1em] ${changeStyles[change.changeType]}`}>
               {change.changeType}
             </span>
-            <span className="rounded-full border border-gray-700 bg-black/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-gray-300">
+            <span className="rounded-full border border-gray-700 bg-black/70 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.1em] text-gray-300">
               Impact {change.impact}
             </span>
           </div>
-          <h4 className="mt-3 text-lg font-semibold text-white">{change.title}</h4>
-          <p className="mt-2 text-sm leading-6 text-gray-400">{change.description}</p>
+          <h4 className="mt-2.5 text-base font-semibold text-white">{change.title}</h4>
+          <p className="mt-1.5 text-xs leading-5 text-gray-400">{change.description}</p>
         </div>
         <div className="space-y-2 text-right text-xs text-gray-400">
           <p>Confidence {change.confidence}%</p>
@@ -32,24 +32,24 @@ export const DetectedChangeCard = ({ change }: { change: DetectedChange }) => {
         </div>
       </div>
 
-      <div className="mt-4 grid gap-3 md:grid-cols-2">
+      <div className="mt-3 grid gap-2.5 md:grid-cols-2">
         {change.oldText ? (
-          <div className="rounded-2xl border border-gray-800 bg-black/40 p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">Baseline text</p>
-            <p className="mt-2 text-sm leading-6 text-gray-300">{change.oldText}</p>
+          <div className="rounded-[0.9rem] border border-gray-800 bg-black/40 p-3">
+            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-gray-500">Baseline text</p>
+            <p className="mt-2 text-xs leading-5 text-gray-300">{change.oldText}</p>
           </div>
         ) : null}
         {change.newText ? (
-          <div className="rounded-2xl border border-gray-800 bg-black/40 p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">New text</p>
-            <p className="mt-2 text-sm leading-6 text-gray-300">{change.newText}</p>
+          <div className="rounded-[0.9rem] border border-gray-800 bg-black/40 p-3">
+            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-gray-500">New text</p>
+            <p className="mt-2 text-xs leading-5 text-gray-300">{change.newText}</p>
           </div>
         ) : null}
       </div>
 
-      <div className="mt-4 rounded-2xl border border-lime-400/15 bg-lime-400/5 p-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-lime-400">Recommendation</p>
-        <p className="mt-2 text-sm leading-6 text-gray-200">{change.recommendation}</p>
+      <div className="mt-3 rounded-[0.9rem] border border-lime-400/15 bg-lime-400/5 p-3">
+        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-lime-400">Recommendation</p>
+        <p className="mt-2 text-xs leading-5 text-gray-200">{change.recommendation}</p>
       </div>
     </Card>
   );

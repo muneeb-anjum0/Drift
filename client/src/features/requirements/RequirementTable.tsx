@@ -1,10 +1,14 @@
-import { Pencil, Trash2 } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { RequirementCard } from './RequirementCard';
+import { useState } from 'react';
+import { ChevronDown, Pencil, Trash2 } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { RequirementBadges } from './RequirementBadges';
 import { EmptyState } from '../../components/common/EmptyState';
+import { Button } from '../../components/common/Button';
 import type { Requirement } from './requirement.types';
 import { formatDate } from '../../utils/formatDate';
+import { cn } from '../../utils/cn';
+
+const REQUIREMENTS_PAGE_SIZE = 10;
 
 const valueLabel = (value: Requirement['status'] | Requirement['type'] | Requirement['source']) => value.replace(/_/g, ' ');
 
@@ -29,6 +33,9 @@ export const RequirementTable = ({
   onEdit: (requirement: Requirement) => void;
   onDelete: (requirement: Requirement) => void;
 }) => {
+  const [openRequirementId, setOpenRequirementId] = useState<string | null>(null);
+  const [visibleCount, setVisibleCount] = useState(REQUIREMENTS_PAGE_SIZE);
+
   if (!requirements.length) {
     return (
       <EmptyState
@@ -39,71 +46,85 @@ export const RequirementTable = ({
     );
   }
 
+  const visibleRequirements = requirements.slice(0, visibleCount);
+  const hasMore = visibleCount < requirements.length;
+
   return (
-    <div className="space-y-4">
-      <div className="grid gap-4 lg:hidden">
-        {requirements.map((requirement) => (
-          <RequirementCard
-            key={requirement._id}
-            requirement={requirement}
-            onEdit={() => onEdit(requirement)}
-            onDelete={() => onDelete(requirement)}
-          />
-        ))}
-      </div>
+    <div className="space-y-3">
+      <div className="divide-y divide-[var(--color-border)] overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border)]">
+        {visibleRequirements.map((requirement) => {
+          const isOpen = openRequirementId === requirement._id;
 
-      <div className="hidden space-y-3 lg:block">
-        {requirements.map((requirement, index) => (
-          <motion.article
-            key={requirement._id}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.03 }}
-            whileHover={{ y: -3 }}
-            className="rounded-[1.75rem] border border-white/10 bg-black/55 p-5 transition-colors hover:border-lime-400/25 hover:bg-lime-400/[0.04]"
-          >
-            <div className="flex items-start justify-between gap-5">
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <MetaPill tone="lime">{valueLabel(requirement.type)}</MetaPill>
-                  <MetaPill>{valueLabel(requirement.status)}</MetaPill>
-                  <MetaPill>{valueLabel(requirement.source)}</MetaPill>
-                </div>
-
-                <h4 className="mt-4 text-xl font-semibold text-white">{requirement.title}</h4>
-                <p className="mt-2 line-clamp-2 max-w-4xl text-base leading-7 text-gray-400">{requirement.description}</p>
-
-                <div className="mt-4 flex flex-wrap items-center gap-3">
-                  <RequirementBadges requirement={requirement} />
-                  <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs font-semibold uppercase tracking-[0.1em] text-gray-400">
-                    {requirement.estimatedEffort ? `${requirement.estimatedEffort}h effort` : 'Effort not set'}
+          return (
+            <div key={requirement._id} className="bg-[var(--color-surface)]">
+              <button
+                type="button"
+                onClick={() => setOpenRequirementId(isOpen ? null : requirement._id)}
+                className="flex w-full items-center justify-between gap-4 px-4 py-3 text-left transition hover:bg-[var(--color-bg-soft)] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[var(--color-focus)]"
+                aria-expanded={isOpen}
+              >
+                <span className="min-w-0">
+                  <span className="block truncate text-sm font-semibold text-[var(--color-text)]">{requirement.title}</span>
+                  <span className="mt-1 block truncate text-xs text-[var(--color-text-muted)]">
+                    {valueLabel(requirement.type)} · {valueLabel(requirement.status)} · Updated {formatDate(requirement.updatedAt)}
                   </span>
-                  <span className="text-sm text-gray-500">Updated {formatDate(requirement.updatedAt)}</span>
-                </div>
-              </div>
+                </span>
+                <span className="flex shrink-0 items-center gap-2">
+                  <span className="hidden rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-bg-soft)] px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.1em] text-[var(--color-text)] sm:inline-flex">
+                    {requirement.estimatedEffort ? `${requirement.estimatedEffort}h` : 'No estimate'}
+                  </span>
+                  <ChevronDown className={cn('h-4 w-4 text-[var(--color-text-muted)] transition-transform duration-200', isOpen && 'rotate-180')} />
+                </span>
+              </button>
 
-              <div className="flex shrink-0 items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => onEdit(requirement)}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-lime-400/20 bg-lime-400/10 text-lime-300 transition hover:border-lime-400/40 hover:bg-lime-400/15"
-                  aria-label={`Edit ${requirement.title}`}
-                >
-                  <Pencil className="h-4 w-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onDelete(requirement)}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-gray-300 transition hover:border-lime-400/30 hover:bg-lime-400/10 hover:text-lime-200"
-                  aria-label={`Delete ${requirement.title}`}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
+              <AnimatePresence initial={false}>
+                {isOpen ? (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.18, ease: 'easeOut' }}
+                    className="overflow-hidden"
+                  >
+                    <div className="bg-[var(--color-bg-soft)] px-4 pb-4">
+                      <div className="flex flex-wrap items-center gap-2 pt-1">
+                        <MetaPill tone="lime">{valueLabel(requirement.type)}</MetaPill>
+                        <MetaPill>{valueLabel(requirement.status)}</MetaPill>
+                        <MetaPill>{valueLabel(requirement.source)}</MetaPill>
+                      </div>
+                      <p className="mt-3 text-sm leading-6 text-[var(--color-text-muted)]">{requirement.description}</p>
+                      <div className="mt-3 flex flex-wrap items-center gap-2">
+                        <RequirementBadges requirement={requirement} />
+                        <span className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.1em] text-[var(--color-text-muted)]">
+                          {requirement.estimatedEffort ? `${requirement.estimatedEffort}h effort` : 'Effort not set'}
+                        </span>
+                      </div>
+                      <div className="mt-4 flex flex-wrap justify-end gap-2">
+                        <Button type="button" variant="secondary" size="sm" onClick={() => onEdit(requirement)}>
+                          <Pencil className="mr-2 h-3.5 w-3.5" />
+                          Edit
+                        </Button>
+                        <Button type="button" variant="danger" size="sm" onClick={() => onDelete(requirement)}>
+                          <Trash2 className="mr-2 h-3.5 w-3.5" />
+                          Delete
+                        </Button>
+                      </div>
+                    </div>
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
             </div>
-          </motion.article>
-        ))}
+          );
+        })}
       </div>
+
+      {hasMore ? (
+        <div className="flex justify-center">
+          <Button type="button" variant="secondary" size="sm" onClick={() => setVisibleCount((count) => count + REQUIREMENTS_PAGE_SIZE)}>
+            Show more
+          </Button>
+        </div>
+      ) : null}
     </div>
   );
 };

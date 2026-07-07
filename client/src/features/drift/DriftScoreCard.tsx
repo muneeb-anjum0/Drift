@@ -21,27 +21,27 @@ type DriftScoreCardAnalysis = Pick<
   Pick<DriftAnalysisPreview, 'inputType'>;
 
 const statBlock = (label: string, value: number | string) => (
-  <div className="min-w-0 rounded-2xl border border-gray-800 bg-black/40 px-3 py-3">
+  <div className="min-w-0 rounded-[0.9rem] border border-gray-800 bg-black/40 px-2.5 py-2.5">
     <p className="truncate whitespace-nowrap text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-gray-500" title={label}>
       {label}
     </p>
-    <p className="mt-2 break-words text-base font-semibold leading-6 text-white">{value}</p>
+    <p className="mt-1.5 break-words text-sm font-semibold leading-5 text-white">{value}</p>
   </div>
 );
 
 export const DriftScoreCard = ({ analysis }: { analysis: DriftScoreCardAnalysis }) => {
   return (
-    <Card className="border-lime-400/20 bg-black/60 p-6">
-      <div className="flex flex-wrap items-start justify-between gap-4">
+    <Card className="h-full border-lime-400/20 bg-black/60 p-4">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-lime-400">Drift score</p>
-          <h3 className="mt-1 text-3xl font-semibold text-white">{analysis.driftScore}/100</h3>
-          <p className="mt-2 text-sm leading-6 text-gray-400">{analysis.summary}</p>
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-lime-400">Drift score</p>
+          <h3 className="mt-1 text-2xl font-semibold text-white">{analysis.driftScore}/100</h3>
+          <p className="mt-1.5 text-xs leading-5 text-gray-400">{analysis.summary}</p>
         </div>
         <DriftBadges riskLevel={analysis.riskLevel} analysisEngine={analysis.analysisEngine} ollamaUsed={analysis.ollamaUsed} />
       </div>
 
-      <div className="mt-5 grid grid-cols-2 gap-3 2xl:grid-cols-4">
+      <div className="mt-4 grid grid-cols-2 gap-2 2xl:grid-cols-4">
         {statBlock('Added', analysis.addedCount)}
         {statBlock('Modified', analysis.modifiedCount)}
         {statBlock('Removed', analysis.removedCount)}
