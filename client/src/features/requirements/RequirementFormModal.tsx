@@ -151,7 +151,7 @@ export const RequirementFormModal = ({
         </div>
       }
     >
-      <form id="requirement-form" className="space-y-4" onSubmit={handleSubmit}>
+      <form id="requirement-form" className="space-y-3" onSubmit={handleSubmit}>
         <Input
           label="Title"
           labelClassName="text-sm"
@@ -167,8 +167,8 @@ export const RequirementFormModal = ({
           <textarea
             value={values.description}
             onChange={(event) => setValues((current) => ({ ...current, description: event.target.value }))}
-            rows={3}
-            className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-2.5 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+            rows={2}
+            className="w-full rounded-[1rem] border border-gray-700 bg-black px-3 py-2 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
             placeholder="Describe the requirement in clear, plain language"
             required
           />
@@ -222,8 +222,8 @@ export const RequirementFormModal = ({
             <textarea
               value={values.sourceText}
               onChange={(event) => setValues((current) => ({ ...current, sourceText: event.target.value }))}
-              rows={3}
-              className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-2.5 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+              rows={2}
+              className="w-full rounded-[1rem] border border-gray-700 bg-black px-3 py-2 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
               placeholder="Exact source text this requirement was derived from"
             />
           </label>
@@ -233,8 +233,8 @@ export const RequirementFormModal = ({
             <textarea
               value={values.acceptanceCriteria}
               onChange={(event) => setValues((current) => ({ ...current, acceptanceCriteria: event.target.value }))}
-              rows={3}
-              className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-2.5 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+              rows={2}
+              className="w-full rounded-[1rem] border border-gray-700 bg-black px-3 py-2 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
               placeholder="One item per line"
             />
           </label>
@@ -247,7 +247,7 @@ export const RequirementFormModal = ({
               value={values.tags}
               onChange={(event) => setValues((current) => ({ ...current, tags: event.target.value }))}
               rows={2}
-              className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-2.5 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+              className="w-full rounded-[1rem] border border-gray-700 bg-black px-3 py-2 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
               placeholder="Comma-separated tags"
             />
           </label>

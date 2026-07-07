@@ -12,7 +12,7 @@ import { normalizeApprovalStatus } from '../approvals/approvalDisplay';
 import { generatedByLabel } from './changeRequestDisplay';
 
 const selectClass =
-  'h-11 w-full rounded-2xl border border-gray-700 bg-black px-4 text-sm text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30';
+  'h-9 w-full rounded-[0.9rem] border border-gray-700 bg-black px-3 text-sm text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30';
 
 const statusOptions: ChangeRequestStatus[] = ['draft', 'sent', 'approved', 'rejected', 'archived'];
 
@@ -37,15 +37,18 @@ const ChangeRequestHistoryItem = ({
   const canSubmitForApproval = ['draft', 'needs_revision', 'rejected'].includes(normalizeApprovalStatus(changeRequest.approvalStatus));
 
   return (
-    <Card className="border-gray-800 bg-black/60 p-5">
-      <div className="flex flex-wrap items-start justify-between gap-4">
+    <Card className="overflow-hidden border-gray-800 bg-black/55 p-0">
+      <div className="grid gap-0 lg:grid-cols-[0.35rem_minmax(0,1fr)]">
+        <div className="hidden bg-lime-400/30 lg:block" />
+        <div className="p-4">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-lime-400">Change request</p>
-          <h4 className="mt-1 text-lg font-semibold text-white">{changeRequest.title}</h4>
-          <p className="mt-1 text-sm text-gray-400">Created {formatDate(changeRequest.createdAt)}</p>
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-lime-400">Change request</p>
+          <h4 className="mt-1 text-base font-semibold text-white">{changeRequest.title}</h4>
+          <p className="mt-1 text-xs text-gray-400">Created {formatDate(changeRequest.createdAt)}</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-full border border-gray-700 bg-black/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-gray-300">
+          <span className="rounded-full border border-gray-700 bg-black/70 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.1em] text-gray-300">
             {typeof changeRequest.project === 'string' ? 'Project' : changeRequest.project.name}
           </span>
           <ChangeRequestStatusBadge status={changeRequest.status} />
@@ -56,26 +59,26 @@ const ChangeRequestHistoryItem = ({
         </div>
       </div>
 
-      <p className="mt-4 text-sm leading-6 text-gray-300">{changeRequest.summary}</p>
+      <p className="mt-3 text-sm leading-6 text-gray-300">{changeRequest.summary}</p>
 
-      <div className="mt-4 grid gap-4 lg:grid-cols-2">
-        <div className="rounded-2xl border border-gray-800 bg-black/40 p-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">Timeline impact</p>
-          <p className="mt-2 text-sm leading-6 text-gray-300">{changeRequest.timelineImpact}</p>
+      <div className="mt-3 grid gap-3 lg:grid-cols-2">
+        <div className="rounded-[1rem] border border-gray-800 bg-black/40 p-3">
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-gray-500">Timeline impact</p>
+          <p className="mt-2 text-xs leading-5 text-gray-300">{changeRequest.timelineImpact}</p>
         </div>
-        <div className="rounded-2xl border border-gray-800 bg-black/40 p-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">Cost impact</p>
-          <p className="mt-2 text-sm leading-6 text-gray-300">{changeRequest.costImpact}</p>
+        <div className="rounded-[1rem] border border-gray-800 bg-black/40 p-3">
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-gray-500">Cost impact</p>
+          <p className="mt-2 text-xs leading-5 text-gray-300">{changeRequest.costImpact}</p>
         </div>
       </div>
 
-      <div className="mt-4 rounded-2xl border border-gray-800 bg-black/40 p-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">Requested changes</p>
-        <div className="mt-3 space-y-3">
+      <div className="mt-3 rounded-[1rem] border border-gray-800 bg-black/40 p-3">
+        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-gray-500">Requested changes</p>
+        <div className="mt-2 space-y-2">
           {changeRequest.changesRequested.map((change, index) => (
-            <div key={`${change.title}-${index}`} className="rounded-2xl border border-gray-800 bg-black/50 p-4">
-              <p className="font-semibold text-white">{change.title}</p>
-              <p className="mt-1 text-sm leading-6 text-gray-400">{change.description}</p>
+            <div key={`${change.title}-${index}`} className="rounded-[0.9rem] border border-gray-800 bg-black/50 p-3">
+              <p className="text-sm font-semibold text-white">{change.title}</p>
+              <p className="mt-1 text-xs leading-5 text-gray-400">{change.description}</p>
               {change.affectedModules?.length ? (
                 <p className="mt-2 text-xs text-gray-500">Affected modules: {change.affectedModules.join(', ')}</p>
               ) : null}
@@ -87,9 +90,9 @@ const ChangeRequestHistoryItem = ({
         </div>
       </div>
 
-      <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_auto_auto] lg:items-end">
-        <label className="block space-y-2">
-          <span className="text-sm font-semibold text-gray-300">Status</span>
+      <div className="mt-3 grid gap-3 lg:grid-cols-[minmax(180px,1fr)_auto_auto_auto_auto] lg:items-end">
+        <label className="block space-y-1.5">
+          <span className="text-xs font-semibold text-gray-300">Status</span>
           <select value={status} onChange={(event) => setStatus(event.target.value as ChangeRequestStatus)} className={selectClass}>
             {statusOptions.map((option) => (
               <option key={option} value={option}>
@@ -98,21 +101,23 @@ const ChangeRequestHistoryItem = ({
             ))}
           </select>
         </label>
-        <Button type="button" variant="secondary" onClick={() => onUpdate(changeRequest, status)} disabled={isUpdating || status === changeRequest.status}>
+        <Button type="button" variant="secondary" size="sm" onClick={() => onUpdate(changeRequest, status)} disabled={isUpdating || status === changeRequest.status}>
           Update status
         </Button>
-        <Button type="button" variant="secondary" onClick={() => onSubmitApproval(changeRequest)} disabled={isApprovalUpdating || !canSubmitForApproval || !changeRequest._id}>
+        <Button type="button" variant="secondary" size="sm" onClick={() => onSubmitApproval(changeRequest)} disabled={isApprovalUpdating || !canSubmitForApproval || !changeRequest._id}>
           Submit for approval
         </Button>
         <Link to={`/approvals?requestId=${changeRequest._id ?? ''}`}>
-          <Button type="button" variant="secondary">
+          <Button type="button" variant="secondary" size="sm">
             View in Approvals
           </Button>
         </Link>
-        <Button type="button" variant="danger" onClick={() => onDelete(changeRequest)} disabled={isDeleting}>
+        <Button type="button" variant="danger" size="sm" onClick={() => onDelete(changeRequest)} disabled={isDeleting}>
           <Trash2 className="mr-2 h-4 w-4" />
           Delete
         </Button>
+      </div>
+        </div>
       </div>
     </Card>
   );

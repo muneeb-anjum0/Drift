@@ -104,7 +104,7 @@ export const ProjectForm = ({
         </div>
       }
     >
-      <form id="project-form" className="space-y-4" onSubmit={handleSubmit}>
+      <form id="project-form" className="space-y-3" onSubmit={handleSubmit}>
         <div className="grid gap-3 md:grid-cols-2">
           <ThemedSelect
             className="md:col-span-2"
@@ -147,8 +147,8 @@ export const ProjectForm = ({
             <textarea
               value={values.description}
               onChange={(event) => setValues((current) => ({ ...current, description: event.target.value }))}
-              rows={3}
-              className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-2.5 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+              rows={2}
+              className="w-full rounded-[1rem] border border-gray-700 bg-black px-3 py-2 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
               placeholder="Describe the project in plain language"
             />
           </label>
@@ -157,8 +157,8 @@ export const ProjectForm = ({
             <textarea
               value={values.originalScope}
               onChange={(event) => setValues((current) => ({ ...current, originalScope: event.target.value }))}
-              rows={3}
-              className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-2.5 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+              rows={2}
+              className="w-full rounded-[1rem] border border-gray-700 bg-black px-3 py-2 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
               placeholder="Summarize what was originally promised"
             />
           </label>

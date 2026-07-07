@@ -403,15 +403,18 @@ export const ProjectDetailsPage = () => {
             description="Turn saved drift analyses into a structured change request with impact, cost, timeline, and approval language."
           />
 
-          <div className="grid gap-5 2xl:grid-cols-[minmax(0,1fr)_460px]">
-            <div className="min-w-0">
-              <ChangeRequestPreview projectId={project._id} driftAnalyses={driftAnalyses} />
-            </div>
+          <div className="space-y-5">
+            <ChangeRequestPreview projectId={project._id} driftAnalyses={driftAnalyses} />
 
-            <Card className="border-white/10 bg-black/60 p-5">
-              <div className="mb-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-lime-400">History</p>
-                <h3 className="mt-1 text-lg font-semibold text-white">Saved requests</h3>
+            <Card className="border-white/10 bg-black/60 p-4">
+              <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-lime-400">History</p>
+                  <h3 className="mt-1 text-base font-semibold text-white">Saved requests</h3>
+                </div>
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.1em] text-gray-300">
+                  {changeRequests.length} total
+                </span>
               </div>
               <ChangeRequestHistory
                 changeRequests={changeRequestsQuery.isLoading ? [] : changeRequests}
