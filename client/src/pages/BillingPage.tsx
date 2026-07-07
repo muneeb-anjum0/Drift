@@ -1,4 +1,5 @@
-import { CheckCircle2, CreditCard, LockKeyhole } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, CreditCard, LockKeyhole } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/common/Button';
 import { Card } from '../components/common/Card';
 import { EmptyState } from '../components/common/EmptyState';
@@ -19,6 +20,7 @@ const planFeatures = [
 ];
 
 export const BillingPage = () => {
+  const navigate = useNavigate();
   const { data: summary, isLoading, isError, refetch } = useBillingSummary();
 
   if (isLoading) {
@@ -41,7 +43,13 @@ export const BillingPage = () => {
   }
 
   return (
-    <section className="space-y-6">
+    <section className="min-h-screen bg-[var(--color-bg)] px-6 py-8 text-[var(--color-text)]">
+      <div className="mx-auto max-w-7xl space-y-6">
+        <Button type="button" variant="secondary" onClick={() => navigate('/')}>
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to landing
+        </Button>
+
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <p className="app-eyebrow">Billing</p>
@@ -113,6 +121,7 @@ export const BillingPage = () => {
             </p>
           </div>
         </Card>
+      </div>
       </div>
     </section>
   );

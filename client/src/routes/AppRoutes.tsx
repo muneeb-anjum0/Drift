@@ -47,6 +47,7 @@ export const AppRoutes = () => {
         />
 
         <Route element={<ProtectedRoute />}>
+          <Route path="/billing" element={<BillingPage />} />
           <Route element={<AppLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/workspaces" element={<WorkspacesPage />} />
@@ -54,7 +55,6 @@ export const AppRoutes = () => {
             <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
             <Route path="/evaluation" element={<EvaluationPage />} />
             <Route path="/approvals" element={<ApprovalsPage />} />
-            <Route path="/billing" element={<BillingPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Route>
