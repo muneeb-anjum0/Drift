@@ -1,4 +1,4 @@
-import { BadgeCheck, BriefcaseBusiness, FolderKanban, Gauge, LayoutDashboard, LogOut, Settings, UserRound } from 'lucide-react';
+import { BadgeCheck, BriefcaseBusiness, FolderKanban, Gauge, LayoutDashboard, LogOut, Settings } from 'lucide-react';
 import type { NavigateFunction } from 'react-router-dom';
 import type { DockItemConfig } from '../navigation/Dock';
 import { NAV_ITEMS } from '../../utils/constants';
@@ -13,12 +13,10 @@ export const buildDockItems = ({
   pathname,
   navigate,
   logout,
-  user,
 }: {
   pathname: string;
   navigate: NavigateFunction;
   logout: () => void | Promise<void>;
-  user?: User | null;
 }): DockItemConfig[] => [
   ...NAV_ITEMS.map((navItem, index) => {
     const Icon = dockIcons[index] ?? LayoutDashboard;
@@ -31,11 +29,6 @@ export const buildDockItems = ({
       className: cn(activeRoute && 'active'),
     };
   }),
-  {
-    label: userHandle(user),
-    icon: <UserRound />,
-    className: 'dock-user',
-  },
   {
     label: 'Logout',
     icon: <LogOut />,

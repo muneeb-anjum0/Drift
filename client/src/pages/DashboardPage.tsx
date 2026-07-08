@@ -11,6 +11,8 @@ import { Button } from '../components/common/Button';
 import { useWorkspaces } from '../hooks/useWorkspaces';
 import { useProjects } from '../hooks/useProjects';
 import { useActivities } from '../hooks/useActivities';
+import { useAuth } from '../hooks/useAuth';
+import { userHandle } from '../components/layout/appNavigation';
 
 const sectionMotion = {
   initial: { opacity: 0, y: 18 },
@@ -22,6 +24,8 @@ export const DashboardPage = () => {
   const { workspaces, isLoading: workspacesLoading } = useWorkspaces();
   const { projects, isLoading: projectsLoading } = useProjects();
   const { activities, isLoading: activitiesLoading } = useActivities();
+  const { user } = useAuth();
+  const displayName = userHandle(user);
 
   const stats = useMemo(() => {
     const activeProjects = projects.filter((project) => project.status === 'active').length;
@@ -54,6 +58,7 @@ export const DashboardPage = () => {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-lime-400">Command center</p>
+            <p className="mt-2 text-sm font-semibold text-lime-200">Welcome back, {displayName}</p>
             <h1 className="mt-2 max-w-3xl text-3xl font-semibold leading-tight text-white sm:text-4xl">Track scope before it turns into unpaid work.</h1>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-gray-400">
               Monitor workspaces, projects, requirement baselines, and drift activity from one focused dashboard.
