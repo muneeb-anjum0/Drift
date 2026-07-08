@@ -40,14 +40,14 @@ export const ProjectCard = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      whileHover={{ y: -6, scale: 1.012 }}
+      whileHover={{ y: -3, scale: 1.006 }}
       whileTap={{ scale: 0.99 }}
       className="h-full"
     >
-      <Card className="flex h-full min-h-[18rem] flex-col rounded-[1.5rem] border-white/10 bg-black/65 p-5 hover:border-lime-400/35">
-        <div className="flex items-start justify-between gap-3">
+      <Card className="flex h-full min-h-[14.5rem] flex-col rounded-[1.25rem] border-white/10 bg-black/65 p-4 hover:border-lime-400/35">
+        <div className="flex items-start justify-between gap-2.5">
           <div className="min-w-0 flex-1">
-            <span className="mb-2 inline-flex rounded-full border border-lime-400/20 bg-lime-400/10 px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-lime-300">
+            <span className="mb-1.5 inline-flex rounded-full border border-lime-400/20 bg-lime-400/10 px-2 py-0.5 text-[0.58rem] font-semibold uppercase tracking-[0.14em] text-lime-300">
               Project {String(projectNumber).padStart(2, '0')}
             </span>
             <motion.button
@@ -55,30 +55,30 @@ export const ProjectCard = ({
               className="block min-w-0 text-left transition-colors"
               onClick={onOpen}
             >
-              <h3 className="line-clamp-2 min-h-[3.5rem] text-xl font-semibold leading-7 text-white">{project.name}</h3>
+              <h3 className="line-clamp-2 text-lg font-semibold leading-6 text-white">{project.name}</h3>
             </motion.button>
-            <p className="mt-1 truncate text-sm text-gray-400">{project.clientName}</p>
+            <p className="mt-0.5 truncate text-xs text-gray-400">{project.clientName}</p>
           </div>
-          <Button type="button" variant="ghost" size="sm" onClick={onEdit} className="h-8 w-8 px-0">
-            <MoreHorizontal className="h-4 w-4" />
+          <Button type="button" variant="ghost" size="sm" onClick={onEdit} className="h-7 w-7 px-0">
+            <MoreHorizontal className="h-3.5 w-3.5" />
           </Button>
         </div>
-        <p className="mt-3 line-clamp-3 min-h-[4.5rem] text-sm leading-6 text-gray-400">{project.description || 'No description provided.'}</p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          <span className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${statusStyles[project.status]}`}>{project.status}</span>
-          <span className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${priorityStyles[project.priority]}`}>{project.priority}</span>
+        <p className="mt-2 line-clamp-2 text-xs leading-5 text-gray-400">{project.description || 'No description provided.'}</p>
+        <div className="mt-2.5 flex flex-wrap gap-1.5">
+          <span className={`rounded-full px-2.5 py-0.5 text-[0.68rem] font-semibold capitalize ${statusStyles[project.status]}`}>{project.status}</span>
+          <span className={`rounded-full px-2.5 py-0.5 text-[0.68rem] font-semibold capitalize ${priorityStyles[project.priority]}`}>{project.priority}</span>
         </div>
-        <div className="mt-4 grid gap-2 text-sm text-gray-400 sm:grid-cols-2">
-          <div className="flex min-w-0 items-center gap-2">
-            <Clock3 className="h-4 w-4 text-lime-400" />
+        <div className="mt-3 grid gap-1.5 text-xs text-gray-400 sm:grid-cols-2">
+          <div className="flex min-w-0 items-center gap-1.5">
+            <Clock3 className="h-3.5 w-3.5 text-lime-400" />
             <span className="truncate">{workspaceName(project.workspace)}</span>
           </div>
-          <div className="flex min-w-0 items-center gap-2">
-            <CalendarDays className="h-4 w-4 text-lime-400" />
+          <div className="flex min-w-0 items-center gap-1.5">
+            <CalendarDays className="h-3.5 w-3.5 text-lime-400" />
             <span className="truncate">{formatDate(project.deadline)}</span>
           </div>
         </div>
-        <div className="mt-auto flex justify-end gap-2 pt-4">
+        <div className="mt-auto flex justify-end gap-2 pt-3">
           <Button type="button" variant="secondary" size="sm" onClick={onOpen}>
             View
           </Button>
