@@ -1,4 +1,5 @@
 import { CheckCircle2, Clipboard, FileText, Gauge, RefreshCcw, XCircle } from 'lucide-react';
+import type { ReactNode } from 'react';
 import { Button } from '../components/common/Button';
 import { Card } from '../components/common/Card';
 import { EmptyState } from '../components/common/EmptyState';
@@ -10,9 +11,16 @@ const evaluationCommand = 'python tools\\evaluate_q4_quality.py';
 const docsUrl = 'https://github.com/muneeb-anjum0/Drift/blob/main/docs/evaluation_dashboard.md';
 
 const metric = (label: string, value: string | number) => (
+  <Card className="p-3">
+    <p className="app-eyebrow text-[0.62rem]">{label}</p>
+    <p className="mt-1.5 text-xl font-semibold">{value}</p>
+  </Card>
+);
+
+const metricGroup = (title: string, children: ReactNode) => (
   <Card className="p-4">
-    <p className="app-eyebrow text-[0.68rem]">{label}</p>
-    <p className="mt-2 text-2xl font-semibold">{value}</p>
+    <p className="app-eyebrow text-[0.68rem]">{title}</p>
+    <div className="mt-3 grid gap-2 sm:grid-cols-2">{children}</div>
   </Card>
 );
 
@@ -62,12 +70,12 @@ export const EvaluationPage = () => {
   const failedCases = summary.cases.filter((item) => !item.passed).length;
 
   return (
-    <section className="space-y-6">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+    <section className="space-y-5">
+      <div className="flex flex-col gap-4 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[var(--shadow-card)] lg:flex-row lg:items-end lg:justify-between">
         <div>
           <p className="app-eyebrow">Evaluation</p>
-          <h1 className="mt-2 text-3xl font-semibold">Evaluation Dashboard</h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--color-text-muted)]">
+          <h1 className="mt-2 text-2xl font-semibold">Evaluation Dashboard</h1>
+          <p className="mt-1.5 max-w-2xl text-sm leading-6 text-[var(--color-text-muted)]">
             Monitor model quality, latency, drift-label accuracy, and change request reliability.
           </p>
         </div>
@@ -87,12 +95,12 @@ export const EvaluationPage = () => {
         </div>
       </div>
 
-      <Card className="p-5">
+      <Card className="p-4">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="app-eyebrow">Model card</p>
-            <h2 className="mt-2 text-xl font-semibold">{summary.model.label || 'Qwen2.5-7B + DriftLedger LoRA'}</h2>
-            <p className="mt-2 text-sm text-[var(--color-text-muted)]">
+            <h2 className="mt-1.5 text-lg font-semibold">{summary.model.label || 'Qwen2.5-7B + DriftLedger LoRA'}</h2>
+            <p className="mt-1.5 text-sm text-[var(--color-text-muted)]">
               {summary.model.runtime || 'Local GGUF / llama.cpp'} - {summary.model.quantization || 'Q4_K_M'}
             </p>
           </div>
@@ -104,37 +112,52 @@ export const EvaluationPage = () => {
           </div>
         </div>
         {summary.recommendation ? (
-          <p className="mt-4 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-bg-soft)] p-4 text-sm leading-6">
+          <p className="mt-3 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-bg-soft)] p-3 text-sm leading-6">
             {summary.recommendation}
           </p>
         ) : null}
       </Card>
 
-      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-        {metric('Evaluation pass rate', `${Math.round(summary.passRate)}%`)}
-        {metric('Average latency', `${Math.round(summary.averageLatencyMs)} ms`)}
-        {metric('Test cases passed', `${summary.passCount}/${summary.caseCount}`)}
-        {metric('Model quantization', summary.model.quantization || 'Q4_K_M')}
-        {metric('Saved analyses', 'Report-only')}
-        {metric('Change requests generated', 'Report-only')}
-        {metric('Ambiguous cases', summary.cases.filter((item) => item.actualLabel === 'ambiguous').length)}
-        {metric('Contradiction cases', summary.cases.filter((item) => item.actualLabel === 'contradiction').length)}
-        {metric('Pending approvals', summary.approvalQuality?.pending ?? 0)}
-        {metric('Approved changes', summary.approvalQuality?.approved ?? 0)}
-        {metric('Rejected changes', summary.approvalQuality?.rejected ?? 0)}
-        {metric('Needs revision', summary.approvalQuality?.needsRevision ?? 0)}
+      <div className="grid gap-3 xl:grid-cols-3">
+        {metricGroup(
+          'Model quality',
+          <>
+            {metric('Pass rate', `${Math.round(summary.passRate)}%`)}
+            {metric('Cases passed', `${summary.passCount}/${summary.caseCount}`)}
+            {metric('Ambiguous', summary.cases.filter((item) => item.actualLabel === 'ambiguous').length)}
+            {metric('Contradictions', summary.cases.filter((item) => item.actualLabel === 'contradiction').length)}
+          </>
+        )}
+        {metricGroup(
+          'Runtime',
+          <>
+            {metric('Average latency', `${Math.round(summary.averageLatencyMs)} ms`)}
+            {metric('Quantization', summary.model.quantization || 'Q4_K_M')}
+            {metric('Saved analyses', 'Report-only')}
+            {metric('Change requests', 'Report-only')}
+          </>
+        )}
+        {metricGroup(
+          'Approvals',
+          <>
+            {metric('Pending', summary.approvalQuality?.pending ?? 0)}
+            {metric('Approved', summary.approvalQuality?.approved ?? 0)}
+            {metric('Rejected', summary.approvalQuality?.rejected ?? 0)}
+            {metric('Revision', summary.approvalQuality?.needsRevision ?? 0)}
+          </>
+        )}
       </div>
 
-      <Card className="p-5">
+      <Card className="p-4">
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="app-eyebrow">Benchmark</p>
-            <h2 className="mt-2 text-xl font-semibold">Latest Q4 evaluation</h2>
+            <h2 className="mt-1.5 text-lg font-semibold">Latest Q4 evaluation</h2>
           </div>
           <span className="app-badge">{failedCases === 0 ? 'All cases passed' : `${failedCases} case(s) need review`}</span>
         </div>
-        <div className="mt-4 overflow-x-auto">
-          <table className="w-full min-w-[900px] border-separate border-spacing-0 text-left text-sm">
+        <div className="mt-3 overflow-x-auto">
+          <table className="w-full min-w-[860px] border-separate border-spacing-0 text-left text-xs">
             <thead>
               <tr className="text-[var(--color-text-soft)]">
                 <th className="border-b border-[var(--color-border)] px-3 py-2 font-semibold">Case</th>
@@ -150,19 +173,19 @@ export const EvaluationPage = () => {
             <tbody>
               {summary.cases.map((item) => (
                 <tr key={item.id}>
-                  <td className="border-b border-[var(--color-border)] px-3 py-3 font-semibold">{item.name}</td>
-                  <td className="border-b border-[var(--color-border)] px-3 py-3">{item.expectedLabel}</td>
-                  <td className="border-b border-[var(--color-border)] px-3 py-3">{item.actualLabel || 'unknown'}</td>
-                  <td className="border-b border-[var(--color-border)] px-3 py-3">{item.score}/100</td>
-                  <td className="border-b border-[var(--color-border)] px-3 py-3">{item.latencyMs} ms</td>
-                  <td className="border-b border-[var(--color-border)] px-3 py-3">
+                  <td className="border-b border-[var(--color-border)] px-3 py-2.5 font-semibold">{item.name}</td>
+                  <td className="border-b border-[var(--color-border)] px-3 py-2.5">{item.expectedLabel}</td>
+                  <td className="border-b border-[var(--color-border)] px-3 py-2.5">{item.actualLabel || 'unknown'}</td>
+                  <td className="border-b border-[var(--color-border)] px-3 py-2.5">{item.score}/100</td>
+                  <td className="border-b border-[var(--color-border)] px-3 py-2.5">{item.latencyMs} ms</td>
+                  <td className="border-b border-[var(--color-border)] px-3 py-2.5">
                     <span className="inline-flex items-center gap-1">
                       {item.passed ? <CheckCircle2 className="h-4 w-4 text-[var(--color-success)]" /> : <XCircle className="h-4 w-4 text-[var(--color-danger)]" />}
                       {item.passed ? 'Pass' : 'Fail'}
                     </span>
                   </td>
-                  <td className="border-b border-[var(--color-border)] px-3 py-3">{item.title || 'No visible change'}</td>
-                  <td className="border-b border-[var(--color-border)] px-3 py-3 text-[var(--color-text-muted)]">{item.notes.length ? item.notes.join('; ') : 'Clean'}</td>
+                  <td className="border-b border-[var(--color-border)] px-3 py-2.5">{item.title || 'No visible change'}</td>
+                  <td className="border-b border-[var(--color-border)] px-3 py-2.5 text-[var(--color-text-muted)]">{item.notes.length ? item.notes.join('; ') : 'Clean'}</td>
                 </tr>
               ))}
             </tbody>
@@ -170,30 +193,32 @@ export const EvaluationPage = () => {
         </div>
       </Card>
 
-      <Card className="p-5">
-        <p className="app-eyebrow">Quality insights</p>
-        <h2 className="mt-2 text-xl font-semibold">Recommendation</h2>
-        <p className="mt-3 text-sm leading-6 text-[var(--color-text-muted)]">
-          {failedCases === 0
-            ? `Q4_K_M passed ${summary.passCount}/${summary.caseCount} evaluation cases. Latency is acceptable for local inference, and ambiguous plus contradiction handling remains covered by deterministic post-processing.`
-            : `Q4_K_M passed ${summary.passCount}/${summary.caseCount} evaluation cases. Review failed cases before using this runtime in a polished demo.`}
-        </p>
-      </Card>
+      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_380px]">
+        <Card className="p-4">
+          <p className="app-eyebrow">Quality insights</p>
+          <h2 className="mt-1.5 text-lg font-semibold">Recommendation</h2>
+          <p className="mt-2 text-sm leading-6 text-[var(--color-text-muted)]">
+            {failedCases === 0
+              ? `Q4_K_M passed ${summary.passCount}/${summary.caseCount} evaluation cases. Latency is acceptable for local inference, and ambiguous plus contradiction handling remains covered by deterministic post-processing.`
+              : `Q4_K_M passed ${summary.passCount}/${summary.caseCount} evaluation cases. Review failed cases before using this runtime in a polished demo.`}
+          </p>
+        </Card>
 
-      <Card className="p-5">
-        <div className="flex items-center gap-2">
-          <Gauge className="h-5 w-5" />
-          <h2 className="text-lg font-semibold">Reports</h2>
-        </div>
-        <div className="mt-4 grid gap-2">
-          {summary.reports.slice(0, 5).map((report) => (
-            <div key={report.name} className="flex flex-col gap-1 rounded-[var(--radius-card)] border border-[var(--color-border)] p-3 text-sm md:flex-row md:items-center md:justify-between">
-              <span className="font-semibold">{report.name}</span>
-              <span className="text-[var(--color-text-muted)]">{formatDate(report.createdAt)}</span>
-            </div>
-          ))}
-        </div>
-      </Card>
+        <Card className="p-4">
+          <div className="flex items-center gap-2">
+            <Gauge className="h-4 w-4" />
+            <h2 className="text-base font-semibold">Reports</h2>
+          </div>
+          <div className="mt-3 grid gap-2">
+            {summary.reports.slice(0, 5).map((report) => (
+              <div key={report.name} className="flex flex-col gap-1 rounded-[var(--radius-card)] border border-[var(--color-border)] p-2.5 text-xs md:flex-row md:items-center md:justify-between">
+                <span className="font-semibold">{report.name}</span>
+                <span className="text-[var(--color-text-muted)]">{formatDate(report.createdAt)}</span>
+              </div>
+            ))}
+          </div>
+        </Card>
+      </div>
     </section>
   );
 };

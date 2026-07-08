@@ -12,7 +12,7 @@ import { ChangeRequestStatusBadge } from './ChangeRequestStatusBadge';
 import { generatedByLabel } from './changeRequestDisplay';
 
 const selectClass =
-  'h-11 w-full rounded-2xl border border-gray-700 bg-black px-4 text-sm text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30';
+  'h-10 w-full rounded-[1rem] border border-gray-700 bg-black px-3 text-sm text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30';
 
 const statusOptions: Array<ChangeRequest['status']> = ['draft', 'sent', 'approved', 'rejected', 'archived'];
 
@@ -91,20 +91,20 @@ export const ChangeRequestPreview = ({ projectId, driftAnalyses }: { projectId: 
   };
 
   return (
-    <Card className="border-lime-400/20 bg-black/60 p-6">
+    <Card className="border-lime-400/20 bg-black/60 p-4">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-lime-400">Change request preview</p>
-          <h3 className="mt-1 text-xl font-semibold text-white">Generate a client-friendly change request from drift analysis</h3>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-400">Review and edit the draft before saving it as an official change request.</p>
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-lime-400">Change request preview</p>
+          <h3 className="mt-1 text-lg font-semibold text-white">Generate a client-friendly change request from drift analysis</h3>
+          <p className="mt-1.5 max-w-2xl text-xs leading-5 text-gray-400">Review and edit the draft before saving it as an official change request.</p>
         </div>
         <ChangeRequestStatusBadge status={draft.status} />
       </div>
 
-      <div className="mt-6 grid gap-4 xl:grid-cols-[1fr_0.9fr]">
-        <div className="space-y-4">
-          <label className="block space-y-2">
-            <span className="text-sm font-semibold text-gray-300">Drift analysis</span>
+      <div className="mt-4 grid gap-4 xl:grid-cols-[1fr_0.9fr]">
+        <div className="space-y-3">
+          <label className="block space-y-1.5">
+            <span className="text-xs font-semibold text-gray-300">Drift analysis</span>
             <select value={selectedDriftAnalysisId} onChange={(event) => setSelectedDriftAnalysisId(event.target.value)} className={selectClass}>
               {driftAnalyses.map((analysis) => (
                 <option key={analysis._id} value={analysis._id}>
@@ -114,7 +114,7 @@ export const ChangeRequestPreview = ({ projectId, driftAnalyses }: { projectId: 
             </select>
           </label>
 
-          <Button type="button" onClick={handleGenerate} disabled={generateMutation.isPending || !hasMeaningfulDrift}>
+          <Button type="button" variant="secondary" onClick={handleGenerate} disabled={generateMutation.isPending || !hasMeaningfulDrift}>
             {generateMutation.isPending ? <Spinner /> : 'Generate Change Request'}
           </Button>
 
@@ -125,14 +125,14 @@ export const ChangeRequestPreview = ({ projectId, driftAnalyses }: { projectId: 
           {error ? <p className="text-sm text-red-400">{error}</p> : null}
 
           {draft.driftAnalysisId ? (
-            <div className="space-y-4 rounded-3xl border border-gray-800 bg-black/40 p-5">
-              <label className="block space-y-2">
-                <span className="text-sm font-semibold text-gray-300">Title</span>
+            <div className="space-y-3 rounded-[1rem] border border-gray-800 bg-black/40 p-4">
+              <label className="block space-y-1.5">
+                <span className="text-xs font-semibold text-gray-300">Title</span>
                 <input value={draft.title} onChange={(event) => setDraft((current) => ({ ...current, title: event.target.value }))} className={selectClass} />
               </label>
 
-              <label className="block space-y-2">
-                <span className="text-sm font-semibold text-gray-300">Client name</span>
+              <label className="block space-y-1.5">
+                <span className="text-xs font-semibold text-gray-300">Client name</span>
                 <input value={draft.clientName} onChange={(event) => setDraft((current) => ({ ...current, clientName: event.target.value }))} className={selectClass} />
               </label>
 
@@ -143,8 +143,8 @@ export const ChangeRequestPreview = ({ projectId, driftAnalyses }: { projectId: 
               <TextAreaField label="Recommended action" value={draft.recommendedAction} onChange={(value) => setDraft((current) => ({ ...current, recommendedAction: value }))} rows={3} />
               <TextAreaField label="Approval note" value={draft.approvalNote} onChange={(value) => setDraft((current) => ({ ...current, approvalNote: value }))} rows={3} />
 
-              <label className="block space-y-2">
-                <span className="text-sm font-semibold text-gray-300">Status</span>
+              <label className="block space-y-1.5">
+                <span className="text-xs font-semibold text-gray-300">Status</span>
                 <select value={draft.status} onChange={(event) => setDraft((current) => ({ ...current, status: event.target.value as ChangeRequest['status'] }))} className={selectClass}>
                   {statusOptions.map((status) => (
                     <option key={status} value={status}>
@@ -154,7 +154,7 @@ export const ChangeRequestPreview = ({ projectId, driftAnalyses }: { projectId: 
                 </select>
               </label>
 
-              <Button type="button" variant="secondary" onClick={handleSave} disabled={saveMutation.isPending}>
+              <Button type="button" onClick={handleSave} disabled={saveMutation.isPending}>
                 {saveMutation.isPending ? <Spinner /> : <CheckCircle2 className="mr-2 h-4 w-4" />}
                 Save Change Request
               </Button>
@@ -194,13 +194,7 @@ export const ChangeRequestPreview = ({ projectId, driftAnalyses }: { projectId: 
                 <p><span className="font-semibold text-white">Generated by:</span> {generatedByLabel(draft.generatedBy)}</p>
               </div>
             </Card>
-          ) : (
-            <EmptyState
-              title="Generate a preview to review the change request."
-              description="The draft can be edited before you save it as an official client-facing request."
-              icon={<Sparkles className="h-5 w-5" />}
-            />
-          )}
+          ) : null}
         </div>
       </div>
     </Card>
@@ -208,13 +202,13 @@ export const ChangeRequestPreview = ({ projectId, driftAnalyses }: { projectId: 
 };
 
 const TextAreaField = ({ label, value, onChange, rows }: { label: string; value: string; onChange: (value: string) => void; rows: number }) => (
-  <label className="block space-y-2">
-    <span className="text-sm font-semibold text-gray-300">{label}</span>
+  <label className="block space-y-1.5">
+    <span className="text-xs font-semibold text-gray-300">{label}</span>
     <textarea
       value={value}
       onChange={(event) => onChange(event.target.value)}
       rows={rows}
-      className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+      className="w-full rounded-[1rem] border border-gray-700 bg-black px-3 py-2 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
     />
   </label>
 );

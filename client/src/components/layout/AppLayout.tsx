@@ -9,23 +9,11 @@ export const AppLayout = ({ children }: { children?: ReactNode }) => {
   const navigate = useNavigate();
   const { logout, user } = useAuth();
   const displayName = userHandle(user);
-  const dockItems = buildDockItems({ pathname: location.pathname, navigate, logout });
+  const dockItems = buildDockItems({ pathname: location.pathname, navigate, logout, user });
 
   return (
     <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
-      <header className="sticky top-0 z-40 px-4 py-2">
-        <div className="app-top-island mx-auto flex max-w-xl items-center justify-between gap-4 px-4 py-2">
-          <div className="min-w-0">
-            <p className="truncate text-sm font-semibold text-[var(--color-text)]">DriftLedger</p>
-            <p className="truncate text-xs text-[var(--color-text-muted)]">Requirement drift workspace</p>
-          </div>
-          <div className="shrink-0 truncate pl-3 text-sm font-semibold text-[var(--color-text)]">
-            {displayName}
-          </div>
-        </div>
-      </header>
-
-      <main className="app-main mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <main className="app-main mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8" aria-label={`Signed in as ${displayName}`}>
         {children ?? <Outlet />}
       </main>
 

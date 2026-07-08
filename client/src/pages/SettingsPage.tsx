@@ -8,6 +8,11 @@ import { getSettingsSections } from '../features/settings/settingsSections';
 export const SettingsPage = () => {
   const { user, logout } = useAuth();
   const sections = getSettingsSections(user);
+  const confirmLogout = () => {
+    if (window.confirm('Log out of DriftLedger?')) {
+      void logout();
+    }
+  };
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-3xl space-y-5">
@@ -19,7 +24,7 @@ export const SettingsPage = () => {
             Only the settings that matter for using DriftLedger are shown here.
           </p>
         </div>
-        <Button type="button" variant="secondary" onClick={() => void logout()}>
+        <Button type="button" variant="secondary" onClick={confirmLogout}>
           <LogOut className="mr-2 h-4 w-4" />
           Logout
         </Button>

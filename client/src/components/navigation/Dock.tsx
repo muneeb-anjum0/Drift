@@ -59,6 +59,7 @@ function DockItem({
       onClick={onClick}
       className={`dock-item ${className}`}
       aria-label={label}
+      title={label}
     >
       {Children.map(children, (child) => {
         if (!isValidElement<DockChildProps>(child)) return child;

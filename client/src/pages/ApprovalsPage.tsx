@@ -76,7 +76,7 @@ const ApprovalDecisionModal = ({
       size="md"
       density="compact"
       footer={(
-        <div className="flex flex-wrap justify-end gap-3">
+        <div className="flex flex-wrap justify-end gap-2">
           <Button type="button" variant="secondary" onClick={onClose}>Cancel</Button>
           <Button type="button" onClick={() => onConfirm(note)} disabled={isPending}>
             {isPending ? 'Saving...' : approvalActionLabel(action)}
@@ -85,12 +85,12 @@ const ApprovalDecisionModal = ({
       )}
     >
       <label className="block space-y-2">
-        <span className="text-sm font-semibold text-[var(--color-text)]">Decision note</span>
+        <span className="text-xs font-semibold text-[var(--color-text)]">Decision note</span>
         <textarea
           value={note}
           onChange={(event) => setNote(event.target.value.slice(0, 1200))}
-          rows={4}
-          className="w-full rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-3 text-sm text-[var(--color-text)] outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20"
+          rows={3}
+          className="w-full rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-bg)] px-3 py-2 text-sm text-[var(--color-text)] outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20"
           placeholder="Optional context for the approval history"
         />
       </label>
@@ -103,14 +103,14 @@ const ApprovalDetailModal = ({ changeRequest, onClose }: { changeRequest: Change
 
   return (
     <Modal open title={changeRequest.title} description={projectName(changeRequest)} onClose={onClose} size="xl" density="compact">
-      <div className="space-y-5">
+      <div className="space-y-4">
         <div className="flex flex-wrap items-center gap-2">
           <ApprovalStatusBadge status={changeRequest.approvalStatus} />
-          <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-[var(--color-text-muted)]">
+          <span className="rounded-full border border-white/10 px-2.5 py-1 text-xs text-[var(--color-text-muted)]">
             Created {formatDate(changeRequest.createdAt)}
           </span>
           {changeRequest.decisionAt ? (
-            <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-[var(--color-text-muted)]">
+            <span className="rounded-full border border-white/10 px-2.5 py-1 text-xs text-[var(--color-text-muted)]">
               Decided {formatDate(changeRequest.decisionAt)}
             </span>
           ) : null}
@@ -118,32 +118,32 @@ const ApprovalDetailModal = ({ changeRequest, onClose }: { changeRequest: Change
 
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-lime-400">Summary</p>
-          <p className="mt-2 text-sm leading-6 text-[var(--color-text-muted)]">{changeRequest.summary}</p>
+          <p className="mt-2 text-sm leading-5 text-[var(--color-text-muted)]">{changeRequest.summary}</p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          <Card className="border-white/10 bg-black/40 p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">Timeline</p>
-            <p className="mt-2 text-sm leading-6 text-gray-300">{changeRequest.timelineImpact}</p>
+        <div className="grid gap-3 md:grid-cols-2">
+          <Card className="border-white/10 bg-black/40 p-3">
+            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-gray-500">Timeline</p>
+            <p className="mt-2 text-xs leading-5 text-gray-300">{changeRequest.timelineImpact}</p>
           </Card>
-          <Card className="border-white/10 bg-black/40 p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">Cost</p>
-            <p className="mt-2 text-sm leading-6 text-gray-300">{changeRequest.costImpact}</p>
+          <Card className="border-white/10 bg-black/40 p-3">
+            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-gray-500">Cost</p>
+            <p className="mt-2 text-xs leading-5 text-gray-300">{changeRequest.costImpact}</p>
           </Card>
         </div>
 
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-lime-400">Approval history</p>
-          <div className="mt-3 divide-y divide-white/10 rounded-[var(--radius-card)] border border-white/10">
+          <div className="mt-2 divide-y divide-white/10 rounded-[var(--radius-card)] border border-white/10">
             {(changeRequest.approvalHistory ?? []).length ? (
               changeRequest.approvalHistory?.map((event, index) => (
-                <div key={`${event.status}-${event.createdAt}-${index}`} className="p-4">
+                <div key={`${event.status}-${event.createdAt}-${index}`} className="p-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <ApprovalStatusBadge status={event.status} />
                     <span className="text-xs text-[var(--color-text-muted)]">{formatDate(event.createdAt)}</span>
                   </div>
                   <p className="mt-2 text-sm text-[var(--color-text)]">{event.actorName || 'Approver'}</p>
-                  {event.note ? <p className="mt-1 text-sm leading-6 text-[var(--color-text-muted)]">{event.note}</p> : null}
+                  {event.note ? <p className="mt-1 text-xs leading-5 text-[var(--color-text-muted)]">{event.note}</p> : null}
                 </div>
               ))
             ) : (
@@ -213,27 +213,27 @@ export const ApprovalsPage = () => {
   }
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 text-[var(--color-text)]">
-      <section className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-card)]">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-5 text-[var(--color-text)]">
+      <section className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[var(--shadow-card)]">
         <p className="app-eyebrow">Approvals</p>
         <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-semibold">Client approval queue</h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--color-text-muted)]">
+            <h1 className="text-2xl font-semibold">Client approval queue</h1>
+            <p className="mt-1.5 max-w-2xl text-sm leading-6 text-[var(--color-text-muted)]">
               Review submitted change requests, record decisions, and keep a clean approval history.
             </p>
           </div>
-          <FileCheck2 className="h-7 w-7 text-lime-400" />
+          <FileCheck2 className="h-6 w-6 text-lime-400" />
         </div>
       </section>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {kpiItems(approvals).map(({ label, value, icon: Icon }) => (
-          <Card key={label} className="border-white/10 bg-black/60 p-4">
+          <Card key={label} className="border-white/10 bg-black/60 p-3">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">{label}</p>
-                <p className="mt-2 text-2xl font-semibold text-white">{value}</p>
+                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-gray-500">{label}</p>
+                <p className="mt-1.5 text-xl font-semibold text-white">{value}</p>
               </div>
               <Icon className="h-5 w-5 text-lime-400" />
             </div>
@@ -241,7 +241,7 @@ export const ApprovalsPage = () => {
         ))}
       </div>
 
-      <Card className="border-white/10 bg-black/60 p-5">
+      <Card className="border-white/10 bg-black/60 p-4">
         <div className="flex flex-wrap gap-2">
           {statusFilters.map((item) => (
             <Button
@@ -256,25 +256,25 @@ export const ApprovalsPage = () => {
           ))}
         </div>
 
-        <div className="mt-5">
+        <div className="mt-4">
           {!filteredApprovals.length ? (
             <EmptyState title="No approvals here yet" description="Submit a saved change request for approval to populate this queue." />
           ) : (
-            <div className="grid gap-4 xl:grid-cols-2">
+            <div className="grid gap-3 xl:grid-cols-2">
               {filteredApprovals.map((changeRequest) => {
                 const actions = availableActions(changeRequest);
                 return (
-                  <Card key={changeRequest._id ?? changeRequest.title} className="border-white/10 bg-black/45 p-5">
-                    <div className="flex flex-wrap items-start justify-between gap-4">
+                  <Card key={changeRequest._id ?? changeRequest.title} className="border-white/10 bg-black/45 p-4">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
                       <div className="min-w-0">
                         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-lime-400">{projectName(changeRequest)}</p>
-                        <h2 className="mt-2 text-lg font-semibold text-white">{changeRequestDisplayTitle(changeRequest)}</h2>
-                        <p className="mt-2 text-sm leading-6 text-gray-400">{changeRequest.summary}</p>
+                        <h2 className="mt-1.5 text-base font-semibold text-white">{changeRequestDisplayTitle(changeRequest)}</h2>
+                        <p className="mt-1.5 line-clamp-2 text-sm leading-5 text-gray-400">{changeRequest.summary}</p>
                       </div>
                       <ApprovalStatusBadge status={changeRequest.approvalStatus} />
                     </div>
 
-                    <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                    <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
                       <span className="text-xs text-gray-500">Updated {formatDate(changeRequest.updatedAt)}</span>
                       <div className="flex flex-wrap gap-2">
                         <Button type="button" size="sm" variant="secondary" onClick={() => setSelectedRequest(changeRequest)}>

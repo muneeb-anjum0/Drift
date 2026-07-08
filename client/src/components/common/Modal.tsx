@@ -40,7 +40,7 @@ export const Modal = ({ open, title, description, children, footer, onClose, siz
   if (!open) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-[rgba(17,17,17,0.42)] px-4 py-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-[rgba(17,17,17,0.42)] px-4 py-4 backdrop-blur-sm">
       <motion.div
         initial={{ opacity: 0, y: 18, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}

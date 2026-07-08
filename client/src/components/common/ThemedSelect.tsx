@@ -30,14 +30,14 @@ export const ThemedSelect = <T extends string,>({
   const selected = options.find((option) => option.value === value);
 
   return (
-    <div className={cn('relative space-y-2', className)}>
-      <span className="text-sm font-semibold text-[var(--color-text)]">{label}</span>
+    <div className={cn('relative space-y-1.5', className)}>
+      <span className="text-xs font-semibold text-[var(--color-text)]">{label}</span>
       <button
         type="button"
         onClick={() => setIsOpen((current) => !current)}
         disabled={disabled}
         className={cn(
-          'flex h-11 w-full items-center justify-between rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 text-left text-sm text-[var(--color-text)] shadow-sm outline-none transition',
+          'flex h-10 w-full items-center justify-between rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-left text-sm text-[var(--color-text)] shadow-sm outline-none transition',
           'focus:border-[var(--color-text)] focus:ring-2 focus:ring-[var(--color-focus)]',
           !selected && 'text-[var(--color-text-soft)]',
           disabled && 'cursor-not-allowed opacity-60',

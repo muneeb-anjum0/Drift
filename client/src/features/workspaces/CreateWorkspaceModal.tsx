@@ -54,16 +54,18 @@ export const CreateWorkspaceModal = ({
       title={mode === 'create' ? 'Create workspace' : 'Edit workspace'}
       description="Organize projects, clients, and activities in a dedicated workspace."
       onClose={onClose}
+      size="md"
+      density="compact"
     >
-      <form className="space-y-5" onSubmit={handleSubmit}>
-        <Input label="Workspace name" value={values.name} onChange={(event) => setValues((current) => ({ ...current, name: event.target.value }))} placeholder="Acme Design Studio" required />
-        <label className="block space-y-2">
-          <span className="text-base font-semibold text-gray-300">Description</span>
+      <form className="space-y-3" onSubmit={handleSubmit}>
+        <Input label="Workspace name" labelClassName="text-sm" className="h-10 text-sm" value={values.name} onChange={(event) => setValues((current) => ({ ...current, name: event.target.value }))} placeholder="Acme Design Studio" required />
+        <label className="block space-y-1.5">
+          <span className="text-sm font-semibold text-gray-300">Description</span>
           <textarea
             value={values.description}
             onChange={(event) => setValues((current) => ({ ...current, description: event.target.value }))}
-            rows={4}
-            className="w-full rounded-2xl border border-gray-700 bg-black px-4 py-3 text-base text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+            rows={2}
+            className="w-full rounded-[1rem] border border-gray-700 bg-black px-3 py-2 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
             placeholder="A short description of this workspace"
           />
         </label>

@@ -65,12 +65,12 @@ export const ProjectsPage = () => {
   }
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-7">
-      <section className="flex flex-wrap items-end justify-between gap-5 rounded-[2.25rem] border border-lime-400/20 bg-black/75 p-6 shadow-[0_24px_90px_rgba(163,230,53,0.06)] sm:p-8">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-5">
+      <section className="flex flex-wrap items-end justify-between gap-4 rounded-[1.5rem] border border-lime-400/20 bg-black/75 p-5 shadow-[0_18px_70px_rgba(163,230,53,0.05)]">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-lime-400">Projects</p>
-          <h2 className="mt-3 text-4xl font-semibold text-white">Scope-controlled delivery</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-gray-400">Create client projects, preserve original scope, and move into requirements and AI drift analysis.</p>
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-lime-400">Projects</p>
+          <h2 className="mt-2 text-3xl font-semibold text-white">Scope-controlled delivery</h2>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-400">Create client projects, preserve original scope, and move into requirements and AI drift analysis.</p>
         </div>
         <Button type="button" onClick={() => setIsCreateOpen(true)} disabled={workspaces.length === 0}>
           <Plus className="mr-2 h-4 w-4" />
@@ -78,12 +78,12 @@ export const ProjectsPage = () => {
         </Button>
       </section>
 
-      <Card className="relative z-30 rounded-[2rem] border-white/10 bg-black/65 p-5">
-        <div className="mb-4 flex items-center gap-2 text-lime-400">
+      <Card className="relative z-30 rounded-[1.25rem] border-white/10 bg-black/65 p-4">
+        <div className="mb-3 flex items-center gap-2 text-lime-400">
           <SlidersHorizontal className="h-4 w-4" />
-          <p className="text-xs font-semibold uppercase tracking-[0.2em]">Filters</p>
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em]">Filters</p>
         </div>
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-[1fr_1fr_auto]">
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[1fr_1fr_auto]">
           <WorkspaceSwitcher workspaces={workspaces} selectedWorkspaceId={selectedWorkspaceId} onChange={setSelectedWorkspaceId} />
           <ThemedSelect
             label="Status"
@@ -96,7 +96,7 @@ export const ProjectsPage = () => {
             placeholder="All statuses"
           />
           <div className="flex items-end">
-            <Button type="button" variant="secondary" onClick={() => setStatusFilter('all')} className="w-full xl:w-auto">
+            <Button type="button" variant="secondary" size="sm" onClick={() => setStatusFilter('all')} className="w-full xl:w-auto">
               Reset
             </Button>
           </div>
