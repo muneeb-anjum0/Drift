@@ -286,8 +286,8 @@ export const ProjectDetailsPage = () => {
                 onClick={() => setActiveSection(id)}
                 className={cn(
                   'group flex min-h-16 items-center gap-2.5 rounded-[1.15rem] border px-3 py-2.5 text-left transition',
-                  isDriftTab && 'rounded-r-none',
-                  isHistoryTab && '-ml-2 rounded-l-none',
+                  isDriftTab && 'rounded-r-none border-r-0',
+                  isHistoryTab && '-ml-2 rounded-l-none border-l-0',
                   isDriftPair
                     ? 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[#b7ad98]'
                     : isActive
