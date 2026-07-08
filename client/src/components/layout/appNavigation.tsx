@@ -6,6 +6,14 @@ import { cn } from '../../utils/cn';
 import type { User } from '../../types';
 
 const dockIcons = [LayoutDashboard, BriefcaseBusiness, FolderKanban, Gauge, BadgeCheck, Settings];
+const dockDescriptions = [
+  'Command center',
+  'Client workspaces',
+  'Scope and baselines',
+  'Model quality reports',
+  'Client approvals',
+  'Account preferences',
+];
 
 export const userHandle = (user?: User | null) => user?.email?.split('@')[0] || user?.name || 'user';
 
@@ -24,6 +32,7 @@ export const buildDockItems = ({
 
     return {
       label: navItem.label,
+      description: dockDescriptions[index],
       icon: <Icon />,
       onClick: () => navigate(navItem.to),
       className: cn(activeRoute && 'active'),
@@ -31,6 +40,7 @@ export const buildDockItems = ({
   }),
   {
     label: 'Logout',
+    description: 'End this session',
     icon: <LogOut />,
     onClick: () => {
       if (window.confirm('Log out of DriftLedger?')) {

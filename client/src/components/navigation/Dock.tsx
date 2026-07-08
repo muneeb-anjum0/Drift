@@ -8,6 +8,7 @@ type DockChildProps = {
 
 export type DockItemConfig = {
   label: string;
+  description?: string;
   icon: ReactNode;
   onClick?: () => void;
   className?: string;
@@ -23,6 +24,7 @@ type DockItemProps = {
   magnification: number;
   baseItemSize: number;
   label: string;
+  description?: string;
 };
 
 function DockItem({
@@ -35,6 +37,7 @@ function DockItem({
   magnification,
   baseItemSize,
   label,
+  description,
 }: DockItemProps) {
   const ref = useRef<HTMLButtonElement | null>(null);
   const isHovered = useMotionValue(0);
@@ -58,7 +61,7 @@ function DockItem({
       onBlur={() => isHovered.set(0)}
       onClick={onClick}
       className={`dock-item ${className}`}
-      aria-label={label}
+      aria-label={description ? `${label}: ${description}` : label}
     >
       {Children.map(children, (child) => {
         if (!isValidElement<DockChildProps>(child)) return child;
@@ -68,7 +71,17 @@ function DockItem({
   );
 }
 
-function DockLabel({ children, className = '', isHovered }: { children: ReactNode; className?: string; isHovered?: MotionValue<number> }) {
+function DockLabel({
+  label,
+  description,
+  className = '',
+  isHovered,
+}: {
+  label: string;
+  description?: string;
+  className?: string;
+  isHovered?: MotionValue<number>;
+}) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -91,7 +104,8 @@ function DockLabel({ children, className = '', isHovered }: { children: ReactNod
           role="tooltip"
           style={{ x: '-50%' }}
         >
-          {children}
+          <span className="dock-label-title">{label}</span>
+          {description ? <span className="dock-label-description">{description}</span> : null}
         </motion.div>
       ) : null}
     </AnimatePresence>
@@ -157,9 +171,10 @@ export default function Dock({
             magnification={magnification}
             baseItemSize={baseItemSize}
             label={item.label}
+            description={item.description}
           >
             <DockIcon>{item.icon}</DockIcon>
-            <DockLabel>{item.label}</DockLabel>
+            <DockLabel label={item.label} description={item.description} />
           </DockItem>
         ))}
       </motion.div>
