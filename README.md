@@ -2,16 +2,15 @@
 
 ## Mission
 
-Protect project scope by turning client messages into clear requirement-drift decisions before work quietly expands.
+Protect delivery teams from silent scope creep by turning changing client requests into clear, reviewable requirement-drift decisions before extra work becomes unpaid work.
 
 ## Vision
 
-Make scope comparison, approvals, and change-request writing feel like one calm workflow instead of scattered notes.
+Become the calm operating layer between approved scope and new client intent: requirements stay traceable, drift is explained, and every material change can move into an approval-ready request without scattered notes or guesswork.
 
 ## What It Is
 
-DriftLedger is a portfolio SaaS app for requirements, baselines, drift analysis, saved history, change requests, approvals, documents, and in-app Q4 model evaluation.
-It also includes a demo Billing/Plan area for SaaS presentation polish.
+DriftLedger is a portfolio SaaS app for requirement baselines, model-backed drift analysis, saved history, change requests, approvals, documents, billing presentation, and in-app Q4 model evaluation.
 
 ## Stack
 
@@ -63,3 +62,13 @@ python tools/evaluate_q4_quality.py --help
 ```
 
 Focused notes live in `docs/`.
+
+## Demo Data
+
+The demo account can be populated with realistic workspaces, requirements, baselines, drift analyses, and approval decisions through the app API. Keep Mongo data safe by avoiding:
+
+```bash
+docker compose down -v
+docker volume rm drift_mongo-data
+docker volume prune
+```

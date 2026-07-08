@@ -44,10 +44,10 @@ export const ProjectCard = ({
       whileTap={{ scale: 0.99 }}
       className="h-full"
     >
-      <Card className="flex h-full min-h-[21rem] flex-col rounded-[2rem] border-white/10 bg-black/65 p-6 hover:border-lime-400/35">
-        <div className="flex items-start justify-between gap-4">
+      <Card className="flex h-full min-h-[18rem] flex-col rounded-[1.5rem] border-white/10 bg-black/65 p-5 hover:border-lime-400/35">
+        <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <span className="mb-3 inline-flex rounded-full border border-lime-400/20 bg-lime-400/10 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-lime-300">
+            <span className="mb-2 inline-flex rounded-full border border-lime-400/20 bg-lime-400/10 px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-lime-300">
               Project {String(projectNumber).padStart(2, '0')}
             </span>
             <motion.button
@@ -55,20 +55,20 @@ export const ProjectCard = ({
               className="block min-w-0 text-left transition-colors"
               onClick={onOpen}
             >
-              <h3 className="line-clamp-2 min-h-[4rem] text-2xl font-semibold leading-8 text-white">{project.name}</h3>
+              <h3 className="line-clamp-2 min-h-[3.5rem] text-xl font-semibold leading-7 text-white">{project.name}</h3>
             </motion.button>
-            <p className="mt-2 truncate text-base text-gray-400">{project.clientName}</p>
+            <p className="mt-1 truncate text-sm text-gray-400">{project.clientName}</p>
           </div>
-          <Button type="button" variant="ghost" size="sm" onClick={onEdit} className="h-9 w-9 px-0">
+          <Button type="button" variant="ghost" size="sm" onClick={onEdit} className="h-8 w-8 px-0">
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </div>
-        <p className="mt-5 line-clamp-3 min-h-[5.25rem] text-base leading-7 text-gray-400">{project.description || 'No description provided.'}</p>
-        <div className="mt-4 flex flex-wrap gap-2">
+        <p className="mt-3 line-clamp-3 min-h-[4.5rem] text-sm leading-6 text-gray-400">{project.description || 'No description provided.'}</p>
+        <div className="mt-3 flex flex-wrap gap-2">
           <span className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${statusStyles[project.status]}`}>{project.status}</span>
           <span className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${priorityStyles[project.priority]}`}>{project.priority}</span>
         </div>
-        <div className="mt-5 grid gap-3 text-base text-gray-400 sm:grid-cols-2">
+        <div className="mt-4 grid gap-2 text-sm text-gray-400 sm:grid-cols-2">
           <div className="flex min-w-0 items-center gap-2">
             <Clock3 className="h-4 w-4 text-lime-400" />
             <span className="truncate">{workspaceName(project.workspace)}</span>
@@ -78,7 +78,7 @@ export const ProjectCard = ({
             <span className="truncate">{formatDate(project.deadline)}</span>
           </div>
         </div>
-        <div className="mt-auto flex justify-end gap-2 pt-6">
+        <div className="mt-auto flex justify-end gap-2 pt-4">
           <Button type="button" variant="secondary" size="sm" onClick={onOpen}>
             View
           </Button>
