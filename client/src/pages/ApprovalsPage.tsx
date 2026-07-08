@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { CheckCircle2, Clock3, FileCheck2, RotateCcw, XCircle } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { ArrowLeft, CheckCircle2, Clock3, FileCheck2, RotateCcw, XCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '../components/common/Button';
 import { Card } from '../components/common/Card';
@@ -157,6 +157,7 @@ const ApprovalDetailModal = ({ changeRequest, onClose }: { changeRequest: Change
 };
 
 export const ApprovalsPage = () => {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const approvalsQuery = useApprovals();
   const decisionMutation = useApprovalDecision();
@@ -181,6 +182,14 @@ export const ApprovalsPage = () => {
   const openDecision = (changeRequest: ChangeRequest, action: ApprovalAction) => {
     setDecisionTarget(changeRequest);
     setDecisionAction(action);
+  };
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+      return;
+    }
+    navigate('/dashboard');
   };
 
   const closeDetail = () => {
@@ -215,15 +224,21 @@ export const ApprovalsPage = () => {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-5 text-[var(--color-text)]">
       <section className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[var(--shadow-card)]">
-        <p className="app-eyebrow">Approvals</p>
-        <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-semibold">Client approval queue</h1>
+            <p className="app-eyebrow">Approvals</p>
+            <h1 className="mt-2 text-2xl font-semibold">Client approval queue</h1>
             <p className="mt-1.5 max-w-2xl text-sm leading-6 text-[var(--color-text-muted)]">
               Review submitted change requests, record decisions, and keep a clean approval history.
             </p>
           </div>
-          <FileCheck2 className="h-6 w-6 text-lime-400" />
+          <div className="flex items-center gap-2">
+            <Button type="button" variant="secondary" size="sm" onClick={handleBack}>
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back
+            </Button>
+            <FileCheck2 className="h-6 w-6 text-lime-400" />
+          </div>
         </div>
       </section>
 
