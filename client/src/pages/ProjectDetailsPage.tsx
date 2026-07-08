@@ -271,10 +271,10 @@ export const ProjectDetailsPage = () => {
                   title={approvalsNavAction.label}
                   aria-label={approvalsNavAction.label}
                   onClick={() => navigate('/approvals')}
-                  className="group flex min-h-16 items-center justify-center rounded-[1.15rem] border border-transparent bg-white/[0.02] px-3 py-2.5 text-gray-400 transition hover:border-lime-400/20 hover:bg-lime-400/5 hover:text-white"
+                  className="group flex min-h-16 items-center justify-center rounded-[1.15rem] border border-transparent bg-white/[0.02] p-1.5 text-gray-400 transition hover:border-lime-400/20 hover:bg-lime-400/5 hover:text-white"
                 >
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-black/60 text-gray-400 transition group-hover:border-lime-400/30 group-hover:text-lime-300">
-                    <ApprovalIcon className="h-4 w-4" />
+                  <span className="flex h-full min-h-12 w-full shrink-0 items-center justify-center rounded-[0.95rem] border border-white/10 bg-black/60 text-gray-400 transition group-hover:border-lime-400/30 group-hover:text-lime-300">
+                    <ApprovalIcon className="h-7 w-7" />
                   </span>
                 </button>
               ) : null}
