@@ -25,6 +25,34 @@ type CaseResult struct {
 	Notes          []string `json:"notes"`
 }
 
+type RunCaseStatus struct {
+	ID            string `json:"id"`
+	Name          string `json:"name"`
+	Status        string `json:"status"`
+	ExpectedLabel string `json:"expectedLabel"`
+	ActualLabel   string `json:"actualLabel,omitempty"`
+	Score         int    `json:"score,omitempty"`
+	LatencyMs     int64  `json:"latencyMs,omitempty"`
+	Passed        bool   `json:"passed,omitempty"`
+	Error         string `json:"error,omitempty"`
+	CompletedAt   string `json:"completedAt,omitempty"`
+}
+
+type EvaluationRun struct {
+	ID           string          `json:"id"`
+	Status       string          `json:"status"`
+	StartedBy    string          `json:"startedBy"`
+	StartedAt    string          `json:"startedAt"`
+	FinishedAt   string          `json:"finishedAt,omitempty"`
+	Progress     int             `json:"progress"`
+	TotalCases   int             `json:"totalCases"`
+	PassCount    int             `json:"passCount"`
+	ReportName   string          `json:"reportName,omitempty"`
+	Error        string          `json:"error,omitempty"`
+	CurrentStep  string          `json:"currentStep,omitempty"`
+	CaseStatuses []RunCaseStatus `json:"caseStatuses"`
+}
+
 type Report struct {
 	SchemaVersion    int          `json:"schemaVersion"`
 	GeneratedAt      string       `json:"generatedAt"`
@@ -65,4 +93,5 @@ type Summary struct {
 	Cases            []CaseResult    `json:"cases"`
 	Reports          []ReportFile    `json:"reports"`
 	ApprovalQuality  ApprovalQuality `json:"approvalQuality"`
+	CurrentRun       *EvaluationRun  `json:"currentRun,omitempty"`
 }

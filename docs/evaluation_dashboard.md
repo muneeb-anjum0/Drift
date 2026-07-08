@@ -1,6 +1,6 @@
 # Evaluation Dashboard
 
-The Evaluation page shows the latest Q4_K_M quality report.
+The Evaluation page runs and displays the automated Q4_K_M quality pipeline.
 
 Route:
 
@@ -12,25 +12,31 @@ Backend API:
 
 ```text
 GET /api/v1/evaluation/summary
+POST /api/v1/evaluation/runs
+GET /api/v1/evaluation/runs/current
 GET /api/v1/evaluation/reports
 GET /api/v1/evaluation/reports/latest
 ```
 
-## Generate A Report
+## Run A Report In The App
 
-Start Docker first:
+Start Docker:
 
 ```powershell
 docker compose up --build
 ```
 
-Then run:
+Open:
 
-```powershell
-python tools\evaluate_q4_quality.py
+```text
+http://localhost:5173/evaluation
 ```
 
-Reports are saved in:
+Click **Run evaluation**.
+
+The backend creates a temporary benchmark workspace, seeds requirements, freezes a baseline, runs the same model-backed drift analyzer used by the app, writes JSON/Markdown reports, and cleans up the temporary data.
+
+Reports are still saved in:
 
 ```text
 reports/evaluation
@@ -47,12 +53,14 @@ rejected changes
 needs revision
 ```
 
-## Empty Dashboard
+## CLI Fallback
 
-If `/evaluation` says no report exists, generate one with:
+The old script is still useful for terminal checks:
 
 ```powershell
 python tools\evaluate_q4_quality.py
 ```
 
-The empty state should show this command instead of throwing an error.
+## Empty Dashboard
+
+If `/evaluation` says no report exists, click **Run evaluation**. The empty state should start the in-app pipeline instead of asking you to run a command.

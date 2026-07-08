@@ -29,6 +29,34 @@ export interface EvaluationReportFile {
   createdAt: string;
 }
 
+export interface EvaluationRunCase {
+  id: string;
+  name: string;
+  status: 'queued' | 'running' | 'succeeded' | 'failed';
+  expectedLabel: string;
+  actualLabel?: string;
+  score?: number;
+  latencyMs?: number;
+  passed?: boolean;
+  error?: string;
+  completedAt?: string;
+}
+
+export interface EvaluationRun {
+  id: string;
+  status: 'queued' | 'running' | 'succeeded' | 'failed';
+  startedBy: string;
+  startedAt: string;
+  finishedAt?: string;
+  progress: number;
+  totalCases: number;
+  passCount: number;
+  reportName?: string;
+  error?: string;
+  currentStep?: string;
+  caseStatuses: EvaluationRunCase[];
+}
+
 export interface ApprovalQuality {
   pending: number;
   approved: number;
@@ -50,4 +78,5 @@ export interface EvaluationSummary {
   cases: EvaluationCase[];
   reports: EvaluationReportFile[];
   approvalQuality: ApprovalQuality;
+  currentRun?: EvaluationRun | null;
 }

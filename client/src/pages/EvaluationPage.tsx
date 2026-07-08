@@ -1,13 +1,13 @@
-import { CheckCircle2, Clipboard, FileText, Gauge, RefreshCcw, XCircle } from 'lucide-react';
+import { CheckCircle2, FileText, Gauge, Loader2, PlayCircle, RefreshCcw, XCircle } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { Button } from '../components/common/Button';
 import { Card } from '../components/common/Card';
 import { EmptyState } from '../components/common/EmptyState';
 import { Spinner } from '../components/common/Spinner';
-import { useEvaluationSummary } from '../hooks/useEvaluation';
+import { useEvaluationSummary, useStartEvaluationRun } from '../hooks/useEvaluation';
+import type { EvaluationRun } from '../features/evaluation/evaluation.types';
 import { formatDate } from '../utils/formatDate';
 
-const evaluationCommand = 'python tools\\evaluate_q4_quality.py';
 const docsUrl = 'https://github.com/muneeb-anjum0/Drift/blob/main/docs/evaluation_dashboard.md';
 
 const metric = (label: string, value: string | number) => (
@@ -24,12 +24,22 @@ const metricGroup = (title: string, children: ReactNode) => (
   </Card>
 );
 
+const isRunning = (status?: string) => status === 'queued' || status === 'running';
+
+const statusText = (status?: string) => {
+  if (status === 'succeeded') return 'Complete';
+  if (status === 'failed') return 'Failed';
+  if (status === 'running') return 'Running';
+  if (status === 'queued') return 'Queued';
+  return 'Idle';
+};
+
 export const EvaluationPage = () => {
   const { data: summary, isLoading, isError, isFetching, refetch } = useEvaluationSummary();
-
-  const copyCommand = async () => {
-    await navigator.clipboard.writeText(evaluationCommand);
-  };
+  const startRun = useStartEvaluationRun();
+  const run = summary?.currentRun;
+  const runActive = isRunning(run?.status) || startRun.isPending;
+  const progressPercent = run?.totalCases ? Math.round((run.progress / run.totalCases) * 100) : 0;
 
   if (isLoading) {
     return (
@@ -53,15 +63,18 @@ export const EvaluationPage = () => {
   if (!summary?.hasReport) {
     return (
       <section className="space-y-5">
-        <div>
-          <p className="app-eyebrow">Evaluation</p>
-          <h1 className="mt-2 text-3xl font-semibold">Evaluation Dashboard</h1>
-        </div>
+        <EvaluationHeader
+          isFetching={isFetching}
+          runActive={runActive}
+          onRefresh={() => void refetch()}
+          onRun={() => startRun.mutate()}
+        />
+        {run ? <RunStatusCard run={run} progressPercent={progressPercent} /> : null}
         <EmptyState
-          title="No Q4 evaluation report yet"
-          description={`Run ${evaluationCommand} after Docker is up to generate the first report.`}
-          actionLabel="Copy command"
-          onAction={() => void copyCommand()}
+          title="No automated evaluation report yet"
+          description="Start the in-app pipeline to seed a temporary benchmark project, run Q4_K_M drift checks, and generate the first report."
+          actionLabel={runActive ? 'Evaluation running' : 'Run evaluation'}
+          onAction={() => !runActive && startRun.mutate()}
         />
       </section>
     );
@@ -72,28 +85,15 @@ export const EvaluationPage = () => {
   return (
     <section className="space-y-5">
       <div className="flex flex-col gap-4 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[var(--shadow-card)] lg:flex-row lg:items-end lg:justify-between">
-        <div>
-          <p className="app-eyebrow">Evaluation</p>
-          <h1 className="mt-2 text-2xl font-semibold">Evaluation Dashboard</h1>
-          <p className="mt-1.5 max-w-2xl text-sm leading-6 text-[var(--color-text-muted)]">
-            Monitor model quality, latency, drift-label accuracy, and change request reliability.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <Button type="button" variant="secondary" onClick={() => void refetch()} disabled={isFetching}>
-            <RefreshCcw className="mr-2 h-4 w-4" />
-            Refresh Evaluation
-          </Button>
-          <Button type="button" variant="secondary" onClick={() => void copyCommand()}>
-            <Clipboard className="mr-2 h-4 w-4" />
-            Copy command
-          </Button>
-          <Button type="button" onClick={() => window.open(docsUrl, '_blank', 'noopener,noreferrer')}>
-            <FileText className="mr-2 h-4 w-4" />
-            Open docs
-          </Button>
-        </div>
+        <EvaluationHeader
+          isFetching={isFetching}
+          runActive={runActive}
+          onRefresh={() => void refetch()}
+          onRun={() => startRun.mutate()}
+        />
       </div>
+
+      {run ? <RunStatusCard run={run} progressPercent={progressPercent} /> : null}
 
       <Card className="p-4">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
@@ -220,5 +220,80 @@ export const EvaluationPage = () => {
         </Card>
       </div>
     </section>
+  );
+};
+
+const EvaluationHeader = ({
+  isFetching,
+  runActive,
+  onRefresh,
+  onRun,
+}: {
+  isFetching: boolean;
+  runActive: boolean;
+  onRefresh: () => void;
+  onRun: () => void;
+}) => (
+  <>
+    <div>
+      <p className="app-eyebrow">Evaluation</p>
+      <h1 className="mt-2 text-2xl font-semibold">Evaluation Dashboard</h1>
+      <p className="mt-1.5 max-w-2xl text-sm leading-6 text-[var(--color-text-muted)]">
+        Run the automated Q4_K_M benchmark from inside Drift and review model quality, latency, labels, and approval readiness.
+      </p>
+    </div>
+    <div className="flex flex-wrap gap-3">
+      <Button type="button" variant="secondary" onClick={onRefresh} disabled={isFetching}>
+        <RefreshCcw className="mr-2 h-4 w-4" />
+        Refresh
+      </Button>
+      <Button type="button" onClick={onRun} disabled={runActive}>
+        {runActive ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <PlayCircle className="mr-2 h-4 w-4" />}
+        {runActive ? 'Running evaluation' : 'Run evaluation'}
+      </Button>
+      <Button type="button" variant="secondary" onClick={() => window.open(docsUrl, '_blank', 'noopener,noreferrer')}>
+        <FileText className="mr-2 h-4 w-4" />
+        Docs
+      </Button>
+    </div>
+  </>
+);
+
+const RunStatusCard = ({ run, progressPercent }: { run?: EvaluationRun | null; progressPercent: number }) => {
+  if (!run) return null;
+  return (
+    <Card className="p-4">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="app-eyebrow">Automated pipeline</p>
+          <h2 className="mt-1 text-lg font-semibold">{statusText(run.status)}</h2>
+          <p className="mt-1 text-sm text-[var(--color-text-muted)]">{run.currentStep || 'Ready'}</p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <span className="app-badge">{run.progress}/{run.totalCases} cases</span>
+          <span className="app-badge">{run.passCount} passed</span>
+          {run.reportName ? <span className="app-badge">{run.reportName}</span> : null}
+        </div>
+      </div>
+      <div className="mt-3 h-2 overflow-hidden rounded-full bg-[var(--color-bg-soft)]">
+        <div className="h-full rounded-full bg-[var(--color-primary)] transition-all duration-500" style={{ width: `${progressPercent}%` }} />
+      </div>
+      {run.error ? <p className="mt-3 text-sm text-[var(--color-danger)]">{run.error}</p> : null}
+      <div className="mt-3 grid gap-2 md:grid-cols-2 xl:grid-cols-4">
+        {run.caseStatuses.map((item) => (
+          <div key={item.id} className="rounded-[var(--radius-card)] border border-[var(--color-border)] p-3">
+            <div className="flex items-start justify-between gap-2">
+              <p className="text-sm font-semibold leading-5">{item.name}</p>
+              <span className="app-badge shrink-0">{statusText(item.status)}</span>
+            </div>
+            <p className="mt-1 text-xs text-[var(--color-text-muted)]">
+              Expected {item.expectedLabel}
+              {item.actualLabel ? ` - got ${item.actualLabel}` : ''}
+            </p>
+            {typeof item.score === 'number' ? <p className="mt-1 text-xs text-[var(--color-text-muted)]">Score {item.score}/100</p> : null}
+          </div>
+        ))}
+      </div>
+    </Card>
   );
 };

@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"driftledger/server-go/internal/config"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -22,6 +23,7 @@ var ErrNoReports = errors.New("no evaluation reports found")
 type Service struct {
 	reportDir string
 	db        *mongo.Database
+	cfg       config.Config
 }
 
 func NewService(db ...*mongo.Database) Service {
@@ -36,6 +38,12 @@ func NewService(db ...*mongo.Database) Service {
 	return Service{reportDir: filepath.Clean(reportDir), db: database}
 }
 
+func NewServiceWithConfig(db *mongo.Database, cfg config.Config) Service {
+	service := NewService(db)
+	service.cfg = cfg
+	return service
+}
+
 func (s Service) Summary(ctx context.Context, userID primitive.ObjectID) (Summary, error) {
 	reports, err := s.Reports()
 	if err != nil {
@@ -46,7 +54,7 @@ func (s Service) Summary(ctx context.Context, userID primitive.ObjectID) (Summar
 		return Summary{}, err
 	}
 	if len(reports) == 0 {
-		return Summary{HasReport: false, Reports: reports, Cases: []CaseResult{}, ApprovalQuality: approvalQuality}, nil
+		return Summary{HasReport: false, Reports: reports, Cases: []CaseResult{}, ApprovalQuality: approvalQuality, CurrentRun: currentRun(userID)}, nil
 	}
 	report, err := s.readReport(reports[0].Name)
 	if err != nil {
@@ -65,6 +73,7 @@ func (s Service) Summary(ctx context.Context, userID primitive.ObjectID) (Summar
 		Cases:            report.Cases,
 		Reports:          reports,
 		ApprovalQuality:  approvalQuality,
+		CurrentRun:       currentRun(userID),
 	}, nil
 }
 

@@ -10,7 +10,7 @@ Make scope comparison, approvals, and change-request writing feel like one calm 
 
 ## What It Is
 
-DriftLedger is a portfolio SaaS app for requirements, baselines, drift analysis, saved history, change requests, approvals, documents, and Q4 model evaluation.
+DriftLedger is a portfolio SaaS app for requirements, baselines, drift analysis, saved history, change requests, approvals, documents, and in-app Q4 model evaluation.
 It also includes a demo Billing/Plan area for SaaS presentation polish.
 
 ## Stack
