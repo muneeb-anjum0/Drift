@@ -1,16 +1,15 @@
-import { BadgeCheck, BriefcaseBusiness, FolderKanban, Gauge, LayoutDashboard, LogOut, Settings } from 'lucide-react';
+import { BadgeCheck, BriefcaseBusiness, FolderKanban, LayoutDashboard, LogOut, Settings } from 'lucide-react';
 import type { NavigateFunction } from 'react-router-dom';
 import type { DockItemConfig } from '../navigation/Dock';
 import { NAV_ITEMS } from '../../utils/constants';
 import { cn } from '../../utils/cn';
 import type { User } from '../../types';
 
-const dockIcons = [LayoutDashboard, BriefcaseBusiness, FolderKanban, Gauge, BadgeCheck, Settings];
+const dockIcons = [LayoutDashboard, BriefcaseBusiness, FolderKanban, BadgeCheck, Settings];
 const dockDescriptions = [
   'Command center',
   'Client workspaces',
   'Scope and baselines',
-  'Model quality reports',
   'Client approvals',
   'Account preferences',
 ];

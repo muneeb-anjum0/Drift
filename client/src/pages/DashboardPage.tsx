@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, CheckCircle2, FolderKanban, GitCompareArrows, LayoutGrid, ListChecks, Rocket } from 'lucide-react';
+import { BriefcaseBusiness, CheckCircle2, FolderKanban, Gauge, GitCompareArrows, LayoutGrid, ListChecks, Rocket } from 'lucide-react';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -67,6 +67,12 @@ export const DashboardPage = () => {
           <div className="flex flex-wrap gap-3">
             <Link to="/projects">
               <Button type="button">Open Projects</Button>
+            </Link>
+            <Link to="/evaluation">
+              <Button type="button" variant="secondary">
+                <Gauge className="mr-2 h-4 w-4" />
+                Evaluation
+              </Button>
             </Link>
             <Link to="/workspaces">
               <Button type="button" variant="secondary">Workspaces</Button>
