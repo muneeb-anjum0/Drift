@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { FileText, GitCompareArrows, History, ListChecks, Upload, type LucideIcon } from 'lucide-react';
+import { BadgeCheck, FileText, GitCompareArrows, History, ListChecks, Upload, type LucideIcon } from 'lucide-react';
 import type { Requirement, RequirementFormValues } from '../requirements/requirement.types';
 
 export type ActiveProjectSection = 'requirements' | 'drift' | 'history' | 'changes' | 'documents';
@@ -8,9 +8,15 @@ export const projectSectionTabs: Array<{ id: ActiveProjectSection; label: string
   { id: 'requirements', label: 'Requirements', description: 'Scope, extraction, baselines', icon: ListChecks },
   { id: 'drift', label: 'Drift Analysis', description: 'Compare new client input', icon: GitCompareArrows },
   { id: 'history', label: 'History', description: 'Saved drift analyses', icon: History },
-  { id: 'changes', label: 'Change Requests', description: 'Client-ready approvals', icon: FileText },
   { id: 'documents', label: 'Documents', description: 'Briefs, scope files, notes', icon: Upload },
+  { id: 'changes', label: 'Change Requests', description: 'Client-ready approvals', icon: FileText },
 ];
+
+export const approvalsNavAction = {
+  label: 'Approvals',
+  description: 'Client approval queue',
+  icon: BadgeCheck,
+};
 
 export const requirementToFormValues = (requirement: Requirement): Partial<RequirementFormValues> => ({
   title: requirement.title,

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {
   ArrowLeft,
   Bot,
@@ -49,6 +49,7 @@ import {
   formatProjectValue,
   MetricTile,
   PanelHeader,
+  approvalsNavAction,
   projectSectionTabs,
   requirementToFormValues,
   ScopeBlock,
@@ -57,6 +58,7 @@ import {
 
 export const ProjectDetailsPage = () => {
   const { projectId } = useParams<{ projectId: string }>();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [isRequirementModalOpen, setIsRequirementModalOpen] = useState(false);
   const [editingRequirement, setEditingRequirement] = useState<Requirement | null>(null);
@@ -255,41 +257,58 @@ export const ProjectDetailsPage = () => {
         </div>
       </section>
 
-      <nav className="grid gap-2 rounded-[1.5rem] border border-white/10 bg-black/70 p-2 md:grid-cols-5">
+      <nav className="grid gap-2 rounded-[1.5rem] border border-white/10 bg-black/70 p-2 md:grid-cols-[repeat(4,minmax(0,1fr))_4.5rem_minmax(0,1fr)]">
         {projectSectionTabs.map(({ id, label, description, icon: Icon }) => {
           const isActive = activeSection === id;
           const isDriftPair = id === 'drift' || id === 'history';
+          const ApprovalIcon = approvalsNavAction.icon;
           return (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setActiveSection(id)}
-              className={cn(
-                'group flex min-h-16 items-center gap-2.5 rounded-[1.15rem] border px-3 py-2.5 text-left transition',
-                isDriftPair
-                  ? 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[#b7ad98]'
-                  : isActive
-                    ? 'border-lime-400/40 bg-lime-400/15 text-white shadow-[0_0_30px_rgba(163,230,53,0.08)]'
-                    : 'border-transparent bg-white/[0.02] text-gray-400 hover:border-lime-400/20 hover:bg-lime-400/5 hover:text-white'
-              )}
-            >
-              <span
+            <Fragment key={id}>
+              {id === 'changes' ? (
+                <button
+                  key="approvals"
+                  type="button"
+                  title={approvalsNavAction.label}
+                  aria-label={approvalsNavAction.label}
+                  onClick={() => navigate('/approvals')}
+                  className="group flex min-h-16 items-center justify-center rounded-[1.15rem] border border-transparent bg-white/[0.02] px-3 py-2.5 text-gray-400 transition hover:border-lime-400/20 hover:bg-lime-400/5 hover:text-white"
+                >
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-black/60 text-gray-400 transition group-hover:border-lime-400/30 group-hover:text-lime-300">
+                    <ApprovalIcon className="h-4 w-4" />
+                  </span>
+                </button>
+              ) : null}
+              <button
+                key={id}
+                type="button"
+                onClick={() => setActiveSection(id)}
                 className={cn(
-                  'flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border transition',
+                  'group flex min-h-16 items-center gap-2.5 rounded-[1.15rem] border px-3 py-2.5 text-left transition',
                   isDriftPair
-                    ? 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] group-hover:border-[#b7ad98]'
+                    ? 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[#b7ad98]'
                     : isActive
-                      ? 'border-lime-400/40 bg-black text-lime-300'
-                      : 'border-white/10 bg-black/60 text-gray-400'
+                      ? 'border-lime-400/40 bg-lime-400/15 text-white shadow-[0_0_30px_rgba(163,230,53,0.08)]'
+                      : 'border-transparent bg-white/[0.02] text-gray-400 hover:border-lime-400/20 hover:bg-lime-400/5 hover:text-white'
                 )}
               >
-                <Icon className="h-4 w-4" />
-              </span>
-              <span className="min-w-0">
-                <span className="block text-sm font-semibold">{label}</span>
-                <span className="mt-0.5 block text-xs leading-4 text-gray-500">{description}</span>
-              </span>
-            </button>
+                <span
+                  className={cn(
+                    'flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border transition',
+                    isDriftPair
+                      ? 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] group-hover:border-[#b7ad98]'
+                      : isActive
+                        ? 'border-lime-400/40 bg-black text-lime-300'
+                        : 'border-white/10 bg-black/60 text-gray-400'
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-sm font-semibold">{label}</span>
+                  <span className="mt-0.5 block text-xs leading-4 text-gray-500">{description}</span>
+                </span>
+              </button>
+            </Fragment>
           );
         })}
       </nav>
