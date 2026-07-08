@@ -34,7 +34,14 @@ func main() {
 
 	storage := storageSvc.New(context.Background(), cfg)
 	app := router.New(mongoDB.DB, cfg, ollama.New(cfg), storage)
-	server := &http.Server{Addr: ":" + cfg.Port, Handler: app}
+	server := &http.Server{
+		Addr:              ":" + cfg.Port,
+		Handler:           app,
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       30 * time.Second,
+		WriteTimeout:      130 * time.Second,
+		IdleTimeout:       120 * time.Second,
+	}
 	listener, err := net.Listen("tcp", server.Addr)
 	if err != nil {
 		if errors.Is(err, syscall.EADDRINUSE) {

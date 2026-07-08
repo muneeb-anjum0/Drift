@@ -7,7 +7,7 @@ export interface ApprovalDecisionPayload {
 }
 
 export const changeRequestApi = {
-  generateChangeRequest: async (payload: { driftAnalysisId: string; useOllama?: boolean; ollamaModel?: string }) => {
+  generateChangeRequest: async (payload: { driftAnalysisId: string }) => {
     const response = await api.post<ApiResponse<{ changeRequest: ChangeRequestDraft }>>('/change-requests/generate', payload);
     return response.data.data.changeRequest;
   },

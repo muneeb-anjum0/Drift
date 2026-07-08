@@ -32,10 +32,11 @@ func New(db *mongo.Database, cfg config.Config, ollamaService ollama.Service, st
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.New()
+	r.MaxMultipartMemory = cfg.MaxUploadSizeMB << 20
 	if cfg.AppEnv == "development" {
-		r.Use(middleware.DevRequestLogger(), middleware.Recovery(), middleware.CORS(cfg))
+		r.Use(middleware.DevRequestLogger(), middleware.Recovery(), middleware.SecurityHeaders(), middleware.CORS(cfg))
 	} else {
-		r.Use(middleware.RequestLogger(logger), middleware.Recovery(), middleware.CORS(cfg))
+		r.Use(middleware.RequestLogger(logger), middleware.Recovery(), middleware.SecurityHeaders(), middleware.CORS(cfg))
 	}
 	r.GET("/health", func(c *gin.Context) {
 		response.Success(c, http.StatusOK, "DriftLedger API is running", nil)
