@@ -51,6 +51,15 @@ export const ProjectsPage = () => {
     });
   }, [projects, selectedWorkspaceId, statusFilter]);
 
+  const projectOrderById = useMemo(() => {
+    return [...projects]
+      .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+      .reduce<Record<string, number>>((order, project, index) => {
+        order[project._id] = index + 1;
+        return order;
+      }, {});
+  }, [projects]);
+
   const handleDelete = async (project: Project) => {
     if (!window.confirm(`Delete ${project.name}?`)) return;
     await deleteProject(project._id);
@@ -122,6 +131,7 @@ export const ProjectsPage = () => {
       ) : (
         <ProjectList
           projects={visibleProjects}
+          projectOrderById={projectOrderById}
           onEdit={(project) => setEditingProject(project)}
           onDelete={handleDelete}
           onOpen={(project) => navigate(`/projects/${project._id}`)}
