@@ -261,6 +261,8 @@ export const ProjectDetailsPage = () => {
         {projectSectionTabs.map(({ id, label, description, icon: Icon }) => {
           const isActive = activeSection === id;
           const isDriftPair = id === 'drift' || id === 'history';
+          const isDriftTab = id === 'drift';
+          const isHistoryTab = id === 'history';
           const ApprovalIcon = approvalsNavAction.icon;
           return (
             <Fragment key={id}>
@@ -284,6 +286,8 @@ export const ProjectDetailsPage = () => {
                 onClick={() => setActiveSection(id)}
                 className={cn(
                   'group flex min-h-16 items-center gap-2.5 rounded-[1.15rem] border px-3 py-2.5 text-left transition',
+                  isDriftTab && 'rounded-r-none',
+                  isHistoryTab && '-ml-2 rounded-l-none',
                   isDriftPair
                     ? 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[#b7ad98]'
                     : isActive
