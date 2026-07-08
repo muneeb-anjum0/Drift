@@ -1,4 +1,4 @@
-import { CheckCircle2, FileText, Gauge, Loader2, PlayCircle, RefreshCcw, XCircle } from 'lucide-react';
+import { CheckCircle2, FileText, Loader2, PlayCircle, RefreshCcw, XCircle } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { Button } from '../components/common/Button';
 import { Card } from '../components/common/Card';
@@ -23,6 +23,8 @@ const metricGroup = (title: string, children: ReactNode) => (
     <div className="mt-3 grid gap-2 sm:grid-cols-2">{children}</div>
   </Card>
 );
+
+const formatLatency = (value: number) => (value > 0 ? `${Math.round(value / 100) / 10}s` : '0s');
 
 const isRunning = (status?: string) => status === 'queued' || status === 'running';
 
@@ -71,8 +73,8 @@ export const EvaluationPage = () => {
         />
         {run ? <RunStatusCard run={run} progressPercent={progressPercent} /> : null}
         <EmptyState
-          title="No automated evaluation report yet"
-          description="Start the in-app pipeline to seed a temporary benchmark project, run Q4_K_M drift checks, and generate the first report."
+          title="No benchmark run yet"
+          description="Start the in-app benchmark to run 10 focused model checks against Q4_K_M."
           actionLabel={runActive ? 'Evaluation running' : 'Run evaluation'}
           onAction={() => !runActive && startRun.mutate()}
         />
@@ -95,27 +97,21 @@ export const EvaluationPage = () => {
 
       {run ? <RunStatusCard run={run} progressPercent={progressPercent} /> : null}
 
-      <Card className="p-4">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <Card className="p-3">
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <p className="app-eyebrow">Model card</p>
-            <h2 className="mt-1.5 text-lg font-semibold">{summary.model.label || 'Qwen2.5-7B + DriftLedger LoRA'}</h2>
-            <p className="mt-1.5 text-sm text-[var(--color-text-muted)]">
+            <p className="app-eyebrow text-[0.6rem]">Model</p>
+            <h2 className="mt-1 text-base font-semibold">{summary.model.label || 'Qwen2.5-7B + DriftLedger LoRA'}</h2>
+            <p className="mt-1 text-xs text-[var(--color-text-muted)]">
               {summary.model.runtime || 'Local GGUF / llama.cpp'} - {summary.model.quantization || 'Q4_K_M'}
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <span className="app-badge">{summary.model.modelLoaded ? 'Model loaded' : 'Model not loaded'}</span>
-            <span className="app-badge">{summary.model.health || 'health unknown'}</span>
-            <span className="app-badge">Fallback not used</span>
-            {summary.generatedAt ? <span className="app-badge">{formatDate(summary.generatedAt)}</span> : null}
+          <div className="flex flex-wrap gap-1.5 text-[0.65rem] opacity-80">
+            <span className="app-badge">{summary.model.modelLoaded ? 'loaded' : 'not loaded'}</span>
+            <span className="app-badge">{summary.model.health || 'unknown'}</span>
+            <span className="app-badge">{summary.model.quantization || 'Q4_K_M'}</span>
           </div>
         </div>
-        {summary.recommendation ? (
-          <p className="mt-3 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-bg-soft)] p-3 text-sm leading-6">
-            {summary.recommendation}
-          </p>
-        ) : null}
       </Card>
 
       <div className="grid gap-3 xl:grid-cols-3">
@@ -124,26 +120,26 @@ export const EvaluationPage = () => {
           <>
             {metric('Pass rate', `${Math.round(summary.passRate)}%`)}
             {metric('Cases passed', `${summary.passCount}/${summary.caseCount}`)}
-            {metric('Ambiguous', summary.cases.filter((item) => item.actualLabel === 'ambiguous').length)}
-            {metric('Contradictions', summary.cases.filter((item) => item.actualLabel === 'contradiction').length)}
+            {metric('Failed cases', failedCases)}
+            {metric('Avg confidence', `${Math.round((summary.averageConfidence || 0) * 100)}%`)}
           </>
         )}
         {metricGroup(
           'Runtime',
           <>
-            {metric('Average latency', `${Math.round(summary.averageLatencyMs)} ms`)}
+            {metric('Average latency', formatLatency(summary.averageLatencyMs))}
+            {metric('Slowest case', formatLatency(summary.maxLatencyMs || 0))}
+            {metric('Model calls', summary.caseCount)}
             {metric('Quantization', summary.model.quantization || 'Q4_K_M')}
-            {metric('Saved analyses', 'Report-only')}
-            {metric('Change requests', 'Report-only')}
           </>
         )}
         {metricGroup(
-          'Approvals',
+          'Coverage',
           <>
-            {metric('Pending', summary.approvalQuality?.pending ?? 0)}
-            {metric('Approved', summary.approvalQuality?.approved ?? 0)}
-            {metric('Rejected', summary.approvalQuality?.rejected ?? 0)}
-            {metric('Revision', summary.approvalQuality?.needsRevision ?? 0)}
+            {metric('Added', summary.cases.filter((item) => item.expectedLabel === 'added').length)}
+            {metric('Modified', summary.cases.filter((item) => item.expectedLabel === 'modified').length)}
+            {metric('Removed', summary.cases.filter((item) => item.expectedLabel === 'removed').length)}
+            {metric('Risk labels', summary.cases.filter((item) => ['ambiguous', 'contradiction'].includes(item.expectedLabel)).length)}
           </>
         )}
       </div>
@@ -153,6 +149,7 @@ export const EvaluationPage = () => {
           <div>
             <p className="app-eyebrow">Benchmark</p>
             <h2 className="mt-1.5 text-lg font-semibold">Latest Q4 evaluation</h2>
+            {summary.generatedAt ? <p className="mt-1 text-xs text-[var(--color-text-muted)]">Last run {formatDate(summary.generatedAt)}</p> : null}
           </div>
           <span className="app-badge">{failedCases === 0 ? 'All cases passed' : `${failedCases} case(s) need review`}</span>
         </div>
@@ -163,6 +160,7 @@ export const EvaluationPage = () => {
                 <th className="border-b border-[var(--color-border)] px-3 py-2 font-semibold">Case</th>
                 <th className="border-b border-[var(--color-border)] px-3 py-2 font-semibold">Expected label</th>
                 <th className="border-b border-[var(--color-border)] px-3 py-2 font-semibold">Actual label</th>
+                <th className="border-b border-[var(--color-border)] px-3 py-2 font-semibold">Confidence</th>
                 <th className="border-b border-[var(--color-border)] px-3 py-2 font-semibold">Score</th>
                 <th className="border-b border-[var(--color-border)] px-3 py-2 font-semibold">Latency</th>
                 <th className="border-b border-[var(--color-border)] px-3 py-2 font-semibold">Pass/Fail</th>
@@ -176,8 +174,9 @@ export const EvaluationPage = () => {
                   <td className="border-b border-[var(--color-border)] px-3 py-2.5 font-semibold">{item.name}</td>
                   <td className="border-b border-[var(--color-border)] px-3 py-2.5">{item.expectedLabel}</td>
                   <td className="border-b border-[var(--color-border)] px-3 py-2.5">{item.actualLabel || 'unknown'}</td>
+                  <td className="border-b border-[var(--color-border)] px-3 py-2.5">{Math.round((item.confidence || 0) * 100)}%</td>
                   <td className="border-b border-[var(--color-border)] px-3 py-2.5">{item.score}/100</td>
-                  <td className="border-b border-[var(--color-border)] px-3 py-2.5">{item.latencyMs} ms</td>
+                  <td className="border-b border-[var(--color-border)] px-3 py-2.5">{formatLatency(item.latencyMs)}</td>
                   <td className="border-b border-[var(--color-border)] px-3 py-2.5">
                     <span className="inline-flex items-center gap-1">
                       {item.passed ? <CheckCircle2 className="h-4 w-4 text-[var(--color-success)]" /> : <XCircle className="h-4 w-4 text-[var(--color-danger)]" />}
@@ -192,33 +191,6 @@ export const EvaluationPage = () => {
           </table>
         </div>
       </Card>
-
-      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_380px]">
-        <Card className="p-4">
-          <p className="app-eyebrow">Quality insights</p>
-          <h2 className="mt-1.5 text-lg font-semibold">Recommendation</h2>
-          <p className="mt-2 text-sm leading-6 text-[var(--color-text-muted)]">
-            {failedCases === 0
-              ? `Q4_K_M passed ${summary.passCount}/${summary.caseCount} evaluation cases. Latency is acceptable for local inference, and ambiguous plus contradiction handling remains covered by deterministic post-processing.`
-              : `Q4_K_M passed ${summary.passCount}/${summary.caseCount} evaluation cases. Review failed cases before using this runtime in a polished demo.`}
-          </p>
-        </Card>
-
-        <Card className="p-4">
-          <div className="flex items-center gap-2">
-            <Gauge className="h-4 w-4" />
-            <h2 className="text-base font-semibold">Reports</h2>
-          </div>
-          <div className="mt-3 grid gap-2">
-            {summary.reports.slice(0, 5).map((report) => (
-              <div key={report.name} className="flex flex-col gap-1 rounded-[var(--radius-card)] border border-[var(--color-border)] p-2.5 text-xs md:flex-row md:items-center md:justify-between">
-                <span className="font-semibold">{report.name}</span>
-                <span className="text-[var(--color-text-muted)]">{formatDate(report.createdAt)}</span>
-              </div>
-            ))}
-          </div>
-        </Card>
-      </div>
     </section>
   );
 };
@@ -239,7 +211,7 @@ const EvaluationHeader = ({
       <p className="app-eyebrow">Evaluation</p>
       <h1 className="mt-2 text-2xl font-semibold">Evaluation Dashboard</h1>
       <p className="mt-1.5 max-w-2xl text-sm leading-6 text-[var(--color-text-muted)]">
-        Run the automated Q4_K_M benchmark from inside Drift and review model quality, latency, labels, and approval readiness.
+        Run 10 focused Q4_K_M checks from inside Drift and review model quality, latency, labels, and confidence.
       </p>
     </div>
     <div className="flex flex-wrap gap-3">
@@ -265,8 +237,8 @@ const RunStatusCard = ({ run, progressPercent }: { run?: EvaluationRun | null; p
     <Card className="p-4">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="app-eyebrow">Automated pipeline</p>
-          <h2 className="mt-1 text-lg font-semibold">{statusText(run.status)}</h2>
+          <p className="app-eyebrow">Evaluation run</p>
+          <h2 className="mt-1 text-lg font-semibold">Focused benchmark {statusText(run.status).toLowerCase()}</h2>
           <p className="mt-1 text-sm text-[var(--color-text-muted)]">{run.currentStep || 'Ready'}</p>
         </div>
         <div className="flex flex-wrap gap-2">

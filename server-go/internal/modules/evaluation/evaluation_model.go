@@ -14,6 +14,7 @@ type CaseResult struct {
 	Name           string   `json:"name"`
 	ExpectedLabel  string   `json:"expectedLabel"`
 	ActualLabel    string   `json:"actualLabel"`
+	Confidence     float64  `json:"confidence"`
 	Score          int      `json:"score"`
 	Impact         string   `json:"impact"`
 	EstimatedHours float64  `json:"estimatedHours"`
@@ -51,19 +52,22 @@ type EvaluationRun struct {
 	Error        string          `json:"error,omitempty"`
 	CurrentStep  string          `json:"currentStep,omitempty"`
 	CaseStatuses []RunCaseStatus `json:"caseStatuses"`
+	report       *Report
 }
 
 type Report struct {
-	SchemaVersion    int          `json:"schemaVersion"`
-	GeneratedAt      string       `json:"generatedAt"`
-	Mode             string       `json:"mode"`
-	Model            ModelInfo    `json:"model"`
-	PassCount        int          `json:"passCount"`
-	CaseCount        int          `json:"caseCount"`
-	PassRate         float64      `json:"passRate"`
-	AverageLatencyMs float64      `json:"averageLatencyMs"`
-	Recommendation   string       `json:"recommendation"`
-	Cases            []CaseResult `json:"cases"`
+	SchemaVersion     int          `json:"schemaVersion"`
+	GeneratedAt       string       `json:"generatedAt"`
+	Mode              string       `json:"mode"`
+	Model             ModelInfo    `json:"model"`
+	PassCount         int          `json:"passCount"`
+	CaseCount         int          `json:"caseCount"`
+	PassRate          float64      `json:"passRate"`
+	AverageLatencyMs  float64      `json:"averageLatencyMs"`
+	MaxLatencyMs      int64        `json:"maxLatencyMs"`
+	AverageConfidence float64      `json:"averageConfidence"`
+	Recommendation    string       `json:"recommendation"`
+	Cases             []CaseResult `json:"cases"`
 }
 
 type ReportFile struct {
@@ -81,17 +85,19 @@ type ApprovalQuality struct {
 }
 
 type Summary struct {
-	HasReport        bool            `json:"hasReport"`
-	LatestReportPath string          `json:"latestReportPath,omitempty"`
-	GeneratedAt      string          `json:"generatedAt,omitempty"`
-	Model            ModelInfo       `json:"model"`
-	PassCount        int             `json:"passCount"`
-	CaseCount        int             `json:"caseCount"`
-	PassRate         float64         `json:"passRate"`
-	AverageLatencyMs float64         `json:"averageLatencyMs"`
-	Recommendation   string          `json:"recommendation,omitempty"`
-	Cases            []CaseResult    `json:"cases"`
-	Reports          []ReportFile    `json:"reports"`
-	ApprovalQuality  ApprovalQuality `json:"approvalQuality"`
-	CurrentRun       *EvaluationRun  `json:"currentRun,omitempty"`
+	HasReport         bool            `json:"hasReport"`
+	LatestReportPath  string          `json:"latestReportPath,omitempty"`
+	GeneratedAt       string          `json:"generatedAt,omitempty"`
+	Model             ModelInfo       `json:"model"`
+	PassCount         int             `json:"passCount"`
+	CaseCount         int             `json:"caseCount"`
+	PassRate          float64         `json:"passRate"`
+	AverageLatencyMs  float64         `json:"averageLatencyMs"`
+	MaxLatencyMs      int64           `json:"maxLatencyMs"`
+	AverageConfidence float64         `json:"averageConfidence"`
+	Recommendation    string          `json:"recommendation,omitempty"`
+	Cases             []CaseResult    `json:"cases"`
+	Reports           []ReportFile    `json:"reports"`
+	ApprovalQuality   ApprovalQuality `json:"approvalQuality"`
+	CurrentRun        *EvaluationRun  `json:"currentRun,omitempty"`
 }

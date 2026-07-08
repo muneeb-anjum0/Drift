@@ -1,6 +1,6 @@
 # Evaluation Dashboard
 
-The Evaluation page runs and displays the automated Q4_K_M quality pipeline.
+The Evaluation page runs a focused Q4_K_M benchmark inside the app.
 
 Route:
 
@@ -34,15 +34,11 @@ http://localhost:5173/evaluation
 
 Click **Run evaluation**.
 
-The backend creates a temporary benchmark workspace, seeds requirements, freezes a baseline, runs the same model-backed drift analyzer used by the app, writes JSON/Markdown reports, and cleans up the temporary data.
+The backend checks the local inference runtime, runs 10 focused baseline/message cases against the Q4_K_M model, and keeps the latest run in app memory for the dashboard.
 
-Reports are still saved in:
+The in-app evaluation does not create `q4_quality_*.json` or Markdown files.
 
-```text
-reports/evaluation
-```
-
-The report checks portfolio demo cases for labels, score ranges, grouped change titles, affected modules, and rough latency.
+The benchmark checks portfolio demo cases for labels, confidence, reasoning, and rough latency.
 
 The summary endpoint also includes approval quality counts for the authenticated workspace:
 
@@ -55,7 +51,7 @@ needs revision
 
 ## CLI Fallback
 
-The old script is still useful for terminal checks:
+The old script is still useful for terminal checks if you explicitly want files:
 
 ```powershell
 python tools\evaluate_q4_quality.py
@@ -63,4 +59,10 @@ python tools\evaluate_q4_quality.py
 
 ## Empty Dashboard
 
-If `/evaluation` says no report exists, click **Run evaluation**. The empty state should start the in-app pipeline instead of asking you to run a command.
+If `/evaluation` says no benchmark run exists, click **Run evaluation**.
+
+## Speed Notes
+
+Evaluation is faster now because each benchmark case sends one focused baseline requirement to the model. It no longer creates a project, freezes a baseline, and runs requirement-level aggregation for every case.
+
+It can still be slow on CPU because Qwen2.5-7B Q4_K_M is a large local GGUF model. A capable NVIDIA GPU, fewer cases, shorter generations, or a smaller distilled model will reduce latency further.

@@ -12,6 +12,7 @@ export interface EvaluationCase {
   name: string;
   expectedLabel: string;
   actualLabel: string;
+  confidence: number;
   score: number;
   impact: string;
   estimatedHours: number;
@@ -74,6 +75,8 @@ export interface EvaluationSummary {
   caseCount: number;
   passRate: number;
   averageLatencyMs: number;
+  maxLatencyMs: number;
+  averageConfidence: number;
   recommendation?: string;
   cases: EvaluationCase[];
   reports: EvaluationReportFile[];

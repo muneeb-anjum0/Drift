@@ -65,5 +65,10 @@ func cloneRun(run *EvaluationRun) EvaluationRun {
 	}
 	cloned := *run
 	cloned.CaseStatuses = append([]RunCaseStatus(nil), run.CaseStatuses...)
+	if run.report != nil {
+		report := *run.report
+		report.Cases = append([]CaseResult(nil), run.report.Cases...)
+		cloned.report = &report
+	}
 	return cloned
 }

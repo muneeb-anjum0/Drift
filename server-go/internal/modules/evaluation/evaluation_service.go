@@ -45,6 +45,7 @@ func NewServiceWithConfig(db *mongo.Database, cfg config.Config) Service {
 }
 
 func (s Service) Summary(ctx context.Context, userID primitive.ObjectID) (Summary, error) {
+	run := currentRun(userID)
 	reports, err := s.Reports()
 	if err != nil {
 		return Summary{}, err
@@ -53,27 +54,48 @@ func (s Service) Summary(ctx context.Context, userID primitive.ObjectID) (Summar
 	if err != nil {
 		return Summary{}, err
 	}
+	if run != nil && run.report != nil {
+		report := run.report
+		return Summary{
+			HasReport:         true,
+			GeneratedAt:       report.GeneratedAt,
+			Model:             report.Model,
+			PassCount:         report.PassCount,
+			CaseCount:         report.CaseCount,
+			PassRate:          report.PassRate,
+			AverageLatencyMs:  report.AverageLatencyMs,
+			MaxLatencyMs:      report.MaxLatencyMs,
+			AverageConfidence: report.AverageConfidence,
+			Recommendation:    report.Recommendation,
+			Cases:             report.Cases,
+			Reports:           []ReportFile{},
+			ApprovalQuality:   approvalQuality,
+			CurrentRun:        run,
+		}, nil
+	}
 	if len(reports) == 0 {
-		return Summary{HasReport: false, Reports: reports, Cases: []CaseResult{}, ApprovalQuality: approvalQuality, CurrentRun: currentRun(userID)}, nil
+		return Summary{HasReport: false, Reports: []ReportFile{}, Cases: []CaseResult{}, ApprovalQuality: approvalQuality, CurrentRun: run}, nil
 	}
 	report, err := s.readReport(reports[0].Name)
 	if err != nil {
 		return Summary{}, err
 	}
 	return Summary{
-		HasReport:        true,
-		LatestReportPath: reports[0].Path,
-		GeneratedAt:      report.GeneratedAt,
-		Model:            report.Model,
-		PassCount:        report.PassCount,
-		CaseCount:        report.CaseCount,
-		PassRate:         report.PassRate,
-		AverageLatencyMs: report.AverageLatencyMs,
-		Recommendation:   report.Recommendation,
-		Cases:            report.Cases,
-		Reports:          reports,
-		ApprovalQuality:  approvalQuality,
-		CurrentRun:       currentRun(userID),
+		HasReport:         true,
+		LatestReportPath:  reports[0].Path,
+		GeneratedAt:       report.GeneratedAt,
+		Model:             report.Model,
+		PassCount:         report.PassCount,
+		CaseCount:         report.CaseCount,
+		PassRate:          report.PassRate,
+		AverageLatencyMs:  report.AverageLatencyMs,
+		MaxLatencyMs:      report.MaxLatencyMs,
+		AverageConfidence: report.AverageConfidence,
+		Recommendation:    report.Recommendation,
+		Cases:             report.Cases,
+		Reports:           []ReportFile{},
+		ApprovalQuality:   approvalQuality,
+		CurrentRun:        run,
 	}, nil
 }
 
