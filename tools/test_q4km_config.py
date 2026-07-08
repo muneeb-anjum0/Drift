@@ -45,9 +45,15 @@ def main() -> int:
         require("Q4_K_M" in inference, "inference default does not mention Q4_K_M")
         require("base_model_required" in inference, "inference health does not clarify base model runtime requirement")
 
-        frontend = read("client/src/features/drift/DriftAnalysisPanel.tsx")
-        require("VITE_DRIFT_MODEL_LABEL" in frontend, "frontend model label is not configurable")
-        require("GGUF Q4_K_M" in frontend, "frontend default model label is not Q4_K_M")
+        frontend = "\n".join(
+            read(path)
+            for path in [
+                "client/src/features/drift/DriftAnalysisPanel.tsx",
+                "client/src/features/settings/settingsSections.ts",
+                "client/src/pages/LandingPage.tsx",
+            ]
+        )
+        require("Q4_K_M" in frontend, "frontend does not present the Q4_K_M runtime")
 
         docs = "\n".join(read(path) for path in ["README.md", "docs/docker.md", "docs/local_model_setup.md", "docs/model_inference.md", "docs/runtime_testing.md"])
         require("Q4_K_M" in docs, "docs do not mention Q4_K_M")

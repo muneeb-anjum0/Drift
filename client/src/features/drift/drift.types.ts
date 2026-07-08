@@ -3,7 +3,7 @@ import type { Project, User, Workspace } from '../../types';
 export type DriftInputType = 'client_message' | 'meeting_note' | 'scope_update' | 'document_text' | 'other';
 export type ChangeType = 'added' | 'modified' | 'removed' | 'ambiguous' | 'contradiction' | 'unchanged';
 export type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
-export type AnalysisEngine = 'rule_based' | 'ollama' | 'hybrid' | 'qwen_lora';
+export type AnalysisEngine = 'rule_based' | 'qwen_lora';
 
 export interface DetectedChange {
   changeType: ChangeType;
@@ -60,8 +60,6 @@ export interface DriftAnalysis {
   contradictionCount: number;
   estimatedExtraHours: number;
   analysisEngine: AnalysisEngine;
-  ollamaUsed: boolean;
-  ollamaModel?: string | null;
   status: 'draft' | 'saved' | 'reviewed';
   createdBy: string | Pick<User, '_id' | 'name' | 'email'>;
   createdAt: string;
@@ -86,8 +84,6 @@ export interface DriftAnalysisPreview {
   contradictionCount: number;
   estimatedExtraHours: number;
   analysisEngine: AnalysisEngine;
-  ollamaUsed: boolean;
-  ollamaModel?: string | null;
 }
 
 export interface DriftAnalysisFormValues {

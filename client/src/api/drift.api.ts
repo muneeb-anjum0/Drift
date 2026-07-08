@@ -36,8 +36,6 @@ export const driftApi = {
     contradictionCount: number;
     estimatedExtraHours: number;
     analysisEngine: DriftAnalysisPreview['analysisEngine'];
-    ollamaUsed: boolean;
-    ollamaModel?: string | null;
     status?: DriftAnalysis['status'];
   }) => {
     const response = await api.post<ApiResponse<{ analysis: DriftAnalysis }>>('/drift/save', payload);

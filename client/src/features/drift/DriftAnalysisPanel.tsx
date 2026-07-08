@@ -132,8 +132,6 @@ export const DriftAnalysisPanel = ({
         contradictionCount: result.contradictionCount,
         estimatedExtraHours: result.estimatedExtraHours,
         analysisEngine: result.analysisEngine,
-        ollamaUsed: result.ollamaUsed,
-        ollamaModel: result.ollamaModel,
         status: 'saved',
       });
 

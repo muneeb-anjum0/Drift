@@ -9,7 +9,6 @@ import (
 
 	"driftledger/server-go/internal/modules/activity"
 	"driftledger/server-go/internal/modules/drift"
-	"driftledger/server-go/internal/ollama"
 	"driftledger/server-go/internal/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -18,8 +17,7 @@ import (
 )
 
 type Service struct {
-	db     *mongo.Database
-	ollama ollama.Service
+	db *mongo.Database
 }
 
 const (
@@ -33,8 +31,8 @@ const (
 
 var ErrInvalidApprovalAction = errors.New("invalid approval action")
 
-func NewService(db *mongo.Database, ollama ollama.Service) Service {
-	return Service{db: db, ollama: ollama}
+func NewService(db *mongo.Database) Service {
+	return Service{db: db}
 }
 
 func (s Service) Generate(ctx context.Context, userID primitive.ObjectID, p GenerateRequest) (Draft, error) {
@@ -65,30 +63,6 @@ func (s Service) Generate(ctx context.Context, userID primitive.ObjectID, p Gene
 	title := changeRequestTitle(project.Name, grouped)
 	summary := changeRequestSummary(analysis, grouped)
 	draft := Draft{DriftAnalysisID: id.Hex(), Title: title, ClientName: project.Client, Summary: summary, ChangesRequested: changes, BusinessReason: businessReason(grouped), TimelineImpact: timelineImpact(hours), CostImpact: costImpact(grouped, hours), RecommendedAction: recommendedAction(grouped), ApprovalNote: approvalNote(grouped), Status: "draft", GeneratedBy: analysis.AnalysisEngine}
-	if p.UseOllama {
-		raw := map[string]any{"summary": draft.Summary, "businessReason": draft.BusinessReason, "timelineImpact": draft.TimelineImpact, "costImpact": draft.CostImpact, "recommendedAction": draft.RecommendedAction, "approvalNote": draft.ApprovalNote}
-		if enhanced, ok := s.ollama.EnhanceChangeRequest(ctx, raw, p.OllamaModel); ok {
-			if v, ok := enhanced["summary"].(string); ok {
-				draft.Summary = v
-			}
-			if v, ok := enhanced["businessReason"].(string); ok {
-				draft.BusinessReason = v
-			}
-			if v, ok := enhanced["timelineImpact"].(string); ok {
-				draft.TimelineImpact = v
-			}
-			if v, ok := enhanced["costImpact"].(string); ok {
-				draft.CostImpact = v
-			}
-			if v, ok := enhanced["recommendedAction"].(string); ok {
-				draft.RecommendedAction = v
-			}
-			if v, ok := enhanced["approvalNote"].(string); ok {
-				draft.ApprovalNote = v
-			}
-			draft.GeneratedBy = "hybrid"
-		}
-	}
 	return draft, nil
 }
 

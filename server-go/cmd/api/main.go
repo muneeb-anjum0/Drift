@@ -13,7 +13,6 @@ import (
 
 	"driftledger/server-go/internal/config"
 	"driftledger/server-go/internal/database"
-	"driftledger/server-go/internal/ollama"
 	"driftledger/server-go/internal/router"
 	storageSvc "driftledger/server-go/internal/storage"
 )
@@ -33,7 +32,7 @@ func main() {
 	}()
 
 	storage := storageSvc.New(context.Background(), cfg)
-	app := router.New(mongoDB.DB, cfg, ollama.New(cfg), storage)
+	app := router.New(mongoDB.DB, cfg, storage)
 	server := &http.Server{
 		Addr:              ":" + cfg.Port,
 		Handler:           app,

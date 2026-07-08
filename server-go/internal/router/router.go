@@ -17,14 +17,13 @@ import (
 	"driftledger/server-go/internal/modules/project"
 	"driftledger/server-go/internal/modules/requirement"
 	"driftledger/server-go/internal/modules/workspace"
-	"driftledger/server-go/internal/ollama"
 	"driftledger/server-go/internal/response"
 	storageSvc "driftledger/server-go/internal/storage"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func New(db *mongo.Database, cfg config.Config, ollamaService ollama.Service, storage storageSvc.Service) *gin.Engine {
+func New(db *mongo.Database, cfg config.Config, storage storageSvc.Service) *gin.Engine {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
 		Level: slog.LevelInfo,
 	}))
@@ -47,12 +46,12 @@ func New(db *mongo.Database, cfg config.Config, ollamaService ollama.Service, st
 	project.RegisterRoutes(api.Group("/projects"), db, cfg)
 	activity.RegisterRoutes(api.Group("/activities"), db, cfg)
 	requirement.RegisterRoutes(api.Group("/requirements"), db, cfg)
-	drift.RegisterRoutes(api.Group("/drift"), db, cfg, ollamaService)
-	change_request.RegisterRoutes(api.Group("/change-requests"), db, cfg, ollamaService)
+	drift.RegisterRoutes(api.Group("/drift"), db, cfg)
+	change_request.RegisterRoutes(api.Group("/change-requests"), db, cfg)
 	filemodule.RegisterRoutes(api.Group("/files"), db, cfg, storage)
 	evaluation.RegisterRoutes(api.Group("/evaluation"), db, cfg)
 	billing.RegisterRoutes(api.Group("/billing"), db, cfg)
-	drift.RegisterModelRoutes(r.Group("/api/drift"), db, cfg, ollamaService)
+	drift.RegisterModelRoutes(r.Group("/api/drift"), db, cfg)
 	if cfg.AppEnv == "development" {
 		api.GET("/debug/routes", func(c *gin.Context) {
 			routes := make([]gin.H, 0, len(r.Routes()))

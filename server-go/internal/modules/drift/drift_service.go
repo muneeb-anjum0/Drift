@@ -10,7 +10,6 @@ import (
 
 	"driftledger/server-go/internal/modules/activity"
 	"driftledger/server-go/internal/modules/requirement"
-	"driftledger/server-go/internal/ollama"
 	"driftledger/server-go/internal/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -20,12 +19,11 @@ import (
 
 type Service struct {
 	db        *mongo.Database
-	ollama    ollama.Service
 	inference InferenceClient
 }
 
-func NewService(db *mongo.Database, ollama ollama.Service, inference InferenceClient) Service {
-	return Service{db: db, ollama: ollama, inference: inference}
+func NewService(db *mongo.Database, inference InferenceClient) Service {
+	return Service{db: db, inference: inference}
 }
 
 var addKeys = []string{"should", "must", "needs to", "allow", "support", "include", "add", "create", "implement", "integrate", "generate", "export", "import", "dashboard", "report", "analytics", "notification", "payment", "role", "permission", "login", "signup", "email", "api", "admin", "user"}
@@ -54,7 +52,7 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 	}
 	changes := detect(version.RequirementsSnapshot, p.InputText)
 	changes, score, risk, counts, hours, summary := CleanAnalysis(changes, p.InputText)
-	engine, used, model := "rule_based", false, (*string)(nil)
+	engine := "rule_based"
 	requirementResults := []RequirementAnalysisResult{}
 	if s.inference.Enabled() {
 		if len(version.RequirementsSnapshot) == 0 {
@@ -71,7 +69,7 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 		}
 		engine = "qwen_lora"
 	}
-	return AnalysisPreview{ProjectID: projectID.Hex(), WorkspaceID: project.Workspace.Hex(), BaselineVersionID: versionID.Hex(), BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: score, RiskLevel: risk, Summary: summary, DetectedChanges: changes, RequirementResults: requirementResults, AddedCount: counts["added"], ModifiedCount: counts["modified"], RemovedCount: counts["removed"], AmbiguousCount: counts["ambiguous"], ContradictionCount: counts["contradiction"], EstimatedExtraHours: hours, AnalysisEngine: engine, OllamaUsed: used, OllamaModel: model}, nil
+	return AnalysisPreview{ProjectID: projectID.Hex(), WorkspaceID: project.Workspace.Hex(), BaselineVersionID: versionID.Hex(), BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: score, RiskLevel: risk, Summary: summary, DetectedChanges: changes, RequirementResults: requirementResults, AddedCount: counts["added"], ModifiedCount: counts["modified"], RemovedCount: counts["removed"], AmbiguousCount: counts["ambiguous"], ContradictionCount: counts["contradiction"], EstimatedExtraHours: hours, AnalysisEngine: engine}, nil
 }
 
 func (s Service) AnalyzeDirect(ctx context.Context, p ModelAnalyzeRequest) (ModelPrediction, error) {
@@ -531,7 +529,7 @@ func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequ
 	}
 	now := time.Now().UTC()
 	changes, score, risk, counts, hours, summary := CleanAnalysis(p.DetectedChanges, p.InputText)
-	analysis := DriftAnalysis{ID: utils.NewID(), Project: projectID, Workspace: project.Workspace, BaselineVersion: versionID, BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: score, RiskLevel: risk, Summary: summary, DetectedChanges: changes, RequirementResults: p.RequirementResults, AddedCount: counts["added"], ModifiedCount: counts["modified"], RemovedCount: counts["removed"], AmbiguousCount: counts["ambiguous"], ContradictionCount: counts["contradiction"], EstimatedExtraHours: hours, AnalysisEngine: def(p.AnalysisEngine, "qwen_lora"), OllamaUsed: p.OllamaUsed, OllamaModel: p.OllamaModel, Status: def(p.Status, "saved"), CreatedBy: userID, CreatedAt: now, UpdatedAt: now}
+	analysis := DriftAnalysis{ID: utils.NewID(), Project: projectID, Workspace: project.Workspace, BaselineVersion: versionID, BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: score, RiskLevel: risk, Summary: summary, DetectedChanges: changes, RequirementResults: p.RequirementResults, AddedCount: counts["added"], ModifiedCount: counts["modified"], RemovedCount: counts["removed"], AmbiguousCount: counts["ambiguous"], ContradictionCount: counts["contradiction"], EstimatedExtraHours: hours, AnalysisEngine: def(p.AnalysisEngine, "qwen_lora"), Status: def(p.Status, "saved"), CreatedBy: userID, CreatedAt: now, UpdatedAt: now}
 	_, err = s.db.Collection("driftanalyses").InsertOne(ctx, analysis)
 	if err == nil {
 		activity.Log(ctx, s.db, project.Workspace, userID, "DRIFT_ANALYSIS_CREATED", "DriftAnalysis", analysis.ID.Hex(), bson.M{

@@ -14,7 +14,6 @@ type DriftScoreCardAnalysis = Pick<
   | 'contradictionCount'
   | 'estimatedExtraHours'
   | 'analysisEngine'
-  | 'ollamaUsed'
   | 'inputType'
   | 'baselineVersionNumber'
 > &
@@ -38,7 +37,7 @@ export const DriftScoreCard = ({ analysis }: { analysis: DriftScoreCardAnalysis 
           <h3 className="mt-1 text-2xl font-semibold text-white">{analysis.driftScore}/100</h3>
           <p className="mt-1.5 text-xs leading-5 text-gray-400">{analysis.summary}</p>
         </div>
-        <DriftBadges riskLevel={analysis.riskLevel} analysisEngine={analysis.analysisEngine} ollamaUsed={analysis.ollamaUsed} />
+        <DriftBadges riskLevel={analysis.riskLevel} analysisEngine={analysis.analysisEngine} />
       </div>
 
       <div className="mt-4 grid grid-cols-2 gap-2 2xl:grid-cols-4">

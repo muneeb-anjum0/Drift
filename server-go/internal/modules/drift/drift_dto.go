@@ -5,7 +5,6 @@ type AnalyzeRequest struct {
 	BaselineVersionID string `json:"baselineVersionId" validate:"required"`
 	InputText         string `json:"inputText" validate:"required"`
 	InputType         string `json:"inputType"`
-	OllamaModel       string `json:"ollamaModel"`
 }
 
 type SaveRequest struct {
@@ -25,7 +24,5 @@ type SaveRequest struct {
 	ContradictionCount  int                         `json:"contradictionCount"`
 	EstimatedExtraHours float64                     `json:"estimatedExtraHours"`
 	AnalysisEngine      string                      `json:"analysisEngine"`
-	OllamaUsed          bool                        `json:"ollamaUsed"`
-	OllamaModel         *string                     `json:"ollamaModel"`
 	Status              string                      `json:"status"`
 }

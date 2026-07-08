@@ -3,13 +3,12 @@ package drift
 import (
 	"driftledger/server-go/internal/config"
 	"driftledger/server-go/internal/middleware"
-	"driftledger/server-go/internal/ollama"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func RegisterRoutes(group *gin.RouterGroup, db *mongo.Database, cfg config.Config, ollamaService ollama.Service) {
-	handler := NewHandler(NewService(db, ollamaService, NewInferenceClient(cfg)))
+func RegisterRoutes(group *gin.RouterGroup, db *mongo.Database, cfg config.Config) {
+	handler := NewHandler(NewService(db, NewInferenceClient(cfg)))
 	group.POST("/analyze-direct", handler.AnalyzeDirect)
 	group.Use(middleware.Auth(db, cfg))
 	group.POST("/analyze", handler.Analyze)
@@ -19,7 +18,7 @@ func RegisterRoutes(group *gin.RouterGroup, db *mongo.Database, cfg config.Confi
 	group.DELETE("/:driftAnalysisId", handler.Delete)
 }
 
-func RegisterModelRoutes(group *gin.RouterGroup, db *mongo.Database, cfg config.Config, ollamaService ollama.Service) {
-	handler := NewHandler(NewService(db, ollamaService, NewInferenceClient(cfg)))
+func RegisterModelRoutes(group *gin.RouterGroup, db *mongo.Database, cfg config.Config) {
+	handler := NewHandler(NewService(db, NewInferenceClient(cfg)))
 	group.POST("/analyze", handler.AnalyzeModel)
 }

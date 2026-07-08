@@ -247,8 +247,6 @@ def analyze_save_generate(base_url: str, token: str, project_id: str, version_id
                 "contradictionCount": analysis["contradictionCount"],
                 "estimatedExtraHours": analysis["estimatedExtraHours"],
                 "analysisEngine": analysis["analysisEngine"],
-                "ollamaUsed": analysis["ollamaUsed"],
-                "ollamaModel": analysis.get("ollamaModel"),
                 "status": "saved",
             },
             token=token,

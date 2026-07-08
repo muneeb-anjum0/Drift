@@ -16,10 +16,6 @@ type Config struct {
 	JWTSecret                    string
 	JWTExpiresInHours            int
 	ClientURL                    string
-	OllamaEnabled                bool
-	OllamaBaseURL                string
-	OllamaModel                  string
-	OllamaTimeout                time.Duration
 	DriftInferenceEnabled        bool
 	DriftInferenceURL            string
 	DriftInferenceTimeout        time.Duration
@@ -40,10 +36,6 @@ func Load() Config {
 		JWTSecret:                    get("JWT_SECRET", "replace_with_strong_secret"),
 		JWTExpiresInHours:            getInt("JWT_EXPIRES_IN_HOURS", 168),
 		ClientURL:                    get("CLIENT_URL", "http://localhost:5173"),
-		OllamaEnabled:                getBool("OLLAMA_ENABLED", false),
-		OllamaBaseURL:                get("OLLAMA_BASE_URL", "http://localhost:11434"),
-		OllamaModel:                  get("OLLAMA_MODEL", "llama3.1:8b"),
-		OllamaTimeout:                time.Duration(getInt("OLLAMA_TIMEOUT_MS", 30000)) * time.Millisecond,
 		DriftInferenceEnabled:        getBool("DRIFT_INFERENCE_ENABLED", false),
 		DriftInferenceURL:            get("DRIFT_INFERENCE_URL", "http://localhost:8000"),
 		DriftInferenceTimeout:        time.Duration(getInt("DRIFT_INFERENCE_TIMEOUT_MS", 65000)) * time.Millisecond,

@@ -43,7 +43,7 @@ export interface ChangeRequest {
   decisionAt?: string;
   decisionNote?: string;
   approvalHistory?: ApprovalEvent[];
-  generatedBy: 'rule_based' | 'ollama' | 'hybrid';
+  generatedBy: 'rule_based' | 'qwen_lora';
   createdBy: string | Pick<User, '_id' | 'name' | 'email'>;
   createdAt: string;
   updatedAt: string;
@@ -61,7 +61,7 @@ export interface ChangeRequestDraft {
   recommendedAction: string;
   approvalNote: string;
   status: ChangeRequestStatus;
-  generatedBy: 'rule_based' | 'ollama' | 'hybrid';
+  generatedBy: 'rule_based' | 'qwen_lora';
 }
 
 export interface ChangeRequestFormValues {

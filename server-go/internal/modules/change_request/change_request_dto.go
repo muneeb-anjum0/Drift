@@ -2,8 +2,6 @@ package change_request
 
 type GenerateRequest struct {
 	DriftAnalysisID string `json:"driftAnalysisId" validate:"required"`
-	UseOllama       bool   `json:"useOllama"`
-	OllamaModel     string `json:"ollamaModel"`
 }
 
 type SaveRequest = Draft

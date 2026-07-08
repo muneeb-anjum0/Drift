@@ -60,8 +60,6 @@ type AnalysisPreview struct {
 	ContradictionCount    int                         `json:"contradictionCount"`
 	EstimatedExtraHours   float64                     `json:"estimatedExtraHours"`
 	AnalysisEngine        string                      `json:"analysisEngine"`
-	OllamaUsed            bool                        `json:"ollamaUsed"`
-	OllamaModel           *string                     `json:"ollamaModel"`
 }
 
 type DriftAnalysis struct {
@@ -84,8 +82,6 @@ type DriftAnalysis struct {
 	ContradictionCount    int                         `bson:"contradictionCount" json:"contradictionCount"`
 	EstimatedExtraHours   float64                     `bson:"estimatedExtraHours" json:"estimatedExtraHours"`
 	AnalysisEngine        string                      `bson:"analysisEngine" json:"analysisEngine"`
-	OllamaUsed            bool                        `bson:"ollamaUsed" json:"ollamaUsed"`
-	OllamaModel           *string                     `bson:"ollamaModel" json:"ollamaModel"`
 	Status                string                      `bson:"status" json:"status"`
 	CreatedBy             primitive.ObjectID          `bson:"createdBy" json:"createdBy"`
 	CreatedAt             time.Time                   `bson:"createdAt" json:"createdAt"`
