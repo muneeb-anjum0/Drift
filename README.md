@@ -94,43 +94,50 @@ flowchart LR
 
     subgraph browser["Browser"]
         ui["React + TypeScript UI"]
-        views["Workspaces, Projects, Requirements, Drift, Approvals"]
+        views["Workspace, project, requirement,\ndrift, documents, approvals UI"]
     end
 
     subgraph backend["Go Backend API"]
-        api["Gin REST API"]
+        api["Gin REST API\nsingle product entry point"]
+        reqs["Requirements + baselines"]
         drift["Requirement-level drift orchestration"]
         changes["Change request + approval workflow"]
         files["Documents + metadata"]
     end
 
-    subgraph data["Persistence"]
+    subgraph data["App Persistence"]
         mongo[("MongoDB\nProjects, requirements, baselines,\nanalyses, approvals")]
-        modelFiles[("Local model files\nGGUF artifact ignored by Git")]
     end
 
     subgraph ai["Local AI Runtime"]
         wrapper["FastAPI inference wrapper\nresponse validation + normalization"]
         llama["llama.cpp server"]
         gguf["DriftLedger Qwen GGUF Q4_K_M"]
+        modelFiles[("Local GGUF model file\nignored by Git")]
     end
 
     user --> ui
     ui --> views
-    views --> api
+    views -->|"HTTPS / REST calls"| api
 
+    api --> reqs
     api --> drift
     api --> changes
     api --> files
-    api <--> mongo
 
-    drift --> wrapper
+    reqs <--> mongo
+    drift <--> mongo
+    changes <--> mongo
+    files <--> mongo
+
+    drift -->|"single relevant requirement\n+ new client message"| wrapper
     wrapper --> llama
     llama --> gguf
-    gguf -. loaded from .-> modelFiles
+    modelFiles -. loaded by .-> llama
 
-    drift -->|"label, score, confidence,\nreasoning, affected requirement"| api
-    changes -->|"approval history"| mongo
+    wrapper -->|"label, confidence,\nreasoning, changed elements"| drift
+    drift -->|"score, risk, recommendation,\naffected requirement"| api
+    api -->|"normalized response"| views
 ```
 
 The inference service is kept separate from the main backend so the product workflow and model runtime can evolve independently.
