@@ -190,26 +190,3 @@ python tools/test_q4km_config.py
 python tools/test_approval_workflow.py
 python tools/evaluate_q4_quality.py --help
 ```
-
-## Demo Notes
-
-For a strong demo flow:
-
-1. Create a workspace.
-2. Create a project.
-3. Add requirements with acceptance criteria.
-4. Create a baseline.
-5. Paste a new client message.
-6. Run drift analysis.
-7. Save the result.
-8. Generate a change request.
-9. Submit it for approval.
-10. Approve, reject, or request revision with notes.
-
-## Documentation
-
-Focused docs live in `docs/`, including Docker, local model setup, GGUF setup, runtime testing, evaluation, billing demo, and approval workflow notes.
-
-## Status
-
-Drift is a portfolio project, but it is built as a real full-stack + local AI workflow rather than a static model demo. The product is still being polished, especially around UI compactness, model evaluation, and demo data workflows.
