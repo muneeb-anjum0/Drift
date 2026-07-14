@@ -137,7 +137,7 @@ flowchart LR
 
     wrapper -->|"label, confidence,\nreasoning, changed elements"| drift
     drift -->|"score, risk, recommendation,\naffected requirement"| api
-    api -->|"normalized response"| views
+    api -->|"API response"| views
 ```
 
 The inference service is kept separate from the main backend so the product workflow and model runtime can evolve independently.
