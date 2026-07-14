@@ -88,21 +88,49 @@ Large model files are intentionally ignored by Git.
 
 ## Architecture
 
-```text
-React + TypeScript frontend
-        |
-        v
-Go/Gin backend API
-        |
-        +--> MongoDB
-        |
-        +--> FastAPI inference wrapper
-                  |
-                  v
-              llama.cpp server
-                  |
-                  v
-       DriftLedger Qwen GGUF Q4_K_M
+```mermaid
+flowchart LR
+    user(["User / Developer"])
+
+    subgraph browser["Browser"]
+        ui["React + TypeScript UI"]
+        views["Workspaces, Projects, Requirements, Drift, Approvals"]
+    end
+
+    subgraph backend["Go Backend API"]
+        api["Gin REST API"]
+        drift["Requirement-level drift orchestration"]
+        changes["Change request + approval workflow"]
+        files["Documents + metadata"]
+    end
+
+    subgraph data["Persistence"]
+        mongo[("MongoDB\nProjects, requirements, baselines,\nanalyses, approvals")]
+        modelFiles[("Local model files\nGGUF artifact ignored by Git")]
+    end
+
+    subgraph ai["Local AI Runtime"]
+        wrapper["FastAPI inference wrapper\nresponse validation + normalization"]
+        llama["llama.cpp server"]
+        gguf["DriftLedger Qwen GGUF Q4_K_M"]
+    end
+
+    user --> ui
+    ui --> views
+    views --> api
+
+    api --> drift
+    api --> changes
+    api --> files
+    api <--> mongo
+
+    drift --> wrapper
+    wrapper --> llama
+    llama --> gguf
+    gguf -. loaded from .-> modelFiles
+
+    drift -->|"label, score, confidence,\nreasoning, affected requirement"| api
+    changes -->|"approval history"| mongo
 ```
 
 The inference service is kept separate from the main backend so the product workflow and model runtime can evolve independently.
