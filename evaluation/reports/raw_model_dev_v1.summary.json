@@ -1,0 +1,1020 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "raw-model-dev-v1",
+  "status": "complete",
+  "started_at": "2026-09-30T18:33:51.302994+00:00",
+  "finished_at": "2026-09-30T18:44:03.635512+00:00",
+  "evidence_status": "DEVELOPMENT_NOT_PROVEN_HELD_OUT",
+  "warnings": [
+    "Recovered training data is unknown, so independence from adapter training cannot be proven.",
+    "This evaluates raw model output and contract normalization, not retrieval or final Drift behavior."
+  ],
+  "baseline_commit": "5421d1f383796b1ec0e271586711e637a9ed0347",
+  "artifact_sha256": "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
+  "dataset": {
+    "name": "drift-raw-dev",
+    "version": "1.0.0",
+    "sha256": "5265b80a265ff7b1090ec1a6a7d4879a9b6e7a7d0a64123071af7b343fad31eb",
+    "case_count": 48,
+    "class_distribution": {
+      "added": 8,
+      "ambiguous": 8,
+      "contradiction": 8,
+      "modified": 8,
+      "removed": 8,
+      "unchanged": 8
+    }
+  },
+  "runtime": {
+    "engine": "llama.cpp",
+    "url": "http://127.0.0.1:8080",
+    "cpu_only": true,
+    "parallel_slots": 1,
+    "temperature": 0,
+    "top_p": 1,
+    "n_predict": 120,
+    "context_size": 768,
+    "prompt_sha256": "7d74f28945492bf1a7ad9909709e0eb2fceabceda22ac969167fdf6c3d72336b"
+  },
+  "metrics": {
+    "case_count": 48,
+    "parsed_count": 48,
+    "correct_count": 32,
+    "accuracy": 0.6666666666666666,
+    "semantic_accuracy_among_parsed": 0.6666666666666666,
+    "macro_precision": 0.7855193539404066,
+    "macro_recall": 0.6666666666666666,
+    "macro_f1": 0.6688097668489825,
+    "weighted_f1": 0.6688097668489825,
+    "per_class": {
+      "added": {
+        "precision": 1.0,
+        "recall": 0.625,
+        "f1": 0.7692307692307693,
+        "support": 8
+      },
+      "modified": {
+        "precision": 0.42105263157894735,
+        "recall": 1.0,
+        "f1": 0.5925925925925926,
+        "support": 8
+      },
+      "removed": {
+        "precision": 0.8,
+        "recall": 0.5,
+        "f1": 0.6153846153846154,
+        "support": 8
+      },
+      "contradiction": {
+        "precision": 0.7142857142857143,
+        "recall": 0.625,
+        "f1": 0.6666666666666666,
+        "support": 8
+      },
+      "ambiguous": {
+        "precision": 1.0,
+        "recall": 0.375,
+        "f1": 0.5454545454545454,
+        "support": 8
+      },
+      "unchanged": {
+        "precision": 0.7777777777777778,
+        "recall": 0.875,
+        "f1": 0.823529411764706,
+        "support": 8
+      }
+    },
+    "confusion_matrix": {
+      "added": {
+        "added": 5,
+        "modified": 3,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "modified": {
+        "added": 0,
+        "modified": 8,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "removed": {
+        "added": 0,
+        "modified": 3,
+        "removed": 4,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 1
+      },
+      "contradiction": {
+        "added": 0,
+        "modified": 3,
+        "removed": 0,
+        "contradiction": 5,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "ambiguous": {
+        "added": 0,
+        "modified": 2,
+        "removed": 1,
+        "contradiction": 1,
+        "ambiguous": 3,
+        "unchanged": 1
+      },
+      "unchanged": {
+        "added": 0,
+        "modified": 0,
+        "removed": 0,
+        "contradiction": 1,
+        "ambiguous": 0,
+        "unchanged": 7
+      }
+    }
+  },
+  "format_metrics": {
+    "raw_json_valid_rate": 0.5208333333333334,
+    "contract_parse_rate": 1.0,
+    "runtime_error_count": 0
+  },
+  "calibration": {
+    "ece_10_bin": 0.21437500000000004,
+    "correctness_brier": 0.25528958333333335,
+    "bins": [
+      {
+        "lower": 0.8,
+        "upper": 0.9,
+        "count": 31,
+        "average_confidence": 0.8358064516129032,
+        "accuracy": 0.5483870967741935
+      },
+      {
+        "lower": 0.9,
+        "upper": 1.0,
+        "count": 17,
+        "average_confidence": 0.9635294117647059,
+        "accuracy": 0.8823529411764706
+      }
+    ],
+    "warning": "Model confidence is self-reported and is not a calibrated class probability."
+  },
+  "latency": {
+    "count": 48,
+    "mean_ms": 12748.689375,
+    "p50_ms": 12499.29,
+    "p90_ms": 15548.89,
+    "p95_ms": 15896.53,
+    "max_ms": 18483.44,
+    "mean_predicted_tokens_per_second": 4.923872174185384
+  },
+  "uncertainty": {
+    "method": "deterministic nonparametric bootstrap percentile interval",
+    "iterations": 2000,
+    "accuracy_95_percentile_interval": [
+      0.5208333333333334,
+      0.7916666666666666
+    ],
+    "macro_f1_95_percentile_interval": [
+      0.5035804473304474,
+      0.7877946127946128
+    ]
+  },
+  "full_report": {
+    "path_at_evaluation": "/tmp/drift-phase3-reports/raw_model_dev_v1.json",
+    "sha256": "bef0f7814a93c51002d9dfcbfb250389f7fda6f462257a75514e4f92c9ecf35f",
+    "retention": "Local evidence artifact; contains every prompt, raw output, normalized prediction, and timing."
+  },
+  "case_results": [
+    {
+      "case_id": "add_health_01",
+      "domain": "healthcare",
+      "difficulty": "easy",
+      "tags": [
+        "scope-expansion"
+      ],
+      "expected_label": "added",
+      "actual_label": "added",
+      "confidence": 0.8,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 9315.47,
+      "raw_output_sha256": "bc1939ccf963fed119239c4486ed494b3ab401faddf82a809a1be1e50569d0d3",
+      "runtime_error": null
+    },
+    {
+      "case_id": "add_bank_01",
+      "domain": "banking",
+      "difficulty": "easy",
+      "tags": [
+        "new-capability"
+      ],
+      "expected_label": "added",
+      "actual_label": "added",
+      "confidence": 0.87,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 14062.11,
+      "raw_output_sha256": "c1f2f8577f69ede4f2c7c48115a9dec766c47d0fb7009ba94f58998a4981c3a6",
+      "runtime_error": null
+    },
+    {
+      "case_id": "add_edu_01",
+      "domain": "education",
+      "difficulty": "medium",
+      "tags": [
+        "new-role"
+      ],
+      "expected_label": "added",
+      "actual_label": "added",
+      "confidence": 0.8,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 14698.75,
+      "raw_output_sha256": "0d5791eb188097d220beef47fb0c7a4c50ef6663e7052fa9989c70de9d353d39",
+      "runtime_error": null
+    },
+    {
+      "case_id": "add_shop_01",
+      "domain": "e-commerce",
+      "difficulty": "medium",
+      "tags": [
+        "conditional-request"
+      ],
+      "expected_label": "added",
+      "actual_label": "added",
+      "confidence": 0.8,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 14416.98,
+      "raw_output_sha256": "6f2008f7a958c52309505b4440163aab41d93f7bc938fd5f63d18f5a9f6ea99e",
+      "runtime_error": null
+    },
+    {
+      "case_id": "add_logistics_01",
+      "domain": "logistics",
+      "difficulty": "medium",
+      "tags": [
+        "informal-language"
+      ],
+      "expected_label": "added",
+      "actual_label": "modified",
+      "confidence": 0.84,
+      "correct": false,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 11613.11,
+      "raw_output_sha256": "4615572d834aa9fb66565a08393fcc205114609294c8bf9b082021ee8dd66505",
+      "runtime_error": null
+    },
+    {
+      "case_id": "add_hr_01",
+      "domain": "HR",
+      "difficulty": "hard",
+      "tags": [
+        "indirect-request"
+      ],
+      "expected_label": "added",
+      "actual_label": "added",
+      "confidence": 0.87,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 14847.52,
+      "raw_output_sha256": "e9879ffbedecd72b7fc2d90f934f86399a434013a69e1161a253f2e299ea828f",
+      "runtime_error": null
+    },
+    {
+      "case_id": "add_security_01",
+      "domain": "security",
+      "difficulty": "hard",
+      "tags": [
+        "scope-expansion",
+        "negation"
+      ],
+      "expected_label": "added",
+      "actual_label": "modified",
+      "confidence": 0.84,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 15896.53,
+      "raw_output_sha256": "5037075052db9ead8b0c8a279d05f056aa4cb21bd5d1884faaf55c3392c980cc",
+      "runtime_error": null
+    },
+    {
+      "case_id": "add_saas_01",
+      "domain": "SaaS",
+      "difficulty": "adversarial",
+      "tags": [
+        "prompt-injection",
+        "new-capability"
+      ],
+      "expected_label": "added",
+      "actual_label": "modified",
+      "confidence": 0.87,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 12831.37,
+      "raw_output_sha256": "e01ae0998aa7edc90b180af471295094f7b68eb4b2a3e99f466a1f0b2bc4afa9",
+      "runtime_error": null
+    },
+    {
+      "case_id": "mod_health_01",
+      "domain": "healthcare",
+      "difficulty": "easy",
+      "tags": [
+        "numeric-change"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.98,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 15548.89,
+      "raw_output_sha256": "94057f98afbdb9dffa7b351192564008e0fc0cf0923116374e8fafac85e7ba84",
+      "runtime_error": null
+    },
+    {
+      "case_id": "mod_bank_01",
+      "domain": "banking",
+      "difficulty": "easy",
+      "tags": [
+        "constraint-change"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.87,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 18483.44,
+      "raw_output_sha256": "74dd87f1fe1b397c9b2f17691d592c6a12219a2d3d80b0542d59f94ba68cec1d",
+      "runtime_error": null
+    },
+    {
+      "case_id": "mod_booking_01",
+      "domain": "booking",
+      "difficulty": "medium",
+      "tags": [
+        "provider-change"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.97,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 14359.29,
+      "raw_output_sha256": "c7fac872515857fa6cb9aa1a33321c06c9a6075bfd45768c490ac58b153f59c6",
+      "runtime_error": null
+    },
+    {
+      "case_id": "mod_inventory_01",
+      "domain": "inventory",
+      "difficulty": "medium",
+      "tags": [
+        "scope-reduction"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.87,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 12223.35,
+      "raw_output_sha256": "9a840e5e33ad40776ca9dfb785e169f1fb8b16fd26ac05f0d4607e948bf3d909",
+      "runtime_error": null
+    },
+    {
+      "case_id": "mod_analytics_01",
+      "domain": "analytics",
+      "difficulty": "medium",
+      "tags": [
+        "format-change"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.87,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 17356.24,
+      "raw_output_sha256": "cbea147e3b6d4c6d682f3075d5744185a886ffa0d2909dd885620b7fd7646e00",
+      "runtime_error": null
+    },
+    {
+      "case_id": "mod_mobile_01",
+      "domain": "mobile",
+      "difficulty": "hard",
+      "tags": [
+        "partial-change",
+        "conditional-request"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.84,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 13004.83,
+      "raw_output_sha256": "2647def6faaecf0cfee1a3fe28ac7b50d9a32ddc52c78ead0a0bca41d4b49b0c",
+      "runtime_error": null
+    },
+    {
+      "case_id": "mod_gov_01",
+      "domain": "government",
+      "difficulty": "hard",
+      "tags": [
+        "double-negation"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.87,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 11657.25,
+      "raw_output_sha256": "bf658c6ecaad849035b696ef6042af5c18f983909eae19c0cbd2825586e6d74f",
+      "runtime_error": null
+    },
+    {
+      "case_id": "mod_crm_01",
+      "domain": "CRM",
+      "difficulty": "adversarial",
+      "tags": [
+        "prompt-injection",
+        "numeric-change"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.87,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 14820.98,
+      "raw_output_sha256": "f61023677a0427f08dbf57fd21fc973d89f863566334190503126c54d91da9b1",
+      "runtime_error": null
+    },
+    {
+      "case_id": "rem_health_01",
+      "domain": "healthcare",
+      "difficulty": "easy",
+      "tags": [
+        "removal"
+      ],
+      "expected_label": "removed",
+      "actual_label": "removed",
+      "confidence": 0.98,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 9565.72,
+      "raw_output_sha256": "3bcf061287644f9f88d1ad42ab0e4544acf7a6d9594c3f03966dbbfcdee7018e",
+      "runtime_error": null
+    },
+    {
+      "case_id": "rem_shop_01",
+      "domain": "e-commerce",
+      "difficulty": "easy",
+      "tags": [
+        "removal"
+      ],
+      "expected_label": "removed",
+      "actual_label": "modified",
+      "confidence": 0.87,
+      "correct": false,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 10256.64,
+      "raw_output_sha256": "72d55ff4327c1a2d042fdd1290aa665d3f2e349c70f68ec9661510fbdaadb6bc",
+      "runtime_error": null
+    },
+    {
+      "case_id": "rem_edu_01",
+      "domain": "education",
+      "difficulty": "medium",
+      "tags": [
+        "partial-removal"
+      ],
+      "expected_label": "removed",
+      "actual_label": "modified",
+      "confidence": 0.87,
+      "correct": false,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 11350.75,
+      "raw_output_sha256": "9be1ae215e3febbec3b3fe0d5514071b4d57c70e43fdb2f9beaf5c1e472261c4",
+      "runtime_error": null
+    },
+    {
+      "case_id": "rem_hr_01",
+      "domain": "HR",
+      "difficulty": "medium",
+      "tags": [
+        "indirect-request"
+      ],
+      "expected_label": "removed",
+      "actual_label": "modified",
+      "confidence": 0.87,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 13414.93,
+      "raw_output_sha256": "31057d54c4fa747f84a361e5d30fcaed29175e5e8358c5eba56f5b44712333e0",
+      "runtime_error": null
+    },
+    {
+      "case_id": "rem_logistics_01",
+      "domain": "logistics",
+      "difficulty": "medium",
+      "tags": [
+        "scope-reduction"
+      ],
+      "expected_label": "removed",
+      "actual_label": "unchanged",
+      "confidence": 0.95,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 14024.24,
+      "raw_output_sha256": "ee4ae4d28befb248af73ac57e13f41441b261ec286aaa6a7b16c1bb10299dbf1",
+      "runtime_error": null
+    },
+    {
+      "case_id": "rem_security_01",
+      "domain": "security",
+      "difficulty": "hard",
+      "tags": [
+        "double-negation"
+      ],
+      "expected_label": "removed",
+      "actual_label": "removed",
+      "confidence": 0.98,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 12406.02,
+      "raw_output_sha256": "f04b43e2c9c216c82a9144bfa1b525639da4e3eb972acdcf7c8864315292a303",
+      "runtime_error": null
+    },
+    {
+      "case_id": "rem_reporting_01",
+      "domain": "reporting",
+      "difficulty": "hard",
+      "tags": [
+        "partial-removal",
+        "long-message"
+      ],
+      "expected_label": "removed",
+      "actual_label": "removed",
+      "confidence": 0.98,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 12899.51,
+      "raw_output_sha256": "c76fddec64cfe601c38b1970a8843cae3fb568b1e87bc2dc778b42b96974b2ff",
+      "runtime_error": null
+    },
+    {
+      "case_id": "rem_finance_01",
+      "domain": "finance",
+      "difficulty": "adversarial",
+      "tags": [
+        "prompt-injection",
+        "removal"
+      ],
+      "expected_label": "removed",
+      "actual_label": "removed",
+      "confidence": 0.98,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11926.35,
+      "raw_output_sha256": "d799382066bd510c3ed97f4076bc6a46971bb97a6ce9665a84ff4f533aff98e7",
+      "runtime_error": null
+    },
+    {
+      "case_id": "con_health_01",
+      "domain": "healthcare",
+      "difficulty": "easy",
+      "tags": [
+        "contradiction"
+      ],
+      "expected_label": "contradiction",
+      "actual_label": "contradiction",
+      "confidence": 0.98,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11968.28,
+      "raw_output_sha256": "6869b600ea755dfb648579ac7ee0a8a49cb76ff775175031487bf0d1b6246bc9",
+      "runtime_error": null
+    },
+    {
+      "case_id": "con_bank_01",
+      "domain": "banking",
+      "difficulty": "easy",
+      "tags": [
+        "contradiction"
+      ],
+      "expected_label": "contradiction",
+      "actual_label": "contradiction",
+      "confidence": 0.98,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 13073.02,
+      "raw_output_sha256": "f6ab4c07f5442abea6a274fd669ec4a1c36c96fffeb8ff0b91749c540431f361",
+      "runtime_error": null
+    },
+    {
+      "case_id": "con_security_01",
+      "domain": "security",
+      "difficulty": "medium",
+      "tags": [
+        "allow-disallow"
+      ],
+      "expected_label": "contradiction",
+      "actual_label": "contradiction",
+      "confidence": 0.8,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 11040.72,
+      "raw_output_sha256": "5ee683baab23615524ffb0e6592d1297cf398bbdca57d1181d343adc76c3a999",
+      "runtime_error": null
+    },
+    {
+      "case_id": "con_gov_01",
+      "domain": "government",
+      "difficulty": "medium",
+      "tags": [
+        "before-after"
+      ],
+      "expected_label": "contradiction",
+      "actual_label": "contradiction",
+      "confidence": 0.8,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 11094.99,
+      "raw_output_sha256": "89b82f4726c19ef26affdcae3b20dab1bee5381990a69cb34e8132eeb14ac37e",
+      "runtime_error": null
+    },
+    {
+      "case_id": "con_inventory_01",
+      "domain": "inventory",
+      "difficulty": "medium",
+      "tags": [
+        "required-optional"
+      ],
+      "expected_label": "contradiction",
+      "actual_label": "modified",
+      "confidence": 0.87,
+      "correct": false,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 10160.42,
+      "raw_output_sha256": "d687d3a9fd1fa3928d809a84e88d7ae217ac97c8da37e2022a53d63d842cc6f5",
+      "runtime_error": null
+    },
+    {
+      "case_id": "con_edu_01",
+      "domain": "education",
+      "difficulty": "hard",
+      "tags": [
+        "indirect-request",
+        "negation"
+      ],
+      "expected_label": "contradiction",
+      "actual_label": "contradiction",
+      "confidence": 0.8,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 13416.13,
+      "raw_output_sha256": "f42b9a3c35e0b0c589af8b3529e1dc2a6705a8e945912cb029c387c4fa613a26",
+      "runtime_error": null
+    },
+    {
+      "case_id": "con_logistics_01",
+      "domain": "logistics",
+      "difficulty": "hard",
+      "tags": [
+        "conflicting-statements"
+      ],
+      "expected_label": "contradiction",
+      "actual_label": "modified",
+      "confidence": 0.8,
+      "correct": false,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 15491.86,
+      "raw_output_sha256": "52c4ea1b5edef731219b488d98c83284f47a2b14d067ef662a37af3234957f2e",
+      "runtime_error": null
+    },
+    {
+      "case_id": "con_mobile_01",
+      "domain": "mobile",
+      "difficulty": "adversarial",
+      "tags": [
+        "prompt-injection",
+        "contradiction"
+      ],
+      "expected_label": "contradiction",
+      "actual_label": "modified",
+      "confidence": 0.84,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 12146.83,
+      "raw_output_sha256": "d6b1943e1eb47f2689a0347253515a9a307e17df6ae70f18a9edd8e34c8c1ce7",
+      "runtime_error": null
+    },
+    {
+      "case_id": "amb_health_01",
+      "domain": "healthcare",
+      "difficulty": "easy",
+      "tags": [
+        "vague"
+      ],
+      "expected_label": "ambiguous",
+      "actual_label": "ambiguous",
+      "confidence": 0.8,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 7195.05,
+      "raw_output_sha256": "5032b2444b0962ecbf600c985ee606015157f06233906642f6cc01cc4066a57e",
+      "runtime_error": null
+    },
+    {
+      "case_id": "amb_crm_01",
+      "domain": "CRM",
+      "difficulty": "easy",
+      "tags": [
+        "question"
+      ],
+      "expected_label": "ambiguous",
+      "actual_label": "ambiguous",
+      "confidence": 0.8,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 8272.9,
+      "raw_output_sha256": "a3ee77ae9ade7bdb9a582a441014240c30e96b54e9a4c642230da74cad06694c",
+      "runtime_error": null
+    },
+    {
+      "case_id": "amb_finance_01",
+      "domain": "finance",
+      "difficulty": "medium",
+      "tags": [
+        "future-possibility"
+      ],
+      "expected_label": "ambiguous",
+      "actual_label": "unchanged",
+      "confidence": 0.95,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 13480.28,
+      "raw_output_sha256": "e80b114a3f5f8f1a1f349a22ed456598e3b543a216b7f3f8ea69977483b2477a",
+      "runtime_error": null
+    },
+    {
+      "case_id": "amb_saas_01",
+      "domain": "SaaS",
+      "difficulty": "medium",
+      "tags": [
+        "pronoun-ambiguity"
+      ],
+      "expected_label": "ambiguous",
+      "actual_label": "modified",
+      "confidence": 0.84,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 12426.62,
+      "raw_output_sha256": "0e478ccef9638e876fcd9dd085ef3f816199b893a799794576c99641297dd6f0",
+      "runtime_error": null
+    },
+    {
+      "case_id": "amb_booking_01",
+      "domain": "booking",
+      "difficulty": "medium",
+      "tags": [
+        "missing-constraint"
+      ],
+      "expected_label": "ambiguous",
+      "actual_label": "modified",
+      "confidence": 0.87,
+      "correct": false,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 12499.29,
+      "raw_output_sha256": "59926b518f5d33d5613849c9aecffc8560f9cff5332bdd03d882d267689dc9dc",
+      "runtime_error": null
+    },
+    {
+      "case_id": "amb_analytics_01",
+      "domain": "analytics",
+      "difficulty": "hard",
+      "tags": [
+        "multiple-requests",
+        "vague"
+      ],
+      "expected_label": "ambiguous",
+      "actual_label": "ambiguous",
+      "confidence": 0.8,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 13207.64,
+      "raw_output_sha256": "95b655b5e679650aa723e01e67712c74d14c7abaafaf484e55edf1193a0f9298",
+      "runtime_error": null
+    },
+    {
+      "case_id": "amb_hr_01",
+      "domain": "HR",
+      "difficulty": "hard",
+      "tags": [
+        "conflicting-statements"
+      ],
+      "expected_label": "ambiguous",
+      "actual_label": "contradiction",
+      "confidence": 0.8,
+      "correct": false,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 15406.89,
+      "raw_output_sha256": "4cebbf1c4c77a49af3c6bd521d633526811838097cb3f1cfb69657263661852b",
+      "runtime_error": null
+    },
+    {
+      "case_id": "amb_reporting_01",
+      "domain": "reporting",
+      "difficulty": "adversarial",
+      "tags": [
+        "prompt-injection",
+        "irrelevant-information"
+      ],
+      "expected_label": "ambiguous",
+      "actual_label": "removed",
+      "confidence": 0.8,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 9969.64,
+      "raw_output_sha256": "4d2b8e399db0a29896e7062150ca6bc754d2fa57775652867c9399b488101474",
+      "runtime_error": null
+    },
+    {
+      "case_id": "same_health_01",
+      "domain": "healthcare",
+      "difficulty": "easy",
+      "tags": [
+        "paraphrase"
+      ],
+      "expected_label": "unchanged",
+      "actual_label": "unchanged",
+      "confidence": 0.95,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 13088.87,
+      "raw_output_sha256": "9ba54792ba79123017968459cb3de8468cbb0b05886feae544bbcb2d88551b5e",
+      "runtime_error": null
+    },
+    {
+      "case_id": "same_bank_01",
+      "domain": "banking",
+      "difficulty": "easy",
+      "tags": [
+        "paraphrase"
+      ],
+      "expected_label": "unchanged",
+      "actual_label": "unchanged",
+      "confidence": 0.95,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11130.21,
+      "raw_output_sha256": "72b12c6af0dc3d3272daeb99d2fc9eb2857f60a9fc6e820ba7b9319f5fedd39f",
+      "runtime_error": null
+    },
+    {
+      "case_id": "same_inventory_01",
+      "domain": "inventory",
+      "difficulty": "medium",
+      "tags": [
+        "terminology"
+      ],
+      "expected_label": "unchanged",
+      "actual_label": "unchanged",
+      "confidence": 0.95,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 12393.3,
+      "raw_output_sha256": "e403b26d545311eeacdc6410baa3a51eccd0cbadb71ade344b1b61f7e1a7c404",
+      "runtime_error": null
+    },
+    {
+      "case_id": "same_edu_01",
+      "domain": "education",
+      "difficulty": "medium",
+      "tags": [
+        "informal-language"
+      ],
+      "expected_label": "unchanged",
+      "actual_label": "unchanged",
+      "confidence": 0.95,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 15576.36,
+      "raw_output_sha256": "27a556e96c3135cf6e83686f2af0a6cd3b48a3ad2de57773288aa8c5ba250631",
+      "runtime_error": null
+    },
+    {
+      "case_id": "same_security_01",
+      "domain": "security",
+      "difficulty": "medium",
+      "tags": [
+        "negation"
+      ],
+      "expected_label": "unchanged",
+      "actual_label": "unchanged",
+      "confidence": 0.95,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 13214.15,
+      "raw_output_sha256": "d1d30fe57a0b6db984207f342856ab605d085adb0f6c38435058d16cc69fb4fb",
+      "runtime_error": null
+    },
+    {
+      "case_id": "same_logistics_01",
+      "domain": "logistics",
+      "difficulty": "hard",
+      "tags": [
+        "long-message",
+        "irrelevant-information"
+      ],
+      "expected_label": "unchanged",
+      "actual_label": "unchanged",
+      "confidence": 0.95,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11484.29,
+      "raw_output_sha256": "b83ee0e793e01946b35758d7436b4aeaf2bac014555b0af283d91e6814a3aad5",
+      "runtime_error": null
+    },
+    {
+      "case_id": "same_mobile_01",
+      "domain": "mobile",
+      "difficulty": "hard",
+      "tags": [
+        "double-negation"
+      ],
+      "expected_label": "unchanged",
+      "actual_label": "unchanged",
+      "confidence": 0.95,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11517.5,
+      "raw_output_sha256": "e1333f62d48fdf13a9da34e6ab9e160913d3e2d174afdb2a02998b122cdb08b4",
+      "runtime_error": null
+    },
+    {
+      "case_id": "same_gov_01",
+      "domain": "government",
+      "difficulty": "adversarial",
+      "tags": [
+        "prompt-injection",
+        "paraphrase"
+      ],
+      "expected_label": "unchanged",
+      "actual_label": "contradiction",
+      "confidence": 0.8,
+      "correct": false,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 11701.58,
+      "raw_output_sha256": "07ad21db6f7871ac761b159ad9ef9f70563df3f4616b1a6facada3b8c039dbe7",
+      "runtime_error": null
+    }
+  ]
+}

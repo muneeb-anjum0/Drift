@@ -1,0 +1,19 @@
+{
+  "name": "drift-raw-dev",
+  "version": "1.0.0",
+  "dataset_file": "drift_raw_dev_v1.json",
+  "sha256": "5265b80a265ff7b1090ec1a6a7d4879a9b6e7a7d0a64123071af7b343fad31eb",
+  "created_at": "2026-09-30",
+  "creation_methodology": "Human-authored prospective Phase III cases using the frozen six-label taxonomy; balanced by label and reviewed deterministically for unique IDs and distributions.",
+  "status": "DEVELOPMENT_NOT_PROVEN_HELD_OUT",
+  "case_count": 48,
+  "class_distribution": {"added":8,"modified":8,"removed":8,"contradiction":8,"ambiguous":8,"unchanged":8},
+  "difficulty_distribution": {"easy":12,"medium":18,"hard":12,"adversarial":6},
+  "domain_distribution": {"healthcare":6,"banking":4,"education":4,"logistics":4,"security":4,"HR":3,"inventory":3,"mobile":3,"government":3,"e-commerce":2,"SaaS":2,"booking":2,"analytics":2,"CRM":2,"reporting":2,"finance":2},
+  "known_limitations": [
+    "The adapter training dataset could not be recovered, so true independence from training cannot be established.",
+    "Ground truth was authored and reviewed by one engineering agent rather than multiple independent domain annotators.",
+    "Each case has one dominant label; multi-change detection requires a separate project-level dataset.",
+    "This dataset is development evidence and must not become the future sealed final-test set."
+  ]
+}

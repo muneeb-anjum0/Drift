@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "evaluation_id": "historical-go-direct-v0",
+  "dataset_status": "CONTAMINATED_REGRESSION_ONLY",
+  "generated_at": "2026-09-30T18:25:51Z",
+  "baseline_commit": "5421d1f383796b1ec0e271586711e637a9ed0347",
+  "artifact_sha256": "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
+  "runtime": {"engine":"llama.cpp","quantization":"Q4_K_M","cpu_only":true,"parallel_slots":1},
+  "warnings": [
+    "Historical examples occur in repository source and tests.",
+    "The direct benchmark bypasses drift_postprocess.go, but recovered training data is unknown.",
+    "This score is regression evidence, not independent held-out model quality."
+  ],
+  "failed_experiments": [
+    {
+      "status": "failed_before_cases",
+      "cause": "The evaluation health request omitted X-Drift-Inference-Key and received HTTP 401.",
+      "resolution_commit": "372af75",
+      "data_disposition": "Preserved as integration-failure evidence; no model predictions were produced."
+    }
+  ],
+  "metrics": {
+    "case_count": 10,
+    "correct_count": 8,
+    "accuracy": 0.8,
+    "average_latency_ms": 11385.7,
+    "max_latency_ms": 13015,
+    "average_confidence": 0.872,
+    "confusion_matrix": {
+      "added": {"added":3,"modified":1,"removed":0,"contradiction":0,"ambiguous":0,"unchanged":0},
+      "modified": {"added":0,"modified":2,"removed":0,"contradiction":0,"ambiguous":0,"unchanged":0},
+      "removed": {"added":0,"modified":0,"removed":1,"contradiction":0,"ambiguous":0,"unchanged":0},
+      "contradiction": {"added":0,"modified":0,"removed":0,"contradiction":1,"ambiguous":0,"unchanged":0},
+      "ambiguous": {"added":0,"modified":0,"removed":0,"contradiction":0,"ambiguous":1,"unchanged":0},
+      "unchanged": {"added":1,"modified":0,"removed":0,"contradiction":0,"ambiguous":0,"unchanged":0}
+    }
+  },
+  "cases": [
+    {"case_id":"same_monthly_report","expected_label":"unchanged","raw_model_output":null,"parsed_prediction":{"label":"added","confidence":0.8},"normalized_prediction":{"label":"added","confidence":0.8},"postprocessed_prediction":null,"final_prediction":{"label":"added"},"changed_elements":null,"latency_ms":13015,"parse_success":true,"runtime_error":null,"correct":false},
+    {"case_id":"sms_password_reset","expected_label":"added","raw_model_output":null,"parsed_prediction":{"label":"added","confidence":0.87},"normalized_prediction":{"label":"added","confidence":0.87},"postprocessed_prediction":null,"final_prediction":{"label":"added"},"changed_elements":null,"latency_ms":9577,"parse_success":true,"runtime_error":null,"correct":true},
+    {"case_id":"shorter_cancel_window","expected_label":"modified","raw_model_output":null,"parsed_prediction":{"label":"modified","confidence":0.87},"normalized_prediction":{"label":"modified","confidence":0.87},"postprocessed_prediction":null,"final_prediction":{"label":"modified"},"changed_elements":null,"latency_ms":10759,"parse_success":true,"runtime_error":null,"correct":true},
+    {"case_id":"remove_card_payment","expected_label":"removed","raw_model_output":null,"parsed_prediction":{"label":"removed","confidence":0.98},"normalized_prediction":{"label":"removed","confidence":0.98},"postprocessed_prediction":null,"final_prediction":{"label":"removed"},"changed_elements":null,"latency_ms":10471,"parse_success":true,"runtime_error":null,"correct":true},
+    {"case_id":"cancel_after_appointment","expected_label":"contradiction","raw_model_output":null,"parsed_prediction":{"label":"contradiction","confidence":0.98},"normalized_prediction":{"label":"contradiction","confidence":0.98},"postprocessed_prediction":null,"final_prediction":{"label":"contradiction"},"changed_elements":null,"latency_ms":10640,"parse_success":true,"runtime_error":null,"correct":true},
+    {"case_id":"vague_dashboard","expected_label":"ambiguous","raw_model_output":null,"parsed_prediction":{"label":"ambiguous","confidence":0.8},"normalized_prediction":{"label":"ambiguous","confidence":0.8},"postprocessed_prediction":null,"final_prediction":{"label":"ambiguous"},"changed_elements":null,"latency_ms":11673,"parse_success":true,"runtime_error":null,"correct":true},
+    {"case_id":"family_member_access","expected_label":"added","raw_model_output":null,"parsed_prediction":{"label":"added","confidence":0.87},"normalized_prediction":{"label":"added","confidence":0.87},"postprocessed_prediction":null,"final_prediction":{"label":"added"},"changed_elements":null,"latency_ms":11774,"parse_success":true,"runtime_error":null,"correct":true},
+    {"case_id":"clinic_analytics","expected_label":"modified","raw_model_output":null,"parsed_prediction":{"label":"modified","confidence":0.84},"normalized_prediction":{"label":"modified","confidence":0.84},"postprocessed_prediction":null,"final_prediction":{"label":"modified"},"changed_elements":null,"latency_ms":11839,"parse_success":true,"runtime_error":null,"correct":true},
+    {"case_id":"document_upload","expected_label":"added","raw_model_output":null,"parsed_prediction":{"label":"modified","confidence":0.84},"normalized_prediction":{"label":"modified","confidence":0.84},"postprocessed_prediction":null,"final_prediction":{"label":"modified"},"changed_elements":null,"latency_ms":12170,"parse_success":true,"runtime_error":null,"correct":false},
+    {"case_id":"notification_channel","expected_label":"added","raw_model_output":null,"parsed_prediction":{"label":"added","confidence":0.87},"normalized_prediction":{"label":"added","confidence":0.87},"postprocessed_prediction":null,"final_prediction":{"label":"added"},"changed_elements":null,"latency_ms":11939,"parse_success":true,"runtime_error":null,"correct":true}
+  ]
+}

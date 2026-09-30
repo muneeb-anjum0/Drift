@@ -1,4 +1,4 @@
-.PHONY: setup run test test-integration test-e2e lint format build verify model-build model-check model-smoke model-eval
+.PHONY: setup run test test-integration test-e2e lint format build verify model-build model-check model-smoke model-eval model-benchmark
 
 PYTHON ?= python3
 VENV ?= .venv
@@ -57,3 +57,6 @@ model-smoke:
 
 model-eval:
 	$(VENV)/bin/python tools/verification/evaluate_q4_quality.py
+
+model-benchmark:
+	$(VENV)/bin/python tools/verification/evaluate_raw_model.py --resume

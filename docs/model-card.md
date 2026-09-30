@@ -23,7 +23,9 @@ Recovered checkpoints show one LoRA epoch ending at step 1041 and a final record
 
 Baseline V0 uses CPU only, GPU layers 0, device offload disabled, one llama slot, six CPU threads, context 768, deterministic temperature 0, top-p 1, and at most 120 generated tokens. Hardware is an Intel Core i7-8750H (6 cores/12 threads) with approximately 15 GiB RAM and 8 GiB zram swap.
 
-Initial smoke evidence: model load reached readiness in about 5.4 seconds at approximately 3.02 GiB container memory. A direct completion produced 41 tokens at 4.48 tokens/s in 15.94 seconds; an authenticated Go-to-FastAPI smoke inference completed in 10.36 seconds. These are two observations, not a latency distribution.
+Initial smoke evidence: model load reached readiness in about 5.4 seconds at approximately 3.02 GiB container memory. A direct completion produced 41 tokens at 4.48 tokens/s in 15.94 seconds; an authenticated Go-to-FastAPI smoke inference completed in 10.36 seconds.
+
+On the balanced 48-case `drift-raw-dev` 1.0.0 development corpus, the raw model achieved 66.7% accuracy and 66.9% macro F1. Mean latency was 12.75 seconds, p95 15.90 seconds, with 4.92 generated tokens/s. All outputs were contract-parseable, while 52.1% were strict JSON without recovery. This corpus is not proven held out because the training data is unknown; metrics are baseline development evidence, not a generalization claim.
 
 ## Supported and unsupported use
 
@@ -31,8 +33,11 @@ Supported: local, review-assisted requirement-drift analysis under the validated
 
 ## Known limitations
 
-- Model-quality metrics are pending Baseline V0 evaluation.
+- Ambiguous recall was 37.5%; removed recall 50%; added and contradiction recall 62.5%. The model strongly overpredicts `modified` on boundary cases.
+- Confidence is not calibrated: development ECE was 0.214, and two incorrect predictions carried 0.95 confidence.
+- Existing canonical postprocessing reduced accuracy by one case on the 48-case development corpus (one correction, two introduced errors).
 - Training/evaluation leakage cannot be excluded because training data is missing.
 - The historical repository benchmark is contaminated as independent evidence: examples and expected semantics appear in deterministic postprocessing and tests.
 - Raw-model quality must be reported separately from parsing, normalization, retrieval, and postprocessing.
+- Prompt-injection-tagged development accuracy was 2/6; user-controlled pseudo-instructions remain a meaningful weakness.
 - GPU quality, latency, and VRAM are not tested in Phase III.
