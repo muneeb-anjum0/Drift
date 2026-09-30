@@ -15,9 +15,9 @@ def main() -> None:
     temporary_output = output.with_suffix(output.suffix + ".tmp")
     convert = llama_cpp_dir(root) / "convert_hf_to_gguf.py"
     if not merged.exists():
-        raise SystemExit(f"Merged model not found: {merged}. Run `python tools/merge_lora_to_base.py` first.")
+        raise SystemExit(f"Merged model not found: {merged}. Run `python tools/model/merge_lora_to_base.py` first.")
     if not convert.exists():
-        raise SystemExit(f"llama.cpp converter not found: {convert}. Run `python tools/setup_llama_cpp.py` first.")
+        raise SystemExit(f"llama.cpp converter not found: {convert}. Run `python tools/model/setup_llama_cpp.py` first.")
     output.parent.mkdir(parents=True, exist_ok=True)
     temporary_output.unlink(missing_ok=True)
     cmd = [sys.executable, str(convert), str(merged), "--outfile", str(temporary_output), "--outtype", "f16"]

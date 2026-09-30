@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 
+	"driftledger/server-go/internal/authorization"
 	"driftledger/server-go/internal/modules/activity"
 	"driftledger/server-go/internal/utils"
 	"go.mongodb.org/mongo-driver/bson"
@@ -23,7 +24,7 @@ func (s Service) Create(ctx context.Context, userID primitive.ObjectID, p Create
 	if err != nil {
 		return Requirement{}, err
 	}
-	project, err := utils.RequireProjectCapability(ctx, s.db, projectID, userID, utils.CapabilityWrite)
+	project, err := authorization.RequireProjectCapability(ctx, s.db, projectID, userID, authorization.CapabilityWrite)
 	if err != nil {
 		return Requirement{}, err
 	}
@@ -40,7 +41,7 @@ func (s Service) Create(ctx context.Context, userID primitive.ObjectID, p Create
 }
 
 func (s Service) ListByProject(ctx context.Context, projectID, userID primitive.ObjectID) ([]Requirement, error) {
-	if _, err := utils.RequireProjectAccess(ctx, s.db, projectID, userID); err != nil {
+	if _, err := authorization.RequireProjectAccess(ctx, s.db, projectID, userID); err != nil {
 		return nil, err
 	}
 	cursor, err := s.db.Collection("requirements").Find(ctx, bson.M{"project": projectID}, options.Find().SetSort(bson.D{{Key: "createdAt", Value: -1}}))
@@ -61,7 +62,7 @@ func (s Service) Get(ctx context.Context, id, userID primitive.ObjectID) (Requir
 	if err != nil {
 		return req, err
 	}
-	_, err = utils.RequireProjectAccess(ctx, s.db, req.Project, userID)
+	_, err = authorization.RequireProjectAccess(ctx, s.db, req.Project, userID)
 	return req, err
 }
 
@@ -70,7 +71,7 @@ func (s Service) Update(ctx context.Context, id, userID primitive.ObjectID, p Up
 	if err != nil {
 		return req, err
 	}
-	if _, err := utils.RequireProjectCapability(ctx, s.db, req.Project, userID, utils.CapabilityWrite); err != nil {
+	if _, err := authorization.RequireProjectCapability(ctx, s.db, req.Project, userID, authorization.CapabilityWrite); err != nil {
 		return req, err
 	}
 	update := bson.M{"updatedAt": time.Now().UTC(), "updatedBy": userID}
@@ -116,7 +117,7 @@ func (s Service) Delete(ctx context.Context, id, userID primitive.ObjectID) erro
 	if err != nil {
 		return err
 	}
-	if _, err := utils.RequireProjectCapability(ctx, s.db, req.Project, userID, utils.CapabilityWrite); err != nil {
+	if _, err := authorization.RequireProjectCapability(ctx, s.db, req.Project, userID, authorization.CapabilityWrite); err != nil {
 		return err
 	}
 	_, err = s.db.Collection("requirements").DeleteOne(ctx, bson.M{"_id": id})
@@ -131,7 +132,7 @@ func (s Service) Baseline(ctx context.Context, userID primitive.ObjectID, p Base
 	if err != nil {
 		return RequirementVersion{}, err
 	}
-	project, err := utils.RequireProjectCapability(ctx, s.db, projectID, userID, utils.CapabilityApprove)
+	project, err := authorization.RequireProjectCapability(ctx, s.db, projectID, userID, authorization.CapabilityApprove)
 	if err != nil {
 		return RequirementVersion{}, err
 	}
@@ -186,7 +187,7 @@ func (s Service) Baseline(ctx context.Context, userID primitive.ObjectID, p Base
 }
 
 func (s Service) Versions(ctx context.Context, projectID, userID primitive.ObjectID) ([]RequirementVersion, error) {
-	if _, err := utils.RequireProjectAccess(ctx, s.db, projectID, userID); err != nil {
+	if _, err := authorization.RequireProjectAccess(ctx, s.db, projectID, userID); err != nil {
 		return nil, err
 	}
 	cursor, err := s.db.Collection("requirementversions").Find(ctx, bson.M{"project": projectID}, options.Find().SetSort(bson.D{{Key: "versionNumber", Value: -1}}))

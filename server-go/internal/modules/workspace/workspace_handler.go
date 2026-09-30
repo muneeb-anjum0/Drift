@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"driftledger/server-go/internal/middleware"
+	"driftledger/server-go/internal/requestctx"
 	"driftledger/server-go/internal/response"
 	"driftledger/server-go/internal/utils"
 	"github.com/gin-gonic/gin"
@@ -26,7 +27,7 @@ func (h Handler) Create(c *gin.Context) {
 		response.Error(c, http.StatusBadRequest, "Validation failed", []string{"name is required"})
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	ws, err := h.service.Create(ctx, middleware.CurrentUserID(c), payload)
 	if err != nil {
@@ -37,7 +38,7 @@ func (h Handler) Create(c *gin.Context) {
 }
 
 func (h Handler) List(c *gin.Context) {
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	workspaces, err := h.service.List(ctx, middleware.CurrentUserID(c))
 	if err != nil {
@@ -86,7 +87,7 @@ func (h Handler) withID(c *gin.Context, fn func(idCtx)) {
 		response.Error(c, http.StatusBadRequest, "Invalid workspace id", nil)
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	fn(idCtx{ctx: ctx, id: id, userID: middleware.CurrentUserID(c)})
 }

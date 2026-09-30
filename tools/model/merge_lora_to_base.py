@@ -12,7 +12,7 @@ try:
     from transformers import AutoModelForCausalLM, AutoTokenizer
 except ImportError as exc:
     raise SystemExit(
-        "Missing merge dependency. Install with `python -m pip install -r tools/requirements-local-model.txt`."
+        "Missing merge dependency. Install with `python -m pip install -r tools/model/requirements-local-model.txt`."
     ) from exc
 
 from local_model_utils import (
@@ -65,7 +65,7 @@ def main() -> None:
     status = verify_base_model(base_dir)
     print(format_base_model_status(status), flush=True)
     if not status.complete:
-        raise SystemExit("Base model is incomplete. Run `python tools/download_base_model.py` first.")
+        raise SystemExit("Base model is incomplete. Run `python tools/model/download_base_model.py` first.")
     if not adapter_ok:
         raise SystemExit(f"Adapter is incomplete at {adapter_root}. Missing: {', '.join(adapter_missing)}")
 

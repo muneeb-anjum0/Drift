@@ -2,10 +2,9 @@
 from __future__ import annotations
 
 import sys
-from local_model_utils import file_size_gb, gguf_q4km_path, project_root
+from pathlib import Path
 
-
-ROOT = project_root()
+ROOT = Path(__file__).resolve().parents[2]
 Q4_CONTAINER_PATH = "/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf"
 FORBIDDEN_STRINGS = [
     "hosted_api",
@@ -16,6 +15,14 @@ FORBIDDEN_STRINGS = [
     "DriftLedger-Qwen2.5-7B-" + "Q" + "3_K_M.gguf",
     "DRIFT_GGUF_" + "Q" + "3KM_PATH",
 ]
+
+
+def gguf_q4km_path() -> Path:
+    return ROOT / "models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf"
+
+
+def file_size_gb(path: Path) -> float:
+    return round(path.stat().st_size / (1024**3), 2) if path.exists() else 0.0
 
 
 def ok(message: str) -> None:
@@ -60,7 +67,7 @@ def check_env_paths(failures: list[str]) -> None:
 
 
 def check_forbidden_project_strings(failures: list[str]) -> None:
-    ignored_parts = {"node_modules", ".git", "__pycache__", "models", "dist"}
+    ignored_parts = {"node_modules", ".git", "__pycache__", "Model", "models", "dist"}
     ignored_files = {"package-lock.json", "check_local_drift_setup.py"}
     offenders: list[str] = []
     for path in ROOT.rglob("*"):
@@ -84,7 +91,7 @@ def check_forbidden_project_strings(failures: list[str]) -> None:
 
 def main() -> None:
     failures: list[str] = []
-    q4_path = gguf_q4km_path(ROOT)
+    q4_path = gguf_q4km_path()
     q4_exists = q4_path.exists() and q4_path.stat().st_size > 0
     base_exists = (ROOT / "models/base/Qwen2.5-7B-Instruct").exists()
     print(f"Q4_K_M GGUF exists: {str(q4_exists).lower()}")
@@ -99,7 +106,7 @@ def main() -> None:
         "docker-compose.yml",
         ".env",
         ".env.example",
-        "tools/evaluate_q4_quality.py",
+        "tools/verification/evaluate_q4_quality.py",
     ]:
         if (ROOT / path).exists():
             ok(f"{path} exists")

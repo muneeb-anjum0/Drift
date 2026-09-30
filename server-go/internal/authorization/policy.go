@@ -1,18 +1,14 @@
-package utils
+package authorization
 
 import (
 	"context"
 	"errors"
-	"time"
+
+	"driftledger/server-go/internal/utils"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-)
-
-var (
-	ErrNotFound  = errors.New("not found")
-	ErrForbidden = errors.New("forbidden")
 )
 
 type ProjectAccess struct {
@@ -48,13 +44,9 @@ func RoleAllows(role string, capability Capability) bool {
 	}
 }
 
-func Context(parent context.Context) (context.Context, context.CancelFunc) {
-	return context.WithTimeout(parent, 8*time.Second)
-}
-
 func HasWorkspaceAccess(ctx context.Context, db *mongo.Database, workspaceID, userID primitive.ObjectID) (bool, error) {
 	_, err := WorkspaceRole(ctx, db, workspaceID, userID)
-	if errors.Is(err, ErrForbidden) {
+	if errors.Is(err, utils.ErrForbidden) {
 		return false, nil
 	}
 	return err == nil, err
@@ -70,13 +62,13 @@ func WorkspaceRole(ctx context.Context, db *mongo.Database, workspaceID, userID 
 	}
 	err := db.Collection("workspacemembers").FindOne(ctx, bson.M{"workspace": workspaceID, "user": userID}).Decode(&member)
 	if errors.Is(err, mongo.ErrNoDocuments) {
-		return "", ErrForbidden
+		return "", utils.ErrForbidden
 	}
 	if err != nil {
 		return "", err
 	}
 	if !RoleAllows(member.Role, CapabilityRead) {
-		return "", ErrForbidden
+		return "", utils.ErrForbidden
 	}
 	return member.Role, nil
 
@@ -88,7 +80,7 @@ func RequireWorkspaceCapability(ctx context.Context, db *mongo.Database, workspa
 		return err
 	}
 	if !RoleAllows(role, capability) {
-		return ErrForbidden
+		return utils.ErrForbidden
 	}
 	return nil
 }
@@ -101,7 +93,7 @@ func RequireProjectCapability(ctx context.Context, db *mongo.Database, projectID
 	var project ProjectAccess
 	if err := db.Collection("projects").FindOne(ctx, bson.M{"_id": projectID}).Decode(&project); err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
-			return project, ErrNotFound
+			return project, utils.ErrNotFound
 		}
 		return project, err
 	}
@@ -110,7 +102,7 @@ func RequireProjectCapability(ctx context.Context, db *mongo.Database, projectID
 		return project, err
 	}
 	if !RoleAllows(role, capability) {
-		return project, ErrForbidden
+		return project, utils.ErrForbidden
 	}
 	project.Role = role
 	return project, nil

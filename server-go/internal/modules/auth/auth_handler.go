@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"driftledger/server-go/internal/middleware"
+	"driftledger/server-go/internal/requestctx"
 	"driftledger/server-go/internal/response"
-	"driftledger/server-go/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
@@ -26,7 +26,7 @@ func (h Handler) Register(c *gin.Context) {
 		response.Error(c, http.StatusBadRequest, "Validation failed", []string{"name, email and password are required"})
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	user, token, err := h.service.Register(ctx, payload)
 	if errors.Is(err, ErrDuplicateEmail) {
@@ -46,7 +46,7 @@ func (h Handler) Login(c *gin.Context) {
 		response.Error(c, http.StatusBadRequest, "Validation failed", []string{"email and password are required"})
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	user, token, err := h.service.Login(ctx, payload)
 	if errors.Is(err, ErrInvalidCredentials) {
@@ -61,7 +61,7 @@ func (h Handler) Login(c *gin.Context) {
 }
 
 func (h Handler) Me(c *gin.Context) {
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	user, err := h.service.Me(ctx, middleware.CurrentUserID(c))
 	if err != nil {

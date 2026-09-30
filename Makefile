@@ -46,7 +46,7 @@ verify: lint test build
 	cd server-go && go run golang.org/x/vuln/cmd/govulncheck@v1.1.4 ./...
 
 model-smoke:
-	$(VENV)/bin/python tools/smoke_inference.py
+	$(VENV)/bin/python tools/verification/smoke_inference.py
 
 model-eval:
-	$(VENV)/bin/python tools/evaluate_q4_quality.py
+	$(VENV)/bin/python tools/verification/evaluate_q4_quality.py

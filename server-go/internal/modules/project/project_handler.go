@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"driftledger/server-go/internal/middleware"
+	"driftledger/server-go/internal/requestctx"
 	"driftledger/server-go/internal/response"
 	"driftledger/server-go/internal/utils"
 	"github.com/gin-gonic/gin"
@@ -25,7 +26,7 @@ func (h Handler) Create(c *gin.Context) {
 		response.Error(c, http.StatusBadRequest, "Validation failed", []string{"workspaceId and name are required"})
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	project, err := h.service.Create(ctx, middleware.CurrentUserID(c), payload)
 	if err != nil {
@@ -36,7 +37,7 @@ func (h Handler) Create(c *gin.Context) {
 }
 
 func (h Handler) List(c *gin.Context) {
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	var workspaceID *primitive.ObjectID
 	if raw := c.Query("workspaceId"); raw != "" {
@@ -60,7 +61,7 @@ func (h Handler) Get(c *gin.Context) {
 	if !ok {
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	project, err := h.service.Get(ctx, id, middleware.CurrentUserID(c))
 	if err != nil {
@@ -77,7 +78,7 @@ func (h Handler) Update(c *gin.Context) {
 	}
 	var payload UpdateProjectRequest
 	_ = c.ShouldBindJSON(&payload)
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	project, err := h.service.Update(ctx, id, middleware.CurrentUserID(c), payload)
 	if err != nil {
@@ -92,7 +93,7 @@ func (h Handler) Delete(c *gin.Context) {
 	if !ok {
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	if err := h.service.Delete(ctx, id, middleware.CurrentUserID(c)); err != nil {
 		h.error(c, err)

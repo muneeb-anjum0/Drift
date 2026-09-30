@@ -49,7 +49,7 @@ def check_python_dependencies() -> None:
         raise SystemExit(
             "Q4_K_M build dependencies are not ready: "
             + "; ".join(problems)
-            + ". Install them with `python -m pip install -r tools/requirements-local-model.txt`."
+            + ". Install them with `python -m pip install -r tools/model/requirements-local-model.txt`."
         )
 
 
@@ -69,7 +69,7 @@ def main() -> None:
     base_status = verify_base_model(base_model_dir(root))
     print(format_base_model_status(base_status), flush=True)
     if not base_status.complete:
-        raise SystemExit("Base model is incomplete. Run `python tools/download_base_model.py` first.")
+        raise SystemExit("Base model is incomplete. Run `python tools/model/download_base_model.py` first.")
     adapter_ok, adapter_root, missing = validate_adapter(adapter_dir(root))
     if not adapter_ok:
         raise SystemExit(f"Adapter is incomplete at {adapter_root}. Missing: {', '.join(missing)}")
@@ -79,19 +79,19 @@ def main() -> None:
         return
 
     if not merged_model_valid(merged_model_dir(root)):
-        run("tools/merge_lora_to_base.py")
+        run("tools/model/merge_lora_to_base.py")
     else:
         print("Skipping merge; merged model already exists.", flush=True)
 
-    run("tools/setup_llama_cpp.py")
+    run("tools/model/setup_llama_cpp.py")
 
     if not nonempty_file(gguf_f16_path(root)):
-        run("tools/convert_merged_to_gguf.py")
+        run("tools/model/convert_merged_to_gguf.py")
     else:
         print("Skipping F16 GGUF conversion; output already exists.", flush=True)
 
     quantize_args = ["--force"] if args.force else []
-    run("tools/quantize_gguf_q4km.py", *quantize_args)
+    run("tools/model/quantize_gguf_q4km.py", *quantize_args)
 
     if not gguf_q4km_path(root).exists() or gguf_q4km_path(root).stat().st_size == 0:
         raise SystemExit("Q4_K_M GGUF was not created.")

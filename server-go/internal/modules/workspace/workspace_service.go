@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 
+	"driftledger/server-go/internal/authorization"
 	"driftledger/server-go/internal/lifecycle"
 	"driftledger/server-go/internal/modules/activity"
 	storageSvc "driftledger/server-go/internal/storage"
@@ -62,7 +63,7 @@ func (s Service) List(ctx context.Context, userID primitive.ObjectID) ([]Workspa
 }
 
 func (s Service) Get(ctx context.Context, workspaceID, userID primitive.ObjectID) (Workspace, error) {
-	if err := utils.RequireWorkspaceAccess(ctx, s.db, workspaceID, userID); err != nil {
+	if err := authorization.RequireWorkspaceAccess(ctx, s.db, workspaceID, userID); err != nil {
 		return Workspace{}, err
 	}
 	var ws Workspace
@@ -74,7 +75,7 @@ func (s Service) Get(ctx context.Context, workspaceID, userID primitive.ObjectID
 }
 
 func (s Service) Update(ctx context.Context, workspaceID, userID primitive.ObjectID, payload UpdateWorkspaceRequest) (Workspace, error) {
-	if err := utils.RequireWorkspaceCapability(ctx, s.db, workspaceID, userID, utils.CapabilityManageWorkspace); err != nil {
+	if err := authorization.RequireWorkspaceCapability(ctx, s.db, workspaceID, userID, authorization.CapabilityManageWorkspace); err != nil {
 		return Workspace{}, err
 	}
 	update := bson.M{"updatedAt": time.Now().UTC()}
@@ -93,7 +94,7 @@ func (s Service) Update(ctx context.Context, workspaceID, userID primitive.Objec
 }
 
 func (s Service) Delete(ctx context.Context, workspaceID, userID primitive.ObjectID) error {
-	if err := utils.RequireWorkspaceCapability(ctx, s.db, workspaceID, userID, utils.CapabilityDeleteWorkspace); err != nil {
+	if err := authorization.RequireWorkspaceCapability(ctx, s.db, workspaceID, userID, authorization.CapabilityDeleteWorkspace); err != nil {
 		return err
 	}
 	return lifecycle.DeleteWorkspace(ctx, s.db, s.storage, workspaceID)

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"driftledger/server-go/internal/middleware"
+	"driftledger/server-go/internal/requestctx"
 	"driftledger/server-go/internal/response"
 	"driftledger/server-go/internal/utils"
 	"github.com/gin-gonic/gin"
@@ -41,7 +42,7 @@ func (h Handler) Save(c *gin.Context) {
 		response.Error(c, http.StatusBadRequest, "Validation failed", nil)
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	out, err := h.service.Save(ctx, middleware.CurrentUserID(c), p)
 	if err != nil {
@@ -55,7 +56,7 @@ func (h Handler) List(c *gin.Context) {
 	if !ok {
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	out, err := h.service.List(ctx, id, middleware.CurrentUserID(c))
 	if err != nil {
@@ -69,7 +70,7 @@ func (h Handler) Get(c *gin.Context) {
 	if !ok {
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	out, err := h.service.Get(ctx, id, middleware.CurrentUserID(c))
 	if err != nil {
@@ -79,7 +80,7 @@ func (h Handler) Get(c *gin.Context) {
 	response.Success(c, http.StatusOK, "Change request fetched", gin.H{"changeRequest": out})
 }
 func (h Handler) ListApprovals(c *gin.Context) {
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	out, err := h.service.ListApprovals(ctx, middleware.CurrentUserID(c))
 	if err != nil {
@@ -95,7 +96,7 @@ func (h Handler) Update(c *gin.Context) {
 	}
 	var p UpdateRequest
 	_ = c.ShouldBindJSON(&p)
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	out, err := h.service.Update(ctx, id, middleware.CurrentUserID(c), p)
 	if err != nil {
@@ -121,7 +122,7 @@ func (h Handler) Delete(c *gin.Context) {
 	if !ok {
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	if err := h.service.Delete(ctx, id, middleware.CurrentUserID(c)); err != nil {
 		h.err(c, err)
@@ -140,7 +141,7 @@ func (h Handler) handleApprovalDecision(
 	}
 	var p ApprovalDecisionRequest
 	_ = c.ShouldBindJSON(&p)
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	out, err := action(ctx, id, middleware.CurrentUserID(c), p.Note)
 	if err != nil {

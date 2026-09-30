@@ -37,7 +37,7 @@ def main() -> None:
     print(f"Quantization type: {QUANTIZATION_TYPE}", flush=True)
 
     if not f16.exists():
-        raise SystemExit(f"F16 GGUF not found: {f16}. Run `python tools/convert_merged_to_gguf.py` first.")
+        raise SystemExit(f"F16 GGUF not found: {f16}. Run `python tools/model/convert_merged_to_gguf.py` first.")
     if q4.exists() and q4.stat().st_size > 0 and not args.force:
         print(f"Q4_K_M GGUF already exists: {q4}", flush=True)
         print(f"Q4_K_M file size: {file_size_gb(q4)} GB", flush=True)
@@ -50,7 +50,7 @@ def main() -> None:
         if not shutil.which("docker"):
             raise SystemExit(
                 "llama.cpp quantizer not found and Docker is unavailable. "
-                "Run `python tools/setup_llama_cpp.py`, or install Docker and rerun this script."
+                "Run `python tools/model/setup_llama_cpp.py`, or install Docker and rerun this script."
             )
         cmd = [
             "docker",

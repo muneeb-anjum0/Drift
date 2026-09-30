@@ -6,6 +6,7 @@ import (
 	"mime/multipart"
 	"time"
 
+	"driftledger/server-go/internal/authorization"
 	"driftledger/server-go/internal/config"
 	"driftledger/server-go/internal/modules/activity"
 	storageSvc "driftledger/server-go/internal/storage"
@@ -31,7 +32,7 @@ func (s Service) MaxUploadBytes() int64 {
 }
 
 func (s Service) Upload(ctx context.Context, userID, projectID primitive.ObjectID, documentType string, header *multipart.FileHeader) (File, error) {
-	project, err := utils.RequireProjectCapability(ctx, s.db, projectID, userID, utils.CapabilityWrite)
+	project, err := authorization.RequireProjectCapability(ctx, s.db, projectID, userID, authorization.CapabilityWrite)
 	if err != nil {
 		return File{}, err
 	}
@@ -51,7 +52,7 @@ func (s Service) Upload(ctx context.Context, userID, projectID primitive.ObjectI
 }
 
 func (s Service) List(ctx context.Context, projectID, userID primitive.ObjectID) ([]File, error) {
-	if _, err := utils.RequireProjectAccess(ctx, s.db, projectID, userID); err != nil {
+	if _, err := authorization.RequireProjectAccess(ctx, s.db, projectID, userID); err != nil {
 		return nil, err
 	}
 	cursor, err := s.db.Collection("files").Find(ctx, bson.M{"project": projectID}, options.Find().SetSort(bson.D{{Key: "createdAt", Value: -1}}))
@@ -71,7 +72,7 @@ func (s Service) Get(ctx context.Context, id, userID primitive.ObjectID) (File, 
 	if err != nil {
 		return doc, err
 	}
-	_, err = utils.RequireProjectAccess(ctx, s.db, doc.Project, userID)
+	_, err = authorization.RequireProjectAccess(ctx, s.db, doc.Project, userID)
 	return doc, err
 }
 func (s Service) Delete(ctx context.Context, id, userID primitive.ObjectID) error {
@@ -79,7 +80,7 @@ func (s Service) Delete(ctx context.Context, id, userID primitive.ObjectID) erro
 	if err != nil {
 		return err
 	}
-	if _, err := utils.RequireProjectCapability(ctx, s.db, doc.Project, userID, utils.CapabilityWrite); err != nil {
+	if _, err := authorization.RequireProjectCapability(ctx, s.db, doc.Project, userID, authorization.CapabilityWrite); err != nil {
 		return err
 	}
 	if err := s.storage.DeleteFile(ctx, doc.StoragePath); err != nil {

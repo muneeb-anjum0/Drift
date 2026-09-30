@@ -47,5 +47,5 @@ reports/evaluation/
 # Docker/build artifacts
 *.tar
 docker-compose.override.yml
-tools/vendor/llama.cpp/build/
-tools/vendor/llama.cpp/
+tools/model/vendor/llama.cpp/build/
+tools/model/vendor/llama.cpp/

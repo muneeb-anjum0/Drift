@@ -12,7 +12,7 @@ ADAPTER_DIR_RELATIVE = Path("models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA")
 MERGED_MODEL_RELATIVE = Path("models/merged/DriftLedger-Qwen2.5-7B-Merged")
 GGUF_F16_RELATIVE = Path("models/gguf/DriftLedger-Qwen2.5-7B-F16.gguf")
 GGUF_Q4KM_RELATIVE = Path("models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf")
-LLAMA_CPP_RELATIVE = Path("tools/vendor/llama.cpp")
+LLAMA_CPP_RELATIVE = Path("tools/model/vendor/llama.cpp")
 REQUIRED_BASE_FILES = {
     "config.json",
     "generation_config.json",
@@ -42,7 +42,7 @@ class BaseModelStatus:
 
 
 def project_root() -> Path:
-    return Path(__file__).resolve().parents[1]
+    return Path(__file__).resolve().parents[2]
 
 
 def base_model_dir(root: Path | None = None) -> Path:

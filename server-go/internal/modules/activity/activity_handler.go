@@ -4,7 +4,9 @@ import (
 	"errors"
 	"net/http"
 
+	"driftledger/server-go/internal/authorization"
 	"driftledger/server-go/internal/middleware"
+	"driftledger/server-go/internal/requestctx"
 	"driftledger/server-go/internal/response"
 	"driftledger/server-go/internal/utils"
 	"github.com/gin-gonic/gin"
@@ -19,7 +21,7 @@ type Handler struct{ db *mongo.Database }
 func NewHandler(db *mongo.Database) Handler { return Handler{db: db} }
 
 func (h Handler) List(c *gin.Context) {
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	userID := middleware.CurrentUserID(c)
 	memberCursor, err := h.db.Collection("workspacemembers").Find(ctx, bson.M{"user": userID})
@@ -44,9 +46,9 @@ func (h Handler) ListByWorkspace(c *gin.Context) {
 		response.Error(c, http.StatusBadRequest, "Invalid workspace id", nil)
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
-	if err := utils.RequireWorkspaceAccess(ctx, h.db, workspaceID, middleware.CurrentUserID(c)); err != nil {
+	if err := authorization.RequireWorkspaceAccess(ctx, h.db, workspaceID, middleware.CurrentUserID(c)); err != nil {
 		status := http.StatusForbidden
 		if errors.Is(err, utils.ErrNotFound) {
 			status = http.StatusNotFound
@@ -58,7 +60,7 @@ func (h Handler) ListByWorkspace(c *gin.Context) {
 }
 
 func (h Handler) listByFilter(c *gin.Context, filter bson.M) {
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	cursor, err := h.db.Collection("activitylogs").Find(ctx, filter, options.Find().SetSort(bson.D{{Key: "createdAt", Value: -1}}).SetLimit(50))
 	if err != nil {

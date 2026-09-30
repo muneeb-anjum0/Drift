@@ -13,6 +13,9 @@ from fastapi.testclient import TestClient
 os.environ.setdefault("DRIFT_INFERENCE_API_KEY", "test-inference-key-32-characters-minimum")
 
 app_module = importlib.import_module("services.inference.app")
+config_module = importlib.import_module("services.inference.config")
+contracts_module = importlib.import_module("services.inference.contracts")
+runtime_module = importlib.import_module("services.inference.runtime")
 
 
 class PredictionContractTests(unittest.TestCase):
@@ -30,12 +33,12 @@ class PredictionContractTests(unittest.TestCase):
         raw = json.dumps(self.valid_payload())
         for candidate in (raw, f"result: {raw}", f"```json\n{raw}\n```"):
             with self.subTest(candidate=candidate[:20]):
-                parsed = app_module.parse_prediction(candidate)
+                parsed = contracts_module.parse_prediction(candidate)
                 self.assertEqual(parsed.label, "modified")
                 self.assertEqual(parsed.confidence, 0.8)
 
     def test_normalizes_percentage_confidence_and_string_change(self) -> None:
-        parsed = app_module.normalize_payload(
+        parsed = contracts_module.normalize_payload(
             self.valid_payload(confidence=95, changed_elements="delivery window")
         )
         self.assertEqual(parsed.confidence, 0.95)
@@ -61,18 +64,18 @@ class PredictionContractTests(unittest.TestCase):
         for raw in invalid:
             with self.subTest(raw=raw[:40]):
                 with self.assertRaises(HTTPException) as raised:
-                    app_module.parse_prediction(raw)
+                    contracts_module.parse_prediction(raw)
                 self.assertEqual(raised.exception.status_code, 502)
 
     def test_rejects_unbounded_generated_text(self) -> None:
         with self.assertRaises(ValueError):
-            app_module.normalize_payload(
-                self.valid_payload(reasoning="x" * (app_module.MAX_REASONING_LENGTH + 1))
+            contracts_module.normalize_payload(
+                self.valid_payload(reasoning="x" * (contracts_module.MAX_REASONING_LENGTH + 1))
             )
         with self.assertRaises(ValueError):
-            app_module.normalize_payload(
+            contracts_module.normalize_payload(
                 self.valid_payload(
-                    changed_elements=["x"] * (app_module.MAX_CHANGED_ELEMENTS + 1)
+                    changed_elements=["x"] * (contracts_module.MAX_CHANGED_ELEMENTS + 1)
                 )
             )
 
@@ -109,11 +112,11 @@ class APITests(unittest.TestCase):
 
 class LlamaBoundaryTests(unittest.IsolatedAsyncioTestCase):
     async def test_valid_llama_response_is_parsed(self) -> None:
-        settings = app_module.Settings(
+        settings = config_module.Settings(
             inference_api_key="test-inference-key-32-characters-minimum",
             llama_server_url="http://llama.test",
         )
-        runtime = app_module.ModelRuntime(settings)
+        runtime = runtime_module.ModelRuntime(settings)
         payload = {
             "content": json.dumps(
                 {
@@ -134,9 +137,9 @@ class LlamaBoundaryTests(unittest.IsolatedAsyncioTestCase):
             kwargs["transport"] = transport
             return original_client(*args, **kwargs)
 
-        with patch.object(app_module.httpx, "AsyncClient", side_effect=client_factory):
+        with patch.object(runtime_module.httpx, "AsyncClient", side_effect=client_factory):
             result = await runtime._predict_gguf(
-                app_module.PredictRequest(
+                contracts_module.PredictRequest(
                     baseline_requirement="Users can export reports.",
                     new_client_message="Users can export reports.",
                 )
@@ -144,13 +147,13 @@ class LlamaBoundaryTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result.label, "unchanged")
 
     async def test_llama_timeout_and_connection_failure_are_bounded(self) -> None:
-        settings = app_module.Settings(
+        settings = config_module.Settings(
             inference_api_key="test-inference-key-32-characters-minimum",
             llama_server_url="http://llama.test",
             llama_timeout_seconds=0.1,
         )
-        runtime = app_module.ModelRuntime(settings)
-        request = app_module.PredictRequest(
+        runtime = runtime_module.ModelRuntime(settings)
+        request = contracts_module.PredictRequest(
             baseline_requirement="baseline", new_client_message="message"
         )
         for exc in (
@@ -165,7 +168,7 @@ class LlamaBoundaryTests(unittest.IsolatedAsyncioTestCase):
                 return original_client(*args, **kwargs)
 
             with self.subTest(exception=type(exc).__name__):
-                with patch.object(app_module.httpx, "AsyncClient", side_effect=client_factory):
+                with patch.object(runtime_module.httpx, "AsyncClient", side_effect=client_factory):
                     with self.assertRaises(HTTPException) as raised:
                         await runtime._predict_gguf(request)
                 self.assertEqual(raised.exception.status_code, 502)

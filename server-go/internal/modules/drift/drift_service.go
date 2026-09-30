@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"driftledger/server-go/internal/authorization"
 	"driftledger/server-go/internal/modules/activity"
 	"driftledger/server-go/internal/modules/requirement"
 	"driftledger/server-go/internal/utils"
@@ -39,7 +40,7 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 	if err != nil {
 		return AnalysisPreview{}, err
 	}
-	project, err := utils.RequireProjectCapability(ctx, s.db, projectID, userID, utils.CapabilityWrite)
+	project, err := authorization.RequireProjectCapability(ctx, s.db, projectID, userID, authorization.CapabilityWrite)
 	if err != nil {
 		return AnalysisPreview{}, err
 	}
@@ -519,7 +520,7 @@ func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequ
 	if err != nil {
 		return DriftAnalysis{}, err
 	}
-	project, err := utils.RequireProjectCapability(ctx, s.db, projectID, userID, utils.CapabilityWrite)
+	project, err := authorization.RequireProjectCapability(ctx, s.db, projectID, userID, authorization.CapabilityWrite)
 	if err != nil {
 		return DriftAnalysis{}, err
 	}
@@ -554,11 +555,11 @@ func (s Service) Get(ctx context.Context, id, userID primitive.ObjectID) (DriftA
 	if err != nil {
 		return a, err
 	}
-	_, err = utils.RequireProjectAccess(ctx, s.db, a.Project, userID)
+	_, err = authorization.RequireProjectAccess(ctx, s.db, a.Project, userID)
 	return a, err
 }
 func (s Service) List(ctx context.Context, projectID, userID primitive.ObjectID) ([]DriftAnalysis, error) {
-	if _, err := utils.RequireProjectAccess(ctx, s.db, projectID, userID); err != nil {
+	if _, err := authorization.RequireProjectAccess(ctx, s.db, projectID, userID); err != nil {
 		return nil, err
 	}
 	cursor, err := s.db.Collection("driftanalyses").Find(ctx, bson.M{"project": projectID}, options.Find().SetSort(bson.D{{Key: "createdAt", Value: -1}}))
@@ -574,7 +575,7 @@ func (s Service) Delete(ctx context.Context, id, userID primitive.ObjectID) erro
 	if err != nil {
 		return err
 	}
-	if _, err := utils.RequireProjectCapability(ctx, s.db, a.Project, userID, utils.CapabilityWrite); err != nil {
+	if _, err := authorization.RequireProjectCapability(ctx, s.db, a.Project, userID, authorization.CapabilityWrite); err != nil {
 		return err
 	}
 	_, err = s.db.Collection("driftanalyses").DeleteOne(ctx, bson.M{"_id": id})

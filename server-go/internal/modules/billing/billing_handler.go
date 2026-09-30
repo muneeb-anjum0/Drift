@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"driftledger/server-go/internal/middleware"
+	"driftledger/server-go/internal/requestctx"
 	"driftledger/server-go/internal/response"
-	"driftledger/server-go/internal/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,7 +18,7 @@ func NewHandler(service Service) Handler {
 }
 
 func (h Handler) Summary(c *gin.Context) {
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	summary, err := h.service.Summary(ctx, middleware.CurrentUserID(c))
 	if err != nil {

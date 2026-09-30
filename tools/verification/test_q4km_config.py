@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 Q4_CONTAINER_PATH = "/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf"
 Q4_HOST_PATH = "models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf"
 
@@ -25,10 +25,10 @@ def require(condition: bool, message: str) -> None:
 def main() -> int:
     try:
         for path, needle in [
-            ("tools/quantize_gguf_q4km.py", "Q4_K_M"),
-            ("tools/build_q4km_model.py", "quantize_gguf_q4km.py"),
-            ("tools/local_model_utils.py", "GGUF_Q4KM_RELATIVE"),
-            ("tools/evaluate_q4_quality.py", "Q4_K_M"),
+            ("tools/model/quantize_gguf_q4km.py", "Q4_K_M"),
+            ("tools/model/build_q4km_model.py", "quantize_gguf_q4km.py"),
+            ("tools/model/local_model_utils.py", "GGUF_Q4KM_RELATIVE"),
+            ("tools/verification/evaluate_q4_quality.py", "Q4_K_M"),
         ]:
             require((ROOT / path).exists(), f"{path} is missing")
             require(needle in read(path), f"{path} does not contain {needle!r}")
@@ -40,7 +40,7 @@ def main() -> int:
         require(Q4_CONTAINER_PATH in env_example, ".env.example does not point Docker model path at Q4_K_M")
         require(Q4_HOST_PATH in env_example, ".env.example does not expose Q4_K_M host path")
 
-        inference = read("services/inference/app.py")
+        inference = read("services/inference/app.py") + read("services/inference/config.py")
         require("model_label" in inference and "quantization_label" in inference, "inference health lacks model metadata")
         require("Q4_K_M" in inference, "inference default does not mention Q4_K_M")
         require("base_model_required" in inference, "inference health does not clarify base model runtime requirement")
@@ -55,7 +55,15 @@ def main() -> int:
         )
         require("Q4_K_M" in frontend, "frontend does not present the Q4_K_M runtime")
 
-        docs = "\n".join(read(path) for path in ["README.md", "docs/docker.md", "docs/local_model_setup.md", "docs/model_inference.md", "docs/runtime_testing.md"])
+        docs = "\n".join(
+            read(path)
+            for path in [
+                "README.md",
+                "docs/development.md",
+                "docs/model-pipeline.md",
+                "docs/verification.md",
+            ]
+        )
         require("Q4_K_M" in docs, "docs do not mention Q4_K_M")
         require(("Q3" + "_K_M") not in docs, "docs still advertise the old runtime fallback")
     except AssertionError as exc:

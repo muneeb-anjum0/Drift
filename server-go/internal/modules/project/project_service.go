@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 
+	"driftledger/server-go/internal/authorization"
 	"driftledger/server-go/internal/lifecycle"
 	"driftledger/server-go/internal/modules/activity"
 	storageSvc "driftledger/server-go/internal/storage"
@@ -29,7 +30,7 @@ func (s Service) Create(ctx context.Context, userID primitive.ObjectID, payload 
 	if err != nil {
 		return Project{}, err
 	}
-	if err := utils.RequireWorkspaceCapability(ctx, s.db, workspaceID, userID, utils.CapabilityWrite); err != nil {
+	if err := authorization.RequireWorkspaceCapability(ctx, s.db, workspaceID, userID, authorization.CapabilityWrite); err != nil {
 		return Project{}, err
 	}
 	now := time.Now().UTC()
@@ -44,7 +45,7 @@ func (s Service) Create(ctx context.Context, userID primitive.ObjectID, payload 
 func (s Service) List(ctx context.Context, userID primitive.ObjectID, workspaceID *primitive.ObjectID) ([]Project, error) {
 	filter := bson.M{}
 	if workspaceID != nil {
-		if err := utils.RequireWorkspaceAccess(ctx, s.db, *workspaceID, userID); err != nil {
+		if err := authorization.RequireWorkspaceAccess(ctx, s.db, *workspaceID, userID); err != nil {
 			return nil, err
 		}
 		filter["workspace"] = *workspaceID
@@ -73,7 +74,7 @@ func (s Service) List(ctx context.Context, userID primitive.ObjectID, workspaceI
 }
 
 func (s Service) Get(ctx context.Context, projectID, userID primitive.ObjectID) (Project, error) {
-	access, err := utils.RequireProjectAccess(ctx, s.db, projectID, userID)
+	access, err := authorization.RequireProjectAccess(ctx, s.db, projectID, userID)
 	if err != nil {
 		return Project{}, err
 	}
@@ -86,7 +87,7 @@ func (s Service) Get(ctx context.Context, projectID, userID primitive.ObjectID) 
 }
 
 func (s Service) Update(ctx context.Context, projectID, userID primitive.ObjectID, payload UpdateProjectRequest) (Project, error) {
-	if _, err := utils.RequireProjectCapability(ctx, s.db, projectID, userID, utils.CapabilityWrite); err != nil {
+	if _, err := authorization.RequireProjectCapability(ctx, s.db, projectID, userID, authorization.CapabilityWrite); err != nil {
 		return Project{}, err
 	}
 	project, err := s.Get(ctx, projectID, userID)
@@ -127,7 +128,7 @@ func (s Service) Update(ctx context.Context, projectID, userID primitive.ObjectI
 }
 
 func (s Service) Delete(ctx context.Context, projectID, userID primitive.ObjectID) error {
-	if _, err := utils.RequireProjectCapability(ctx, s.db, projectID, userID, utils.CapabilityManageWorkspace); err != nil {
+	if _, err := authorization.RequireProjectCapability(ctx, s.db, projectID, userID, authorization.CapabilityManageWorkspace); err != nil {
 		return err
 	}
 	project, err := s.Get(ctx, projectID, userID)

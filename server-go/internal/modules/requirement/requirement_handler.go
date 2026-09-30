@@ -4,8 +4,10 @@ import (
 	"errors"
 	"net/http"
 
+	"driftledger/server-go/internal/authorization"
 	"driftledger/server-go/internal/middleware"
 	"driftledger/server-go/internal/modules/activity"
+	"driftledger/server-go/internal/requestctx"
 	"driftledger/server-go/internal/response"
 	"driftledger/server-go/internal/utils"
 	"github.com/gin-gonic/gin"
@@ -26,7 +28,7 @@ func (h Handler) ListByProject(c *gin.Context) {
 	if !ok {
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	reqs, err := h.service.ListByProject(ctx, id, middleware.CurrentUserID(c))
 	if err != nil {
@@ -40,7 +42,7 @@ func (h Handler) Get(c *gin.Context) {
 	if !ok {
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	req, err := h.service.Get(ctx, id, middleware.CurrentUserID(c))
 	if err != nil {
@@ -55,7 +57,7 @@ func (h Handler) Create(c *gin.Context) {
 		response.Error(c, http.StatusBadRequest, "Validation failed", []string{"projectId and title are required"})
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	req, err := h.service.Create(ctx, middleware.CurrentUserID(c), p)
 	if err != nil {
@@ -71,7 +73,7 @@ func (h Handler) Update(c *gin.Context) {
 	}
 	var p UpdateRequirementRequest
 	_ = c.ShouldBindJSON(&p)
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	req, err := h.service.Update(ctx, id, middleware.CurrentUserID(c), p)
 	if err != nil {
@@ -85,7 +87,7 @@ func (h Handler) Delete(c *gin.Context) {
 	if !ok {
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	if err := h.service.Delete(ctx, id, middleware.CurrentUserID(c)); err != nil {
 		h.err(c, err)
@@ -104,9 +106,9 @@ func (h Handler) Extract(c *gin.Context) {
 		response.Error(c, http.StatusBadRequest, "Invalid project id", nil)
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
-	project, err := utils.RequireProjectAccess(ctx, h.service.db, projectID, middleware.CurrentUserID(c))
+	project, err := authorization.RequireProjectAccess(ctx, h.service.db, projectID, middleware.CurrentUserID(c))
 	if err != nil {
 		h.err(c, err)
 		return
@@ -121,7 +123,7 @@ func (h Handler) Baseline(c *gin.Context) {
 		response.Error(c, http.StatusBadRequest, "Validation failed", nil)
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	version, err := h.service.Baseline(ctx, middleware.CurrentUserID(c), p)
 	if err != nil {
@@ -139,7 +141,7 @@ func (h Handler) Versions(c *gin.Context) {
 	if !ok {
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	versions, err := h.service.Versions(ctx, id, middleware.CurrentUserID(c))
 	if err != nil {

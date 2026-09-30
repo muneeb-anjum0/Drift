@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"driftledger/server-go/internal/middleware"
+	"driftledger/server-go/internal/requestctx"
 	"driftledger/server-go/internal/response"
 	storageSvc "driftledger/server-go/internal/storage"
 	"driftledger/server-go/internal/utils"
@@ -33,7 +34,7 @@ func (h Handler) Upload(c *gin.Context) {
 		response.Error(c, http.StatusBadRequest, "Invalid project id", nil)
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	doc, err := h.service.Upload(ctx, middleware.CurrentUserID(c), projectID, c.PostForm("documentType"), header)
 	if err != nil {
@@ -47,7 +48,7 @@ func (h Handler) List(c *gin.Context) {
 	if !ok {
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	out, err := h.service.List(ctx, id, middleware.CurrentUserID(c))
 	if err != nil {
@@ -61,7 +62,7 @@ func (h Handler) Get(c *gin.Context) {
 	if !ok {
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	out, err := h.service.Get(ctx, id, middleware.CurrentUserID(c))
 	if err != nil {
@@ -75,7 +76,7 @@ func (h Handler) Delete(c *gin.Context) {
 	if !ok {
 		return
 	}
-	ctx, cancel := utils.Context(c.Request.Context())
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
 	defer cancel()
 	if err := h.service.Delete(ctx, id, middleware.CurrentUserID(c)); err != nil {
 		h.err(c, err)
