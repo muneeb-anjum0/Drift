@@ -1,0 +1,9 @@
+{
+  "id":"P1","status":"PLANNED","created_at":"2026-10-01",
+  "hypothesis":"Explicit mutually exclusive taxonomy boundaries and an instruction/content boundary will reduce the dominant modified overprediction and prompt-injection failures.",
+  "baseline":"V0","primary_variable":"prompt text only",
+  "held_constant":["Q4 artifact","dataset","llama runtime","temperature 0","top-p 1","n_predict 120","parsing","normalization","retrieval excluded","postprocessing excluded"],
+  "dataset":"drift-raw-dev@1.0.0","sample_count":48,
+  "acceptance":"Improve macro F1 and accuracy by at least 3 cases, no class recall regression greater than 0.125, contract parse rate 100%, p95 latency no more than 20% above V0.",
+  "prompt":"evaluation/prompts/P1.json","result":null,"decision":null
+}

@@ -26,6 +26,11 @@ SYSTEM_PROMPT = (
     "one of: added, modified, removed, contradiction, ambiguous, unchanged. Return "
     "only valid JSON with fields: label, confidence, reasoning, changed_elements."
 )
+USER_TEMPLATE = (
+    "Baseline requirement:\n{baseline_requirement}\n\n"
+    "New client message:\n{new_client_message}\n\n"
+    'Return JSON like {{"label":"unchanged","confidence":0.95,"reasoning":"...","changed_elements":[]}}.\n'
+)
 ARTIFACT_SHA256 = "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9"
 BASELINE_COMMIT = "5421d1f383796b1ec0e271586711e637a9ed0347"
 
@@ -42,17 +47,17 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def prompt_for(case: dict[str, Any]) -> str:
+def prompt_for(
+    case: dict[str, Any],
+    system_prompt: str = SYSTEM_PROMPT,
+    user_template: str = USER_TEMPLATE,
+) -> str:
     return (
         "<|im_start|>system\n"
-        f"{SYSTEM_PROMPT}\n"
+        f"{system_prompt}\n"
         "<|im_end|>\n"
         "<|im_start|>user\n"
-        "Baseline requirement:\n"
-        f"{case['baseline_requirement']}\n\n"
-        "New client message:\n"
-        f"{case['client_message']}\n\n"
-        'Return JSON like {"label":"unchanged","confidence":0.95,"reasoning":"...","changed_elements":[]}.\n'
+        f"{user_template.format(**case)}\n"
         "<|im_end|>\n"
         "<|im_start|>assistant\n"
     )
@@ -291,6 +296,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", type=Path, default=Path("evaluation/datasets/drift_raw_dev_v1.json"))
     parser.add_argument("--evaluation-id", default="raw-model-dev-v1")
+    parser.add_argument("--prompt-file", type=Path)
     parser.add_argument("--llama-url", default="http://127.0.0.1:8080")
     parser.add_argument("--output", type=Path, default=Path("/tmp/drift-phase3-reports/raw_model_dev_v1.json"))
     parser.add_argument("--summary-output", type=Path)
@@ -299,6 +305,10 @@ def main() -> int:
     args = parser.parse_args()
 
     dataset = json.loads(args.dataset.read_text(encoding="utf-8"))
+    prompt_spec = json.loads(args.prompt_file.read_text(encoding="utf-8")) if args.prompt_file else {}
+    prompt_id = str(prompt_spec.get("id", "V0"))
+    system_prompt = str(prompt_spec.get("system_prompt", SYSTEM_PROMPT))
+    user_template = str(prompt_spec.get("user_template", USER_TEMPLATE))
     cases = dataset["cases"]
     ids = [item["id"] for item in cases]
     if len(ids) != len(set(ids)) or any(item["expected_label"] not in LABELS for item in cases):
@@ -343,7 +353,8 @@ def main() -> int:
                 "top_p": 1,
                 "n_predict": 120,
                 "context_size": 768,
-                "prompt_sha256": hashlib.sha256(SYSTEM_PROMPT.encode()).hexdigest(),
+                "prompt_id": prompt_id,
+                "prompt_sha256": hashlib.sha256((system_prompt + "\n" + user_template).encode()).hexdigest(),
             },
             "results": [],
         }
@@ -354,7 +365,7 @@ def main() -> int:
         if case["id"] in completed:
             continue
         request_payload = {
-            "prompt": prompt_for(case),
+            "prompt": prompt_for(case, system_prompt, user_template),
             "n_predict": 120,
             "temperature": 0,
             "top_p": 1,
