@@ -22,3 +22,15 @@ The exact V0 task prompt, user template, Qwen framing, and decoding configuratio
 ## Experiment discipline
 
 The registry is [registry.json](../evaluation/experiments/registry.json). Experiments use stable IDs and change one major variable at a time. Historical and full-system regression cases may detect breakage but may not justify acceptance. Rejected experiments remain recorded. No retraining will occur unless deterministic retrieval, prompt specification, label quality, and postprocessing causes are excluded first.
+
+## Diagnostic experiments
+
+### D1 — top-k only
+
+Hypothesis: raising the maximum selected requirements would recover most retrieval misses. Using unchanged V0 rankings and relevance decisions, k=3→5 improved model-input recall only from 16/24 (66.7%) to 17/24 (70.8%), increased average model calls from 1.125 to 1.25, and increased false-candidate exposure from 10 to 12. **Rejected:** most missed candidates never pass the relevance gate, so top-k is not the primary cause.
+
+### D2 — oracle retrieval
+
+Each development query was paired directly with every expected requirement, bypassing production retrieval. The unchanged V0 prompt/model classified 19/28 pairs correctly (67.9%; weighted F1 66.7%). Six of thirteen `added` pairs became `modified`; one contradiction became modified, one unchanged webhook paraphrase became modified, and one modification became added. All outputs parsed. Mean latency was 11.84s, p95 14.25s, at 5.19 generated tokens/s.
+
+This diagnostic shows that perfect retrieval would not eliminate the semantic label-boundary problem. Retrieval and prompt/model classification both require isolated experiments. The six-label macro F1 is not used for this oracle because the diagnostic set is unbalanced and has no ambiguous examples.

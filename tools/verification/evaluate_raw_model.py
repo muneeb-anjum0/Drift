@@ -290,6 +290,7 @@ def summary_report(report: dict[str, Any], full_report_path: Path) -> dict[str, 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", type=Path, default=Path("evaluation/datasets/drift_raw_dev_v1.json"))
+    parser.add_argument("--evaluation-id", default="raw-model-dev-v1")
     parser.add_argument("--llama-url", default="http://127.0.0.1:8080")
     parser.add_argument("--output", type=Path, default=Path("/tmp/drift-phase3-reports/raw_model_dev_v1.json"))
     parser.add_argument("--summary-output", type=Path)
@@ -315,7 +316,7 @@ def main() -> int:
     else:
         report = {
             "schema_version": 1,
-            "evaluation_id": "raw-model-dev-v1",
+            "evaluation_id": args.evaluation_id,
             "status": "running",
             "started_at": utc_now(),
             "finished_at": None,

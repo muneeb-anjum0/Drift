@@ -1,0 +1,382 @@
+{
+  "name": "drift-retrieval-oracle-dev",
+  "version": "1.0.0",
+  "role": "DEVELOPMENT_DIAGNOSTIC",
+  "source_dataset": "drift-retrieval-dev@1.0.0",
+  "source_sha256": "09f30bc801bcd8a4514f51c063ba58102238d365646949b61b6a45ffa90bd89c",
+  "methodology": "Each query is paired directly with every human-labeled expected requirement; no production retrieval result is used.",
+  "labels": [
+    "added",
+    "modified",
+    "removed",
+    "contradiction",
+    "ambiguous",
+    "unchanged"
+  ],
+  "cases": [
+    {
+      "id": "oracle_cq-01_c-reset",
+      "source_query_id": "cq-01",
+      "source_requirement_id": "c-reset",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Patients shall reset a forgotten password through an emailed recovery link.",
+      "client_message": "Let patients recover forgotten passwords with an SMS one-time code too.",
+      "expected_label": "added"
+    },
+    {
+      "id": "oracle_cq-02_c-cancel",
+      "source_query_id": "cq-02",
+      "source_requirement_id": "c-cancel",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Patients shall cancel an appointment until 24 hours before its scheduled time.",
+      "client_message": "Change the appointment cancellation cutoff from 24 hours to 2 hours.",
+      "expected_label": "modified"
+    },
+    {
+      "id": "oracle_cq-03_c-invoice",
+      "source_query_id": "cq-03",
+      "source_requirement_id": "c-invoice",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Patients shall pay an outstanding invoice online by card.",
+      "client_message": "Drop card payments for invoices in the first release.",
+      "expected_label": "removed"
+    },
+    {
+      "id": "oracle_cq-04_c-notify",
+      "source_query_id": "cq-04",
+      "source_requirement_id": "c-notify",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Patients shall receive appointment booking, change, and cancellation emails.",
+      "client_message": "Send booking updates through WhatsApp as well as email.",
+      "expected_label": "added"
+    },
+    {
+      "id": "oracle_cq-05_c-report",
+      "source_query_id": "cq-05",
+      "source_requirement_id": "c-report",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Administrators shall export monthly clinic reports as CSV files.",
+      "client_message": "Replace the monthly CSV with an interactive clinic analytics dashboard.",
+      "expected_label": "modified"
+    },
+    {
+      "id": "oracle_cq-06_c-prescription",
+      "source_query_id": "cq-06",
+      "source_requirement_id": "c-prescription",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Patients shall download prescription PDF files from their visit history.",
+      "client_message": "Move the prescription download link into the medical visit timeline.",
+      "expected_label": "modified"
+    },
+    {
+      "id": "oracle_cq-07_c-login",
+      "source_query_id": "cq-07",
+      "source_requirement_id": "c-login",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Patients shall sign in using their email address and password.",
+      "client_message": "Use magic links rather than passwords when a patient signs in.",
+      "expected_label": "modified"
+    },
+    {
+      "id": "oracle_cq-08_c-book",
+      "source_query_id": "cq-08",
+      "source_requirement_id": "c-book",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Patients shall book an available appointment with a clinician.",
+      "client_message": "When an appointment is booked, email the patient and let them add it to their calendar.",
+      "expected_label": "added"
+    },
+    {
+      "id": "oracle_cq-08_c-notify",
+      "source_query_id": "cq-08",
+      "source_requirement_id": "c-notify",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Patients shall receive appointment booking, change, and cancellation emails.",
+      "client_message": "When an appointment is booked, email the patient and let them add it to their calendar.",
+      "expected_label": "added"
+    },
+    {
+      "id": "oracle_eq-01_e-promo",
+      "source_query_id": "eq-01",
+      "source_requirement_id": "e-promo",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Customers shall apply one valid promotion code during checkout.",
+      "client_message": "Allow buyers to stack two discount coupons on one checkout.",
+      "expected_label": "modified"
+    },
+    {
+      "id": "oracle_eq-02_e-stock",
+      "source_query_id": "eq-02",
+      "source_requirement_id": "e-stock",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "The storefront shall hide products that are out of stock.",
+      "client_message": "Do not hide unavailable items; show them with a back-order date.",
+      "expected_label": "contradiction"
+    },
+    {
+      "id": "oracle_eq-03_e-pay",
+      "source_query_id": "eq-03",
+      "source_requirement_id": "e-pay",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Customers shall pay for an order by card or bank transfer.",
+      "client_message": "Add PayPal alongside card and bank transfer at payment.",
+      "expected_label": "added"
+    },
+    {
+      "id": "oracle_eq-04_e-review",
+      "source_query_id": "eq-04",
+      "source_requirement_id": "e-review",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Verified purchasers shall rate and review delivered products.",
+      "client_message": "Let anyone leave a star rating before their purchase is delivered.",
+      "expected_label": "contradiction"
+    },
+    {
+      "id": "oracle_eq-05_e-ship",
+      "source_query_id": "eq-05",
+      "source_requirement_id": "e-ship",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Customers shall track shipped orders with a carrier tracking number.",
+      "client_message": "Text the buyer when the parcel leaves the warehouse and include its tracking link.",
+      "expected_label": "added"
+    },
+    {
+      "id": "oracle_eq-05_e-email",
+      "source_query_id": "eq-05",
+      "source_requirement_id": "e-email",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Customers shall receive email confirmations for orders, shipments, and refunds.",
+      "client_message": "Text the buyer when the parcel leaves the warehouse and include its tracking link.",
+      "expected_label": "added"
+    },
+    {
+      "id": "oracle_eq-06_e-guest",
+      "source_query_id": "eq-06",
+      "source_requirement_id": "e-guest",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Shoppers shall place an order without creating an account.",
+      "client_message": "Remove anonymous purchasing so every buyer must register.",
+      "expected_label": "removed"
+    },
+    {
+      "id": "oracle_eq-06_e-auth",
+      "source_query_id": "eq-06",
+      "source_requirement_id": "e-auth",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Registered customers shall log in with email and password.",
+      "client_message": "Remove anonymous purchasing so every buyer must register.",
+      "expected_label": "added"
+    },
+    {
+      "id": "oracle_eq-07_e-search",
+      "source_query_id": "eq-07",
+      "source_requirement_id": "e-search",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Shoppers shall search products by name, category, and brand.",
+      "client_message": "Search should understand SKU identifiers in addition to product names.",
+      "expected_label": "added"
+    },
+    {
+      "id": "oracle_eq-08_e-refund",
+      "source_query_id": "eq-08",
+      "source_requirement_id": "e-refund",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Support agents shall issue full or partial refunds to the original payment method.",
+      "client_message": "A support agent needs to return money as store credit instead of to the original tender.",
+      "expected_label": "modified"
+    },
+    {
+      "id": "oracle_sq-01_s-file",
+      "source_query_id": "sq-01",
+      "source_requirement_id": "s-file",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Members shall attach files up to 25 MB to tasks.",
+      "client_message": "Increase the maximum document attached to a task from 25 MB to 100 MB.",
+      "expected_label": "modified"
+    },
+    {
+      "id": "oracle_sq-02_s-notify",
+      "source_query_id": "sq-02",
+      "source_requirement_id": "s-notify",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Members shall receive email alerts for assignments, mentions, and due dates.",
+      "client_message": "Post assignment and deadline alerts into Slack, not only email.",
+      "expected_label": "added"
+    },
+    {
+      "id": "oracle_sq-03_s-audit",
+      "source_query_id": "sq-03",
+      "source_requirement_id": "s-audit",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Administrators shall review security and configuration events for 90 days.",
+      "client_message": "Allow security history to be searched for a full year rather than ninety days.",
+      "expected_label": "modified"
+    },
+    {
+      "id": "oracle_sq-04_s-api",
+      "source_query_id": "sq-04",
+      "source_requirement_id": "s-api",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Integrations shall read projects and tasks through authenticated REST endpoints.",
+      "client_message": "Add GraphQL access to projects and tasks alongside the existing REST interface.",
+      "expected_label": "added"
+    },
+    {
+      "id": "oracle_sq-05_s-hook",
+      "source_query_id": "sq-05",
+      "source_requirement_id": "s-hook",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Workspace owners shall register webhooks for task and project events.",
+      "client_message": "When a task changes, send a signed callback to a customer URL.",
+      "expected_label": "unchanged"
+    },
+    {
+      "id": "oracle_sq-06_s-dashboard",
+      "source_query_id": "sq-06",
+      "source_requirement_id": "s-dashboard",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Managers shall view project health, deadlines, and workload charts.",
+      "client_message": "Show workload grouped by department on the cross-project overview.",
+      "expected_label": "modified"
+    },
+    {
+      "id": "oracle_sq-07_s-search",
+      "source_query_id": "sq-07",
+      "source_requirement_id": "s-search",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Members shall search projects, tasks, and comments by keyword.",
+      "client_message": "Support searching inside uploaded documents as well as task text.",
+      "expected_label": "added"
+    },
+    {
+      "id": "oracle_sq-07_s-file",
+      "source_query_id": "sq-07",
+      "source_requirement_id": "s-file",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Members shall attach files up to 25 MB to tasks.",
+      "client_message": "Support searching inside uploaded documents as well as task text.",
+      "expected_label": "added"
+    },
+    {
+      "id": "oracle_sq-08_s-retain",
+      "source_query_id": "sq-08",
+      "source_requirement_id": "s-retain",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "baseline_requirement": "Deleted workspace data shall be permanently erased after 30 days.",
+      "client_message": "Purge a closed workspace immediately instead of retaining deleted data for thirty days.",
+      "expected_label": "modified"
+    }
+  ]
+}
