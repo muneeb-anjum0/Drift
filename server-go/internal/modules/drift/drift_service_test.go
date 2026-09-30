@@ -161,6 +161,13 @@ func TestScoreRequirementRelevanceRejectsUnrelatedRequirements(t *testing.T) {
 	}
 }
 
+func TestRequirementTokensIgnoreConjunction(t *testing.T) {
+	tokens := requirementTokens("projects and tasks")
+	if _, exists := tokens["and"]; exists {
+		t.Fatal("expected conjunction to be excluded from retrieval evidence")
+	}
+}
+
 func TestNormalizePredictionKeepsSameExistingReportUnchanged(t *testing.T) {
 	prediction := ModelPrediction{Label: "added", Confidence: 0.95, Reasoning: "download requested", ChangedElements: []string{"Monthly report download"}}
 	relevance := RelevanceResult{MatchedDomains: []string{"reports_exports"}}

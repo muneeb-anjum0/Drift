@@ -34,3 +34,11 @@ Hypothesis: raising the maximum selected requirements would recover most retriev
 Each development query was paired directly with every expected requirement, bypassing production retrieval. The unchanged V0 prompt/model classified 19/28 pairs correctly (67.9%; weighted F1 66.7%). Six of thirteen `added` pairs became `modified`; one contradiction became modified, one unchanged webhook paraphrase became modified, and one modification became added. All outputs parsed. Mean latency was 11.84s, p95 14.25s, at 5.19 generated tokens/s.
 
 This diagnostic shows that perfect retrieval would not eliminate the semantic label-boundary problem. Retrieval and prompt/model classification both require isolated experiments. The six-label macro F1 is not used for this oracle because the diagnostic set is unbalanced and has no ambiguous examples.
+
+## Retrieval experiments
+
+### R1 — conjunction normalization
+
+Hypothesis: treating `and` as retrieval evidence polluted rankings. The sole scorer change added `and` to the existing stopword set. All-expected reach improved from 16/24 to 17/24; Recall@1 from 68.8% to 72.9%; Recall@3 from 81.3% to 85.4%; and MRR from 0.837 to 0.862. It recovered `sq-04`, where the correct API requirement had previously ranked fourth. False-candidate exposure stayed 10, while average selected requirements rose slightly from 1.125 to 1.167.
+
+**Accepted as a candidate retrieval component.** This is a general normalization correction, not a case-specific rule. It changes one of 24 outcomes, so the gain remains statistically modest; seven queries still miss expected requirements.

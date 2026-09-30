@@ -280,7 +280,7 @@ var requirementStopWords = map[string]struct{}{
 	"the": {}, "system": {}, "shall": {}, "should": {}, "allow": {}, "also": {}, "same": {}, "from": {}, "with": {},
 	"that": {}, "this": {}, "they": {}, "their": {}, "there": {}, "existing": {}, "users": {}, "user": {},
 	"admins": {}, "admin": {}, "can": {}, "let": {}, "feature": {}, "add": {}, "make": {}, "better": {},
-	"please": {}, "need": {}, "needs": {}, "able": {}, "through": {}, "all": {},
+	"please": {}, "need": {}, "needs": {}, "able": {}, "through": {}, "all": {}, "and": {},
 }
 
 var requirementSynonyms = map[string][]string{
