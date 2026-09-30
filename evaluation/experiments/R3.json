@@ -1,0 +1,11 @@
+{
+  "id":"R3","status":"COMPLETE","created_at":"2026-10-01",
+  "hypothesis":"After R2 improves ranking vocabulary, reducing max selected requirements from 3 to 2 will lower workload while retaining at least 95% model-input recall.",
+  "baseline":"R2","primary_variable":"top-k 3 to 2",
+  "held_constant":["dataset","threshold","score weights","specific-match gate","R1/R2 normalization","model","prompt","postprocessing"],
+  "dataset":"drift-retrieval-dev@1.0.0","sample_count":24,
+  "acceptance":"Model-input recall at least 0.95, average calls at most 1.5, false exposure at most 9, and no critical multi-requirement loss.",
+  "result":{"all_expected_reached":"23/24","model_input_recall":0.9791666667,"average_model_calls":1.5,"false_candidate_exposure":9,"lost_expected_requirement":"cq-08/c-book"},
+  "decision":"REJECT",
+  "interpretation":"Numeric gates pass, but the change drops a genuine booking requirement from a realistic multi-requirement message for only a small workload reduction. The quality/cost tradeoff is not justified."
+}

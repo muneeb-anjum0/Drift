@@ -48,3 +48,7 @@ Hypothesis: treating `and` as retrieval evidence polluted rankings. The sole sco
 Hypothesis: vocabulary gaps caused the remaining lexical misses. Only general synonym/domain normalization supported by the failure ledger was added; weights, gate, threshold, and k remained fixed. All-expected reach improved from 17/24 to 24/24, Recall@1 to 87.5%, Recall@3 to 97.9%, and MRR to 0.979. False-candidate exposure remained 10. Average selected requirements rose from 1.167 to 1.583 because the seven missing queries now admitted their true candidates.
 
 **Inconclusive under the predeclared gate.** The semantic hypothesis is strongly supported, but average calls narrowly exceeded the planned `<1.5` limit. The criterion is not changed after seeing results. R2 remains available only as the base for a separately measured candidate-filtering experiment.
+
+### R3 — top-k 2 after vocabulary normalization
+
+Reducing k from 3 to 2 lowered average calls from 1.583 to 1.5 and false exposure from 10 to 9, while model-input recall became 97.9%. It dropped the genuine booking requirement from the two-change `cq-08` message. **Rejected:** losing a real multi-requirement candidate is not justified by one fewer false exposure and 0.083 fewer calls/query.
