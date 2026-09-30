@@ -2,6 +2,13 @@
 
 These constraints are deliberate or currently unverified. They should remain visible rather than being hidden behind architectural polish.
 
+Actionable follow-up is tracked in the [GitHub issue backlog](https://github.com/muneeb-anjum0/Drift/issues). The intended sequence is:
+
+- **Next / Phase III:** [model artifact and quality baseline](https://github.com/muneeb-anjum0/Drift/issues/9) and [post-processing ablation](https://github.com/muneeb-anjum0/Drift/issues/15).
+- **Before public hosting:** [real Firebase/GCS validation](https://github.com/muneeb-anjum0/Drift/issues/10), [hosted staging and rollback](https://github.com/muneeb-anjum0/Drift/issues/11), and [browser authentication storage review](https://github.com/muneeb-anjum0/Drift/issues/12).
+- **When architecture requires:** [shared rate limiting](https://github.com/muneeb-anjum0/Drift/issues/13) and [stronger MongoDB atomicity](https://github.com/muneeb-anjum0/Drift/issues/14).
+- **Maintenance:** [GitHub Actions runtime deprecations](https://github.com/muneeb-anjum0/Drift/issues/16).
+
 - Browser JWTs use `localStorage`. This is accepted for the current local/demo deployment; public hosting needs a coordinated HttpOnly/Secure/SameSite cookie and CSRF design.
 - Rate limits are process-local. Multi-instance deployment needs shared enforcement or an API gateway.
 - Standalone MongoDB is intentional. Multi-collection cascades are retry-safe, not transactionally atomic.
