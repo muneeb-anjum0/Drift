@@ -39,7 +39,7 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 	if err != nil {
 		return AnalysisPreview{}, err
 	}
-	project, err := utils.RequireProjectAccess(ctx, s.db, projectID, userID)
+	project, err := utils.RequireProjectCapability(ctx, s.db, projectID, userID, utils.CapabilityWrite)
 	if err != nil {
 		return AnalysisPreview{}, err
 	}
@@ -519,7 +519,7 @@ func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequ
 	if err != nil {
 		return DriftAnalysis{}, err
 	}
-	project, err := utils.RequireProjectAccess(ctx, s.db, projectID, userID)
+	project, err := utils.RequireProjectCapability(ctx, s.db, projectID, userID, utils.CapabilityWrite)
 	if err != nil {
 		return DriftAnalysis{}, err
 	}
@@ -572,6 +572,9 @@ func (s Service) List(ctx context.Context, projectID, userID primitive.ObjectID)
 func (s Service) Delete(ctx context.Context, id, userID primitive.ObjectID) error {
 	a, err := s.Get(ctx, id, userID)
 	if err != nil {
+		return err
+	}
+	if _, err := utils.RequireProjectCapability(ctx, s.db, a.Project, userID, utils.CapabilityWrite); err != nil {
 		return err
 	}
 	_, err = s.db.Collection("driftanalyses").DeleteOne(ctx, bson.M{"_id": id})

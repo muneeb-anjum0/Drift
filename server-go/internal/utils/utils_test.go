@@ -2,7 +2,9 @@ package utils
 
 import (
 	"testing"
+	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -59,5 +61,51 @@ func TestPasswordHashing(t *testing.T) {
 	}
 	if CheckPassword(hash, "wrong-password") {
 		t.Fatal("wrong password should not match hash")
+	}
+}
+
+func TestJWTStrictValidation(t *testing.T) {
+	secret := "0123456789abcdef0123456789abcdef"
+	userID := primitive.NewObjectID()
+	token, err := SignJWT(userID, "user@example.com", secret, 1)
+	if err != nil {
+		t.Fatalf("sign JWT: %v", err)
+	}
+	claims, err := ParseJWT(token, secret)
+	if err != nil {
+		t.Fatalf("parse valid JWT: %v", err)
+	}
+	if claims.UserID != userID.Hex() || claims.Subject != userID.Hex() {
+		t.Fatalf("unexpected claims: %#v", claims)
+	}
+
+	now := time.Now()
+	invalidClaims := Claims{
+		UserID: userID.Hex(),
+		Email:  "user@example.com",
+		RegisteredClaims: jwt.RegisteredClaims{
+			Issuer:    jwtIssuer,
+			Subject:   userID.Hex(),
+			Audience:  jwt.ClaimStrings{jwtAudience},
+			ExpiresAt: jwt.NewNumericDate(now.Add(time.Hour)),
+			IssuedAt:  jwt.NewNumericDate(now),
+		},
+	}
+	noneToken := jwt.NewWithClaims(jwt.SigningMethodNone, invalidClaims)
+	unsigned, err := noneToken.SignedString(jwt.UnsafeAllowNoneSignatureType)
+	if err != nil {
+		t.Fatalf("sign unsigned JWT: %v", err)
+	}
+	if _, err := ParseJWT(unsigned, secret); err == nil {
+		t.Fatal("expected non-HS256 token to be rejected")
+	}
+
+	invalidClaims.Issuer = "another-service"
+	wrongIssuer, err := jwt.NewWithClaims(jwt.SigningMethodHS256, invalidClaims).SignedString([]byte(secret))
+	if err != nil {
+		t.Fatalf("sign wrong-issuer JWT: %v", err)
+	}
+	if _, err := ParseJWT(wrongIssuer, secret); err == nil {
+		t.Fatal("expected token with wrong issuer to be rejected")
 	}
 }

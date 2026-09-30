@@ -3,7 +3,6 @@ package file
 import (
 	"errors"
 	"net/http"
-	"strings"
 
 	"driftledger/server-go/internal/middleware"
 	"driftledger/server-go/internal/response"
@@ -17,15 +16,21 @@ type Handler struct{ service Service }
 
 func NewHandler(service Service) Handler { return Handler{service: service} }
 func (h Handler) Upload(c *gin.Context) {
+	c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, h.service.MaxUploadBytes()+(1<<20))
+	header, err := c.FormFile("file")
+	if err != nil {
+		var maxBytesError *http.MaxBytesError
+		if errors.As(err, &maxBytesError) {
+			response.Error(c, http.StatusRequestEntityTooLarge, "Upload exceeds the configured size limit", nil)
+			return
+		}
+		response.Error(c, http.StatusBadRequest, "File is required", nil)
+		return
+	}
 	rawProjectID := c.PostForm("projectId")
 	projectID, err := utils.ObjectID(rawProjectID)
 	if err != nil {
 		response.Error(c, http.StatusBadRequest, "Invalid project id", nil)
-		return
-	}
-	header, err := c.FormFile("file")
-	if err != nil {
-		response.Error(c, http.StatusBadRequest, "File is required", nil)
 		return
 	}
 	ctx, cancel := utils.Context(c.Request.Context())
@@ -91,7 +96,7 @@ func (h Handler) err(c *gin.Context, err error) {
 		response.Error(c, http.StatusServiceUnavailable, storageSvc.ErrDisabled.Error(), nil)
 		return
 	}
-	if err.Error() == "file type is not allowed" || strings.Contains(err.Error(), "file exceeds maximum size") {
+	if errors.Is(err, storageSvc.ErrInvalidFile) {
 		response.Error(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}

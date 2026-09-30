@@ -39,6 +39,9 @@ func (s Service) Register(ctx context.Context, payload RegisterRequest) (User, s
 	now := time.Now().UTC()
 	user := User{ID: utils.NewID(), Name: strings.TrimSpace(payload.Name), Email: email, PasswordHash: hash, Avatar: "", IsEmailVerified: false, CreatedAt: now, UpdatedAt: now}
 	if _, err := s.db.Collection("users").InsertOne(ctx, user); err != nil {
+		if mongo.IsDuplicateKeyError(err) {
+			return User{}, "", ErrDuplicateEmail
+		}
 		return User{}, "", err
 	}
 	workspaceID := utils.NewID()

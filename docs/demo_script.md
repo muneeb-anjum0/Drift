@@ -64,6 +64,7 @@ Show the Q4_K_M model label, pass rate, latency, cases table, and approval quali
 If there is no report, run:
 
 ```powershell
+$env:DRIFT_INFERENCE_API_KEY = "<your local inference key>"
 python tools\evaluate_q4_quality.py
 ```
 

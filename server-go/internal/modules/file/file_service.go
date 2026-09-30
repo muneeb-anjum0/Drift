@@ -26,22 +26,28 @@ func NewService(db *mongo.Database, storage storageSvc.Service, cfg config.Confi
 	return Service{db: db, storage: storage, cfg: cfg}
 }
 
+func (s Service) MaxUploadBytes() int64 {
+	return s.cfg.MaxUploadSizeMB * 1024 * 1024
+}
+
 func (s Service) Upload(ctx context.Context, userID, projectID primitive.ObjectID, documentType string, header *multipart.FileHeader) (File, error) {
-	project, err := utils.RequireProjectAccess(ctx, s.db, projectID, userID)
+	project, err := utils.RequireProjectCapability(ctx, s.db, projectID, userID, utils.CapabilityWrite)
 	if err != nil {
 		return File{}, err
 	}
-	path, stored, url, err := s.storage.UploadFile(ctx, project.Workspace.Hex(), projectID.Hex(), header)
+	path, stored, url, contentType, err := s.storage.UploadFile(ctx, project.Workspace.Hex(), projectID.Hex(), header)
 	if err != nil {
 		return File{}, err
 	}
 	now := time.Now().UTC()
-	doc := File{ID: utils.NewID(), Workspace: project.Workspace, Project: projectID, UploadedBy: userID, OriginalName: header.Filename, StoredName: stored, StoragePath: path, MimeType: header.Header.Get("Content-Type"), Size: header.Size, Bucket: s.cfg.FirebaseStorageBucket, PublicURL: url, DocumentType: def(documentType, "other"), CreatedAt: now, UpdatedAt: now}
+	doc := File{ID: utils.NewID(), Workspace: project.Workspace, Project: projectID, UploadedBy: userID, OriginalName: header.Filename, StoredName: stored, StoragePath: path, MimeType: contentType, Size: header.Size, Bucket: s.cfg.FirebaseStorageBucket, PublicURL: url, DocumentType: def(documentType, "other"), CreatedAt: now, UpdatedAt: now}
 	_, err = s.db.Collection("files").InsertOne(ctx, doc)
-	if err == nil {
-		activity.Log(ctx, s.db, project.Workspace, userID, "FILE_UPLOADED", "File", doc.ID.Hex(), bson.M{"projectId": projectID.Hex(), "originalName": doc.OriginalName})
+	if err != nil {
+		_ = s.storage.DeleteFile(ctx, path)
+		return doc, err
 	}
-	return doc, err
+	activity.Log(ctx, s.db, project.Workspace, userID, "FILE_UPLOADED", "File", doc.ID.Hex(), bson.M{"projectId": projectID.Hex(), "originalName": doc.OriginalName})
+	return doc, nil
 }
 
 func (s Service) List(ctx context.Context, projectID, userID primitive.ObjectID) ([]File, error) {
@@ -73,7 +79,12 @@ func (s Service) Delete(ctx context.Context, id, userID primitive.ObjectID) erro
 	if err != nil {
 		return err
 	}
-	_ = s.storage.DeleteFile(ctx, doc.StoragePath)
+	if _, err := utils.RequireProjectCapability(ctx, s.db, doc.Project, userID, utils.CapabilityWrite); err != nil {
+		return err
+	}
+	if err := s.storage.DeleteFile(ctx, doc.StoragePath); err != nil {
+		return err
+	}
 	_, err = s.db.Collection("files").DeleteOne(ctx, bson.M{"_id": id})
 	if err == nil {
 		activity.Log(ctx, s.db, doc.Workspace, userID, "FILE_DELETED", "File", id.Hex(), bson.M{"originalName": doc.OriginalName})

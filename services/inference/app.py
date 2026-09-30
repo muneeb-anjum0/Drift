@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import secrets
 import shutil
 import tempfile
 import threading
@@ -11,7 +12,7 @@ from pathlib import Path
 from typing import Any, Literal
 
 import httpx
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, Header, HTTPException, Response, status
 from pydantic import BaseModel, Field, ValidationError, field_validator
 
 try:
@@ -104,6 +105,7 @@ class Settings(BaseModel):
     llama_threads: int = Field(default=6)
     llama_max_tokens: int = Field(default=120)
     llama_timeout_seconds: float = Field(default=120)
+    inference_api_key: str = Field(min_length=32)
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -122,6 +124,7 @@ class Settings(BaseModel):
             llama_threads=int(os.getenv("DRIFT_LLAMA_THREADS", "6")),
             llama_max_tokens=int(os.getenv("DRIFT_LLAMA_MAX_TOKENS", "120")),
             llama_timeout_seconds=float(os.getenv("DRIFT_LLAMA_TIMEOUT_SECONDS", "120")),
+            inference_api_key=os.getenv("DRIFT_INFERENCE_API_KEY", "").strip(),
         )
 
 
@@ -417,7 +420,26 @@ def normalize_payload(payload: Any) -> DriftPrediction:
 
 settings = Settings.from_env()
 runtime = ModelRuntime(settings)
-app = FastAPI(title="DriftLedger Local Inference Service", version="1.0.0")
+app = FastAPI(
+    title="DriftLedger Local Inference Service",
+    version="1.0.0",
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None,
+)
+
+
+def require_internal_api_key(
+    x_drift_inference_key: str | None = Header(default=None),
+) -> None:
+    if x_drift_inference_key is None or not secrets.compare_digest(
+        x_drift_inference_key,
+        settings.inference_api_key,
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid inference service credential.",
+        )
 
 
 @app.on_event("startup")
@@ -434,11 +456,18 @@ def load_model() -> None:
     threading.Thread(target=load_in_background, name="drift-model-loader", daemon=True).start()
 
 
-@app.get("/health")
-def health() -> dict[str, Any]:
+@app.get("/live", dependencies=[Depends(require_internal_api_key)])
+def live() -> dict[str, str]:
+    return {"status": "ok"}
+
+
+@app.get("/health", dependencies=[Depends(require_internal_api_key)])
+def health(response: Response) -> dict[str, Any]:
     llama = llama_health(settings)
     gguf_ready = settings.local_engine != "gguf" or bool(llama["connected"])
     status = "ok" if runtime.loaded and gguf_ready else "loading" if runtime.loading or llama["status"] == "loading" else "error"
+    if status != "ok":
+        response.status_code = 503
     return {
         "status": status,
         "model_mode": settings.model_mode,
@@ -460,7 +489,11 @@ def health() -> dict[str, Any]:
     }
 
 
-@app.post("/predict-drift", response_model=DriftPrediction)
+@app.post(
+    "/predict-drift",
+    response_model=DriftPrediction,
+    dependencies=[Depends(require_internal_api_key)],
+)
 async def predict_drift(request: PredictRequest) -> DriftPrediction:
     if runtime.loading and not runtime.loaded:
         raise HTTPException(status_code=503, detail="Model is still loading.")

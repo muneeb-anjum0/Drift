@@ -4,13 +4,14 @@
 
 ```powershell
 docker compose up --build
+docker compose --profile model up -d llama
 ```
 
 ## Health
 
 ```powershell
 Invoke-RestMethod -Uri "http://localhost:8080/health" -Method Get
-Invoke-RestMethod -Uri "http://localhost:8000/health" -Method Get
+Invoke-RestMethod -Uri "http://localhost:8000/health" -Method Get -Headers @{ "X-Drift-Inference-Key" = $env:DRIFT_INFERENCE_API_KEY }
 Invoke-RestMethod -Uri "http://localhost:5000/health" -Method Get
 ```
 
@@ -28,6 +29,7 @@ base_model_required: false
 Invoke-RestMethod `
   -Uri "http://localhost:8000/predict-drift" `
   -Method Post `
+  -Headers @{ "X-Drift-Inference-Key" = $env:DRIFT_INFERENCE_API_KEY } `
   -ContentType "application/json" `
   -Body '{
     "baseline_requirement": "The system shall allow admins to export monthly reports as CSV.",
@@ -47,6 +49,7 @@ unchanged
 Invoke-RestMethod `
   -Uri "http://localhost:5000/api/drift/analyze" `
   -Method Post `
+  -Headers @{ Authorization = "Bearer $env:DRIFT_AUTH_TOKEN" } `
   -ContentType "application/json" `
   -Body '{
     "baseline_requirement": "The system shall allow admins to export monthly reports as CSV.",

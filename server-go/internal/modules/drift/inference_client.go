@@ -21,6 +21,7 @@ type InferenceClient struct {
 	client             *http.Client
 	relevanceThreshold float64
 	maxAnalyzed        int
+	apiKey             string
 }
 
 type ModelAnalyzeRequest struct {
@@ -42,6 +43,7 @@ func NewInferenceClient(cfg config.Config) InferenceClient {
 		client:             &http.Client{Timeout: cfg.DriftInferenceTimeout},
 		relevanceThreshold: cfg.DriftRelevanceThreshold,
 		maxAnalyzed:        cfg.DriftMaxAnalyzedRequirements,
+		apiKey:             cfg.DriftInferenceAPIKey,
 	}
 }
 
@@ -76,6 +78,7 @@ func (c InferenceClient) Predict(ctx context.Context, payload ModelAnalyzeReques
 		return ModelPrediction{}, err
 	}
 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("X-Drift-Inference-Key", c.apiKey)
 	resp, err := c.client.Do(req)
 	if err != nil {
 		return ModelPrediction{}, fmt.Errorf("%w: %v", ErrInferenceUnavailable, err)
@@ -111,6 +114,7 @@ func (c InferenceClient) Health(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+	req.Header.Set("X-Drift-Inference-Key", c.apiKey)
 	resp, err := c.client.Do(req)
 	if err != nil {
 		return fmt.Errorf("%w: %v", ErrInferenceUnavailable, err)

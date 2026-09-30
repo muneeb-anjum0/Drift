@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -28,6 +29,7 @@ def main() -> None:
     root = project_root()
     f16 = gguf_f16_path(root)
     q4 = gguf_q4km_path(root)
+    temporary_q4 = q4.with_suffix(q4.suffix + ".tmp")
     quantizer = find_quantizer(llama_cpp_dir(root) / "build")
 
     print(f"Input F16 GGUF: {f16}", flush=True)
@@ -40,12 +42,10 @@ def main() -> None:
         print(f"Q4_K_M GGUF already exists: {q4}", flush=True)
         print(f"Q4_K_M file size: {file_size_gb(q4)} GB", flush=True)
         return
-    if q4.exists() and args.force:
-        q4.unlink()
-
     q4.parent.mkdir(parents=True, exist_ok=True)
+    temporary_q4.unlink(missing_ok=True)
     if quantizer:
-        cmd = [str(quantizer), str(f16), str(q4), QUANTIZATION_TYPE]
+        cmd = [str(quantizer), str(f16), str(temporary_q4), QUANTIZATION_TYPE]
     else:
         if not shutil.which("docker"):
             raise SystemExit(
@@ -58,17 +58,23 @@ def main() -> None:
             "--rm",
             "-v",
             f"{root / 'models'}:/models",
-            "ghcr.io/ggml-org/llama.cpp:full-cuda",
+            os.getenv("DRIFT_LLAMA_CPP_TOOLS_IMAGE", "ghcr.io/ggml-org/llama.cpp:full-b11151"),
             "--quantize",
             "/models/gguf/DriftLedger-Qwen2.5-7B-F16.gguf",
-            "/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf",
+            f"/models/gguf/{temporary_q4.name}",
             QUANTIZATION_TYPE,
         ]
 
     print("+ " + " ".join(cmd), flush=True)
-    subprocess.run(cmd, cwd=root, check=True)
-    if not q4.exists() or q4.stat().st_size == 0:
-        raise SystemExit(f"Q4_K_M quantization failed; output missing or empty: {q4}")
+    try:
+        subprocess.run(cmd, cwd=root, check=True)
+    except Exception:
+        temporary_q4.unlink(missing_ok=True)
+        raise
+    if not temporary_q4.exists() or temporary_q4.stat().st_size == 0:
+        temporary_q4.unlink(missing_ok=True)
+        raise SystemExit(f"Q4_K_M quantization failed; output missing or empty: {temporary_q4}")
+    os.replace(temporary_q4, q4)
     print(f"Q4_K_M GGUF created: {q4}", flush=True)
     print(f"Q4_K_M file size: {file_size_gb(q4)} GB", flush=True)
 

@@ -59,6 +59,7 @@ python tools\test_q4km_config.py
 
 ```powershell
 docker compose up --build
+docker compose --profile model up -d llama
 ```
 
 ## Troubleshooting
@@ -66,3 +67,4 @@ docker compose up --build
 - Missing GGUF: rebuild or restore `models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf`.
 - Merge out of memory: run the build steps on a stronger machine and copy back the final GGUF.
 - Docker GPU issue: reduce `DRIFT_LLAMA_GPU_LAYERS` or run CPU-only.
+- `tools\setup_llama_cpp.py` checks out the pinned `DRIFT_LLAMA_CPP_REF` and builds CPU tools by default. Pass `--cuda` only on a configured CUDA host.

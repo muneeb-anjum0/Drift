@@ -1,9 +1,11 @@
 package router
 
 import (
+	"context"
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 
 	"driftledger/server-go/internal/config"
 	"driftledger/server-go/internal/middleware"
@@ -40,18 +42,28 @@ func New(db *mongo.Database, cfg config.Config, storage storageSvc.Service) *gin
 	r.GET("/health", func(c *gin.Context) {
 		response.Success(c, http.StatusOK, "DriftLedger API is running", nil)
 	})
+	r.GET("/ready", func(c *gin.Context) {
+		ctx, cancel := context.WithTimeout(c.Request.Context(), 2*time.Second)
+		defer cancel()
+		if err := db.Client().Ping(ctx, nil); err != nil {
+			response.Error(c, http.StatusServiceUnavailable, "DriftLedger API is not ready", nil)
+			return
+		}
+		response.Success(c, http.StatusOK, "DriftLedger API is ready", nil)
+	})
 	api := r.Group("/api/v1")
+	inferenceLimiter := middleware.NewRateLimiter(cfg.InferenceRateLimitRequests, cfg.RateLimitWindow)
 	auth.RegisterRoutes(api.Group("/auth"), db, cfg)
-	workspace.RegisterRoutes(api.Group("/workspaces"), db, cfg)
-	project.RegisterRoutes(api.Group("/projects"), db, cfg)
+	workspace.RegisterRoutes(api.Group("/workspaces"), db, cfg, storage)
+	project.RegisterRoutes(api.Group("/projects"), db, cfg, storage)
 	activity.RegisterRoutes(api.Group("/activities"), db, cfg)
 	requirement.RegisterRoutes(api.Group("/requirements"), db, cfg)
-	drift.RegisterRoutes(api.Group("/drift"), db, cfg)
+	drift.RegisterRoutes(api.Group("/drift"), db, cfg, inferenceLimiter)
 	change_request.RegisterRoutes(api.Group("/change-requests"), db, cfg)
 	filemodule.RegisterRoutes(api.Group("/files"), db, cfg, storage)
-	evaluation.RegisterRoutes(api.Group("/evaluation"), db, cfg)
+	evaluation.RegisterRoutes(api.Group("/evaluation"), db, cfg, inferenceLimiter)
 	billing.RegisterRoutes(api.Group("/billing"), db, cfg)
-	drift.RegisterModelRoutes(r.Group("/api/drift"), db, cfg)
+	drift.RegisterModelRoutes(r.Group("/api/drift"), db, cfg, inferenceLimiter)
 	if cfg.AppEnv == "development" {
 		api.GET("/debug/routes", func(c *gin.Context) {
 			routes := make([]gin.H, 0, len(r.Routes()))

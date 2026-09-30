@@ -47,7 +47,7 @@ func (s Service) Generate(ctx context.Context, userID primitive.ObjectID, p Gene
 		}
 		return Draft{}, err
 	}
-	project, err := utils.RequireProjectAccess(ctx, s.db, analysis.Project, userID)
+	project, err := utils.RequireProjectCapability(ctx, s.db, analysis.Project, userID, utils.CapabilityWrite)
 	if err != nil {
 		return Draft{}, err
 	}
@@ -203,7 +203,7 @@ func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequ
 	if err := s.db.Collection("driftanalyses").FindOne(ctx, bson.M{"_id": driftID}).Decode(&analysis); err != nil {
 		return ChangeRequest{}, utils.ErrNotFound
 	}
-	if _, err := utils.RequireProjectAccess(ctx, s.db, analysis.Project, userID); err != nil {
+	if _, err := utils.RequireProjectCapability(ctx, s.db, analysis.Project, userID, utils.CapabilityWrite); err != nil {
 		return ChangeRequest{}, err
 	}
 	now := time.Now().UTC()
@@ -258,7 +258,7 @@ func (s Service) ListApprovals(ctx context.Context, userID primitive.ObjectID) (
 	}
 	out := make([]ChangeRequest, 0, len(all))
 	for _, cr := range all {
-		if _, err := utils.RequireProjectAccess(ctx, s.db, cr.Project, userID); err == nil {
+		if _, err := utils.RequireProjectCapability(ctx, s.db, cr.Project, userID, utils.CapabilityApprove); err == nil {
 			cr.normalizeApproval()
 			out = append(out, cr)
 		} else if !errors.Is(err, utils.ErrForbidden) && !errors.Is(err, utils.ErrNotFound) {
@@ -271,6 +271,9 @@ func (s Service) ListApprovals(ctx context.Context, userID primitive.ObjectID) (
 func (s Service) Update(ctx context.Context, id, userID primitive.ObjectID, p UpdateRequest) (ChangeRequest, error) {
 	cr, err := s.Get(ctx, id, userID)
 	if err != nil {
+		return cr, err
+	}
+	if _, err := utils.RequireProjectCapability(ctx, s.db, cr.Project, userID, utils.CapabilityWrite); err != nil {
 		return cr, err
 	}
 	update := bson.M{"updatedAt": time.Now().UTC()}
@@ -334,6 +337,13 @@ func (s Service) setApprovalStatus(ctx context.Context, id, userID primitive.Obj
 	if err != nil {
 		return cr, err
 	}
+	capability := utils.CapabilityApprove
+	if nextStatus == ApprovalPending {
+		capability = utils.CapabilityWrite
+	}
+	if _, err := utils.RequireProjectCapability(ctx, s.db, cr.Project, userID, capability); err != nil {
+		return cr, err
+	}
 	note = strings.TrimSpace(note)
 	if len(note) > maxApprovalNoteLength {
 		return cr, ErrInvalidApprovalAction
@@ -341,6 +351,7 @@ func (s Service) setApprovalStatus(ctx context.Context, id, userID primitive.Obj
 	if err := validateApprovalTransition(cr.ApprovalStatus, nextStatus); err != nil {
 		return cr, err
 	}
+	currentStatus := normalizedApprovalStatus(cr.ApprovalStatus)
 	now := time.Now().UTC()
 	actorName := s.actorName(ctx, userID)
 	event := ApprovalEvent{Status: nextStatus, Note: note, Actor: userID, ActorName: actorName, CreatedAt: now}
@@ -357,9 +368,16 @@ func (s Service) setApprovalStatus(ctx context.Context, id, userID primitive.Obj
 		set["decisionAt"] = now
 		set["decisionNote"] = note
 	}
-	_, err = s.db.Collection("changerequests").UpdateOne(ctx, bson.M{"_id": id}, bson.M{"$set": set, "$push": bson.M{"approvalHistory": event}})
+	filter := bson.M{"_id": id, "approvalStatus": currentStatus}
+	if currentStatus == ApprovalDraft {
+		filter["approvalStatus"] = bson.M{"$in": bson.A{nil, "", ApprovalDraft}}
+	}
+	result, err := s.db.Collection("changerequests").UpdateOne(ctx, filter, bson.M{"$set": set, "$push": bson.M{"approvalHistory": event}})
 	if err != nil {
 		return cr, err
+	}
+	if result.MatchedCount == 0 {
+		return cr, ErrInvalidApprovalAction
 	}
 	activity.Log(ctx, s.db, cr.Workspace, userID, "CHANGE_REQUEST_APPROVAL_UPDATED", "ChangeRequest", id.Hex(), bson.M{"projectId": cr.Project.Hex(), "title": cr.Title, "approvalStatus": nextStatus})
 	return s.Get(ctx, id, userID)
@@ -419,6 +437,9 @@ func normalizedApprovalStatus(status string) string {
 func (s Service) Delete(ctx context.Context, id, userID primitive.ObjectID) error {
 	cr, err := s.Get(ctx, id, userID)
 	if err != nil {
+		return err
+	}
+	if _, err := utils.RequireProjectCapability(ctx, s.db, cr.Project, userID, utils.CapabilityWrite); err != nil {
 		return err
 	}
 	_, err = s.db.Collection("changerequests").DeleteOne(ctx, bson.M{"_id": id})

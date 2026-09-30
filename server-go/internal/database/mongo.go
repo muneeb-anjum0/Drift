@@ -63,6 +63,7 @@ func ensureIndexes(ctx context.Context, db *mongo.Database) error {
 		},
 		"requirementversions": {
 			{Keys: bson.D{{Key: "project", Value: 1}, {Key: "versionNumber", Value: -1}}},
+			{Keys: bson.D{{Key: "project", Value: 1}, {Key: "versionNumber", Value: 1}}, Options: options.Index().SetUnique(true).SetName("project_version_unique")},
 		},
 		"driftanalyses": {
 			{Keys: bson.D{{Key: "project", Value: 1}, {Key: "createdAt", Value: -1}}},

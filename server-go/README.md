@@ -21,11 +21,12 @@ See `.env.example` for all supported variables.
 PORT=5000
 MONGO_URI=mongodb://localhost:27017
 MONGO_DATABASE=driftledger
-JWT_SECRET=replace_with_strong_secret
+JWT_SECRET=<independent random value of at least 32 characters>
 CLIENT_URL=http://localhost:5173
 FIREBASE_STORAGE_ENABLED=false
 DRIFT_INFERENCE_ENABLED=true
 DRIFT_INFERENCE_URL=http://localhost:8000
+DRIFT_INFERENCE_API_KEY=<independent random value of at least 32 characters>
 DRIFT_RELEVANCE_THRESHOLD=0.25
 DRIFT_MAX_ANALYZED_REQUIREMENTS=3
 ```

@@ -24,6 +24,7 @@ Start Docker:
 
 ```powershell
 docker compose up --build
+docker compose --profile model up -d llama
 ```
 
 Open:
@@ -54,6 +55,7 @@ needs revision
 The old script is still useful for terminal checks if you explicitly want files:
 
 ```powershell
+$env:DRIFT_INFERENCE_API_KEY = "<your local inference key>"
 python tools\evaluate_q4_quality.py
 ```
 

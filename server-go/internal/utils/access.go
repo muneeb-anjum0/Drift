@@ -20,6 +20,32 @@ type ProjectAccess struct {
 	Workspace primitive.ObjectID `bson:"workspace"`
 	Name      string             `bson:"name"`
 	Client    string             `bson:"clientName"`
+	Role      string             `bson:"-"`
+}
+
+type Capability string
+
+const (
+	CapabilityRead            Capability = "read"
+	CapabilityWrite           Capability = "write"
+	CapabilityApprove         Capability = "approve"
+	CapabilityManageWorkspace Capability = "manage_workspace"
+	CapabilityDeleteWorkspace Capability = "delete_workspace"
+)
+
+func RoleAllows(role string, capability Capability) bool {
+	switch role {
+	case "owner":
+		return true
+	case "admin":
+		return capability != CapabilityDeleteWorkspace
+	case "member":
+		return capability == CapabilityRead || capability == CapabilityWrite
+	case "viewer":
+		return capability == CapabilityRead
+	default:
+		return false
+	}
 }
 
 func Context(parent context.Context) (context.Context, context.CancelFunc) {
@@ -27,23 +53,51 @@ func Context(parent context.Context) (context.Context, context.CancelFunc) {
 }
 
 func HasWorkspaceAccess(ctx context.Context, db *mongo.Database, workspaceID, userID primitive.ObjectID) (bool, error) {
-	filter := bson.M{"workspace": workspaceID, "user": userID}
-	count, err := db.Collection("workspacemembers").CountDocuments(ctx, filter)
-	return count > 0, err
+	_, err := WorkspaceRole(ctx, db, workspaceID, userID)
+	if errors.Is(err, ErrForbidden) {
+		return false, nil
+	}
+	return err == nil, err
 }
 
 func RequireWorkspaceAccess(ctx context.Context, db *mongo.Database, workspaceID, userID primitive.ObjectID) error {
-	ok, err := HasWorkspaceAccess(ctx, db, workspaceID, userID)
+	return RequireWorkspaceCapability(ctx, db, workspaceID, userID, CapabilityRead)
+}
+
+func WorkspaceRole(ctx context.Context, db *mongo.Database, workspaceID, userID primitive.ObjectID) (string, error) {
+	var member struct {
+		Role string `bson:"role"`
+	}
+	err := db.Collection("workspacemembers").FindOne(ctx, bson.M{"workspace": workspaceID, "user": userID}).Decode(&member)
+	if errors.Is(err, mongo.ErrNoDocuments) {
+		return "", ErrForbidden
+	}
+	if err != nil {
+		return "", err
+	}
+	if !RoleAllows(member.Role, CapabilityRead) {
+		return "", ErrForbidden
+	}
+	return member.Role, nil
+
+}
+
+func RequireWorkspaceCapability(ctx context.Context, db *mongo.Database, workspaceID, userID primitive.ObjectID, capability Capability) error {
+	role, err := WorkspaceRole(ctx, db, workspaceID, userID)
 	if err != nil {
 		return err
 	}
-	if !ok {
+	if !RoleAllows(role, capability) {
 		return ErrForbidden
 	}
 	return nil
 }
 
 func RequireProjectAccess(ctx context.Context, db *mongo.Database, projectID, userID primitive.ObjectID) (ProjectAccess, error) {
+	return RequireProjectCapability(ctx, db, projectID, userID, CapabilityRead)
+}
+
+func RequireProjectCapability(ctx context.Context, db *mongo.Database, projectID, userID primitive.ObjectID, capability Capability) (ProjectAccess, error) {
 	var project ProjectAccess
 	if err := db.Collection("projects").FindOne(ctx, bson.M{"_id": projectID}).Decode(&project); err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
@@ -51,8 +105,13 @@ func RequireProjectAccess(ctx context.Context, db *mongo.Database, projectID, us
 		}
 		return project, err
 	}
-	if err := RequireWorkspaceAccess(ctx, db, project.Workspace, userID); err != nil {
+	role, err := WorkspaceRole(ctx, db, project.Workspace, userID)
+	if err != nil {
 		return project, err
 	}
+	if !RoleAllows(role, capability) {
+		return project, ErrForbidden
+	}
+	project.Role = role
 	return project, nil
 }

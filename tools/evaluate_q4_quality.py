@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import time
 import urllib.error
@@ -109,11 +110,20 @@ CASES = [
 ]
 
 
-def request_json(method: str, url: str, payload: dict[str, Any] | None = None, token: str | None = None, timeout: int = 180) -> dict[str, Any]:
+def request_json(
+    method: str,
+    url: str,
+    payload: dict[str, Any] | None = None,
+    token: str | None = None,
+    inference_api_key: str | None = None,
+    timeout: int = 180,
+) -> dict[str, Any]:
     body = json.dumps(payload).encode("utf-8") if payload is not None else None
     headers = {"Content-Type": "application/json"}
     if token:
         headers["Authorization"] = f"Bearer {token}"
+    if inference_api_key:
+        headers["X-Drift-Inference-Key"] = inference_api_key
     req = urllib.request.Request(url, data=body, headers=headers, method=method)
     try:
         with urllib.request.urlopen(req, timeout=timeout) as response:
@@ -131,9 +141,15 @@ def data_at(response: dict[str, Any], key: str) -> Any:
     return response.get("data", {}).get(key)
 
 
-def check_runtime(backend_url: str, inference_url: str, timeout: int, allow_non_q4: bool) -> dict[str, Any]:
+def check_runtime(
+    backend_url: str,
+    inference_url: str,
+    inference_api_key: str,
+    timeout: int,
+    allow_non_q4: bool,
+) -> dict[str, Any]:
     request_json("GET", f"{backend_url}/health", timeout=timeout)
-    health = request_json("GET", f"{inference_url}/health", timeout=timeout)
+    health = request_json("GET", f"{inference_url}/health", inference_api_key=inference_api_key, timeout=timeout)
     if not health.get("model_loaded"):
         raise RuntimeError(f"Q4 runtime is not loaded: {health.get('error') or health}")
     quantization = str(health.get("quantization_label", ""))
@@ -305,12 +321,21 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--backend-url", default=BACKEND_URL)
     parser.add_argument("--inference-url", default=INFERENCE_URL)
+    parser.add_argument("--inference-api-key", default=os.getenv("DRIFT_INFERENCE_API_KEY", ""))
     parser.add_argument("--output", default=str(REPORT_DIR), help="Folder for JSON and Markdown reports.")
     parser.add_argument("--timeout", type=int, default=180)
     parser.add_argument("--allow-non-q4", action="store_true", help="Allow this script to run when health does not report Q4_K_M.")
     args = parser.parse_args()
+    if not args.inference_api_key:
+        parser.error("--inference-api-key or DRIFT_INFERENCE_API_KEY is required")
     try:
-        health = check_runtime(args.backend_url.rstrip("/"), args.inference_url.rstrip("/"), args.timeout, args.allow_non_q4)
+        health = check_runtime(
+            args.backend_url.rstrip("/"),
+            args.inference_url.rstrip("/"),
+            args.inference_api_key,
+            args.timeout,
+            args.allow_non_q4,
+        )
         token, project_id, version_id = setup_project(args.backend_url.rstrip("/"), args.timeout)
         cases = [analyze_case(args.backend_url.rstrip("/"), token, project_id, version_id, case, args.timeout) for case in CASES]
     except Exception as exc:

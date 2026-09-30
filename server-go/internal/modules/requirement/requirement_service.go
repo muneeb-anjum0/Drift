@@ -23,7 +23,7 @@ func (s Service) Create(ctx context.Context, userID primitive.ObjectID, p Create
 	if err != nil {
 		return Requirement{}, err
 	}
-	project, err := utils.RequireProjectAccess(ctx, s.db, projectID, userID)
+	project, err := utils.RequireProjectCapability(ctx, s.db, projectID, userID, utils.CapabilityWrite)
 	if err != nil {
 		return Requirement{}, err
 	}
@@ -70,6 +70,9 @@ func (s Service) Update(ctx context.Context, id, userID primitive.ObjectID, p Up
 	if err != nil {
 		return req, err
 	}
+	if _, err := utils.RequireProjectCapability(ctx, s.db, req.Project, userID, utils.CapabilityWrite); err != nil {
+		return req, err
+	}
 	update := bson.M{"updatedAt": time.Now().UTC(), "updatedBy": userID}
 	if p.Title != "" {
 		update["title"] = p.Title
@@ -113,6 +116,9 @@ func (s Service) Delete(ctx context.Context, id, userID primitive.ObjectID) erro
 	if err != nil {
 		return err
 	}
+	if _, err := utils.RequireProjectCapability(ctx, s.db, req.Project, userID, utils.CapabilityWrite); err != nil {
+		return err
+	}
 	_, err = s.db.Collection("requirements").DeleteOne(ctx, bson.M{"_id": id})
 	if err == nil {
 		activity.Log(ctx, s.db, req.Workspace, userID, "REQUIREMENT_DELETED", "Requirement", id.Hex(), bson.M{"title": req.Title})
@@ -125,7 +131,7 @@ func (s Service) Baseline(ctx context.Context, userID primitive.ObjectID, p Base
 	if err != nil {
 		return RequirementVersion{}, err
 	}
-	project, err := utils.RequireProjectAccess(ctx, s.db, projectID, userID)
+	project, err := utils.RequireProjectCapability(ctx, s.db, projectID, userID, utils.CapabilityApprove)
 	if err != nil {
 		return RequirementVersion{}, err
 	}
@@ -138,7 +144,25 @@ func (s Service) Baseline(ctx context.Context, userID primitive.ObjectID, p Base
 	}
 	var latest RequirementVersion
 	_ = s.db.Collection("requirementversions").FindOne(ctx, bson.M{"project": projectID}, options.FindOne().SetSort(bson.D{{Key: "versionNumber", Value: -1}})).Decode(&latest)
-	versionNumber := latest.VersionNumber + 1
+	if _, err := s.db.Collection("projects").UpdateOne(
+		ctx,
+		bson.M{"_id": projectID},
+		bson.M{"$max": bson.M{"baselineVersionCounter": latest.VersionNumber}},
+	); err != nil {
+		return RequirementVersion{}, err
+	}
+	var counter struct {
+		VersionNumber int `bson:"baselineVersionCounter"`
+	}
+	if err := s.db.Collection("projects").FindOneAndUpdate(
+		ctx,
+		bson.M{"_id": projectID},
+		bson.M{"$inc": bson.M{"baselineVersionCounter": 1}},
+		options.FindOneAndUpdate().SetReturnDocument(options.After).SetProjection(bson.M{"baselineVersionCounter": 1}),
+	).Decode(&counter); err != nil {
+		return RequirementVersion{}, err
+	}
+	versionNumber := counter.VersionNumber
 	snapshots := make([]RequirementSnapshot, 0, len(reqs))
 	for _, req := range reqs {
 		snapshots = append(snapshots, RequirementSnapshot{RequirementID: req.ID.Hex(), Title: req.Title, Description: req.Description, Type: req.Type, Priority: req.Priority, Status: req.Status, Source: req.Source, AcceptanceCriteria: req.AcceptanceCriteria, Tags: req.Tags, EstimatedEffort: req.EstimatedEffort})
@@ -150,12 +174,15 @@ func (s Service) Baseline(ctx context.Context, userID primitive.ObjectID, p Base
 		p.Description = fmt.Sprintf("Requirement baseline version %d", versionNumber)
 	}
 	version := RequirementVersion{ID: utils.NewID(), Project: projectID, Workspace: project.Workspace, VersionNumber: versionNumber, Label: p.Label, Description: p.Description, RequirementsSnapshot: snapshots, CreatedBy: userID, CreatedAt: time.Now().UTC()}
-	_, err = s.db.Collection("requirementversions").InsertOne(ctx, version)
-	if err == nil {
-		_, _ = s.db.Collection("requirements").UpdateMany(ctx, bson.M{"project": projectID}, bson.M{"$set": bson.M{"isBaseline": true, "baselineVersion": versionNumber, "updatedAt": time.Now().UTC(), "updatedBy": userID}})
-		activity.Log(ctx, s.db, project.Workspace, userID, "REQUIREMENT_BASELINE_CREATED", "RequirementVersion", version.ID.Hex(), bson.M{"projectId": projectID.Hex(), "versionNumber": versionNumber})
+	if _, err = s.db.Collection("requirementversions").InsertOne(ctx, version); err != nil {
+		return version, err
 	}
-	return version, err
+	if _, err = s.db.Collection("requirements").UpdateMany(ctx, bson.M{"project": projectID}, bson.M{"$set": bson.M{"isBaseline": true, "baselineVersion": versionNumber, "updatedAt": time.Now().UTC(), "updatedBy": userID}}); err != nil {
+		_, _ = s.db.Collection("requirementversions").DeleteOne(ctx, bson.M{"_id": version.ID})
+		return version, err
+	}
+	activity.Log(ctx, s.db, project.Workspace, userID, "REQUIREMENT_BASELINE_CREATED", "RequirementVersion", version.ID.Hex(), bson.M{"projectId": projectID.Hex(), "versionNumber": versionNumber})
+	return version, nil
 }
 
 func (s Service) Versions(ctx context.Context, projectID, userID primitive.ObjectID) ([]RequirementVersion, error) {

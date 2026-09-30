@@ -26,6 +26,18 @@ The base model folder is not required at runtime. It is only needed if you rebui
 docker compose up --build
 ```
 
+This starts the application services without loading the model. Start the CPU llama.cpp runtime only when needed:
+
+```powershell
+docker compose --profile model up -d llama
+```
+
+For NVIDIA CUDA, use the explicit GPU override:
+
+```powershell
+docker compose -f docker-compose.yml -f docker-compose.gpu.yml --profile model up -d llama
+```
+
 Stop:
 
 ```powershell
@@ -36,10 +48,12 @@ docker compose down
 
 - Frontend: `http://localhost:5173`
 - Backend health: `http://localhost:5000/health`
-- Inference health: `http://localhost:8000/health`
+- Inference health: `http://localhost:8000/health` (requires the internal inference key header)
 - llama.cpp health: `http://localhost:8080/health`
 
 The backend calls `http://inference:8000` inside Docker. The inference wrapper calls `http://llama:8080`.
+
+Before creating or recreating the secured services, copy `.env.example` to `.env` and set independent random values for `JWT_SECRET` and `DRIFT_INFERENCE_API_KEY` (at least 32 characters each). The API fails startup if either required value is missing or still uses a known placeholder. For example, generate values with `openssl rand -hex 32`.
 
 ## GPU Notes
 
@@ -52,7 +66,7 @@ DRIFT_LLAMA_THREADS=6
 DRIFT_LLAMA_MAX_TOKENS=120
 ```
 
-If Docker GPU offload is confirmed, raise `DRIFT_LLAMA_GPU_LAYERS` gradually, for example `8`, `12`, then `16`. If Docker hangs or runs out of VRAM, return it to `0`.
+The default model image is CPU-only and requires no NVIDIA runtime. With `docker-compose.gpu.yml`, raise `DRIFT_LLAMA_GPU_LAYERS` gradually, for example `8`, `12`, then `16`. If Docker hangs or runs out of VRAM, return it to `0`.
 
 ## Reports
 

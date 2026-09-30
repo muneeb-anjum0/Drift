@@ -20,6 +20,10 @@ import (
 func main() {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
 	cfg := config.Load()
+	if err := cfg.Validate(); err != nil {
+		logger.Error("invalid_configuration", slog.String("error", err.Error()))
+		os.Exit(1)
+	}
 	mongoDB, err := database.Connect(cfg)
 	if err != nil {
 		logger.Error("mongo_connection_failed", slog.String("error", err.Error()))
@@ -31,7 +35,11 @@ func main() {
 		_ = mongoDB.Disconnect(ctx)
 	}()
 
-	storage := storageSvc.New(context.Background(), cfg)
+	storage, err := storageSvc.New(context.Background(), cfg)
+	if err != nil {
+		logger.Error("storage_initialization_failed", slog.String("error", err.Error()))
+		os.Exit(1)
+	}
 	app := router.New(mongoDB.DB, cfg, storage)
 	server := &http.Server{
 		Addr:              ":" + cfg.Port,

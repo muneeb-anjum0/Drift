@@ -5,7 +5,9 @@ import (
 	"errors"
 	"time"
 
+	"driftledger/server-go/internal/lifecycle"
 	"driftledger/server-go/internal/modules/activity"
+	storageSvc "driftledger/server-go/internal/storage"
 	"driftledger/server-go/internal/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -13,16 +15,21 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type Service struct{ db *mongo.Database }
+type Service struct {
+	db      *mongo.Database
+	storage storageSvc.Service
+}
 
-func NewService(db *mongo.Database) Service { return Service{db: db} }
+func NewService(db *mongo.Database, storage storageSvc.Service) Service {
+	return Service{db: db, storage: storage}
+}
 
 func (s Service) Create(ctx context.Context, userID primitive.ObjectID, payload CreateProjectRequest) (Project, error) {
 	workspaceID, err := utils.ObjectID(payload.WorkspaceID)
 	if err != nil {
 		return Project{}, err
 	}
-	if err := utils.RequireWorkspaceAccess(ctx, s.db, workspaceID, userID); err != nil {
+	if err := utils.RequireWorkspaceCapability(ctx, s.db, workspaceID, userID, utils.CapabilityWrite); err != nil {
 		return Project{}, err
 	}
 	now := time.Now().UTC()
@@ -79,6 +86,9 @@ func (s Service) Get(ctx context.Context, projectID, userID primitive.ObjectID) 
 }
 
 func (s Service) Update(ctx context.Context, projectID, userID primitive.ObjectID, payload UpdateProjectRequest) (Project, error) {
+	if _, err := utils.RequireProjectCapability(ctx, s.db, projectID, userID, utils.CapabilityWrite); err != nil {
+		return Project{}, err
+	}
 	project, err := s.Get(ctx, projectID, userID)
 	if err != nil {
 		return project, err
@@ -117,11 +127,14 @@ func (s Service) Update(ctx context.Context, projectID, userID primitive.ObjectI
 }
 
 func (s Service) Delete(ctx context.Context, projectID, userID primitive.ObjectID) error {
+	if _, err := utils.RequireProjectCapability(ctx, s.db, projectID, userID, utils.CapabilityManageWorkspace); err != nil {
+		return err
+	}
 	project, err := s.Get(ctx, projectID, userID)
 	if err != nil {
 		return err
 	}
-	_, err = s.db.Collection("projects").DeleteOne(ctx, bson.M{"_id": projectID})
+	err = lifecycle.DeleteProject(ctx, s.db, s.storage, projectID)
 	if err == nil {
 		activity.Log(ctx, s.db, project.Workspace, userID, "PROJECT_DELETED", "Project", projectID.Hex(), bson.M{"name": project.Name})
 	}

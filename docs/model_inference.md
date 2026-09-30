@@ -44,13 +44,14 @@ Project-level analysis does not concatenate all requirements. The backend filter
 Inference health:
 
 ```powershell
-curl.exe http://localhost:8000/health
+curl.exe http://localhost:8000/health -H "X-Drift-Inference-Key: $env:DRIFT_INFERENCE_API_KEY"
 ```
 
 Direct inference:
 
 ```powershell
 curl.exe -X POST http://localhost:8000/predict-drift `
+  -H "X-Drift-Inference-Key: $env:DRIFT_INFERENCE_API_KEY" `
   -H "Content-Type: application/json" `
   -d "{\"baseline_requirement\":\"The system shall allow admins to export monthly reports as CSV.\",\"new_client_message\":\"Can admins download the same monthly report from the reports page?\"}"
 ```
@@ -59,9 +60,12 @@ Backend raw model route:
 
 ```powershell
 curl.exe -X POST http://localhost:5000/api/drift/analyze `
+  -H "Authorization: Bearer $env:DRIFT_AUTH_TOKEN" `
   -H "Content-Type: application/json" `
   -d "{\"baseline_requirement\":\"The system shall allow admins to export monthly reports as CSV.\",\"new_client_message\":\"Can admins download the same monthly report from the reports page?\"}"
 ```
+
+All backend drift-analysis routes require a signed user JWT. The inference service also requires the independent `DRIFT_INFERENCE_API_KEY`; only the Go backend should normally call it.
 
 Authenticated project route:
 

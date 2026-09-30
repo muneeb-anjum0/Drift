@@ -3,16 +3,17 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import urllib.error
 import urllib.request
 
 
-def request(url: str, payload: dict[str, str] | None = None) -> tuple[int, str]:
+def request(url: str, api_key: str, payload: dict[str, str] | None = None) -> tuple[int, str]:
     data = json.dumps(payload).encode("utf-8") if payload is not None else None
     req = urllib.request.Request(
         url,
         data=data,
-        headers={"Content-Type": "application/json"},
+        headers={"Content-Type": "application/json", "X-Drift-Inference-Key": api_key},
         method="POST" if payload is not None else "GET",
     )
     try:
@@ -25,10 +26,13 @@ def request(url: str, payload: dict[str, str] | None = None) -> tuple[int, str]:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Smoke test the local DriftLedger inference service.")
     parser.add_argument("--base-url", default="http://localhost:8000")
+    parser.add_argument("--api-key", default=os.getenv("DRIFT_INFERENCE_API_KEY", ""))
     args = parser.parse_args()
+    if not args.api_key:
+        parser.error("--api-key or DRIFT_INFERENCE_API_KEY is required")
     base_url = args.base_url.rstrip("/")
 
-    status, body = request(f"{base_url}/health")
+    status, body = request(f"{base_url}/health", args.api_key)
     print(f"GET /health -> {status}")
     print(body)
     if status != 200:
@@ -38,7 +42,7 @@ def main() -> None:
         "baseline_requirement": "The system shall allow admins to export monthly reports as CSV.",
         "new_client_message": "Can we also let admins download the same monthly report from the existing reports page?",
     }
-    status, body = request(f"{base_url}/predict-drift", payload)
+    status, body = request(f"{base_url}/predict-drift", args.api_key, payload)
     print(f"POST /predict-drift -> {status}")
     print(body)
     if status != 200:

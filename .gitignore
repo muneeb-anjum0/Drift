@@ -27,6 +27,7 @@ server-go/firebase-service-account.json
 server-go/*.firebase-service-account.json
 
 # DriftLedger model artifacts and caches
+Model/
 DriftLedger_v5_qwen2.5_7b_LoRA.zip
 models/base/
 models/merged/

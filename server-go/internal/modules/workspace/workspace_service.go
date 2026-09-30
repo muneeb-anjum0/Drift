@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"time"
 
+	"driftledger/server-go/internal/lifecycle"
 	"driftledger/server-go/internal/modules/activity"
+	storageSvc "driftledger/server-go/internal/storage"
 	"driftledger/server-go/internal/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -14,9 +16,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type Service struct{ db *mongo.Database }
+type Service struct {
+	db      *mongo.Database
+	storage storageSvc.Service
+}
 
-func NewService(db *mongo.Database) Service { return Service{db: db} }
+func NewService(db *mongo.Database, storage storageSvc.Service) Service {
+	return Service{db: db, storage: storage}
+}
 
 func (s Service) Create(ctx context.Context, userID primitive.ObjectID, payload CreateWorkspaceRequest) (Workspace, error) {
 	now := time.Now().UTC()
@@ -26,7 +33,10 @@ func (s Service) Create(ctx context.Context, userID primitive.ObjectID, payload 
 		return ws, err
 	}
 	member := WorkspaceMember{ID: utils.NewID(), Workspace: id, User: userID, Role: "owner", CreatedAt: now, UpdatedAt: now}
-	_, _ = s.db.Collection("workspacemembers").InsertOne(ctx, member)
+	if _, err := s.db.Collection("workspacemembers").InsertOne(ctx, member); err != nil {
+		_, _ = s.db.Collection("workspaces").DeleteOne(ctx, bson.M{"_id": id})
+		return ws, err
+	}
 	activity.Log(ctx, s.db, id, userID, "WORKSPACE_CREATED", "Workspace", id.Hex(), bson.M{"name": ws.Name})
 	return ws, nil
 }
@@ -64,9 +74,8 @@ func (s Service) Get(ctx context.Context, workspaceID, userID primitive.ObjectID
 }
 
 func (s Service) Update(ctx context.Context, workspaceID, userID primitive.ObjectID, payload UpdateWorkspaceRequest) (Workspace, error) {
-	var member WorkspaceMember
-	if err := s.db.Collection("workspacemembers").FindOne(ctx, bson.M{"workspace": workspaceID, "user": userID}).Decode(&member); err != nil {
-		return Workspace{}, utils.ErrForbidden
+	if err := utils.RequireWorkspaceCapability(ctx, s.db, workspaceID, userID, utils.CapabilityManageWorkspace); err != nil {
+		return Workspace{}, err
 	}
 	update := bson.M{"updatedAt": time.Now().UTC()}
 	if payload.Name != "" {
@@ -84,13 +93,8 @@ func (s Service) Update(ctx context.Context, workspaceID, userID primitive.Objec
 }
 
 func (s Service) Delete(ctx context.Context, workspaceID, userID primitive.ObjectID) error {
-	var member WorkspaceMember
-	if err := s.db.Collection("workspacemembers").FindOne(ctx, bson.M{"workspace": workspaceID, "user": userID, "role": "owner"}).Decode(&member); err != nil {
-		return utils.ErrForbidden
+	if err := utils.RequireWorkspaceCapability(ctx, s.db, workspaceID, userID, utils.CapabilityDeleteWorkspace); err != nil {
+		return err
 	}
-	_, err := s.db.Collection("workspaces").DeleteOne(ctx, bson.M{"_id": workspaceID})
-	if err == nil {
-		activity.Log(ctx, s.db, workspaceID, userID, "WORKSPACE_DELETED", "Workspace", workspaceID.Hex(), bson.M{})
-	}
-	return err
+	return lifecycle.DeleteWorkspace(ctx, s.db, s.storage, workspaceID)
 }
