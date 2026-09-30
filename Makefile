@@ -1,4 +1,4 @@
-.PHONY: setup run test test-integration test-e2e lint format build verify model-smoke model-eval
+.PHONY: setup run test test-integration test-e2e lint format build verify model-build model-check model-smoke model-eval
 
 PYTHON ?= python3
 VENV ?= .venv
@@ -27,11 +27,11 @@ lint:
 	npm run lint
 	@test -z "$$(cd server-go && gofmt -l .)" || (cd server-go && gofmt -l .; exit 1)
 	cd server-go && go vet ./...
-	$(VENV)/bin/ruff check services/inference tools
+	$(VENV)/bin/ruff check --exclude tools/model/vendor services/inference tools
 
 format:
 	cd server-go && gofmt -w .
-	$(VENV)/bin/ruff check --fix services/inference tools
+	$(VENV)/bin/ruff check --exclude tools/model/vendor --fix services/inference tools
 
 build:
 	npm run build
@@ -44,6 +44,13 @@ verify: lint test build
 	npm audit --audit-level=high
 	$(VENV)/bin/pip-audit --requirement services/inference/requirements.txt
 	cd server-go && go run golang.org/x/vuln/cmd/govulncheck@v1.1.4 ./...
+
+model-build:
+	$(PYTHON) tools/model/build_q4km_model.py
+
+model-check:
+	$(PYTHON) tools/verification/check_local_drift_setup.py
+	$(PYTHON) tools/verification/test_q4km_config.py
 
 model-smoke:
 	$(VENV)/bin/python tools/verification/smoke_inference.py

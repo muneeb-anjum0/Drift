@@ -88,7 +88,22 @@ def main() -> None:
                 [cmake, "-S", str(llama_dir), "-B", str(build_dir), f"-DGGML_CUDA={'ON' if args.cuda else 'OFF'}"],
                 cwd=root,
             )
-            run([cmake, "--build", str(build_dir), "--config", "Release", "-j"], cwd=root)
+            run(
+                [
+                    cmake,
+                    "--build",
+                    str(build_dir),
+                    "--config",
+                    "Release",
+                    "--target",
+                    "llama-quantize",
+                    "llama-server",
+                    "llama-export-lora",
+                    "-j",
+                    "4",
+                ],
+                cwd=root,
+            )
         except subprocess.CalledProcessError as exc:
             raise SystemExit(
                 "Could not build llama.cpp automatically. Install Visual Studio Build Tools with the C++ workload, "
@@ -98,10 +113,12 @@ def main() -> None:
 
     quantize = find_binary(build_dir, ["llama-quantize.exe", "quantize.exe", "llama-quantize"])
     server = find_binary(build_dir, ["llama-server.exe", "server.exe", "llama-server"])
+    exporter = find_binary(build_dir, ["llama-export-lora.exe", "llama-export-lora"])
     print(f"convert_hf_to_gguf.py: {convert}", flush=True)
     print(f"quantizer: {quantize or 'not built yet'}", flush=True)
     print(f"llama server: {server or 'not built yet'}", flush=True)
-    if not quantize or not server:
+    print(f"LoRA exporter: {exporter or 'not built yet'}", flush=True)
+    if not quantize or not server or not exporter:
         print(
             "llama.cpp checkout is ready for conversion, but local binaries are missing. "
             "Quantization can still use the Docker fallback in tools/model/quantize_gguf_q4km.py.",

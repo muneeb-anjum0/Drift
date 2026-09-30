@@ -125,10 +125,14 @@ services:
       - ${DRIFT_LLAMA_CTX_SIZE:-768}
       - --n-gpu-layers
       - ${DRIFT_LLAMA_GPU_LAYERS:-0}
+      - --device
+      - none
       - --threads
       - ${DRIFT_LLAMA_THREADS:-6}
+      - --parallel
+      - ${DRIFT_LLAMA_PARALLEL:-1}
     volumes:
-      - ./models:/app/models
+      - ./models:/app/models:ro
     ports:
       - "127.0.0.1:8080:8080"
     read_only: true
@@ -138,6 +142,8 @@ services:
     security_opt:
       - no-new-privileges:true
     pids_limit: 512
+    mem_limit: 7g
+    memswap_limit: 8g
     restart: unless-stopped
 
   db:
