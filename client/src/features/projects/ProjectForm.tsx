@@ -5,7 +5,6 @@ import { Input } from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
 import { Spinner } from '../../components/common/Spinner';
 import { cn } from '../../utils/cn';
-import type { Project } from '../../types';
 import type { ProjectFormValues } from './project.types';
 import type { Workspace } from '../../types';
 

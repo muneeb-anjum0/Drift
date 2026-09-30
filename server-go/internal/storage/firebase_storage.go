@@ -20,6 +20,12 @@ import (
 var ErrDisabled = errors.New("Firebase Storage is not enabled. Configure Firebase Storage to upload files.")
 var ErrInvalidFile = errors.New("invalid file")
 
+type Backend interface {
+	Enabled() bool
+	UploadFile(context.Context, string, string, *multipart.FileHeader) (string, string, string, string, error)
+	DeleteFile(context.Context, string) error
+}
+
 type Service struct {
 	cfg    config.Config
 	client *storage.Client

@@ -86,6 +86,24 @@ The original LoRA adapter was used to create the merged quantized artifact. Runt
 
 Large model files are intentionally ignored by Git.
 
+## Development and verification
+
+The reproducible command surface, CI boundaries, verification matrix, failure contracts, and accepted debt are documented in [`docs/verification.md`](docs/verification.md). Environment-variable requirements are documented in [`docs/configuration.md`](docs/configuration.md), recovery evidence is in [`docs/operations.md`](docs/operations.md), and the current evidence report is in [`docs/phase_ii_evidence.md`](docs/phase_ii_evidence.md).
+
+Standard pull-request verification does not load or download the model:
+
+```bash
+make setup
+make verify
+```
+
+Mongo-backed invariants and browser workflows are explicit:
+
+```bash
+MONGO_TEST_URI=mongodb://127.0.0.1:27017 make test-integration
+make test-e2e
+```
+
 ## Architecture
 
 ```mermaid

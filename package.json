@@ -15,7 +15,11 @@
     "build": "npm run build --workspace client",
     "build:client": "npm run build --workspace client",
     "build:server": "cd server-go && go test ./...",
+    "typecheck": "npm run typecheck --workspace client",
+    "lint": "npm run lint --workspace client",
     "test:server": "cd server-go && go test ./...",
+    "test:inference": "python3 -m pytest services/inference/test_app.py",
+    "test:integration": "cd server-go && go test -count=1 ./internal/integration",
     "test:e2e": "npm run test:e2e --workspace client"
   },
   "devDependencies": {

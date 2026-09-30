@@ -17,10 +17,10 @@ import (
 
 type Service struct {
 	db      *mongo.Database
-	storage storageSvc.Service
+	storage storageSvc.Backend
 }
 
-func NewService(db *mongo.Database, storage storageSvc.Service) Service {
+func NewService(db *mongo.Database, storage storageSvc.Backend) Service {
 	return Service{db: db, storage: storage}
 }
 

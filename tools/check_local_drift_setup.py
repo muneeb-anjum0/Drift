@@ -2,8 +2,6 @@
 from __future__ import annotations
 
 import sys
-from pathlib import Path
-
 from local_model_utils import file_size_gb, gguf_q4km_path, project_root
 
 

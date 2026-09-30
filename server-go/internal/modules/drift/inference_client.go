@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
+	"math"
 	"net/http"
 	"strings"
 
@@ -14,6 +16,13 @@ import (
 
 var ErrInferenceUnavailable = errors.New("drift inference service unavailable")
 var ErrInferenceBadResponse = errors.New("drift inference service returned an invalid response")
+
+const (
+	maxInferenceResponseBytes = 64 << 10
+	maxInferenceReasoning     = 4000
+	maxChangedElements        = 50
+	maxChangedElementLength   = 500
+)
 
 type InferenceClient struct {
 	enabled            bool
@@ -87,23 +96,53 @@ func (c InferenceClient) Predict(ctx context.Context, payload ModelAnalyzeReques
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		return ModelPrediction{}, fmt.Errorf("%w: status %d", ErrInferenceUnavailable, resp.StatusCode)
 	}
-	var out ModelPrediction
-	if err := json.NewDecoder(resp.Body).Decode(&out); err != nil {
+	var wire struct {
+		Label           string    `json:"label"`
+		Confidence      *float64  `json:"confidence"`
+		Reasoning       *string   `json:"reasoning"`
+		ChangedElements *[]string `json:"changed_elements"`
+	}
+	decoder := json.NewDecoder(io.LimitReader(resp.Body, maxInferenceResponseBytes+1))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&wire); err != nil {
 		return ModelPrediction{}, fmt.Errorf("%w: %v", ErrInferenceBadResponse, err)
 	}
-	if !validModelLabel(out.Label) {
-		return ModelPrediction{}, fmt.Errorf("%w: invalid label %q", ErrInferenceBadResponse, out.Label)
+	if err := ensureJSONEOF(decoder); err != nil {
+		return ModelPrediction{}, fmt.Errorf("%w: %v", ErrInferenceBadResponse, err)
 	}
-	if out.Confidence > 1 {
-		out.Confidence = out.Confidence / 100
+	if !validModelLabel(wire.Label) {
+		return ModelPrediction{}, fmt.Errorf("%w: invalid label %q", ErrInferenceBadResponse, wire.Label)
 	}
-	if out.Confidence < 0 {
-		out.Confidence = 0
+	if wire.Confidence == nil || wire.Reasoning == nil || wire.ChangedElements == nil {
+		return ModelPrediction{}, fmt.Errorf("%w: missing required fields", ErrInferenceBadResponse)
 	}
-	if out.Confidence > 1 {
-		out.Confidence = 1
+	confidence := *wire.Confidence
+	if math.IsNaN(confidence) || math.IsInf(confidence, 0) || confidence < 0 || confidence > 100 {
+		return ModelPrediction{}, fmt.Errorf("%w: confidence is out of range", ErrInferenceBadResponse)
 	}
-	return out, nil
+	if confidence > 1 {
+		confidence /= 100
+	}
+	if len(*wire.Reasoning) > maxInferenceReasoning || len(*wire.ChangedElements) > maxChangedElements {
+		return ModelPrediction{}, fmt.Errorf("%w: generated fields exceed limits", ErrInferenceBadResponse)
+	}
+	for _, element := range *wire.ChangedElements {
+		if len(element) > maxChangedElementLength {
+			return ModelPrediction{}, fmt.Errorf("%w: changed element exceeds limit", ErrInferenceBadResponse)
+		}
+	}
+	return ModelPrediction{Label: wire.Label, Confidence: confidence, Reasoning: *wire.Reasoning, ChangedElements: *wire.ChangedElements}, nil
+}
+
+func ensureJSONEOF(decoder *json.Decoder) error {
+	var trailing any
+	if err := decoder.Decode(&trailing); !errors.Is(err, io.EOF) {
+		if err == nil {
+			return errors.New("multiple JSON values")
+		}
+		return err
+	}
+	return nil
 }
 
 func (c InferenceClient) Health(ctx context.Context) error {

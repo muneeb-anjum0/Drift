@@ -18,11 +18,11 @@ import (
 
 type Service struct {
 	db      *mongo.Database
-	storage storageSvc.Service
+	storage storageSvc.Backend
 	cfg     config.Config
 }
 
-func NewService(db *mongo.Database, storage storageSvc.Service, cfg config.Config) Service {
+func NewService(db *mongo.Database, storage storageSvc.Backend, cfg config.Config) Service {
 	return Service{db: db, storage: storage, cfg: cfg}
 }
 

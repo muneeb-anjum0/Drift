@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"archive/zip"
 	"bytes"
 	"mime/multipart"
 	"testing"
@@ -35,6 +36,48 @@ func TestValidateRejectsOversizedFiles(t *testing.T) {
 	if err := Validate(header, 10); err == nil {
 		t.Fatal("expected oversized file to be rejected")
 	}
+}
+
+func TestValidateRejectsEmptyAndSuspiciousNames(t *testing.T) {
+	for _, header := range []*multipart.FileHeader{
+		{Filename: "empty.txt", Size: 0},
+		{Filename: "bad\x00name.txt", Size: 10},
+		{Filename: string(bytes.Repeat([]byte("a"), 256)) + ".txt", Size: 10},
+	} {
+		if err := Validate(header, 10); err == nil {
+			t.Fatalf("expected %q to be rejected", header.Filename)
+		}
+	}
+}
+
+func TestValidateDOCXStructure(t *testing.T) {
+	valid := testFileHeader(t, "scope.docx", docxBytes(t, "[Content_Types].xml", "word/document.xml"))
+	if err := Validate(valid, 10); err != nil {
+		t.Fatalf("expected valid DOCX to pass: %v", err)
+	}
+	malformed := testFileHeader(t, "scope.docx", docxBytes(t, "unrelated.txt"))
+	if err := Validate(malformed, 10); err == nil {
+		t.Fatal("expected malformed DOCX structure to be rejected")
+	}
+}
+
+func docxBytes(t *testing.T, names ...string) []byte {
+	t.Helper()
+	var body bytes.Buffer
+	archive := zip.NewWriter(&body)
+	for _, name := range names {
+		entry, err := archive.Create(name)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, err := entry.Write([]byte("document")); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := archive.Close(); err != nil {
+		t.Fatal(err)
+	}
+	return body.Bytes()
 }
 
 func testFileHeader(t *testing.T, filename string, content []byte) *multipart.FileHeader {

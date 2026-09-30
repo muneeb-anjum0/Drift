@@ -108,4 +108,27 @@ func TestJWTStrictValidation(t *testing.T) {
 	if _, err := ParseJWT(wrongIssuer, secret); err == nil {
 		t.Fatal("expected token with wrong issuer to be rejected")
 	}
+
+	tests := []struct {
+		name   string
+		claims Claims
+		secret string
+	}{
+		{"expired", Claims{UserID: userID.Hex(), Email: "user@example.com", RegisteredClaims: jwt.RegisteredClaims{Issuer: jwtIssuer, Subject: userID.Hex(), Audience: jwt.ClaimStrings{jwtAudience}, ExpiresAt: jwt.NewNumericDate(now.Add(-time.Hour)), IssuedAt: jwt.NewNumericDate(now.Add(-2 * time.Hour))}}, secret},
+		{"wrong audience", Claims{UserID: userID.Hex(), Email: "user@example.com", RegisteredClaims: jwt.RegisteredClaims{Issuer: jwtIssuer, Subject: userID.Hex(), Audience: jwt.ClaimStrings{"another-client"}, ExpiresAt: jwt.NewNumericDate(now.Add(time.Hour)), IssuedAt: jwt.NewNumericDate(now)}}, secret},
+		{"mismatched subject", Claims{UserID: userID.Hex(), Email: "user@example.com", RegisteredClaims: jwt.RegisteredClaims{Issuer: jwtIssuer, Subject: primitive.NewObjectID().Hex(), Audience: jwt.ClaimStrings{jwtAudience}, ExpiresAt: jwt.NewNumericDate(now.Add(time.Hour)), IssuedAt: jwt.NewNumericDate(now)}}, secret},
+		{"missing issued at", Claims{UserID: userID.Hex(), Email: "user@example.com", RegisteredClaims: jwt.RegisteredClaims{Issuer: jwtIssuer, Subject: userID.Hex(), Audience: jwt.ClaimStrings{jwtAudience}, ExpiresAt: jwt.NewNumericDate(now.Add(time.Hour))}}, secret},
+		{"invalid signature", invalidClaims, "different-secret-with-at-least-32-characters"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			signed, err := jwt.NewWithClaims(jwt.SigningMethodHS256, tt.claims).SignedString([]byte(tt.secret))
+			if err != nil {
+				t.Fatalf("sign token: %v", err)
+			}
+			if _, err := ParseJWT(signed, secret); err == nil {
+				t.Fatal("expected token to be rejected")
+			}
+		})
+	}
 }

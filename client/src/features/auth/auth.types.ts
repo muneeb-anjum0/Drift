@@ -10,4 +10,4 @@ export interface SignupFormValues {
   confirmPassword: string;
 }
 
-export interface RegisterFormValues extends SignupFormValues {}
+export type RegisterFormValues = SignupFormValues;

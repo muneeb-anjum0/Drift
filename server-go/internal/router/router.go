@@ -25,7 +25,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func New(db *mongo.Database, cfg config.Config, storage storageSvc.Service) *gin.Engine {
+func New(db *mongo.Database, cfg config.Config, storage storageSvc.Backend) *gin.Engine {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
 		Level: slog.LevelInfo,
 	}))

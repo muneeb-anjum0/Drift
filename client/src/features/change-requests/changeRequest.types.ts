@@ -1,5 +1,5 @@
 import type { Project, User, Workspace } from '../../types';
-import type { DriftAnalysis, DetectedChange } from '../drift/drift.types';
+import type { DriftAnalysis } from '../drift/drift.types';
 
 export type ChangeRequestStatus = 'draft' | 'sent' | 'approved' | 'rejected' | 'archived';
 export type ApprovalStatus = 'draft' | 'pending_approval' | 'approved' | 'rejected' | 'needs_revision';

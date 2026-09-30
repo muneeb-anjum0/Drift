@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func RegisterRoutes(group *gin.RouterGroup, db *mongo.Database, cfg config.Config, storage storageSvc.Service) {
+func RegisterRoutes(group *gin.RouterGroup, db *mongo.Database, cfg config.Config, storage storageSvc.Backend) {
 	handler := NewHandler(NewService(db, storage, cfg))
 	group.Use(middleware.Auth(db, cfg))
 	group.POST("/upload", handler.Upload)

@@ -32,7 +32,7 @@ type storedFile struct {
 	StoragePath string `bson:"storagePath"`
 }
 
-func DeleteProject(ctx context.Context, db *mongo.Database, storage storageSvc.Service, projectID primitive.ObjectID) error {
+func DeleteProject(ctx context.Context, db *mongo.Database, storage storageSvc.Backend, projectID primitive.ObjectID) error {
 	filter := bson.M{"project": projectID}
 	if err := deleteStoredFiles(ctx, db, storage, filter); err != nil {
 		return err
@@ -46,7 +46,7 @@ func DeleteProject(ctx context.Context, db *mongo.Database, storage storageSvc.S
 	return err
 }
 
-func DeleteWorkspace(ctx context.Context, db *mongo.Database, storage storageSvc.Service, workspaceID primitive.ObjectID) error {
+func DeleteWorkspace(ctx context.Context, db *mongo.Database, storage storageSvc.Backend, workspaceID primitive.ObjectID) error {
 	filter := bson.M{"workspace": workspaceID}
 	if err := deleteStoredFiles(ctx, db, storage, filter); err != nil {
 		return err
@@ -60,7 +60,7 @@ func DeleteWorkspace(ctx context.Context, db *mongo.Database, storage storageSvc
 	return err
 }
 
-func deleteStoredFiles(ctx context.Context, db *mongo.Database, storage storageSvc.Service, filter bson.M) error {
+func deleteStoredFiles(ctx context.Context, db *mongo.Database, storage storageSvc.Backend, filter bson.M) error {
 	cursor, err := db.Collection("files").Find(ctx, filter)
 	if err != nil {
 		return err

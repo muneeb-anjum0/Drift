@@ -9,8 +9,6 @@ from pathlib import Path
 
 os.environ.setdefault("HF_HUB_DISABLE_XET", "1")
 
-from huggingface_hub import hf_hub_download, snapshot_download
-
 from local_model_utils import REPO_ID, base_model_dir, format_base_model_status, project_root, verify_base_model
 
 METHOD_TIMEOUT_SECONDS = int(os.getenv("DRIFT_DOWNLOAD_METHOD_TIMEOUT_SECONDS", "900"))

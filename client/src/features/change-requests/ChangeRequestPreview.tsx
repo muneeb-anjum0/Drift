@@ -31,7 +31,7 @@ const defaultDraft: ChangeRequestDraft = {
   generatedBy: 'rule_based',
 };
 
-export const ChangeRequestPreview = ({ projectId, driftAnalyses }: { projectId: string; driftAnalyses: DriftAnalysis[] }) => {
+export const ChangeRequestPreview = ({ driftAnalyses }: { projectId: string; driftAnalyses: DriftAnalysis[] }) => {
   const generateMutation = useGenerateChangeRequest();
   const saveMutation = useSaveChangeRequest();
   const [selectedDriftAnalysisId, setSelectedDriftAnalysisId] = useState('');

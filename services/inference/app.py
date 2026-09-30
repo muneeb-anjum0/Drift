@@ -8,6 +8,7 @@ import shutil
 import tempfile
 import threading
 import zipfile
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any, Literal
 
@@ -33,6 +34,9 @@ except ImportError:  # pragma: no cover
 
 LABELS = {"added", "modified", "removed", "contradiction", "ambiguous", "unchanged"}
 DEFAULT_GGUF_MODEL_PATH = Path("models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf")
+MAX_REASONING_LENGTH = 4000
+MAX_CHANGED_ELEMENTS = 50
+MAX_CHANGED_ELEMENT_LENGTH = 500
 
 
 def cuda_available() -> bool:
@@ -399,33 +403,68 @@ def normalize_payload(payload: Any) -> DriftPrediction:
         payload = payload["prediction"]
     if not isinstance(payload, dict):
         raise ValueError("prediction payload must be an object")
+    required = {"label", "confidence", "reasoning", "changed_elements"}
+    missing = sorted(required.difference(payload))
+    if missing:
+        raise ValueError(f"prediction payload is missing required fields: {', '.join(missing)}")
     label = str(payload.get("label", "")).strip().lower()
     if label not in LABELS:
         raise ValueError(f"invalid label: {label}")
-    confidence = payload.get("confidence", 0)
-    if isinstance(confidence, (int, float)) and confidence > 1:
+    confidence = payload["confidence"]
+    if isinstance(confidence, bool) or not isinstance(confidence, (int, float)):
+        raise ValueError("confidence must be numeric")
+    if confidence > 1:
         confidence = confidence / 100
-    changed = payload.get("changed_elements", [])
+    reasoning = payload["reasoning"]
+    if not isinstance(reasoning, str) or len(reasoning) > MAX_REASONING_LENGTH:
+        raise ValueError("reasoning must be a bounded string")
+    changed = payload["changed_elements"]
     if isinstance(changed, str):
         changed = [changed]
+    if not isinstance(changed, list) or len(changed) > MAX_CHANGED_ELEMENTS:
+        raise ValueError("changed_elements must be a bounded list")
+    if any(not isinstance(item, str) or len(item) > MAX_CHANGED_ELEMENT_LENGTH for item in changed):
+        raise ValueError("changed_elements entries must be bounded strings")
     return DriftPrediction.model_validate(
         {
             "label": label,
             "confidence": confidence,
-            "reasoning": str(payload.get("reasoning", "")),
-            "changed_elements": [str(item) for item in changed if str(item).strip()],
+            "reasoning": reasoning,
+            "changed_elements": [item for item in changed if item.strip()],
         }
     )
 
 
 settings = Settings.from_env()
 runtime = ModelRuntime(settings)
+
+
+def start_model_load() -> None:
+    def load_in_background() -> None:
+        runtime.loading = True
+        try:
+            runtime.load()
+        except Exception as exc:
+            runtime.load_error = str(exc)
+        finally:
+            runtime.loading = False
+
+    threading.Thread(target=load_in_background, name="drift-model-loader", daemon=True).start()
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    start_model_load()
+    yield
+
+
 app = FastAPI(
     title="DriftLedger Local Inference Service",
     version="1.0.0",
     docs_url=None,
     redoc_url=None,
     openapi_url=None,
+    lifespan=lifespan,
 )
 
 
@@ -440,20 +479,6 @@ def require_internal_api_key(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid inference service credential.",
         )
-
-
-@app.on_event("startup")
-def load_model() -> None:
-    def load_in_background() -> None:
-        runtime.loading = True
-        try:
-            runtime.load()
-        except Exception as exc:
-            runtime.load_error = str(exc)
-        finally:
-            runtime.loading = False
-
-    threading.Thread(target=load_in_background, name="drift-model-loader", daemon=True).start()
 
 
 @app.get("/live", dependencies=[Depends(require_internal_api_key)])

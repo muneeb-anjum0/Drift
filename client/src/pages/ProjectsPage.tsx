@@ -172,7 +172,7 @@ export const ProjectsPage = () => {
         }
         onSubmit={async (values) => {
           if (!editingProject) return;
-          const { workspaceId, ...payload } = values;
+          const { workspaceId: _workspaceId, ...payload } = values;
           await updateProject({ projectId: editingProject._id, payload });
         }}
       />
