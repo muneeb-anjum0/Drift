@@ -29,7 +29,7 @@ SYSTEM_PROMPT = (
 USER_TEMPLATE = (
     "Baseline requirement:\n{baseline_requirement}\n\n"
     "New client message:\n{new_client_message}\n\n"
-    'Return JSON like {{"label":"unchanged","confidence":0.95,"reasoning":"...","changed_elements":[]}}.\n'
+    'Return JSON like {"label":"unchanged","confidence":0.95,"reasoning":"...","changed_elements":[]}.'
 )
 ARTIFACT_SHA256 = "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9"
 BASELINE_COMMIT = "5421d1f383796b1ec0e271586711e637a9ed0347"
@@ -52,12 +52,15 @@ def prompt_for(
     system_prompt: str = SYSTEM_PROMPT,
     user_template: str = USER_TEMPLATE,
 ) -> str:
+    user_prompt = user_template.replace("{baseline_requirement}", case["baseline_requirement"])
+    user_prompt = user_prompt.replace("{new_client_message}", case["client_message"])
+    user_prompt = user_prompt.replace("{client_message}", case["client_message"])
     return (
         "<|im_start|>system\n"
         f"{system_prompt}\n"
         "<|im_end|>\n"
         "<|im_start|>user\n"
-        f"{user_template.format(**case)}\n"
+        f"{user_prompt}\n"
         "<|im_end|>\n"
         "<|im_start|>assistant\n"
     )
