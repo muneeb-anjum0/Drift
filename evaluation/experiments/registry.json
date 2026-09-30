@@ -1,0 +1,12 @@
+{
+  "schema_version":1,
+  "baseline_commit":"66bb5fe7a0c98c20a40b3dd19113a641f5b71b7f",
+  "baseline_artifact_commit":"5421d1f383796b1ec0e271586711e637a9ed0347",
+  "baseline_tag":{"name":"phase-3-model-baseline-v0","peeled_commit":"5421d1f383796b1ec0e271586711e637a9ed0347","note":"Pre-existing tag identifies artifact baseline and was not moved to evidence-complete commit."},
+  "experiment_branch":"phase-3/model-improvement-v1",
+  "experiments":[
+    {"id":"V0","status":"FROZEN","primary_variable":"none","dataset":"drift-raw-dev@1.0.0","sample_count":48,"accuracy":0.6666666667,"macro_f1":0.6688097668,"decision":"BASELINE","report":"evaluation/reports/raw_model_dev_v1.summary.json"},
+    {"id":"V0-R","status":"FROZEN","primary_variable":"none","dataset":"drift-retrieval-dev@1.0.0","sample_count":24,"recall_at_1":0.6875,"recall_at_3":0.8125,"model_input_recall":0.6666666667,"decision":"BASELINE","report":"evaluation/reports/retrieval_dev_v1.json"},
+    {"id":"V0-PP","status":"FROZEN","primary_variable":"none","dataset":"drift-raw-dev@1.0.0","sample_count":48,"raw_correct":32,"postprocessed_correct":31,"net":-1,"decision":"BASELINE","report":"evaluation/reports/postprocess_ablation_dev_v1.json"}
+  ]
+}

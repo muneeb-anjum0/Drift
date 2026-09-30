@@ -1,0 +1,10 @@
+{
+  "id":"V0",
+  "source":"services/inference/runtime.py",
+  "system_prompt":"You are DriftLedger, a requirement drift analysis model. Compare the baseline requirement with the new client message. Classify the new message as exactly one of: added, modified, removed, contradiction, ambiguous, unchanged. Return only valid JSON with fields: label, confidence, reasoning, changed_elements.",
+  "user_template":"Baseline requirement:\n{baseline_requirement}\n\nNew client message:\n{new_client_message}\n\nReturn JSON like {\"label\":\"unchanged\",\"confidence\":0.95,\"reasoning\":\"...\",\"changed_elements\":[]}.",
+  "chat_template":"Qwen <|im_start|>/<|im_end|> system, user, assistant framing",
+  "examples":"schema-shaped JSON only; no semantic few-shot example",
+  "generation":{"temperature":0,"top_p":1,"n_predict":120,"stop":["<|im_end|>","<|im_start|>"],"context_size":768},
+  "artifact_sha256":"11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9"
+}
