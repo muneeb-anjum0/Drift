@@ -2,6 +2,12 @@
 
 Drift separates ordinary software verification from model-quality evaluation. Standard verification never downloads or starts model weights.
 
+## Frozen engineering baseline
+
+The Phase II/II.5 software baseline is identified by the annotated tag `phase-2.5-engineering-baseline`. The tag's peeled commit is the canonical commit SHA; it is created only after local verification and the `Verify` workflow's `software`, `integration`, and `e2e` jobs pass for the final `main` commit.
+
+Baseline date: 2026-09-30. Model execution, quality, and latency are intentionally excluded. Real Firebase/GCS behavior and hosted staging/TLS also remain unverified. `main` requires pull requests and the three named CI checks, applies strict branch updates, enforces protection for administrators, and disallows force pushes and deletion. Actionable follow-up lives in the [GitHub issue backlog](https://github.com/muneeb-anjum0/Drift/issues) and is summarized in [Known Limitations](known-limitations.md).
+
 ## Command surface
 
 Run `make setup` once on a machine with Node 22, Go 1.26, Python 3.13, Docker, and Docker Compose. Then use:
