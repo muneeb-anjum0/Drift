@@ -42,3 +42,9 @@ This diagnostic shows that perfect retrieval would not eliminate the semantic la
 Hypothesis: treating `and` as retrieval evidence polluted rankings. The sole scorer change added `and` to the existing stopword set. All-expected reach improved from 16/24 to 17/24; Recall@1 from 68.8% to 72.9%; Recall@3 from 81.3% to 85.4%; and MRR from 0.837 to 0.862. It recovered `sq-04`, where the correct API requirement had previously ranked fourth. False-candidate exposure stayed 10, while average selected requirements rose slightly from 1.125 to 1.167.
 
 **Accepted as a candidate retrieval component.** This is a general normalization correction, not a case-specific rule. It changes one of 24 outcomes, so the gain remains statistically modest; seven queries still miss expected requirements.
+
+### R2 — evidence-backed vocabulary normalization
+
+Hypothesis: vocabulary gaps caused the remaining lexical misses. Only general synonym/domain normalization supported by the failure ledger was added; weights, gate, threshold, and k remained fixed. All-expected reach improved from 17/24 to 24/24, Recall@1 to 87.5%, Recall@3 to 97.9%, and MRR to 0.979. False-candidate exposure remained 10. Average selected requirements rose from 1.167 to 1.583 because the seven missing queries now admitted their true candidates.
+
+**Inconclusive under the predeclared gate.** The semantic hypothesis is strongly supported, but average calls narrowly exceeded the planned `<1.5` limit. The criterion is not changed after seeing results. R2 remains available only as the base for a separately measured candidate-filtering experiment.
