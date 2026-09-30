@@ -36,6 +36,7 @@ Supported: local, review-assisted requirement-drift analysis under the validated
 - Ambiguous recall was 37.5%; removed recall 50%; added and contradiction recall 62.5%. The model strongly overpredicts `modified` on boundary cases.
 - Confidence is not calibrated: development ECE was 0.214, and two incorrect predictions carried 0.95 confidence.
 - Existing canonical postprocessing reduced accuracy by one case on the 48-case development corpus (one correction, two introduced errors).
+- Production retrieval delivered every expected requirement to the model for 16/24 development queries (66.7%); a full-system miss may therefore precede model inference.
 - Training/evaluation leakage cannot be excluded because training data is missing.
 - The historical repository benchmark is contaminated as independent evidence: examples and expected semantics appear in deterministic postprocessing and tests.
 - Raw-model quality must be reported separately from parsing, normalization, retrieval, and postprocessing.

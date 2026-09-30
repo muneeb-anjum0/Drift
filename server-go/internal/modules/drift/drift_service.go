@@ -93,7 +93,7 @@ func (s Service) analyzeRequirements(ctx context.Context, snapshot []requirement
 		if text == "" {
 			continue
 		}
-		relevance := scoreRequirementRelevance(req, inputText, threshold)
+		relevance := ScoreRequirementRelevance(req, inputText, threshold)
 		results = append(results, requirementPrediction{
 			requirement: req,
 			text:        text,
@@ -315,7 +315,9 @@ var domainKeywords = map[string][]string{
 	"products_content": {"product", "listing", "blog", "post", "homepage", "content", "image"},
 }
 
-func scoreRequirementRelevance(req requirement.RequirementSnapshot, inputText string, threshold float64) RelevanceResult {
+// ScoreRequirementRelevance applies the deterministic production retrieval scorer.
+// It is exported so evaluation tooling can measure retrieval independently of inference.
+func ScoreRequirementRelevance(req requirement.RequirementSnapshot, inputText string, threshold float64) RelevanceResult {
 	titleTokens := requirementTokens(req.Title)
 	baselineTokens := requirementTokens(req.Title + " " + req.Description)
 	inputTokens := requirementTokens(inputText)

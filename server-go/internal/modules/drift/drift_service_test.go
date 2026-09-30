@@ -116,7 +116,7 @@ func TestScoreRequirementRelevanceMatchesExpectedDomains(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := scoreRequirementRelevance(tt.req, tt.message, 0.25)
+			result := ScoreRequirementRelevance(tt.req, tt.message, 0.25)
 			if result.IsRelevant != tt.relevant {
 				t.Fatalf("expected relevant=%v, got %#v", tt.relevant, result)
 			}
@@ -150,7 +150,7 @@ func TestScoreRequirementRelevanceRejectsUnrelatedRequirements(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := scoreRequirementRelevance(tt.req, tt.message, 0.25)
+			result := ScoreRequirementRelevance(tt.req, tt.message, 0.25)
 			if result.IsRelevant {
 				t.Fatalf("expected unrelated result, got %#v", result)
 			}

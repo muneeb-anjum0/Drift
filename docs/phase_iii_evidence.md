@@ -57,10 +57,18 @@ The main error cluster is overprediction of `modified`: three additions, three r
 
 Applying the existing production `CleanDetectedChanges` rules to the same 48 raw predictions corrected one error, introduced two errors, and had no label effect on 45 cases. Accuracy fell from 32/48 (66.7%) to 31/48 (64.6%), a net contribution of -1 case. The correction and one introduced error both came from the broad `authentication method` term in the SMS-OTP canonical rule; the other introduced error came from the broad `filters` term in the interactive-report rule. This confirms that repository canonical rules are evaluation-specific model compensation, not a generally reliable classifier layer. The code has not been tuned or removed. See [postprocess_ablation_dev_v1.json](../evaluation/reports/postprocess_ablation_dev_v1.json).
 
+## Retrieval baseline
+
+`drift-retrieval-dev` 1.0.0 contains 24 prospective queries over small (8 requirements), medium (12), and larger (20) synthetic projects. Expected requirement IDs are explicit, including multi-requirement messages and similar distractors. Dataset SHA256 is `09f30bc801bcd8a4514f51c063ba58102238d365646949b61b6a45ffa90bd89c`.
+
+The unchanged production scorer at threshold 0.25 and maximum three selected requirements achieved Recall@1 68.8%, Recall@3 81.3%, Precision@3 30.6%, and MRR 0.837. More importantly, after applying the relevance gate and cap, model-input recall was 66.7%: all expected requirements reached the model for 16/24 queries. This rate was 8/8 for the small project, 4/8 for medium, and 4/8 for larger.
+
+Eight queries lost at least one expected requirement before inference. Failures include lexical paraphrases with insufficient specific matches, multi-requirement messages, and common-token distractors. In one case the expected file requirement ranked first with score 0.46 but was still rejected because the scorer's separate `hasSpecificMatch` condition was false. In another, project/task overlap put three distractors ahead of the intended API requirement. These are `RETRIEVAL_FAILURE` cases and must not be treated as model semantic failures. See [retrieval_dev_v1.json](../evaluation/reports/retrieval_dev_v1.json).
+
 ## Resource observation
 
 Before the 48-case sequential run, the host had 6.6 GiB available and 101 MiB swap in use; llama used about 4.78 GiB. After the run, the host had 5.8 GiB available and 85 MiB swap in use; llama used about 5.18 GiB. No request failed, the container remained below its 7 GiB limit, and concurrency remained one.
 
 ## Pending evidence
 
-Retrieval measurement, full-system project evaluation, multi-change coverage, repeated-run stability, controlled failure recovery, and modest concurrency characterization remain pending. Higher-precision CPU comparison is impractical on this host and remains unverified. GPU quality, latency, and VRAM are **UNVERIFIED** and no model operation used the GPU.
+Full-system project evaluation, multi-change coverage, repeated-run stability, controlled failure recovery, and modest concurrency characterization remain pending. Higher-precision CPU comparison is impractical on this host and remains unverified. GPU quality, latency, and VRAM are **UNVERIFIED** and no model operation used the GPU.
