@@ -69,6 +69,28 @@ Eight queries lost at least one expected requirement before inference. Failures 
 
 Before the 48-case sequential run, the host had 6.6 GiB available and 101 MiB swap in use; llama used about 4.78 GiB. After the run, the host had 5.8 GiB available and 85 MiB swap in use; llama used about 5.18 GiB. No request failed, the container remained below its 7 GiB limit, and concurrency remained one.
 
+## Full-system regression
+
+The existing eight-case portfolio suite exercised project setup, baseline snapshots, retrieval, inference, normalization, canonical postprocessing, scoring, and aggregation. It passed 8/8 with 30.90 seconds average end-to-end latency. Individual cases ranged from 11.53 to 42.56 seconds because retrieval selected between one and three requirements and the single-slot runtime processed model calls sequentially. This score is **contaminated regression evidence**: the cases and expected semantics appear in repository rules. See [full_system_historical_v0.json](../evaluation/reports/full_system_historical_v0.json).
+
+## Stability and CPU concurrency
+
+Six representative raw cases were repeated three times at temperature 0. All 18 outputs parsed; every case retained the same label, confidence, and exact raw-output SHA256 across its three repeats. Mean latency was 10.26 seconds. Several stable cases were consistently wrong, demonstrating systematic semantic errors rather than sampling variance. See [stability_dev_v1.json](../evaluation/reports/stability_dev_v1.json).
+
+Bounded concurrency used the same short case with client levels 1, 2, and 4 while llama remained configured for one slot. All 7 requests succeeded. Throughput was effectively flat at 0.136, 0.144, and 0.132 requests/s. Mean latency rose from 7.35 seconds to 10.48 and 18.58 seconds; maximum latency at four clients was 30.33 seconds. Container memory remained about 3.58 GiB during this post-restart measurement and swap did not grow. Four clients are operationally safe in this observation but queue behind one generation slot; this is not parallel throughput scaling. See [cpu_concurrency_v1.json](../evaluation/reports/cpu_concurrency_v1.json).
+
+Hardware and runtime metadata: Intel Core i7-8750H, 6 cores/12 threads, approximately 15 GiB RAM, Fedora Linux kernel 7.2.7, Docker Engine 29.8.1, Compose 5.5.1, llama.cpp `b11151` / `bd4f514`, six inference threads, context 768, one slot, Q4_K_M artifact SHA256 shown above.
+
+## Controlled runtime recovery
+
+Stopping llama made FastAPI health return 503 with `model_loaded=false`. An authenticated backend `analyze-direct` request returned explicit HTTP 502 in 8.01 seconds with “Drift inference service is unavailable”; analysis document count remained 0 before and after. After restart, llama returned HTTP readiness in 8.17 seconds and all four Compose services became healthy. There was no silent success or persisted partial analysis. See [runtime_recovery_v1.json](../evaluation/reports/runtime_recovery_v1.json).
+
+Restart remapping increased zram use from roughly 104 MiB to 1.2 GiB, although 7.0 GiB host memory remained available. Under the resource-safety rule, further stress and the optional FastAPI restart scenario were stopped. This does not indicate request-time swapping during the earlier quality or concurrency runs.
+
+## Quantization scope
+
+The intended Q4_K_M artifact is fully measured. Its size is 4,683,074,112 bytes. The F16 reconstruction artifact is 15,237,853,760 bytes and cannot be loaded alongside normal workstation services with defensible headroom on a 15 GiB host. Higher-precision quality, RAM, and latency comparison is therefore **UNVERIFIED ON CURRENT HARDWARE**; it was not attempted. GPU quality, latency, and VRAM are also **UNVERIFIED**.
+
 ## Pending evidence
 
-Full-system project evaluation, multi-change coverage, repeated-run stability, controlled failure recovery, and modest concurrency characterization remain pending. Higher-precision CPU comparison is impractical on this host and remains unverified. GPU quality, latency, and VRAM are **UNVERIFIED** and no model operation used the GPU.
+An independent sealed final test, broader project-level multi-change evaluation, changed-element human scoring, reasoning/hallucination review, and any justified optimization remain pending. No optimization has begun. GPU quality, latency, and VRAM are **UNVERIFIED** and no model operation used the GPU.

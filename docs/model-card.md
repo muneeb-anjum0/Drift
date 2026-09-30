@@ -27,6 +27,8 @@ Initial smoke evidence: model load reached readiness in about 5.4 seconds at app
 
 On the balanced 48-case `drift-raw-dev` 1.0.0 development corpus, the raw model achieved 66.7% accuracy and 66.9% macro F1. Mean latency was 12.75 seconds, p95 15.90 seconds, with 4.92 generated tokens/s. All outputs were contract-parseable, while 52.1% were strict JSON without recovery. This corpus is not proven held out because the training data is unknown; metrics are baseline development evidence, not a generalization claim.
 
+Six representative cases produced identical labels, confidences, and raw output hashes across three temperature-zero repetitions. With one llama slot, 1/2/4 concurrent clients all completed, but throughput stayed flat while mean latency increased from 7.35 to 18.58 seconds. The eight-case contaminated full-system regression passed 8/8 at 30.90 seconds average latency.
+
 ## Supported and unsupported use
 
 Supported: local, review-assisted requirement-drift analysis under the validated contract. Unsupported: autonomous scope decisions, authorization, legal or safety-critical decisions, calibrated risk estimation, arbitrary chat, and claims about domains or languages not measured by a versioned dataset.
@@ -42,3 +44,4 @@ Supported: local, review-assisted requirement-drift analysis under the validated
 - Raw-model quality must be reported separately from parsing, normalization, retrieval, and postprocessing.
 - Prompt-injection-tagged development accuracy was 2/6; user-controlled pseudo-instructions remain a meaningful weakness.
 - GPU quality, latency, and VRAM are not tested in Phase III.
+- Higher-precision CPU inference is unverified: the 15.24 GB F16 artifact cannot be loaded with safe workstation headroom on this host.
