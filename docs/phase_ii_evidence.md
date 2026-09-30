@@ -2,6 +2,8 @@
 
 Date: 2026-09-30. Environment: local Linux development laptop, Docker Compose, model profile stopped.
 
+> Historical note: the first hosted Phase II workflow exposed a mismatch that local verification had missed: `go.mod` pinned Go 1.26.3 while the floating local container had already resolved a patched toolchain. Phase II.5 pins both CI and the backend build to Go 1.26.6. Current verification status belongs in GitHub Actions and `docs/verification.md`; this file remains the Phase II evidence snapshot.
+
 ## Baseline audit classification
 
 | Reported claim | Classification | Evidence |
@@ -77,7 +79,7 @@ The Python test run emits one dependency-level Starlette warning about its TestC
 - Actual model artifact reconstruction, checksums, runtime inference, quality baseline, expanded quality dataset results, and model latency.
 - Real Firebase/GCS upload, delete, URL authorization, and compensation against an isolated bucket.
 - Hosted deployment, TLS/proxy behavior, external monitoring, and staging smoke tests.
-- The GitHub-hosted workflow and branch-protection enforcement remain unverified until this change set is pushed and the workflow runs remotely.
+- Branch-protection enforcement remains unverified; repository-governance changes are outside the authorized cleanup scope.
 - Full authenticated mutation-load benchmarks; current measurements cover bounded non-model probes only.
 - All-container non-root execution. Existing capability/read-only controls remain, but the backend report bind mount and upstream images require a coordinated runtime-user change.
 - LocalStorage JWT, process-local rate limits, standalone-Mongo retry semantics, and the unreachable OpenPGP transitive advisory remain accepted debt as described in `docs/verification.md`.

@@ -30,7 +30,7 @@ Real secrets belong only in ignored `.env` files or deployment secret stores. Ex
 
 ## Model-only variables
 
-All `DRIFT_LLAMA_*`, model/artifact path variables, `DRIFT_ALLOW_CPU`, and `HF_TOKEN` are model-development settings. `HF_TOKEN` is optional and must never be committed or printed. See `docs/local_model_setup.md`.
+All `DRIFT_LLAMA_*`, model/artifact path variables, `DRIFT_ALLOW_CPU`, and `HF_TOKEN` are model-development settings. `HF_TOKEN` is optional and must never be committed or printed. See [Model Pipeline](model-pipeline.md).
 
 ## Test-only variables
 

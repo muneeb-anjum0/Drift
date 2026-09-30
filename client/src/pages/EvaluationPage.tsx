@@ -8,7 +8,7 @@ import { useEvaluationSummary, useStartEvaluationRun } from '../hooks/useEvaluat
 import type { EvaluationRun } from '../features/evaluation/evaluation.types';
 import { formatDate } from '../utils/formatDate';
 
-const docsUrl = 'https://github.com/muneeb-anjum0/Drift/blob/main/docs/evaluation_dashboard.md';
+const docsUrl = 'https://github.com/muneeb-anjum0/Drift/blob/main/docs/model-pipeline.md';
 
 const metric = (label: string, value: string | number) => (
   <Card className="p-3">
