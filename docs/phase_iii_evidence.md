@@ -46,12 +46,14 @@ Sequential raw llama.cpp evaluation produced:
 
 - 32/48 correct: accuracy 66.7%, macro F1 66.9%, bootstrap 95% intervals 52.1–79.2% accuracy and 50.4–78.8% macro F1.
 - Recall: modified 100%, unchanged 87.5%, added 62.5%, contradiction 62.5%, removed 50%, ambiguous 37.5%.
-- All 48 responses were recoverable by the production-compatible contract normalizer, but only 25/48 were strict JSON as returned. The others primarily appended a period or escaped newline. This separates 100% contract parse success from 52.1% strict-output compliance.
+- All 48 responses were recoverable by the production-compatible contract normalizer, but only 25/48 were strict JSON as returned. The others appended a period, sometimes followed by a newline. This separates 100% contract parse success from 52.1% strict-output compliance.
 - Mean latency 12.75 seconds, p50 12.50 seconds, p90 15.55 seconds, p95 15.90 seconds, maximum 18.48 seconds, and mean generation 4.92 tokens/s. These are 48 sequential warm CPU requests with one slot.
 - Confidence was overconfident: 10-bin ECE 0.214 and correctness Brier score 0.255. Two incorrect cases had confidence 0.95.
 - Accuracy by difficulty was easy 11/12, medium 10/18, hard 9/12, adversarial 2/6. Prompt-injection-tagged cases were 2/6.
 
 The main error cluster is overprediction of `modified`: three additions, three removals, three contradictions, and two ambiguous cases were assigned `modified`. Partial removals, explicit invariant exceptions, missing-detail ambiguity, and prompt-injection text are recurring weaknesses. The exact aggregate and per-case hashes are in [raw_model_dev_v1.summary.json](../evaluation/reports/raw_model_dev_v1.summary.json); the full local evidence artifact at evaluation time was `/tmp/drift-phase3-reports/raw_model_dev_v1.json`, SHA256 `bef0f7814a93c51002d9dfcbfb250389f7fda6f462257a75514e4f92c9ecf35f`.
+
+Strict-output failures were 9 responses with a trailing period and 14 with a trailing period plus newline. There were no unknown labels, missing required fields, out-of-range confidences, truncations, or normalized contract failures. See [failure_taxonomy_v1.json](../evaluation/reports/failure_taxonomy_v1.json).
 
 ## Postprocessing ablation
 
@@ -94,3 +96,13 @@ The intended Q4_K_M artifact is fully measured. Its size is 4,683,074,112 bytes.
 ## Pending evidence
 
 An independent sealed final test, broader project-level multi-change evaluation, changed-element human scoring, reasoning/hallucination review, and any justified optimization remain pending. No optimization has begun. GPU quality, latency, and VRAM are **UNVERIFIED** and no model operation used the GPU.
+
+The current dataset roles, leakage findings, and prospective sealed-test process are defined in [evaluation-strategy.md](evaluation-strategy.md). Candidate gates derived after measurement are in [model-acceptance-criteria.md](model-acceptance-criteria.md). Because the final test is not yet created and training provenance remains unknown, current results are an engineering baseline rather than a production-readiness claim.
+
+## Final local repository verification
+
+On 2026-10-01 the frontend lint and production build passed; all Go packages passed tests, vet, formatting, and API build in Go 1.26; all eight FastAPI tests passed; Python ruff and compile checks passed; the Q4_K_M runtime guard passed; and CPU/GPU Compose configurations parsed successfully. The only test warning was Starlette's upstream `httpx` deprecation notice.
+
+The tracked tree contains no model binary, no file over 5 MiB, and no detected private-key/common-token marker. `Model/` and the GGUF path remain ignored. The Phase II.5 tag object is still `80fe31bb5daccbd5f9cdc91a4df88b60b86d3070` and peels to `64aa7c0b2fee70e1c5132b9eeebed3d98d8f5ce6`; the Phase III Baseline V0 tag remains on `5421d1f383796b1ec0e271586711e637a9ed0347`. llama, inference, backend, and MongoDB were all healthy after verification.
+
+The Phase III branch has not been pushed or merged in this run, so GitHub CI and protected-main merge status are **UNVERIFIED FOR THESE COMMITS**. No tag was moved.
