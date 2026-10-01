@@ -1,0 +1,19 @@
+{
+  "id":"V1-candidate","status":"PLANNED","frozen_at":"2026-10-01",
+  "baseline":"V0",
+  "artifact_sha256":"11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
+  "components":{
+    "retrieval":{"experiment":"R1","decision":"ACCEPT_AS_RETRIEVAL_COMPONENT","change":"ignore conjunction and as retrieval evidence"},
+    "prompt":{"experiment":"P1","decision":"ACCEPT_AS_PROMPT_COMPONENT","spec":"evaluation/prompts/P1.json"},
+    "postprocessing":{"experiment":"PP1","decision":"ACCEPT_AS_POSTPROCESSING_COMPONENT","change":"canonical enrichment preserves validated semantic labels"}
+  },
+  "excluded_components":[
+    {"experiment":"R2","reason":"Inconclusive: missed the predeclared average-call gate."},
+    {"experiment":"R3","reason":"Rejected: dropped a genuine multi-requirement candidate."},
+    {"experiment":"R4","reason":"Rejected: dropped four genuine requirements."}
+  ],
+  "development_acceptance":"Raw accuracy at least 0.75, macro F1 at least 0.75, 100% contract parse rate, p95 raw-model latency no more than 20% above V0, retrieval no worse than accepted R1, zero postprocessor-introduced label errors, and all repository verification suites pass.",
+  "final_heldout_acceptance":"With V0 and V1 frozen before inspection, V1 must have no raw accuracy regression, no macro-F1 regression greater than 0.02, 100% contract parsing, no retrieval all-expected-reach regression, and no new postprocessor semantic-label changes. Final results remain qualified because original adapter-training independence is unknown.",
+  "final_heldout_status":"UNOPENED",
+  "decision":null
+}
