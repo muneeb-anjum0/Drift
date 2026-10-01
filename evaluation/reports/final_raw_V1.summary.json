@@ -1,0 +1,606 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "final-heldout-raw-V1",
+  "status": "complete",
+  "started_at": "2026-10-01T14:35:19.193907+00:00",
+  "finished_at": "2026-10-01T14:40:04.447624+00:00",
+  "evidence_status": "DEVELOPMENT_NOT_PROVEN_HELD_OUT",
+  "warnings": [
+    "Recovered training data is unknown, so independence from adapter training cannot be proven.",
+    "This evaluates raw model output and contract normalization, not retrieval or final Drift behavior."
+  ],
+  "baseline_commit": "5421d1f383796b1ec0e271586711e637a9ed0347",
+  "artifact_sha256": "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
+  "dataset": {
+    "name": "drift-raw-final",
+    "version": "1.0.0",
+    "sha256": "5da735ac677e2824d80f5d22a68bb738d46b3c5aa4c9617f8cf3c88e0cb21253",
+    "case_count": 24,
+    "class_distribution": {
+      "added": 4,
+      "ambiguous": 4,
+      "contradiction": 4,
+      "modified": 4,
+      "removed": 4,
+      "unchanged": 4
+    }
+  },
+  "runtime": {
+    "engine": "llama.cpp",
+    "url": "http://127.0.0.1:8080",
+    "cpu_only": true,
+    "parallel_slots": 1,
+    "temperature": 0,
+    "top_p": 1,
+    "n_predict": 120,
+    "context_size": 768,
+    "prompt_id": "P1",
+    "prompt_sha256": "8119ff1bc26a20f8abeab1ea2311ed8bf7b347f4b2b84a737b884523015b9415"
+  },
+  "metrics": {
+    "case_count": 24,
+    "parsed_count": 24,
+    "correct_count": 19,
+    "accuracy": 0.7916666666666666,
+    "semantic_accuracy_among_parsed": 0.7916666666666666,
+    "macro_precision": 0.825,
+    "macro_recall": 0.7916666666666666,
+    "macro_f1": 0.7863756613756614,
+    "weighted_f1": 0.7863756613756614,
+    "per_class": {
+      "added": {
+        "precision": 0.8,
+        "recall": 1.0,
+        "f1": 0.888888888888889,
+        "support": 4
+      },
+      "modified": {
+        "precision": 0.6,
+        "recall": 0.75,
+        "f1": 0.6666666666666665,
+        "support": 4
+      },
+      "removed": {
+        "precision": 0.8,
+        "recall": 1.0,
+        "f1": 0.888888888888889,
+        "support": 4
+      },
+      "contradiction": {
+        "precision": 0.75,
+        "recall": 0.75,
+        "f1": 0.75,
+        "support": 4
+      },
+      "ambiguous": {
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.6666666666666666,
+        "support": 4
+      },
+      "unchanged": {
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1": 0.8571428571428571,
+        "support": 4
+      }
+    },
+    "confusion_matrix": {
+      "added": {
+        "added": 4,
+        "modified": 0,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "modified": {
+        "added": 1,
+        "modified": 3,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "removed": {
+        "added": 0,
+        "modified": 0,
+        "removed": 4,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "contradiction": {
+        "added": 0,
+        "modified": 1,
+        "removed": 0,
+        "contradiction": 3,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "ambiguous": {
+        "added": 0,
+        "modified": 1,
+        "removed": 0,
+        "contradiction": 1,
+        "ambiguous": 2,
+        "unchanged": 0
+      },
+      "unchanged": {
+        "added": 0,
+        "modified": 0,
+        "removed": 1,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 3
+      }
+    }
+  },
+  "format_metrics": {
+    "raw_json_valid_rate": 1.0,
+    "contract_parse_rate": 1.0,
+    "runtime_error_count": 0
+  },
+  "calibration": {
+    "ece_10_bin": 0.19375000000000003,
+    "correctness_brier": 0.19644583333333335,
+    "bins": [
+      {
+        "lower": 0.6,
+        "upper": 0.7,
+        "count": 2,
+        "average_confidence": 0.6,
+        "accuracy": 1
+      },
+      {
+        "lower": 0.9,
+        "upper": 1.0,
+        "count": 22,
+        "average_confidence": 0.9477272727272728,
+        "accuracy": 0.7727272727272727
+      }
+    ],
+    "warning": "Model confidence is self-reported and is not a calibrated class probability."
+  },
+  "latency": {
+    "count": 24,
+    "mean_ms": 11876.44125,
+    "p50_ms": 11538.52,
+    "p90_ms": 13191.65,
+    "p95_ms": 13598.24,
+    "max_ms": 21943.96,
+    "mean_predicted_tokens_per_second": 5.549270022897237
+  },
+  "uncertainty": {
+    "method": "deterministic nonparametric bootstrap percentile interval",
+    "iterations": 2000,
+    "accuracy_95_percentile_interval": [
+      0.625,
+      0.9583333333333334
+    ],
+    "macro_f1_95_percentile_interval": [
+      0.550058275058275,
+      0.9292929292929293
+    ]
+  },
+  "full_report": {
+    "path_at_evaluation": "/tmp/drift-phase3b-final/raw_V1.json",
+    "sha256": "50e99baed7bb4c4fadc8d000592ce3e9840e150eefceb51d1ab68463ef96db2b",
+    "retention": "Local evidence artifact; contains every prompt, raw output, normalized prediction, and timing."
+  },
+  "case_results": [
+    {
+      "case_id": "final_add_aviation_01",
+      "domain": "aviation",
+      "difficulty": "medium",
+      "tags": [
+        "new-channel"
+      ],
+      "expected_label": "added",
+      "actual_label": "added",
+      "confidence": 0.95,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 21943.96,
+      "raw_output_sha256": "da29ea9a54ead93fa546af1f48f62484d8449813cebb4e5bf99735c1bba70f4d",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_add_insurance_01",
+      "domain": "insurance",
+      "difficulty": "hard",
+      "tags": [
+        "new-role",
+        "indirect-request"
+      ],
+      "expected_label": "added",
+      "actual_label": "added",
+      "confidence": 0.95,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 13079.02,
+      "raw_output_sha256": "b4ee54fc285def5cc86760969fd6fc2c949fee8c45feeed749768a664daeccb5",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_add_library_01",
+      "domain": "library",
+      "difficulty": "easy",
+      "tags": [
+        "new-capability"
+      ],
+      "expected_label": "added",
+      "actual_label": "added",
+      "confidence": 0.95,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11247.44,
+      "raw_output_sha256": "2bc91cf319212b094ee1d501e3c29a7f7dd18e00ed584b977ab9e9315e1b385e",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_add_energy_01",
+      "domain": "energy",
+      "difficulty": "adversarial",
+      "tags": [
+        "prompt-injection",
+        "scope-expansion"
+      ],
+      "expected_label": "added",
+      "actual_label": "added",
+      "confidence": 0.9,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 12147.26,
+      "raw_output_sha256": "b1ef32548c93445a7d0415f1b202867caa7bc2f94e55e8903b04033630467209",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_mod_hospitality_01",
+      "domain": "hospitality",
+      "difficulty": "easy",
+      "tags": [
+        "numeric-change"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.95,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11836.17,
+      "raw_output_sha256": "059a13a0bc9caf9f1ccf30a1abd4ee9bb55f13edb83a8041f7843169a3402c26",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_mod_manufacturing_01",
+      "domain": "manufacturing",
+      "difficulty": "medium",
+      "tags": [
+        "workflow-change"
+      ],
+      "expected_label": "modified",
+      "actual_label": "added",
+      "confidence": 0.95,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11480.56,
+      "raw_output_sha256": "76d2a7797a949c4d1c52091c93fe3844b648fcd377eb54ebfc48781208406f79",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_mod_legal_01",
+      "domain": "legal",
+      "difficulty": "hard",
+      "tags": [
+        "conditional-change"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.94,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 10807.46,
+      "raw_output_sha256": "f9164e27d4f9b1e807d84d6f30cbc5ab70913b40d7d9cc6edfbcd1f257c6b195",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_mod_agriculture_01",
+      "domain": "agriculture",
+      "difficulty": "medium",
+      "tags": [
+        "format-change"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.9,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11244.08,
+      "raw_output_sha256": "dec5b48eaf4e26b30a7bfb54b9236c7dfe654b20ee58e2def8a2d946a21698a9",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_rem_aviation_01",
+      "domain": "aviation",
+      "difficulty": "easy",
+      "tags": [
+        "removal"
+      ],
+      "expected_label": "removed",
+      "actual_label": "removed",
+      "confidence": 0.95,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11810.79,
+      "raw_output_sha256": "b508d0a06b615abd77e20243d61bd2b824fda61badbf81c8af3d13fb33d5d48d",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_rem_insurance_01",
+      "domain": "insurance",
+      "difficulty": "medium",
+      "tags": [
+        "partial-removal"
+      ],
+      "expected_label": "removed",
+      "actual_label": "removed",
+      "confidence": 0.95,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 9856.46,
+      "raw_output_sha256": "1425fc44493fac5756100dded0b1e39d58498a8f789d61df7b8fa04dcf4a333f",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_rem_library_01",
+      "domain": "library",
+      "difficulty": "hard",
+      "tags": [
+        "indirect-removal"
+      ],
+      "expected_label": "removed",
+      "actual_label": "removed",
+      "confidence": 0.95,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 9627.85,
+      "raw_output_sha256": "9538f81b2d63789e3d1e18857c440c6ae1c82ddc719acca618f59e779d1f5be2",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_rem_energy_01",
+      "domain": "energy",
+      "difficulty": "adversarial",
+      "tags": [
+        "prompt-injection",
+        "removal"
+      ],
+      "expected_label": "removed",
+      "actual_label": "removed",
+      "confidence": 0.95,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 10962.46,
+      "raw_output_sha256": "c9c11fe05058174ec15ff96c9d7db72407f1b165d2e26633df16e05a25d9b165",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_con_hospitality_01",
+      "domain": "hospitality",
+      "difficulty": "easy",
+      "tags": [
+        "contradiction"
+      ],
+      "expected_label": "contradiction",
+      "actual_label": "contradiction",
+      "confidence": 0.98,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11822.26,
+      "raw_output_sha256": "d5e8273c72c4b0185b38afc060ebbee9e75121dcd9bd6340593148c113889f6a",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_con_manufacturing_01",
+      "domain": "manufacturing",
+      "difficulty": "medium",
+      "tags": [
+        "required-optional"
+      ],
+      "expected_label": "contradiction",
+      "actual_label": "modified",
+      "confidence": 0.9,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 9413.54,
+      "raw_output_sha256": "8af29251edbaa7b61351db50b5d061625464c75d514323cc8005c51fc2c303c3",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_con_legal_01",
+      "domain": "legal",
+      "difficulty": "hard",
+      "tags": [
+        "exception-to-invariant"
+      ],
+      "expected_label": "contradiction",
+      "actual_label": "contradiction",
+      "confidence": 0.98,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 12024.94,
+      "raw_output_sha256": "4eb80bf68772b8a9942577b3ab6ed93515fd4743e4623274dce1cae18a86fda0",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_con_agriculture_01",
+      "domain": "agriculture",
+      "difficulty": "adversarial",
+      "tags": [
+        "prompt-injection",
+        "contradiction"
+      ],
+      "expected_label": "contradiction",
+      "actual_label": "contradiction",
+      "confidence": 0.95,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 13191.65,
+      "raw_output_sha256": "9fb34903526eaf6b3588795629c68d1b89756ed8a6fd430c3477d10620e8f50a",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_amb_aviation_01",
+      "domain": "aviation",
+      "difficulty": "easy",
+      "tags": [
+        "vague"
+      ],
+      "expected_label": "ambiguous",
+      "actual_label": "ambiguous",
+      "confidence": 0.6,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 10279.92,
+      "raw_output_sha256": "bcfc09e6ada7607cfd875c914e51ec169ba3f0bda46cfac9ed369e5a338b3cd6",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_amb_insurance_01",
+      "domain": "insurance",
+      "difficulty": "medium",
+      "tags": [
+        "future-intent"
+      ],
+      "expected_label": "ambiguous",
+      "actual_label": "ambiguous",
+      "confidence": 0.6,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 10208.88,
+      "raw_output_sha256": "43ae6cdda427cbf2cf08d70cbe0c101d3eb756f8d616e50c67797dee31d46e2e",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_amb_library_01",
+      "domain": "library",
+      "difficulty": "hard",
+      "tags": [
+        "pronoun-ambiguity"
+      ],
+      "expected_label": "ambiguous",
+      "actual_label": "modified",
+      "confidence": 0.9,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 13598.24,
+      "raw_output_sha256": "4d1385fb5e6d1c05d283797e5905f7f05c734dcc4d1524e431d3e04c60ac71ae",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_amb_energy_01",
+      "domain": "energy",
+      "difficulty": "adversarial",
+      "tags": [
+        "conflicting-statements"
+      ],
+      "expected_label": "ambiguous",
+      "actual_label": "contradiction",
+      "confidence": 0.95,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11510.88,
+      "raw_output_sha256": "efe09ce4e0ba5a67f7ece2adfe5d12c39b181fd4c45d20429a30e2a97f9cf5b4",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_same_hospitality_01",
+      "domain": "hospitality",
+      "difficulty": "easy",
+      "tags": [
+        "paraphrase"
+      ],
+      "expected_label": "unchanged",
+      "actual_label": "unchanged",
+      "confidence": 0.98,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11806.48,
+      "raw_output_sha256": "6bc61111fed28bde6a1709e8291b58ab8a308ed5454c787cff2905c723f10a46",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_same_manufacturing_01",
+      "domain": "manufacturing",
+      "difficulty": "medium",
+      "tags": [
+        "terminology"
+      ],
+      "expected_label": "unchanged",
+      "actual_label": "unchanged",
+      "confidence": 0.98,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11948.98,
+      "raw_output_sha256": "3ebf487deb53c094eb6b95208184155b0e9edc18688ec4d2c7e0242dc6640a77",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_same_legal_01",
+      "domain": "legal",
+      "difficulty": "hard",
+      "tags": [
+        "negation"
+      ],
+      "expected_label": "unchanged",
+      "actual_label": "unchanged",
+      "confidence": 0.98,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11538.52,
+      "raw_output_sha256": "7c67cc4bebe33c70e384eb0fcc1f0bcd322315cd30b8d67a258125abcba37272",
+      "runtime_error": null
+    },
+    {
+      "case_id": "final_same_agriculture_01",
+      "domain": "agriculture",
+      "difficulty": "adversarial",
+      "tags": [
+        "prompt-injection",
+        "paraphrase"
+      ],
+      "expected_label": "unchanged",
+      "actual_label": "removed",
+      "confidence": 0.96,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11646.79,
+      "raw_output_sha256": "13e4b50bbcdb6849f14d707c05713edc683ea20c217e6025156a3950ec24eb51",
+      "runtime_error": null
+    }
+  ]
+}

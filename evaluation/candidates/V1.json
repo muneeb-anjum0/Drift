@@ -1,5 +1,5 @@
 {
-  "id":"V1-candidate","status":"PLANNED","frozen_at":"2026-10-01",
+  "id":"V1-candidate","status":"REJECTED_FINAL_HELDOUT","frozen_at":"2026-10-01","evaluated_at":"2026-10-01",
   "baseline":"V0",
   "artifact_sha256":"11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
   "components":{
@@ -14,6 +14,10 @@
   ],
   "development_acceptance":"Raw accuracy at least 0.75, macro F1 at least 0.75, 100% contract parse rate, p95 raw-model latency no more than 20% above V0, retrieval no worse than accepted R1, zero postprocessor-introduced label errors, and all repository verification suites pass.",
   "final_heldout_acceptance":"With V0 and V1 frozen before inspection, V1 must have no raw accuracy regression, no macro-F1 regression greater than 0.02, 100% contract parsing, no retrieval all-expected-reach regression, and no new postprocessor semantic-label changes. Final results remain qualified because original adapter-training independence is unknown.",
-  "final_heldout_status":"UNOPENED",
-  "decision":null
+  "development_result":{"raw_accuracy":0.75,"raw_macro_f1":0.7564529915,"contract_parse_rate":1.0,"retrieval_all_expected_reached":"17/24","retrieval_model_input_recall":0.7083333333,"average_model_calls":1.1666666667,"postprocessor_introduced_errors":0,"verification":"PASS"},
+  "final_heldout_status":"COMPLETE_DO_NOT_REUSE_FOR_TUNING",
+  "final_result":{"raw_accuracy_V0":0.7083333333,"raw_accuracy_V1":0.7916666667,"raw_macro_f1_V0":0.6914529915,"raw_macro_f1_V1":0.7863756614,"retrieval_all_expected_V0":"5/12","retrieval_all_expected_V1":"4/12","postprocessor_introduced_errors_V1":0},
+  "decision":"REJECT_INTEGRATED_CANDIDATE",
+  "decision_reason":"Raw classification improved and PP1 remained neutral, but R1 regressed final all-expected retrieval reach, violating the frozen final acceptance rule.",
+  "final_report":"evaluation/reports/final_V1_comparison.json"
 }
