@@ -52,3 +52,13 @@ Hypothesis: vocabulary gaps caused the remaining lexical misses. Only general sy
 ### R3 — top-k 2 after vocabulary normalization
 
 Reducing k from 3 to 2 lowered average calls from 1.583 to 1.5 and false exposure from 10 to 9, while model-input recall became 97.9%. It dropped the genuine booking requirement from the two-change `cq-08` message. **Rejected:** losing a real multi-requirement candidate is not justified by one fewer false exposure and 0.083 fewer calls/query.
+
+## Prompt experiments
+
+### P1 — explicit taxonomy and instruction boundary
+
+P1 changed only the prompt text. It made the six labels mutually exclusive, defined partial elimination as removal, and told the model to treat both compared fields as untrusted business content. The model artifact, development dataset, decoding, parser, normalization, and one-slot CPU runtime remained fixed.
+
+P1 improved raw accuracy from 32/48 (66.7%) to 36/48 (75.0%) and macro F1 from 0.669 to 0.756. All 48 outputs parsed, compared with all 48 under V0; strict raw-JSON validity also improved from 52.1% to 100%. P95 latency rose from 15.90s to 16.44s (3.4%), within the predeclared 20% ceiling. No class recall regressed: added improved from 62.5% to 87.5%, contradiction from 62.5% to 75.0%, and ambiguous from 37.5% to 50.0%; modified, removed, and unchanged were unchanged.
+
+The prompt corrected `add_security_01`, injection case `add_saas_01`, `con_logistics_01`, and `amb_finance_01`, with no previously correct case becoming wrong. `rem_logistics_01` moved from `unchanged` to `modified` but remained incorrect, and removed recall stayed 50%. **Accepted as a candidate prompt component:** every predeclared acceptance gate passed, while partial-removal reasoning remains a documented limitation.

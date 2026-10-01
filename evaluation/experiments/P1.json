@@ -1,9 +1,13 @@
 {
-  "id":"P1","status":"PLANNED","created_at":"2026-10-01",
+  "id":"P1","status":"COMPLETE","created_at":"2026-10-01","completed_at":"2026-10-01",
   "hypothesis":"Explicit mutually exclusive taxonomy boundaries and an instruction/content boundary will reduce the dominant modified overprediction and prompt-injection failures.",
   "baseline":"V0","primary_variable":"prompt text only",
   "held_constant":["Q4 artifact","dataset","llama runtime","temperature 0","top-p 1","n_predict 120","parsing","normalization","retrieval excluded","postprocessing excluded"],
   "dataset":"drift-raw-dev@1.0.0","sample_count":48,
   "acceptance":"Improve macro F1 and accuracy by at least 3 cases, no class recall regression greater than 0.125, contract parse rate 100%, p95 latency no more than 20% above V0.",
-  "prompt":"evaluation/prompts/P1.json","result":null,"decision":null
+  "prompt":"evaluation/prompts/P1.json",
+  "result":{"correct_count":36,"accuracy":0.75,"macro_f1":0.7564529915,"contract_parse_rate":1.0,"p95_latency_ms":16440.24,"correct_count_delta":4,"macro_f1_delta":0.0876432246,"p95_latency_ratio":1.0342030619,"class_recall_regressions":0},
+  "decision":"ACCEPT_AS_PROMPT_COMPONENT",
+  "interpretation":"P1 passed every predeclared gate. It corrected add_security_01, add_saas_01, con_logistics_01, and amb_finance_01 without making a previously correct case wrong. rem_logistics_01 changed from unchanged to modified but remained incorrect; partial-removal handling is unresolved.",
+  "report":"evaluation/reports/prompt_P1_dev.summary.json"
 }
