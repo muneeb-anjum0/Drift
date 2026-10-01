@@ -1,6 +1,7 @@
 package drift
 
 import (
+	"reflect"
 	"testing"
 
 	"driftledger/server-go/internal/modules/requirement"
@@ -17,6 +18,35 @@ func TestDetectDoesNotMarkOmittedBaselineAsRemoved(t *testing.T) {
 		if change.ChangeType == "removed" {
 			t.Fatalf("expected no removed changes when baseline is merely omitted, got %#v", change)
 		}
+	}
+}
+
+func TestRequirementRelevanceTraceIsDeterministic(t *testing.T) {
+	req := requirement.RequirementSnapshot{Title: "Project reports", Description: "Managers shall export project reports as PDF files."}
+	message := "Add CSV downloads for project reports."
+	want := TraceRequirementRelevance(req, message, 0.25)
+	for iteration := 0; iteration < 100; iteration++ {
+		got := TraceRequirementRelevance(req, message, 0.25)
+		if !reflect.DeepEqual(got, want) {
+			t.Fatalf("iteration %d produced a different trace: got %#v want %#v", iteration, got, want)
+		}
+	}
+}
+
+func TestRequirementRelevanceThresholdBoundaryIsInclusive(t *testing.T) {
+	req := requirement.RequirementSnapshot{Title: "Password reset", Description: "Customers reset passwords by email."}
+	message := "Reset a password by SMS."
+	trace := TraceRequirementRelevance(req, message, 0)
+	if !trace.PassedSpecificGate {
+		t.Fatalf("test fixture must pass the specific-match gate: %#v", trace)
+	}
+	atBoundary := ScoreRequirementRelevance(req, message, trace.Result.Score)
+	if !atBoundary.IsRelevant {
+		t.Fatalf("score equal to threshold must be relevant: %#v", atBoundary)
+	}
+	aboveBoundary := ScoreRequirementRelevance(req, message, trace.Result.Score+1e-12)
+	if aboveBoundary.IsRelevant {
+		t.Fatalf("score below threshold must not be relevant: %#v", aboveBoundary)
 	}
 }
 

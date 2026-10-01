@@ -29,6 +29,25 @@ type RelevanceResult struct {
 	Reason         string   `bson:"reason" json:"reason"`
 }
 
+// RelevanceTrace exposes the intermediate values of the deterministic
+// retrieval scorer for offline evaluation. It is not part of the API response.
+type RelevanceTrace struct {
+	Result             RelevanceResult `json:"result"`
+	InputTokens        []string        `json:"input_tokens"`
+	TitleTokens        []string        `json:"title_tokens"`
+	BaselineTokens     []string        `json:"baseline_tokens"`
+	MatchedTitleTerms  []string        `json:"matched_title_terms"`
+	InputDomains       []string        `json:"input_domains"`
+	BaselineDomains    []string        `json:"baseline_domains"`
+	DirectScore        float64         `json:"direct_score"`
+	TitleScore         float64         `json:"title_score"`
+	DomainScore        float64         `json:"domain_score"`
+	MultiTermBonus     float64         `json:"multi_term_bonus"`
+	Threshold          float64         `json:"threshold"`
+	PassedThreshold    bool            `json:"passed_threshold"`
+	PassedSpecificGate bool            `json:"passed_specific_gate"`
+}
+
 type RequirementAnalysisResult struct {
 	RequirementID string          `bson:"requirementId" json:"requirementId"`
 	Title         string          `bson:"title" json:"title"`

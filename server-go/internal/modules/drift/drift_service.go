@@ -318,6 +318,13 @@ var domainKeywords = map[string][]string{
 // ScoreRequirementRelevance applies the deterministic production retrieval scorer.
 // It is exported so evaluation tooling can measure retrieval independently of inference.
 func ScoreRequirementRelevance(req requirement.RequirementSnapshot, inputText string, threshold float64) RelevanceResult {
+	return TraceRequirementRelevance(req, inputText, threshold).Result
+}
+
+// TraceRequirementRelevance returns the exact scorer result and its
+// intermediate values. Evaluation tooling uses this instead of duplicating
+// production retrieval logic.
+func TraceRequirementRelevance(req requirement.RequirementSnapshot, inputText string, threshold float64) RelevanceTrace {
 	titleTokens := requirementTokens(req.Title)
 	baselineTokens := requirementTokens(req.Title + " " + req.Description)
 	inputTokens := requirementTokens(inputText)
@@ -334,8 +341,10 @@ func ScoreRequirementRelevance(req requirement.RequirementSnapshot, inputText st
 		domainScore = float64(len(matchedDomains)) / float64(min(len(inputDomains), len(baselineDomains)))
 	}
 	score := directScore*0.55 + titleScore*0.25 + domainScore*0.35
+	bonus := 0.0
 	if len(matchedTerms) >= 2 && score < 0.45 {
-		score += 0.12
+		bonus = 0.12
+		score += bonus
 	}
 	if score > 1 {
 		score = 1
@@ -347,12 +356,27 @@ func ScoreRequirementRelevance(req requirement.RequirementSnapshot, inputText st
 	if relevant {
 		reason = "Relevant domain or requirement terms matched the client message"
 	}
-	return RelevanceResult{
-		Score:          score,
-		MatchedTerms:   sortedKeys(matchedTerms),
-		MatchedDomains: sortedKeys(matchedDomains),
-		IsRelevant:     relevant,
-		Reason:         reason,
+	return RelevanceTrace{
+		Result: RelevanceResult{
+			Score:          score,
+			MatchedTerms:   sortedKeys(matchedTerms),
+			MatchedDomains: sortedKeys(matchedDomains),
+			IsRelevant:     relevant,
+			Reason:         reason,
+		},
+		InputTokens:        sortedKeys(inputTokens),
+		TitleTokens:        sortedKeys(titleTokens),
+		BaselineTokens:     sortedKeys(baselineTokens),
+		MatchedTitleTerms:  sortedKeys(matchedTitleTerms),
+		InputDomains:       sortedKeys(inputDomains),
+		BaselineDomains:    sortedKeys(baselineDomains),
+		DirectScore:        directScore,
+		TitleScore:         titleScore,
+		DomainScore:        domainScore,
+		MultiTermBonus:     bonus,
+		Threshold:          threshold,
+		PassedThreshold:    score >= threshold,
+		PassedSpecificGate: hasSpecificMatch,
 	}
 }
 
