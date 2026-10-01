@@ -74,6 +74,20 @@ func TestRetrievalSuffixNormalizationDoesNotChangePostprocessingNormalization(t 
 	}
 }
 
+func TestRequirementRankingPreservesSnapshotOrderForTies(t *testing.T) {
+	results := []requirementPrediction{
+		{requirement: requirement.RequirementSnapshot{RequirementID: "first"}, result: RequirementAnalysisResult{Relevance: RelevanceResult{Score: 0.5}}},
+		{requirement: requirement.RequirementSnapshot{RequirementID: "higher"}, result: RequirementAnalysisResult{Relevance: RelevanceResult{Score: 0.8}}},
+		{requirement: requirement.RequirementSnapshot{RequirementID: "second"}, result: RequirementAnalysisResult{Relevance: RelevanceResult{Score: 0.5}}},
+	}
+	rankRequirementPredictions(results)
+	got := []string{results[0].requirement.RequirementID, results[1].requirement.RequirementID, results[2].requirement.RequirementID}
+	want := []string{"higher", "first", "second"}
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("unexpected stable ranking: got %v want %v", got, want)
+	}
+}
+
 func TestRequirementTokensExpandDomainAliases(t *testing.T) {
 	tokens := requirementTokens("An anonymous buyer uploads a document and requests a callback.")
 	for _, expected := range []string{"guest", "customer", "shopper", "file", "attachment", "webhook"} {

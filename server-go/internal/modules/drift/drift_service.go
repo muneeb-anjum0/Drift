@@ -111,9 +111,7 @@ func (s Service) analyzeRequirements(ctx context.Context, snapshot []requirement
 		return nil, "", nil, utils.ErrNotFound
 	}
 
-	sort.SliceStable(results, func(i, j int) bool {
-		return results[i].result.Relevance.Score > results[j].result.Relevance.Score
-	})
+	rankRequirementPredictions(results)
 
 	selected := make([]requirementPrediction, 0, len(results))
 	for index := range results {
@@ -198,6 +196,12 @@ func (s Service) analyzeRequirements(ctx context.Context, snapshot []requirement
 		return changes, strings.Join(parts, " "), requirementResults, nil
 	}
 	return changes, selected[0].prediction.Reasoning, requirementResults, nil
+}
+
+func rankRequirementPredictions(results []requirementPrediction) {
+	sort.SliceStable(results, func(i, j int) bool {
+		return results[i].result.Relevance.Score > results[j].result.Relevance.Score
+	})
 }
 
 func normalizePredictionForRelevantRequirement(prediction ModelPrediction, relevance RelevanceResult, requirementText, inputText string) ModelPrediction {
