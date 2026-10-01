@@ -302,6 +302,19 @@ var requirementSynonyms = map[string][]string{
 	"invoices":      {"invoice"},
 	"billing":       {"invoice", "payment"},
 	"usage":         {"report"},
+	"unavailable":   {"stock"},
+	"restock":       {"stock", "inventory"},
+	"rate":          {"rating", "review"},
+	"parcel":        {"shipment"},
+	"buyer":         {"customer", "shopper"},
+	"anonymou":      {"guest"},
+	"register":      {"account", "authentication"},
+	"callback":      {"webhook"},
+	"document":      {"file"},
+	"upload":        {"file", "attachment"},
+	"voucher":       {"promotion", "coupon"},
+	"basket":        {"cart"},
+	"discussion":    {"comment"},
 }
 
 var domainKeywords = map[string][]string{

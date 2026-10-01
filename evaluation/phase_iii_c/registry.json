@@ -16,6 +16,7 @@
     {"id":"R1","status":"ACCEPTED_COMPONENT","variable":"suffix normalization","decision":"RETAIN"},
     {"id":"R2","status":"COMPLETE","variable":"top-k 3 to 5","decision":"REJECT"},
     {"id":"R3","status":"COMPLETE","variable":"threshold 0.25 to 0.20","decision":"REJECT"},
-    {"id":"R4","status":"COMPLETE","variable":"disable specific-match gate","decision":"REJECT"}
+    {"id":"R4","status":"COMPLETE","variable":"disable specific-match gate","decision":"REJECT"},
+    {"id":"R5","status":"SELECTED_DEVELOPMENT_CANDIDATE","variable":"domain alias vocabulary","decision":"RETAIN_PENDING_INDEPENDENT_EVALUATION"}
   ]
 }

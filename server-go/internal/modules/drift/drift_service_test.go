@@ -65,6 +65,15 @@ func TestRequirementTokenNormalizationHandlesCommonVerbInflections(t *testing.T)
 	}
 }
 
+func TestRequirementTokensExpandDomainAliases(t *testing.T) {
+	tokens := requirementTokens("An anonymous buyer uploads a document and requests a callback.")
+	for _, expected := range []string{"guest", "customer", "shopper", "file", "attachment", "webhook"} {
+		if _, ok := tokens[expected]; !ok {
+			t.Errorf("expected expanded token %q in %#v", expected, sortedKeys(tokens))
+		}
+	}
+}
+
 func TestDetectExplicitRemovalWithWeakMatchIsRemoved(t *testing.T) {
 	baseline := []requirement.RequirementSnapshot{
 		{RequirementID: "req-1", Title: "User login", Description: "Users can login with email and password"},
