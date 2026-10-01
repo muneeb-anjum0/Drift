@@ -7,6 +7,7 @@
 | Historical Go benchmark | Regression | Yes, only to prevent regressions | Contaminated: examples occur in source/tests and training overlap is unknown. |
 | `drift-raw-dev` 1.0.0 | Development | Yes | Prospective, balanced, versioned; not proven independent from unrecovered training data. |
 | `drift-retrieval-dev` 1.0.0 | Retrieval development | Yes | Prospective synthetic project retrieval set. |
+| `drift-retrieval-dev` 2.0.0 | Expanded retrieval development | Yes | v1 plus 36 frozen synthetic additions; 60 queries including hard negatives and multi-target cases; single-author labels pending review. |
 | `drift-raw-final` 1.0.0 | Phase III-B final raw test | No | Frozen before experiments; executed once per V0/V1; now closed to tuning. |
 | `drift-retrieval-final` 1.0.0 | Phase III-B final retrieval test | No | Frozen before experiments; executed once per V0/V1; now closed to tuning. |
 
@@ -45,3 +46,11 @@ Raw classification reports accuracy, macro/per-class precision-recall-F1, confus
 Experiments receive stable IDs and a written hypothesis, one primary variable, held constants, dataset identity, and acceptance rule before implementation. Raw model, retrieval, parsing/normalization, individual postprocessing groups, and full behavior are measured separately. Rejected and inconclusive experiments remain in [the registry](../evaluation/experiments/registry.json).
 
 Phase III-B final results are in [final_V1_comparison.json](../evaluation/reports/final_V1_comparison.json). The combined V1 candidate was rejected because final all-expected retrieval reach regressed from 5/12 to 4/12, even though raw classification improved. No post-final tuning or rerun is permitted with these sets.
+
+## Phase III-C retrieval protocol
+
+The evaluator now records the exact production-normalized tokens, domains, component scores, threshold/gate decisions, stable rank, top-k decision, raw hit counts, Recall/Precision@1/@3/@k, MRR, at-least-one reach, all-expected reach, false exposure, and selected-call count. Production and evaluation share `TraceRequirementRelevance`; the evaluator does not reimplement scoring.
+
+R0 was frozen before the v2 additions were used for candidate selection. Experiments then changed one major variable at a time: suffix normalization (R1 retained), k=5 (R2 rejected), threshold 0.20 (R3 rejected), specific-gate removal (R4 rejected), and alias expansion (R5 development-selected). R2–R4 recovered too few targets for their false-exposure/call cost. Exact reports and negative results remain in `evaluation/phase_iii_c`.
+
+R5 cannot enter final-test acceptance because no new independent final corpus was frozen before its development. The next cycle must commission that corpus under the protocol above. The closed Phase III-B final sets may be cited as historical evidence but never used to select or tune R5.

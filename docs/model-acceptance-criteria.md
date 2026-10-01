@@ -15,3 +15,7 @@ These candidate-promotion criteria were defined after Baseline V0 measurement. T
 | Runtime failures | 0 in the quality run; explicit bounded failure when unavailable | Baseline had 0/48 runtime errors and explicit 502/503 recovery behavior. |
 
 Final-test acceptance requires both effect size and uncertainty, not a tiny point-estimate improvement. Any candidate must be compared with Baseline V0 using the same taxonomy, dataset bytes, prompts, decoding, and runtime unless the experiment explicitly isolates one changed component.
+
+## Phase III-C gate application
+
+R5 is the strongest retrieval development candidate but fails the existing retrieval gate. On `drift-retrieval-dev` 2.0.0 it reaches 59/74 expected links (79.7% micro recall), with small/medium/large recall of 68.0%/92.0%/79.2%; the gate requires at least 90% overall and 85% at every measured size. Because no new independent final set was frozen and downstream model execution was explicitly out of scope on this laptop, integrated V2 status is `INCONCLUSIVE`, not accepted.

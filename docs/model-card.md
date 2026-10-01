@@ -1,4 +1,4 @@
-# DriftLedger Model Card — Baseline V0 and Phase III-B Candidate Evidence
+# DriftLedger Model Card — Baseline V0 through Phase III-C Evidence
 
 ## Purpose and boundary
 
@@ -41,6 +41,16 @@ Postprocessing PP1 prevents scenario-specific presentation rules from overwritin
 
 The combined candidate was rejected because its accepted development retrieval change did not generalize to the frozen retrieval final set. V0 reached every expected requirement in 5/12 queries (45.8% model-input recall); V1 reached all expected requirements in 4/12 (37.5%). Therefore the raw prompt gain is measured evidence, but the integrated V1 configuration is not an accepted successor.
 
+## Phase III-C retrieval evidence
+
+Phase III-C restored exact V0 retrieval while preserving P1 and PP1, added scorer-native traces, and expanded retrieval development from 24 to 60 queries. The expansion has 54 positive queries, six zero-target hard negatives, and 74 expected requirement links. It is synthetic, single-author, and development-only.
+
+R0 delivered 48/74 expected links to the model (64.9% micro recall), reached all targets for 34/54 positive queries, produced 32 false exposures, and selected 1.33 requirements/query. The selected development candidate R5 adds conservative verb-suffix normalization and a compact business-domain alias vocabulary. It delivered 59/74 links (79.7%), reached all targets for 42/54 queries, produced 37 false exposures, and selected 1.60 requirements/query. All six zero-target cases remained unselected. R5 remains below the existing 90% overall and 85%-per-size acceptance gates: small/medium/large micro recall is 68.0%/92.0%/79.2%.
+
+R5 is therefore a **development-selected retrieval candidate, not a promoted V2**. Phase III-B final sets are closed, no new independently reviewed final set exists, and the user prohibited local model execution. Downstream R5 + raw/P1/PP1 inference was not run. P1 and PP1 source stayed unchanged, and retrieval-specific normalization was explicitly isolated from PP1 grouping.
+
+Retraining is **NOT YET JUSTIFIED**. Deterministic retrieval remains below gate, the model improved materially from prompting alone, training provenance is missing, and there is no clean training corpus or independent future test.
+
 ## Supported and unsupported use
 
 Supported: local, review-assisted requirement-drift analysis under the validated contract. Unsupported: autonomous scope decisions, authorization, legal or safety-critical decisions, calibrated risk estimation, arbitrary chat, and claims about domains or languages not measured by a versioned dataset.
@@ -60,3 +70,6 @@ Supported: local, review-assisted requirement-drift analysis under the validated
 - P1 improved the tested label boundary but still missed 5/24 final raw cases, including one modification, one contradiction, two ambiguous cases, and one unchanged case.
 - Retrieval remains the promotion blocker. Development-only improvements did not generalize under the final all-expected-reach gate.
 - Phase III-B final sets are closed to future tuning. They are prospective relative to this phase but synthetic, single-author, and not provably independent of the missing adapter-training corpus.
+- Phase III-C R5 aliases were selected on synthetic development data and may overfit its vocabulary; independent generalization is unknown.
+- R5 still misses 15/74 expected links: eight below threshold, four at the specific-match gate, and three under top-k competition.
+- Requirement status exists in snapshots, but inactive/rejected filtering has no defined baseline contract; immutable historical baseline semantics currently include every snapshotted non-empty requirement.

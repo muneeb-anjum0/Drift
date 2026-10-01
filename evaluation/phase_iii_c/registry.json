@@ -18,5 +18,9 @@
     {"id":"R3","status":"COMPLETE","variable":"threshold 0.25 to 0.20","decision":"REJECT"},
     {"id":"R4","status":"COMPLETE","variable":"disable specific-match gate","decision":"REJECT"},
     {"id":"R5","status":"SELECTED_DEVELOPMENT_CANDIDATE","variable":"domain alias vocabulary","decision":"RETAIN_PENDING_INDEPENDENT_EVALUATION"}
-  ]
+  ],
+  "proposed_integrated_candidate":{"id":"V2","components":["fixed Q4 model artifact","R5 retrieval","P1 prompt","PP1 postprocessing"],"execution_status":"NOT_RUN_USER_PROHIBITED_LOCAL_MODEL_EXECUTION","decision":"INCONCLUSIVE_NOT_PROMOTED"},
+  "acceptance_gate":{"status":"FAILED","reason":"R5 retrieval input recall remains below the existing overall and per-project-size gates."},
+  "retraining_gate":{"status":"NOT_YET_JUSTIFIED","training_performed":false},
+  "closed_final_rerun":false
 }
