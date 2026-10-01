@@ -1,0 +1,29 @@
+{
+  "schema_version":1,
+  "source":"server-go/internal/modules/drift/drift_postprocess.go",
+  "methodology":"Classifications describe production purpose, not whether a rule happened to improve a benchmark case. Canonical rules were traced against the V0 development ablation and repository history.",
+  "rule_groups":[
+    {"id":"label_normalization","classification":"CONTRACT NORMALIZATION","semantic_label_override":false,"disposition":"KEEP","reason":"Maps malformed or variant label spelling into the six-label contract."},
+    {"id":"reasoning_cleanup","classification":"CONTRACT NORMALIZATION","semantic_label_override":false,"disposition":"KEEP","reason":"Removes duplicate punctuation and repeated sentences without changing classification."},
+    {"id":"module_normalization","classification":"CONTRACT NORMALIZATION","semantic_label_override":false,"disposition":"KEEP","reason":"Canonicalizes module names without changing classification."},
+    {"id":"generic_grouping","classification":"LEGACY BEHAVIOUR","semantic_label_override":false,"disposition":"KEEP_AND_MONITOR","reason":"Deduplicates related output objects and preserves their normalized label; useful presentation behavior but not a domain invariant."},
+    {"id":"canonical_enrichment","classification":"LEGACY BEHAVIOUR","semantic_label_override":false,"disposition":"KEEP_AND_MONITOR","reason":"Supplies scenario-specific title, impact, modules, summary, recommendation, and effort. It is presentation enrichment, not evidence for a semantic label."},
+    {"id":"canonical_label_override","classification":"BENCHMARK-SPECIFIC HEURISTIC","semantic_label_override":true,"disposition":"REMOVE_IN_PP1","reason":"Hard-coded portfolio scenarios overwrite model labels. On V0 development data this fixed one case accidentally and broke two, for net -1."}
+  ],
+  "canonical_rules":[
+    {"id":"family_portal","classification":"BENCHMARK-SPECIFIC HEURISTIC","domain_invariant":false,"label":"added","disposition":"PRESERVE_ENRICHMENT_REMOVE_LABEL_OVERRIDE"},
+    {"id":"parent_portal","classification":"BENCHMARK-SPECIFIC HEURISTIC","domain_invariant":false,"label":"added","disposition":"PRESERVE_ENRICHMENT_REMOVE_LABEL_OVERRIDE"},
+    {"id":"sms_otp","classification":"BENCHMARK-SPECIFIC HEURISTIC","domain_invariant":false,"label":"added","disposition":"PRESERVE_ENRICHMENT_REMOVE_LABEL_OVERRIDE","observed_effect":"One accidental correction from substring otp in TOTP; one regression from broad authentication method match."},
+    {"id":"late_submission","classification":"BENCHMARK-SPECIFIC HEURISTIC","domain_invariant":false,"label":"modified","disposition":"PRESERVE_ENRICHMENT_REMOVE_LABEL_OVERRIDE"},
+    {"id":"remove_card_payment","classification":"BENCHMARK-SPECIFIC HEURISTIC","domain_invariant":false,"label":"removed","disposition":"PRESERVE_ENRICHMENT_REMOVE_LABEL_OVERRIDE"},
+    {"id":"appointment_cancel_window","classification":"BENCHMARK-SPECIFIC HEURISTIC","domain_invariant":false,"label":"modified","disposition":"PRESERVE_ENRICHMENT_REMOVE_LABEL_OVERRIDE"},
+    {"id":"appointment_cancel_contradiction","classification":"BENCHMARK-SPECIFIC HEURISTIC","domain_invariant":false,"label":"contradiction","disposition":"PRESERVE_ENRICHMENT_REMOVE_LABEL_OVERRIDE"},
+    {"id":"vague_dashboard","classification":"PROMPT/TRAINING COMPENSATION","domain_invariant":false,"label":"ambiguous","disposition":"PRESERVE_ENRICHMENT_REMOVE_LABEL_OVERRIDE"},
+    {"id":"clinic_analytics","classification":"BENCHMARK-SPECIFIC HEURISTIC","domain_invariant":false,"label":"modified","disposition":"PRESERVE_ENRICHMENT_REMOVE_LABEL_OVERRIDE"},
+    {"id":"interactive_reports","classification":"BENCHMARK-SPECIFIC HEURISTIC","domain_invariant":false,"label":"modified","disposition":"PRESERVE_ENRICHMENT_REMOVE_LABEL_OVERRIDE","observed_effect":"One regression when the broad term filters matched an ambiguous analytics request."},
+    {"id":"same_report_access","classification":"PROMPT/TRAINING COMPENSATION","domain_invariant":false,"label":"modified","disposition":"PRESERVE_ENRICHMENT_REMOVE_LABEL_OVERRIDE"},
+    {"id":"same_prescription_access","classification":"PROMPT/TRAINING COMPENSATION","domain_invariant":false,"label":"modified","disposition":"PRESERVE_ENRICHMENT_REMOVE_LABEL_OVERRIDE"}
+  ],
+  "v0_observed_label_changes":{"corrections":1,"regressions":2,"wrong_to_different_wrong":0,"net":-1},
+  "limitations":["Repository history establishes that these scenarios recur in benchmarks and demo material; original design intent is not independently documented.","A scenario can be useful for presentation enrichment without being a valid semantic-label invariant."]
+}
