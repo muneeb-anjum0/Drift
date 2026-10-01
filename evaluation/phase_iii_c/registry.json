@@ -1,0 +1,17 @@
+{
+  "schema_version":1,
+  "phase":"III-C",
+  "source_branch":"phase-3/model-improvement-v1",
+  "source_commit":"6b13d4856141dc6a05dd214e69b2f71ca7ca9294",
+  "branch":"phase-3/retrieval-dataset-v1",
+  "fixed_model_artifact_sha256":"11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
+  "preserved_components":{"prompt":"P1","postprocessing":"PP1"},
+  "excluded_component":{"retrieval":"Phase III-B R1","reason":"Rejected integrated candidate regressed final all-expected retrieval reach."},
+  "protected_datasets":[
+    {"name":"drift-raw-final@1.0.0","sha256":"5da735ac677e2824d80f5d22a68bb738d46b3c5aa4c9617f8cf3c88e0cb21253","status":"CLOSED_DO_NOT_TUNE"},
+    {"name":"drift-retrieval-final@1.0.0","sha256":"3f2b2e7aa03d2d07f0b549f88a1d1fc55dc9cd04e4b728df1830bd3a00e95902","status":"CLOSED_DO_NOT_TUNE"}
+  ],
+  "experiments":[
+    {"id":"R0","status":"PENDING_REPRODUCTION","role":"ACCEPTED_RETRIEVAL_BASELINE","configuration":"V0 retrieval + P1 + PP1 source state","decision":null}
+  ]
+}
