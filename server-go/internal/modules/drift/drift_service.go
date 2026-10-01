@@ -302,19 +302,6 @@ var requirementSynonyms = map[string][]string{
 	"invoices":      {"invoice"},
 	"billing":       {"invoice", "payment"},
 	"usage":         {"report"},
-	"unavailable":   {"stock", "availability"},
-	"backorder":     {"stock", "availability"},
-	"rating":        {"review"},
-	"parcel":        {"shipment", "tracking"},
-	"buyer":         {"customer"},
-	"anonymou":      {"guest"},
-	"register":      {"account", "authentication"},
-	"callback":      {"webhook"},
-	"url":           {"webhook"},
-	"graphql":       {"api"},
-	"searching":     {"search"},
-	"uploaded":      {"upload", "file"},
-	"document":      {"file"},
 }
 
 var domainKeywords = map[string][]string{
@@ -326,7 +313,6 @@ var domainKeywords = map[string][]string{
 	"admin_access":     {"admin", "staff", "role", "permission", "access", "verification", "verified", "dashboard"},
 	"documents":        {"document", "file", "upload", "attachment", "notes", "brief", "scope"},
 	"products_content": {"product", "listing", "blog", "post", "homepage", "content", "image"},
-	"integrations_api": {"api", "rest", "graphql", "webhook", "callback", "url", "integration", "endpoint"},
 }
 
 // ScoreRequirementRelevance applies the deterministic production retrieval scorer.

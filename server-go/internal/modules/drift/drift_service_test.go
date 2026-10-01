@@ -168,15 +168,6 @@ func TestRequirementTokensIgnoreConjunction(t *testing.T) {
 	}
 }
 
-func TestRequirementTokensExpandEvidenceBackedVocabulary(t *testing.T) {
-	tokens := requirementTokens("anonymous buyer callback GraphQL searching uploaded document")
-	for _, expected := range []string{"guest", "customer", "webhook", "api", "search", "upload", "file"} {
-		if _, exists := tokens[expected]; !exists {
-			t.Fatalf("expected normalized token %q in %#v", expected, tokens)
-		}
-	}
-}
-
 func TestNormalizePredictionKeepsSameExistingReportUnchanged(t *testing.T) {
 	prediction := ModelPrediction{Label: "added", Confidence: 0.95, Reasoning: "download requested", ChangedElements: []string{"Monthly report download"}}
 	relevance := RelevanceResult{MatchedDomains: []string{"reports_exports"}}
