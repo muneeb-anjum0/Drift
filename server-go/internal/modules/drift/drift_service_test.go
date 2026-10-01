@@ -50,6 +50,21 @@ func TestRequirementRelevanceThresholdBoundaryIsInclusive(t *testing.T) {
 	}
 }
 
+func TestRequirementTokenNormalizationHandlesCommonVerbInflections(t *testing.T) {
+	tests := map[string]string{
+		"searching":  "search",
+		"ratings":    "rate",
+		"shipped":    "ship",
+		"registered": "register",
+		"processing": "process",
+	}
+	for input, expected := range tests {
+		if got := normalizeRequirementToken(input); got != expected {
+			t.Errorf("normalizeRequirementToken(%q) = %q, want %q", input, got, expected)
+		}
+	}
+}
+
 func TestDetectExplicitRemovalWithWeakMatchIsRemoved(t *testing.T) {
 	baseline := []requirement.RequirementSnapshot{
 		{RequirementID: "req-1", Title: "User login", Description: "Users can login with email and password"},

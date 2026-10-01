@@ -127,6 +127,9 @@ func main() {
 	inputPath := flag.String("input", "../evaluation/datasets/retrieval_dev_v1.json", "retrieval dataset")
 	outputPath := flag.String("output", "../evaluation/reports/retrieval_dev_v1.json", "retrieval report")
 	evaluationID := flag.String("evaluation-id", "retrieval-dev-v1", "stable evaluation identifier")
+	thresholdOverride := flag.Float64("threshold", -1, "override dataset threshold when non-negative")
+	maxSelectedOverride := flag.Int("max-selected", -1, "override dataset selection cap when positive")
+	disableSpecificGate := flag.Bool("disable-specific-gate", false, "evaluate threshold eligibility without the production specific-match gate")
 	flag.Parse()
 	raw, err := os.ReadFile(*inputPath)
 	if err != nil {
@@ -135,6 +138,12 @@ func main() {
 	var data dataset
 	if err := json.Unmarshal(raw, &data); err != nil {
 		panic(err)
+	}
+	if *thresholdOverride >= 0 {
+		data.Threshold = *thresholdOverride
+	}
+	if *maxSelectedOverride > 0 {
+		data.MaxSelected = *maxSelectedOverride
 	}
 	if data.MaxSelected < 1 {
 		panic("max_selected must be positive")
@@ -156,7 +165,7 @@ func main() {
 				switch {
 				case !ranked[index].Trace.PassedThreshold:
 					ranked[index].Decision = "BELOW_THRESHOLD"
-				case !ranked[index].Trace.PassedSpecificGate:
+				case !*disableSpecificGate && !ranked[index].Trace.PassedSpecificGate:
 					ranked[index].Decision = "FAILED_SPECIFIC_MATCH_GATE"
 				case len(selected) >= data.MaxSelected:
 					ranked[index].Decision = "TOP_K_EXCLUDED"
@@ -224,7 +233,7 @@ func main() {
 		values["model_input_micro_recall"] = values["model_hits"] / values["expected_requirements"]
 	}
 	queryCount := len(results)
-	report := map[string]any{"schema_version": 2, "evaluation_id": *evaluationID, "generated_at": time.Now().UTC().Format(time.RFC3339), "dataset": map[string]any{"name": data.Name, "version": data.Version, "sha256": hex.EncodeToString(digest[:])}, "configuration": map[string]any{"threshold": data.Threshold, "max_selected": data.MaxSelected, "tie_breaking": "stable source order"}, "metrics": map[string]any{"query_count": queryCount, "positive_query_count": positive, "hard_negative_query_count": negative, "expected_requirement_count": expectedTotal, "model_hit_count": hitTotal, "recall_at_1_macro": sums["r1"] / float64(positive), "recall_at_3_macro": sums["r3"] / float64(positive), "recall_at_k_macro": sums["rk"] / float64(positive), "precision_at_1_macro": sums["p1"] / float64(queryCount), "precision_at_3_macro": sums["p3"] / float64(queryCount), "precision_at_k_macro": sums["pk"] / float64(queryCount), "mrr": sums["mrr"] / float64(positive), "model_input_recall_macro": sums["mir"] / float64(positive), "model_input_recall_micro": ratio(hitTotal, expectedTotal), "at_least_one_reached_count": reachedAny, "at_least_one_reached_rate": ratio(reachedAny, positive), "all_expected_reached_count": all, "all_expected_reached_rate": ratio(all, positive), "false_exposure_count": falseTotal, "average_selected_requirements": ratio(selectedTotal, queryCount), "average_candidate_requirements": ratio(candidateTotal, queryCount), "evaluation_duration_ms": time.Since(started).Milliseconds(), "by_project_size": bySize}, "results": results, "limitations": []string{"Synthetic prospective development corpus; labels were authored by one engineering agent.", "Recall@k ranks all requirements; model-input recall also applies the production threshold and selection cap.", "Null recall identifies zero-expected hard-negative queries.", "Wall-clock duration is observational, not a controlled benchmark.", "This measures deterministic retrieval only and makes no model-quality claim."}}
+	report := map[string]any{"schema_version": 2, "evaluation_id": *evaluationID, "generated_at": time.Now().UTC().Format(time.RFC3339), "dataset": map[string]any{"name": data.Name, "version": data.Version, "sha256": hex.EncodeToString(digest[:])}, "configuration": map[string]any{"threshold": data.Threshold, "max_selected": data.MaxSelected, "specific_match_gate_enabled": !*disableSpecificGate, "tie_breaking": "stable source order"}, "metrics": map[string]any{"query_count": queryCount, "positive_query_count": positive, "hard_negative_query_count": negative, "expected_requirement_count": expectedTotal, "model_hit_count": hitTotal, "recall_at_1_macro": sums["r1"] / float64(positive), "recall_at_3_macro": sums["r3"] / float64(positive), "recall_at_k_macro": sums["rk"] / float64(positive), "precision_at_1_macro": sums["p1"] / float64(queryCount), "precision_at_3_macro": sums["p3"] / float64(queryCount), "precision_at_k_macro": sums["pk"] / float64(queryCount), "mrr": sums["mrr"] / float64(positive), "model_input_recall_macro": sums["mir"] / float64(positive), "model_input_recall_micro": ratio(hitTotal, expectedTotal), "at_least_one_reached_count": reachedAny, "at_least_one_reached_rate": ratio(reachedAny, positive), "all_expected_reached_count": all, "all_expected_reached_rate": ratio(all, positive), "false_exposure_count": falseTotal, "average_selected_requirements": ratio(selectedTotal, queryCount), "average_candidate_requirements": ratio(candidateTotal, queryCount), "evaluation_duration_ms": time.Since(started).Milliseconds(), "by_project_size": bySize}, "results": results, "limitations": []string{"Synthetic prospective development corpus; labels were authored by one engineering agent.", "Recall@k ranks all requirements; model-input recall also applies the configured threshold, gate, and selection cap.", "Null recall identifies zero-expected hard-negative queries.", "Wall-clock duration is observational, not a controlled benchmark.", "This measures deterministic retrieval only and makes no model-quality claim."}}
 	encoded, err := json.MarshalIndent(report, "", "  ")
 	if err != nil {
 		panic(err)

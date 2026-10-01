@@ -406,12 +406,27 @@ func requirementTokens(text string) map[string]struct{} {
 
 func normalizeRequirementToken(token string) string {
 	if strings.HasSuffix(token, "ies") && len(token) > 4 {
-		return strings.TrimSuffix(token, "ies") + "y"
+		token = strings.TrimSuffix(token, "ies") + "y"
+	} else if strings.HasSuffix(token, "s") && len(token) > 4 {
+		token = strings.TrimSuffix(token, "s")
 	}
-	if strings.HasSuffix(token, "s") && len(token) > 4 {
-		return strings.TrimSuffix(token, "s")
+	if strings.HasSuffix(token, "ing") && len(token) > 5 {
+		return normalizeRequirementVerbStem(strings.TrimSuffix(token, "ing"))
+	}
+	if strings.HasSuffix(token, "ed") && len(token) > 4 {
+		return normalizeRequirementVerbStem(strings.TrimSuffix(token, "ed"))
 	}
 	return token
+}
+
+func normalizeRequirementVerbStem(stem string) string {
+	if len(stem) >= 2 && stem[len(stem)-1] == stem[len(stem)-2] && strings.ContainsRune("bdgmnprt", rune(stem[len(stem)-1])) {
+		return stem[:len(stem)-1]
+	}
+	if strings.HasSuffix(stem, "at") || strings.HasSuffix(stem, "iz") || strings.HasSuffix(stem, "us") {
+		return stem + "e"
+	}
+	return stem
 }
 
 func matchedDomainSet(tokens map[string]struct{}) map[string]struct{} {
