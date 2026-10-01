@@ -402,7 +402,7 @@ func requirementTokens(text string) map[string]struct{} {
 	}, strings.ToLower(text))
 	tokens := map[string]struct{}{}
 	for _, token := range strings.Fields(cleaned) {
-		token = normalizeRequirementToken(token)
+		token = normalizeRetrievalToken(token)
 		if len(token) <= 2 {
 			continue
 		}
@@ -419,10 +419,16 @@ func requirementTokens(text string) map[string]struct{} {
 
 func normalizeRequirementToken(token string) string {
 	if strings.HasSuffix(token, "ies") && len(token) > 4 {
-		token = strings.TrimSuffix(token, "ies") + "y"
-	} else if strings.HasSuffix(token, "s") && len(token) > 4 {
-		token = strings.TrimSuffix(token, "s")
+		return strings.TrimSuffix(token, "ies") + "y"
 	}
+	if strings.HasSuffix(token, "s") && len(token) > 4 {
+		return strings.TrimSuffix(token, "s")
+	}
+	return token
+}
+
+func normalizeRetrievalToken(token string) string {
+	token = normalizeRequirementToken(token)
 	if strings.HasSuffix(token, "ing") && len(token) > 5 {
 		return normalizeRequirementVerbStem(strings.TrimSuffix(token, "ing"))
 	}
@@ -446,7 +452,7 @@ func matchedDomainSet(tokens map[string]struct{}) map[string]struct{} {
 	out := map[string]struct{}{}
 	for domain, keywords := range domainKeywords {
 		for _, keyword := range keywords {
-			normalized := normalizeRequirementToken(keyword)
+			normalized := normalizeRetrievalToken(keyword)
 			if _, ok := tokens[normalized]; ok {
 				out[domain] = struct{}{}
 				break

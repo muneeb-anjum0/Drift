@@ -59,9 +59,18 @@ func TestRequirementTokenNormalizationHandlesCommonVerbInflections(t *testing.T)
 		"processing": "process",
 	}
 	for input, expected := range tests {
-		if got := normalizeRequirementToken(input); got != expected {
-			t.Errorf("normalizeRequirementToken(%q) = %q, want %q", input, got, expected)
+		if got := normalizeRetrievalToken(input); got != expected {
+			t.Errorf("normalizeRetrievalToken(%q) = %q, want %q", input, got, expected)
 		}
+	}
+}
+
+func TestRetrievalSuffixNormalizationDoesNotChangePostprocessingNormalization(t *testing.T) {
+	if got := normalizeRequirementToken("searching"); got != "searching" {
+		t.Fatalf("frozen postprocessing normalization changed: got %q", got)
+	}
+	if got := normalizeRetrievalToken("searching"); got != "search" {
+		t.Fatalf("retrieval normalization not applied: got %q", got)
 	}
 }
 
