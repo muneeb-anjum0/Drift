@@ -4,7 +4,7 @@
   "selection_dataset_sha256": "a000bc087bf3d1455f98600a76648a078315e8d7a4377e1c32f8ed0185971ae9",
   "experiments": [
     {
-      "id":"R0","variable":"none","configuration":"V0 suffix normalization; threshold 0.25; specific gate enabled; k=3","status":"FROZEN_BASELINE",
+      "id":"R0","variable":"none","configuration":"V0 token normalization; threshold 0.25; specific gate enabled; k=3","status":"FROZEN_BASELINE",
       "v2":{"all_expected":"34/54","at_least_one":"39/54","model_hits":"48/74","false_exposures":32,"average_selected":1.3333333333333333}
     },
     {
@@ -28,7 +28,7 @@
       "decision_basis":"Three target hits cost twenty-six false exposures and substantially more downstream inference."
     },
     {
-      "id":"R5","hypothesis":"A compact domain-alias vocabulary will bridge recurring business paraphrases while preserving zero-target rejection.","variable":"add thirteen bidirectional-use query expansion entries to the existing synonym map","configuration":"R1 plus alias expansion; threshold 0.25; specific gate enabled; k=3","status":"SELECTED_DEVELOPMENT_CANDIDATE",
+      "id":"R5","hypothesis":"A compact domain-alias vocabulary will bridge recurring business paraphrases while preserving zero-target rejection.","variable":"add thirteen alias expansion entries to the existing synonym map","configuration":"R1 plus alias expansion; threshold 0.25; specific gate enabled; k=3","status":"SELECTED_DEVELOPMENT_CANDIDATE",
       "v2":{"all_expected":"42/54","at_least_one":"47/54","model_hits":"59/74","false_exposures":37,"average_selected":1.6},
       "decision_basis":"Nine net expected targets and six all-target queries were recovered for four false exposures; all six zero-target hard negatives still selected nothing. The evidence is development-only and alias selection is vulnerable to corpus-specific overfitting."
     }
