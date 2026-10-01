@@ -134,6 +134,48 @@ func TestCanonicalGroupingCases(t *testing.T) {
 	}
 }
 
+func TestCanonicalEnrichmentDoesNotOverrideSemanticLabel(t *testing.T) {
+	tests := []struct {
+		name        string
+		message     string
+		modelLabel  string
+		expectedKey string
+	}{
+		{
+			name:        "sms terms do not turn removal into addition",
+			message:     "Remove social identity providers from the supported authentication methods.",
+			modelLabel:  "removed",
+			expectedKey: "Add SMS OTP Password Reset",
+		},
+		{
+			name:        "report terms do not turn ambiguity into modification",
+			message:     "Add filters for whatever dimensions matter and include useful views.",
+			modelLabel:  "ambiguous",
+			expectedKey: "Replace PDF Reports With Interactive Report Cards",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			changes := CleanDetectedChanges([]DetectedChange{{
+				ChangeType:  tt.modelLabel,
+				Title:       tt.message,
+				Description: tt.message,
+				Confidence:  90,
+			}}, tt.message)
+			if len(changes) != 1 {
+				t.Fatalf("expected one enriched change, got %#v", changes)
+			}
+			if changes[0].Title != tt.expectedKey {
+				t.Fatalf("expected canonical enrichment %q, got %#v", tt.expectedKey, changes[0])
+			}
+			if changes[0].ChangeType != tt.modelLabel {
+				t.Fatalf("canonical enrichment changed semantic label from %q to %q", tt.modelLabel, changes[0].ChangeType)
+			}
+		})
+	}
+}
+
 func TestSameReportAccessStaysLowImpact(t *testing.T) {
 	message := "Can students also download the same academic report from the reports page instead of only from the dashboard?"
 	effort := 2.0
@@ -262,7 +304,7 @@ func TestVagueDashboardRequestStaysAmbiguous(t *testing.T) {
 	effort := 2.0
 
 	grouped, score, _, _, hours, _ := CleanAnalysis([]DetectedChange{{
-		ChangeType:      "modified",
+		ChangeType:      "ambiguous",
 		Title:           "Patient dashboard",
 		Description:     "The dashboard should be improved.",
 		Impact:          "high",

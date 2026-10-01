@@ -85,6 +85,7 @@ func labelAfterPostprocess(item rawCase) string {
 func main() {
 	inputPath := flag.String("input", "/tmp/drift-phase3-reports/raw_model_dev_v1.json", "raw evaluation report")
 	outputPath := flag.String("output", "evaluation/reports/postprocess_ablation_dev_v1.json", "ablation report")
+	evaluationID := flag.String("evaluation-id", "postprocess-ablation-dev-v1", "stable evaluation identifier")
 	flag.Parse()
 
 	data, err := os.ReadFile(*inputPath)
@@ -135,7 +136,7 @@ func main() {
 	total := len(results)
 	out := report{
 		SchemaVersion:  1,
-		EvaluationID:   "postprocess-ablation-dev-v1",
+		EvaluationID:   *evaluationID,
 		GeneratedAt:    time.Now().UTC().Format(time.RFC3339),
 		Source:         source.EvaluationID,
 		ArtifactSHA256: source.ArtifactSHA256,

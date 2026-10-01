@@ -1,10 +1,13 @@
 {
-  "id":"PP1","status":"PLANNED","created_at":"2026-10-01",
+  "id":"PP1","status":"COMPLETE","created_at":"2026-10-01","completed_at":"2026-10-01",
   "hypothesis":"Preventing canonical presentation rules from overwriting validated semantic labels will remove postprocessor regressions while retaining normalization, grouping, and enrichment.",
   "baseline":"V0-PP","primary_variable":"canonical rules preserve the normalized input label instead of assigning their hard-coded label",
   "held_constant":["V0 raw predictions","development dataset","contract parsing","reasoning cleanup","module normalization","generic grouping","canonical titles","canonical impact","canonical summaries","canonical recommendations","canonical effort estimates","retrieval excluded","model excluded","prompt excluded"],
   "dataset":"drift-raw-dev@1.0.0","sample_count":48,
   "acceptance":"Zero postprocessor-introduced semantic-label errors, net semantic-label contribution no worse than raw, all Go tests pass, and no canonical-rule test loses grouping or enrichment behavior.",
   "rule_inventory":"evaluation/postprocessing_rule_inventory_v1.json",
-  "result":null,"decision":null
+  "result":{"raw_correct":32,"postprocessed_correct":32,"raw_accuracy":0.6666666667,"postprocessed_accuracy":0.6666666667,"introduced_errors":0,"corrected_errors":0,"changed_labels":0,"net_correct_case_contribution":0,"go_test_status":"PASS"},
+  "decision":"ACCEPT_AS_POSTPROCESSING_COMPONENT",
+  "interpretation":"PP1 passed every predeclared gate. It removes benchmark-shaped semantic label overrides while retaining canonical grouping and enrichment. The V0 replay used frozen cases and normalized outputs reconstructed from versioned evidence because the untracked full raw report was lost in the workstation crash.",
+  "report":"evaluation/reports/postprocess_PP1_dev.json"
 }

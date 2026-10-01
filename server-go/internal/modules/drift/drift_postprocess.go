@@ -9,7 +9,6 @@ import (
 type canonicalRule struct {
 	key            string
 	title          string
-	label          string
 	impact         string
 	hours          float64
 	modules        []string
@@ -26,7 +25,6 @@ var canonicalRules = []canonicalRule{
 	{
 		key:            "family_portal",
 		title:          "Add Family Member Portal Access",
-		label:          "added",
 		impact:         "high",
 		hours:          18,
 		modules:        []string{"Authentication", "Role Management", "Appointments", "Prescriptions", "Billing", "Payment Status", "Notifications"},
@@ -37,7 +35,6 @@ var canonicalRules = []canonicalRule{
 	{
 		key:            "parent_portal",
 		title:          "Add Parent Portal Access",
-		label:          "added",
 		impact:         "high",
 		hours:          18,
 		modules:        []string{"Authentication", "Role Management", "Access Control", "Attendance", "Grades", "Billing", "Notifications"},
@@ -48,7 +45,6 @@ var canonicalRules = []canonicalRule{
 	{
 		key:            "sms_otp",
 		title:          "Add SMS OTP Password Reset",
-		label:          "added",
 		impact:         "medium",
 		hours:          6,
 		modules:        []string{"Authentication", "Notifications"},
@@ -59,7 +55,6 @@ var canonicalRules = []canonicalRule{
 	{
 		key:            "late_submission",
 		title:          "Modify Assignment Submission Deadline Policy",
-		label:          "modified",
 		impact:         "medium",
 		hours:          8,
 		modules:        []string{"Assignments", "Deadline Rules", "Penalty Calculation"},
@@ -70,7 +65,6 @@ var canonicalRules = []canonicalRule{
 	{
 		key:            "remove_card_payment",
 		title:          "Remove Card Payment From First Release",
-		label:          "removed",
 		impact:         "high",
 		hours:          4,
 		modules:        []string{"Payments", "Fees", "Billing"},
@@ -81,7 +75,6 @@ var canonicalRules = []canonicalRule{
 	{
 		key:            "appointment_cancel_window",
 		title:          "Modify Appointment Cancellation Window",
-		label:          "modified",
 		impact:         "medium",
 		hours:          8,
 		modules:        []string{"Appointments", "Notifications"},
@@ -92,7 +85,6 @@ var canonicalRules = []canonicalRule{
 	{
 		key:            "appointment_cancel_contradiction",
 		title:          "Contradict Appointment Cancellation Policy",
-		label:          "contradiction",
 		impact:         "high",
 		hours:          12,
 		modules:        []string{"Appointments", "Notifications"},
@@ -103,7 +95,6 @@ var canonicalRules = []canonicalRule{
 	{
 		key:            "vague_dashboard",
 		title:          "Clarify Patient Dashboard Improvements",
-		label:          "ambiguous",
 		impact:         "medium",
 		hours:          4,
 		modules:        []string{"Dashboard", "Product Discovery"},
@@ -114,7 +105,6 @@ var canonicalRules = []canonicalRule{
 	{
 		key:            "clinic_analytics",
 		title:          "Replace CSV Reports With Interactive Clinic Analytics",
-		label:          "modified",
 		impact:         "high",
 		hours:          18,
 		modules:        []string{"Reports", "Analytics", "Dashboard", "Documents"},
@@ -125,7 +115,6 @@ var canonicalRules = []canonicalRule{
 	{
 		key:            "interactive_reports",
 		title:          "Replace PDF Reports With Interactive Report Cards",
-		label:          "modified",
 		impact:         "high",
 		hours:          18,
 		modules:        []string{"Reports", "Analytics", "Dashboard", "Documents"},
@@ -136,7 +125,6 @@ var canonicalRules = []canonicalRule{
 	{
 		key:            "same_report_access",
 		title:          "Expose Existing Report Download From Reports Page",
-		label:          "modified",
 		impact:         "low",
 		hours:          2,
 		modules:        []string{"Reports", "Documents"},
@@ -147,7 +135,6 @@ var canonicalRules = []canonicalRule{
 	{
 		key:            "same_prescription_access",
 		title:          "Expose Existing Prescription PDF From Visit History",
-		label:          "modified",
 		impact:         "low",
 		hours:          2,
 		modules:        []string{"Prescriptions", "Documents"},
@@ -312,7 +299,6 @@ func buildGroupedChange(key string, group []DetectedChange, inputText string) De
 	grouped.BaselineRequirementTitle = strings.Join(sortedSet(requirementTitles), ", ")
 	if hasRule {
 		grouped.Title = rule.title
-		grouped.ChangeType = rule.label
 		grouped.Impact = rule.impact
 		if grouped.ChangeType == "contradiction" && impactRank(grouped.Impact) < impactRank("high") {
 			grouped.Impact = "high"

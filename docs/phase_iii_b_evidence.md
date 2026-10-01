@@ -62,3 +62,19 @@ P1 changed only the prompt text. It made the six labels mutually exclusive, defi
 P1 improved raw accuracy from 32/48 (66.7%) to 36/48 (75.0%) and macro F1 from 0.669 to 0.756. All 48 outputs parsed, compared with all 48 under V0; strict raw-JSON validity also improved from 52.1% to 100%. P95 latency rose from 15.90s to 16.44s (3.4%), within the predeclared 20% ceiling. No class recall regressed: added improved from 62.5% to 87.5%, contradiction from 62.5% to 75.0%, and ambiguous from 37.5% to 50.0%; modified, removed, and unchanged were unchanged.
 
 The prompt corrected `add_security_01`, injection case `add_saas_01`, `con_logistics_01`, and `amb_finance_01`, with no previously correct case becoming wrong. `rem_logistics_01` moved from `unchanged` to `modified` but remained incorrect, and removed recall stayed 50%. **Accepted as a candidate prompt component:** every predeclared acceptance gate passed, while partial-removal reasoning remains a documented limitation.
+
+## Postprocessing experiments
+
+### Rule classification
+
+The complete inventory is [postprocessing_rule_inventory_v1.json](../evaluation/postprocessing_rule_inventory_v1.json). Label spelling, reasoning cleanup, and module-name normalization are contract normalization and remain. Generic grouping and canonical presentation enrichment are legacy behavior retained under monitoring. The twelve scenario-specific canonical label assignments are not domain invariants: they encode recurring portfolio/benchmark scenarios or compensate for classifier behavior. They are classified as benchmark-specific heuristics or prompt/training compensation.
+
+The traced V0 changes support that classification. `sms_otp` accidentally corrected `add_security_01` because `otp` matched inside `TOTP`, but the same rule changed the correct `removed` result for `rem_security_01` to `added` after matching “authentication method.” `interactive_reports` changed the correct `ambiguous` result for `amb_analytics_01` to `modified` after the broad term “filters” matched. None expresses a generally valid semantic invariant.
+
+### PP1 — preserve validated semantic labels
+
+PP1 removed the hard-coded label field and assignment from canonical rules. Rules can still group a scenario and supply its canonical title, impact, modules, summary, recommendation, and effort estimate, but the normalized classifier label remains authoritative. The full Go suite passed, including new tests for the two observed broad-match regressions and existing grouping/enrichment assertions.
+
+Replaying all 48 V0 development cases produced 32/48 before and after postprocessing, with zero corrected cases, zero introduced errors, and zero label changes. This improves full postprocessing from 31/48 to 32/48 and changes its semantic contribution from -1 to 0. **Accepted as a candidate postprocessing component:** it passes every predeclared gate and removes hidden benchmark-shaped classifier overrides.
+
+The workstation crash removed the untracked full V0 raw report. The PP1 replay input was therefore reconstructed exactly for the fields consumed by `eval-postprocess` from the frozen development cases and the normalized outputs in the versioned error ledger. The report identifies this reconstructed source; this is strong deterministic ablation evidence but not a new model run.
