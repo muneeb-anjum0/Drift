@@ -1,10 +1,13 @@
 {
-  "id":"R4","status":"PLANNED","created_at":"2026-10-01",
+  "id":"R4","status":"COMPLETE","created_at":"2026-10-01","completed_at":"2026-10-01",
   "hypothesis":"Corpus-generic actor/container tokens inflate irrelevant candidates after R2; excluding them as retrieval evidence will reduce model calls without losing multi-requirement recall.",
   "baseline":"R2","primary_variable":"add patient, customer, project, task, and into to retrieval stopword normalization",
   "held_constant":["dataset","threshold 0.25","top-k 3","score weights","specific-match gate","R1/R2 vocabulary normalization","model","prompt","postprocessing"],
   "dataset":"drift-retrieval-dev@1.0.0","sample_count":24,
   "acceptance":"All-expected reach 24/24, model-input recall 1.0, average model calls below 1.5, false-candidate exposure at most 7, Recall@3 at least 0.95, and no multi-requirement loss.",
   "planned_files":["server-go/internal/modules/drift/drift_service.go","server-go/internal/modules/drift/drift_service_test.go"],
-  "result":null,"decision":null
+  "result":{"all_expected_reached":"20/24","model_input_recall":0.8958333333,"recall_at_3":0.9791666667,"mrr":0.9583333333,"average_model_calls":1.2916666667,"false_candidate_exposure":7,"lost_expected_requirements":["cq-08/c-book","eq-05/e-email","sq-06/s-dashboard","sq-07/s-search"]},
+  "decision":"REJECT",
+  "interpretation":"The filter met its workload target but removed evidence needed by four genuine requirements. Actor and container nouns cannot safely be treated as generic stopwords in this corpus.",
+  "report":"evaluation/reports/retrieval_R4.json"
 }

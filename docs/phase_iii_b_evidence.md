@@ -53,6 +53,10 @@ Hypothesis: vocabulary gaps caused the remaining lexical misses. Only general sy
 
 Reducing k from 3 to 2 lowered average calls from 1.583 to 1.5 and false exposure from 10 to 9, while model-input recall became 97.9%. It dropped the genuine booking requirement from the two-change `cq-08` message. **Rejected:** losing a real multi-requirement candidate is not justified by one fewer false exposure and 0.083 fewer calls/query.
 
+### R4 — generic actor/container stopwords
+
+R4 tested whether `patient`, `customer`, `project`, `task`, and `into` were generic corpus noise, keeping R2 vocabulary, scores, gates, threshold, and top-k fixed. Average calls fell from 1.583 to 1.292 and false exposure from 10 to 7, but model-input recall fell to 89.6% and only 20/24 queries retained all expected requirements. It lost `cq-08/c-book`, `eq-05/e-email`, `sq-06/s-dashboard`, and `sq-07/s-search`. **Rejected and reverted:** these nouns carry genuine intent in several requirements.
+
 ## Prompt experiments
 
 ### P1 — explicit taxonomy and instruction boundary

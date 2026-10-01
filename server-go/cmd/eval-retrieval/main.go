@@ -94,6 +94,7 @@ func idsAt(ranked []rankedRequirement, count int) []string {
 func main() {
 	inputPath := flag.String("input", "../evaluation/datasets/retrieval_dev_v1.json", "retrieval dataset")
 	outputPath := flag.String("output", "../evaluation/reports/retrieval_dev_v1.json", "retrieval report")
+	evaluationID := flag.String("evaluation-id", "retrieval-dev-v1", "stable evaluation identifier")
 	flag.Parse()
 
 	raw, err := os.ReadFile(*inputPath)
@@ -178,7 +179,7 @@ func main() {
 	}
 	report := map[string]any{
 		"schema_version": 1,
-		"evaluation_id":  "retrieval-dev-v1",
+		"evaluation_id":  *evaluationID,
 		"generated_at":   time.Now().UTC().Format(time.RFC3339),
 		"dataset":        map[string]any{"name": data.Name, "version": data.Version, "sha256": hex.EncodeToString(digest[:])},
 		"configuration":  map[string]any{"threshold": data.Threshold, "max_selected": data.MaxSelected},
