@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "baseline_id": "drift-model-baseline-v0",
+  "created_at": "2026-09-30T20:42:00+05:00",
+  "status": "validated",
+  "repository": {
+    "frozen_engineering_commit": "64aa7c0b2fee70e1c5132b9eeebed3d98d8f5ce6",
+    "frozen_engineering_tag": "phase-2.5-engineering-baseline",
+    "phase_iii_branch": "phase-3/model-baseline-v0"
+  },
+  "base_model": {
+    "repository": "Qwen/Qwen2.5-7B-Instruct",
+    "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "revision_evidence": "Hugging Face download metadata for every local base file",
+    "architecture": "qwen2",
+    "layers": 28,
+    "hidden_size": 3584,
+    "context_length": 32768,
+    "weight_shards": 4,
+    "weight_bytes": 15231233024
+  },
+  "adapter": {
+    "name": "DriftLedger_v5_qwen2.5_7b_LoRA",
+    "version": "v5 (inferred from recovered directory name)",
+    "protected_source": "Model/DriftLedger_v5_qwen2.5_7b_LoRA",
+    "working_copy": "models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA",
+    "weights": "adapter_model.safetensors",
+    "sha256": "97dd550561f64f4d07880079e1b8df60642a8ea5e195bc1fc1982548a88df4af",
+    "protected_source_manifest_sha256": "5bc5b444604f03cfcfbc913e624f86aadf177782ce283a6722cb65c0461b47f1",
+    "method": "PEFT LoRA causal language modeling",
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "training_steps": 1041,
+    "training_epochs": 1,
+    "final_recorded_eval_loss": 0.06712748110294342,
+    "training_data": "UNKNOWN",
+    "training_data_sha256": "UNKNOWN",
+    "held_out_status": "UNKNOWN"
+  },
+  "reconstruction": {
+    "device": "CPU only",
+    "llama_cpp_tag": "b11151",
+    "llama_cpp_commit": "bd4f514db14d87fded667787a7a963bfbaa98e89",
+    "workflow": [
+      "lazy Hugging Face base to F16 GGUF",
+      "lazy PEFT LoRA to F16 adapter GGUF",
+      "tensor-streaming llama-export-lora merge to F16 GGUF",
+      "llama-quantize Q4_K_M"
+    ],
+    "base_f16_gguf": {
+      "path": "models/gguf/Qwen2.5-7B-Instruct-F16.gguf",
+      "bytes": 15237853760,
+      "sha256": "970ccec3ad83bb62aa25ce585bed4ebd297963257442afe697d350465933f2c5",
+      "peak_rss_kib": 4025492,
+      "process_swaps": 0
+    },
+    "lora_f16_gguf": {
+      "path": "models/gguf/DriftLedger-v5-LoRA-F16.gguf",
+      "bytes": 80767680,
+      "sha256": "c41684467b7b1890f4553520f2b2d47482abd700a7e158682cb195739395a678",
+      "peak_rss_kib": 950900,
+      "process_swaps": 0
+    },
+    "merged_f16_gguf": {
+      "path": "models/gguf/DriftLedger-Qwen2.5-7B-F16.gguf",
+      "bytes": 15237853760,
+      "sha256": "6b9eb2173a68e8f2ed5113c949d18ea71e9d16200ab28528f4010f2ff9fb439f",
+      "peak_rss_kib": 1650624,
+      "process_swaps": 0
+    },
+    "quantization_peak_rss_kib": 3677120,
+    "quantization_process_swaps": 0
+  },
+  "runtime_artifact": {
+    "path": "models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf",
+    "format": "GGUF V3",
+    "quantization": "Q4_K_M",
+    "gguf_file_type": 15,
+    "tensor_count": 339,
+    "bytes": 4683074112,
+    "sha256": "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
+    "tokenizer_model": "gpt2",
+    "tokenizer_pretokenizer": "qwen2",
+    "chat_template_present": true
+  },
+  "runtime": {
+    "engine": "llama.cpp server-b11151",
+    "device": "CPU only",
+    "gpu_layers": 0,
+    "device_offload": "none",
+    "parallel_slots": 1,
+    "threads": 6,
+    "context_size": 768,
+    "max_output_tokens": 120,
+    "temperature": 0,
+    "top_p": 1,
+    "container_memory_limit_bytes": 7516192768,
+    "container_memory_plus_swap_limit_bytes": 8589934592
+  },
+  "software_identities": {
+    "prompt_and_inference_sha256": "3219d657ae4eb6b16a36e824476f203918b7d00d62d6ac2e5d6dfd3b4c8ef694",
+    "retrieval_sha256": "1d242313b17b037d2cee917a1c78cb5f7e4ed4480e5a37c78e01fe13b37e3816",
+    "postprocessor_sha256": "481326e86eeb55ca2750c33d2e83a397c4ab6894800f73d70ea1410f59fd0289",
+    "scoring_sha256": "c9163613a8de096462ceb483619e7989ac3d1e3e9f119de8df200418aabbeb80",
+    "historical_benchmark_sha256": "5e905552901e680f31cf57754150ca4086b5f46870fd8923ccff6048ab240cec"
+  },
+  "warnings": [
+    "Recovered training data was not found, so evaluation examples cannot be proven absent from training.",
+    "Historical examples occur in repository tests, UI copy, and deterministic postprocessing rules.",
+    "Historical full-pipeline scores must not be presented as uncontaminated raw-model quality."
+  ]
+}

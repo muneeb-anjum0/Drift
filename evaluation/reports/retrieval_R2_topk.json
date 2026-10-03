@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "V0-retrieval-topk-diagnostic",
+  "source_report": "evaluation/reports/retrieval_R2.json",
+  "dataset": {
+    "name": "drift-retrieval-dev",
+    "sha256": "09f30bc801bcd8a4514f51c063ba58102238d365646949b61b6a45ffa90bd89c",
+    "version": "1.0.0"
+  },
+  "note": "Uses unchanged V0 rankings/relevance decisions; only the number of eligible requirements admitted is varied.",
+  "levels": [
+    {
+      "k": 1,
+      "query_count": 24,
+      "model_input_recall": 0.875,
+      "selected_precision": 0.9583333333333334,
+      "all_expected_reached_count": 19,
+      "all_expected_reached_rate": 0.7916666666666666,
+      "at_least_one_reached_count": 23,
+      "at_least_one_reached_rate": 0.9583333333333334,
+      "average_model_calls": 1.0,
+      "false_candidate_exposure_count": 1
+    },
+    {
+      "k": 2,
+      "query_count": 24,
+      "model_input_recall": 0.9791666666666666,
+      "selected_precision": 0.8125,
+      "all_expected_reached_count": 23,
+      "all_expected_reached_rate": 0.9583333333333334,
+      "at_least_one_reached_count": 24,
+      "at_least_one_reached_rate": 1.0,
+      "average_model_calls": 1.5,
+      "false_candidate_exposure_count": 9
+    },
+    {
+      "k": 3,
+      "query_count": 24,
+      "model_input_recall": 1.0,
+      "selected_precision": 0.8125,
+      "all_expected_reached_count": 24,
+      "all_expected_reached_rate": 1.0,
+      "at_least_one_reached_count": 24,
+      "at_least_one_reached_rate": 1.0,
+      "average_model_calls": 1.5833333333333333,
+      "false_candidate_exposure_count": 10
+    },
+    {
+      "k": 5,
+      "query_count": 24,
+      "model_input_recall": 1.0,
+      "selected_precision": 0.7999999999999999,
+      "all_expected_reached_count": 24,
+      "all_expected_reached_rate": 1.0,
+      "at_least_one_reached_count": 24,
+      "at_least_one_reached_rate": 1.0,
+      "average_model_calls": 1.7083333333333333,
+      "false_candidate_exposure_count": 13
+    }
+  ]
+}

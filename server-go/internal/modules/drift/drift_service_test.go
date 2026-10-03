@@ -1,6 +1,7 @@
 package drift
 
 import (
+	"reflect"
 	"testing"
 
 	"driftledger/server-go/internal/modules/requirement"
@@ -16,6 +17,82 @@ func TestDetectDoesNotMarkOmittedBaselineAsRemoved(t *testing.T) {
 	for _, change := range changes {
 		if change.ChangeType == "removed" {
 			t.Fatalf("expected no removed changes when baseline is merely omitted, got %#v", change)
+		}
+	}
+}
+
+func TestRequirementRelevanceTraceIsDeterministic(t *testing.T) {
+	req := requirement.RequirementSnapshot{Title: "Project reports", Description: "Managers shall export project reports as PDF files."}
+	message := "Add CSV downloads for project reports."
+	want := TraceRequirementRelevance(req, message, 0.25)
+	for iteration := 0; iteration < 100; iteration++ {
+		got := TraceRequirementRelevance(req, message, 0.25)
+		if !reflect.DeepEqual(got, want) {
+			t.Fatalf("iteration %d produced a different trace: got %#v want %#v", iteration, got, want)
+		}
+	}
+}
+
+func TestRequirementRelevanceThresholdBoundaryIsInclusive(t *testing.T) {
+	req := requirement.RequirementSnapshot{Title: "Password reset", Description: "Customers reset passwords by email."}
+	message := "Reset a password by SMS."
+	trace := TraceRequirementRelevance(req, message, 0)
+	if !trace.PassedSpecificGate {
+		t.Fatalf("test fixture must pass the specific-match gate: %#v", trace)
+	}
+	atBoundary := ScoreRequirementRelevance(req, message, trace.Result.Score)
+	if !atBoundary.IsRelevant {
+		t.Fatalf("score equal to threshold must be relevant: %#v", atBoundary)
+	}
+	aboveBoundary := ScoreRequirementRelevance(req, message, trace.Result.Score+1e-12)
+	if aboveBoundary.IsRelevant {
+		t.Fatalf("score below threshold must not be relevant: %#v", aboveBoundary)
+	}
+}
+
+func TestRequirementTokenNormalizationHandlesCommonVerbInflections(t *testing.T) {
+	tests := map[string]string{
+		"searching":  "search",
+		"ratings":    "rate",
+		"shipped":    "ship",
+		"registered": "register",
+		"processing": "process",
+	}
+	for input, expected := range tests {
+		if got := normalizeRetrievalToken(input); got != expected {
+			t.Errorf("normalizeRetrievalToken(%q) = %q, want %q", input, got, expected)
+		}
+	}
+}
+
+func TestRetrievalSuffixNormalizationDoesNotChangePostprocessingNormalization(t *testing.T) {
+	if got := normalizeRequirementToken("searching"); got != "searching" {
+		t.Fatalf("frozen postprocessing normalization changed: got %q", got)
+	}
+	if got := normalizeRetrievalToken("searching"); got != "search" {
+		t.Fatalf("retrieval normalization not applied: got %q", got)
+	}
+}
+
+func TestRequirementRankingPreservesSnapshotOrderForTies(t *testing.T) {
+	results := []requirementPrediction{
+		{requirement: requirement.RequirementSnapshot{RequirementID: "first"}, result: RequirementAnalysisResult{Relevance: RelevanceResult{Score: 0.5}}},
+		{requirement: requirement.RequirementSnapshot{RequirementID: "higher"}, result: RequirementAnalysisResult{Relevance: RelevanceResult{Score: 0.8}}},
+		{requirement: requirement.RequirementSnapshot{RequirementID: "second"}, result: RequirementAnalysisResult{Relevance: RelevanceResult{Score: 0.5}}},
+	}
+	rankRequirementPredictions(results)
+	got := []string{results[0].requirement.RequirementID, results[1].requirement.RequirementID, results[2].requirement.RequirementID}
+	want := []string{"higher", "first", "second"}
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("unexpected stable ranking: got %v want %v", got, want)
+	}
+}
+
+func TestRequirementTokensExpandDomainAliases(t *testing.T) {
+	tokens := requirementTokens("An anonymous buyer uploads a document and requests a callback.")
+	for _, expected := range []string{"guest", "customer", "shopper", "file", "attachment", "webhook"} {
+		if _, ok := tokens[expected]; !ok {
+			t.Errorf("expected expanded token %q in %#v", expected, sortedKeys(tokens))
 		}
 	}
 }
@@ -116,7 +193,7 @@ func TestScoreRequirementRelevanceMatchesExpectedDomains(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := scoreRequirementRelevance(tt.req, tt.message, 0.25)
+			result := ScoreRequirementRelevance(tt.req, tt.message, 0.25)
 			if result.IsRelevant != tt.relevant {
 				t.Fatalf("expected relevant=%v, got %#v", tt.relevant, result)
 			}
@@ -150,7 +227,7 @@ func TestScoreRequirementRelevanceRejectsUnrelatedRequirements(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := scoreRequirementRelevance(tt.req, tt.message, 0.25)
+			result := ScoreRequirementRelevance(tt.req, tt.message, 0.25)
 			if result.IsRelevant {
 				t.Fatalf("expected unrelated result, got %#v", result)
 			}

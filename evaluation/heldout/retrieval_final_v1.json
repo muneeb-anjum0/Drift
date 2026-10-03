@@ -1,0 +1,62 @@
+{
+  "name": "drift-retrieval-final",
+  "version": "1.0.0",
+  "role": "FINAL_TEST",
+  "threshold": 0.25,
+  "max_selected": 3,
+  "provenance": "Prospective human-authored synthetic projects frozen before Phase III-B retrieval experiments.",
+  "projects": [
+    {
+      "id":"insurance-final","size":"medium",
+      "requirements":[
+        {"id":"i-login","title":"Policyholder login","description":"Policyholders shall sign in with email and password."},
+        {"id":"i-claim","title":"Claim submission","description":"Policyholders shall submit a claim with incident details."},
+        {"id":"i-evidence","title":"Claim evidence","description":"Policyholders shall attach images and PDF documents to a claim."},
+        {"id":"i-status","title":"Claim status","description":"Policyholders shall view the current processing status of a claim."},
+        {"id":"i-adjust","title":"Adjuster assignment","description":"Supervisors shall assign an adjuster to each submitted claim."},
+        {"id":"i-message","title":"Claim messages","description":"Policyholders and adjusters shall exchange messages within a claim."},
+        {"id":"i-payout","title":"Claim payout","description":"Approved claim payouts shall be sent by bank transfer."},
+        {"id":"i-renew","title":"Policy renewal","description":"Policyholders shall renew an eligible policy online."},
+        {"id":"i-doc","title":"Policy documents","description":"Policyholders shall download policy schedules and certificates as PDF files."},
+        {"id":"i-alert","title":"Policy notifications","description":"Policyholders shall receive email reminders before a policy expires."}
+      ],
+      "queries":[
+        {"id":"ifq-01","message":"Let customers attach short incident videos along with their claim photos.","expected_requirement_ids":["i-evidence"]},
+        {"id":"ifq-02","message":"Pay an approved settlement to a digital wallet rather than only a bank account.","expected_requirement_ids":["i-payout"]},
+        {"id":"ifq-03","message":"Text the customer two weeks before coverage ends.","expected_requirement_ids":["i-alert"]},
+        {"id":"ifq-04","message":"A broker should monitor the progress of claims authorized by a customer.","expected_requirement_ids":["i-status"]},
+        {"id":"ifq-05","message":"Allow the assigned examiner and customer to exchange document attachments in their conversation.","expected_requirement_ids":["i-message","i-evidence"]},
+        {"id":"ifq-06","message":"Use passkeys instead of passwords for account access.","expected_requirement_ids":["i-login"]}
+      ]
+    },
+    {
+      "id":"manufacturing-final","size":"large",
+      "requirements":[
+        {"id":"m-auth","title":"Operator authentication","description":"Operators shall sign in with a badge and PIN."},
+        {"id":"m-order","title":"Work orders","description":"Planners shall create and schedule production work orders."},
+        {"id":"m-approve","title":"Work order approval","description":"Supervisors shall approve a work order before production starts."},
+        {"id":"m-material","title":"Material allocation","description":"Warehouse staff shall allocate available material to a work order."},
+        {"id":"m-machine","title":"Machine assignment","description":"Planners shall assign an available machine to a work order."},
+        {"id":"m-check","title":"Quality inspection","description":"Inspectors shall record pass or reject results for manufactured units."},
+        {"id":"m-defect","title":"Defect records","description":"Inspectors shall record a defect category and reason for every rejected unit."},
+        {"id":"m-maint","title":"Preventive maintenance","description":"Technicians shall schedule maintenance using machine operating hours."},
+        {"id":"m-stop","title":"Emergency stop events","description":"The system shall record every emergency stop activation."},
+        {"id":"m-output","title":"Production output","description":"Operators shall record completed quantities against a work order."},
+        {"id":"m-scrap","title":"Scrap tracking","description":"Operators shall record scrapped quantity and material reason."},
+        {"id":"m-shift","title":"Shift handover","description":"Outgoing operators shall leave handover notes for the next shift."},
+        {"id":"m-report","title":"Production report","description":"Managers shall export daily production totals as CSV files."},
+        {"id":"m-dashboard","title":"Plant dashboard","description":"Managers shall view live machine state and production progress."},
+        {"id":"m-alert","title":"Downtime alerts","description":"Supervisors shall receive email alerts when a machine stops unexpectedly."},
+        {"id":"m-audit","title":"Manufacturing audit log","description":"Administrators shall review configuration and approval events for one year."}
+      ],
+      "queries":[
+        {"id":"mfq-01","message":"Notify the shift lead in Microsoft Teams whenever equipment goes down without warning.","expected_requirement_ids":["m-alert"]},
+        {"id":"mfq-02","message":"Base service intervals on both runtime hours and completed cycles.","expected_requirement_ids":["m-maint"]},
+        {"id":"mfq-03","message":"Show energy consumption beside live machine status on the plant overview.","expected_requirement_ids":["m-dashboard"]},
+        {"id":"mfq-04","message":"A rejection cannot be saved without its fault classification and explanation.","expected_requirement_ids":["m-defect","m-check"]},
+        {"id":"mfq-05","message":"Include night-shift totals in the downloadable daily spreadsheet.","expected_requirement_ids":["m-report","m-shift"]},
+        {"id":"mfq-06","message":"Require the quality lead to sign off before a production job may begin.","expected_requirement_ids":["m-approve"]}
+      ]
+    }
+  ]
+}

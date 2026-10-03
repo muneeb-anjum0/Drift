@@ -1,0 +1,673 @@
+{
+  "case_count": 40,
+  "cases": [
+    {
+      "case_id": "mp-q01",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4746,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.0,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-q02",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4507,
+      "nearest_source": "retrieval_dev_v2",
+      "nearest_token_jaccard": 0.0526,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-q03",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4673,
+      "nearest_source": "retrieval_dev_v2",
+      "nearest_token_jaccard": 0.0,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-q04",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4632,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.1538,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-q05",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4403,
+      "nearest_source": "retrieval_dev_v2",
+      "nearest_token_jaccard": 0.037,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-q06",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5167,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.0588,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-q07",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4645,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.1304,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-q08",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4362,
+      "nearest_source": "retrieval_dev_v2",
+      "nearest_token_jaccard": 0.08,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-q09",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4182,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.1333,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-q10",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.459,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.0625,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-q01",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4755,
+      "nearest_source": "retrieval_final_closed",
+      "nearest_token_jaccard": 0.1364,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-q02",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4167,
+      "nearest_source": "retrieval_dev_v2",
+      "nearest_token_jaccard": 0.0556,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-q03",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4865,
+      "nearest_source": "retrieval_dev_v2",
+      "nearest_token_jaccard": 0.125,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-q04",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4706,
+      "nearest_source": "raw_final_closed",
+      "nearest_token_jaccard": 0.0769,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-q05",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.45,
+      "nearest_source": "retrieval_dev_v2",
+      "nearest_token_jaccard": 0.0,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-q06",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4331,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.1154,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-q07",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4848,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.05,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-q08",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.439,
+      "nearest_source": "retrieval_dev_v2",
+      "nearest_token_jaccard": 0.0833,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-q09",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4565,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.1429,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-q10",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4423,
+      "nearest_source": "retrieval_dev_v2",
+      "nearest_token_jaccard": 0.0667,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-q01",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.0588,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-q02",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4715,
+      "nearest_source": "retrieval_dev_v2",
+      "nearest_token_jaccard": 0.05,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-q03",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.438,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.0476,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-q04",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4476,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.0909,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-q05",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5038,
+      "nearest_source": "retrieval_dev_v2",
+      "nearest_token_jaccard": 0.25,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-q06",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4538,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.0526,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-q07",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4578,
+      "nearest_source": "retrieval_final_closed",
+      "nearest_token_jaccard": 0.1,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-q08",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.459,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.1852,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-q09",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4423,
+      "nearest_source": "retrieval_dev_v2",
+      "nearest_token_jaccard": 0.0625,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-q10",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5688,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.1333,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-q01",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4841,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.08,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-q02",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4412,
+      "nearest_source": "retrieval_dev_v2",
+      "nearest_token_jaccard": 0.087,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-q03",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.437,
+      "nearest_source": "retrieval_dev_v2",
+      "nearest_token_jaccard": 0.0526,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-q04",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.431,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.0556,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-q05",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4103,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.05,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-q06",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5565,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.1176,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-q07",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4715,
+      "nearest_source": "retrieval_final_closed",
+      "nearest_token_jaccard": 0.2,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-q08",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4189,
+      "nearest_source": "retrieval_dev_v2",
+      "nearest_token_jaccard": 0.08,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-q09",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4536,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.1429,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-q10",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4182,
+      "nearest_source": "raw_final_closed",
+      "nearest_token_jaccard": 0.0588,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    }
+  ],
+  "counts": {
+    "CLEAN_EXACT_AND_NEAR_HEURISTIC": 40
+  },
+  "draft_sha256": "ee21e6d6bd2c36324c80e7020bd87d7c2094068d762d943ab7afe581e065e51b",
+  "historical_source_exact_message_count": 0,
+  "invalid_target_case_ids": [],
+  "limitations": [
+    "Original LoRA training data is missing; training overlap is unknown.",
+    "Similarity heuristics cannot establish semantic independence or detect every template reuse.",
+    "Historical Go and full-system source files were checked for normalized exact message substrings; near semantic overlap still needs human review.",
+    "A human reviewer must decide questionable target labels without seeing retrieval predictions."
+  ],
+  "method": "normalized exact message match; SequenceMatcher >=0.82; token Jaccard >=0.80",
+  "requirement_counts": {
+    "CLEAN_EXACT_AND_NEAR_HEURISTIC": 40
+  },
+  "requirements": [
+    {
+      "case_id": "mp-plan",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4561,
+      "nearest_source": "retrieval_final_closed",
+      "nearest_token_jaccard": 0.2105,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-fee",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4462,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.5,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-visit",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.6316,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.2941,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-notice",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5775,
+      "nearest_source": "retrieval_final_closed",
+      "nearest_token_jaccard": 0.2105,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-register",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4845,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.05,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-appeal",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4431,
+      "nearest_source": "raw_final_closed",
+      "nearest_token_jaccard": 0.0417,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-evidence",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5389,
+      "nearest_source": "retrieval_final_closed",
+      "nearest_token_jaccard": 0.2941,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-signoff",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.479,
+      "nearest_source": "raw_final_closed",
+      "nearest_token_jaccard": 0.0417,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-renew",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.6026,
+      "nearest_source": "retrieval_final_closed",
+      "nearest_token_jaccard": 0.2857,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "mp-history",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5563,
+      "nearest_source": "retrieval_final_closed",
+      "nearest_token_jaccard": 0.2353,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-probe",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4309,
+      "nearest_source": "retrieval_oracle_dev",
+      "nearest_token_jaccard": 0.0455,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-alarm",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5474,
+      "nearest_source": "retrieval_final_closed",
+      "nearest_token_jaccard": 0.1739,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-route",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5039,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.1111,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-sign",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4935,
+      "nearest_source": "retrieval_oracle_dev",
+      "nearest_token_jaccard": 0.0526,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-photo",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4606,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.0455,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-lot",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4751,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.1429,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-hold",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.3398,
+      "nearest_source": "retrieval_final_closed",
+      "nearest_token_jaccard": 0.04,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-sheet",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5444,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.25,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-login",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5781,
+      "nearest_source": "retrieval_oracle_dev",
+      "nearest_token_jaccard": 0.3125,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "cc-service",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4645,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.1,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-request",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4852,
+      "nearest_source": "retrieval_oracle_dev",
+      "nearest_token_jaccard": 0.0909,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-urgent",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4688,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.1333,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-assign",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5802,
+      "nearest_source": "retrieval_final_closed",
+      "nearest_token_jaccard": 0.4667,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-slot",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.6709,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.2667,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-text",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5946,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.1667,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-spares",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.543,
+      "nearest_source": "raw_final_closed",
+      "nearest_token_jaccard": 0.2105,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-images",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5324,
+      "nearest_source": "raw_final_closed",
+      "nearest_token_jaccard": 0.3077,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-limit",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4699,
+      "nearest_source": "raw_final_closed",
+      "nearest_token_jaccard": 0.25,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-charge",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5303,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.1875,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "bm-summary",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.5185,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.2222,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-sale",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4841,
+      "nearest_source": "retrieval_final_closed",
+      "nearest_token_jaccard": 0.1111,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-scan",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4713,
+      "nearest_source": "retrieval_final_closed",
+      "nearest_token_jaccard": 0.2,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-money",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.478,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.1154,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-seat",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.544,
+      "nearest_source": "retrieval_oracle_dev",
+      "nearest_token_jaccard": 0.2143,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-access",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4469,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.0455,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-confirm",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4706,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.1053,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-queue",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.3919,
+      "nearest_source": "raw_dev",
+      "nearest_token_jaccard": 0.04,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-staff",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4841,
+      "nearest_source": "retrieval_dev_v1",
+      "nearest_token_jaccard": 0.1667,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-sales",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.6013,
+      "nearest_source": "retrieval_final_closed",
+      "nearest_token_jaccard": 0.4,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    },
+    {
+      "case_id": "eo-move",
+      "exact_sources": [],
+      "nearest_sequence_similarity": 0.4615,
+      "nearest_source": "retrieval_final_closed",
+      "nearest_token_jaccard": 0.05,
+      "status": "CLEAN_EXACT_AND_NEAR_HEURISTIC"
+    }
+  ],
+  "schema_version": 1,
+  "source_hashes": {
+    "raw_dev": "5265b80a265ff7b1090ec1a6a7d4879a9b6e7a7d0a64123071af7b343fad31eb",
+    "raw_final_closed": "5da735ac677e2824d80f5d22a68bb738d46b3c5aa4c9617f8cf3c88e0cb21253",
+    "retrieval_dev_v1": "09f30bc801bcd8a4514f51c063ba58102238d365646949b61b6a45ffa90bd89c",
+    "retrieval_dev_v2": "a000bc087bf3d1455f98600a76648a078315e8d7a4377e1c32f8ed0185971ae9",
+    "retrieval_final_closed": "3f2b2e7aa03d2d07f0b549f88a1d1fc55dc9cd04e4b728df1830bd3a00e95902",
+    "retrieval_oracle_dev": "d766e91dc31283360837f505ee1d6bbcf0e0d30bab54f3d795761a3fe43209a7"
+  },
+  "within_draft_duplicate_message_count": 0
+}

@@ -1,8 +1,13 @@
 package evaluation
 
 import (
+	"context"
+	"net/http"
+	"net/http/httptest"
 	"testing"
+	"time"
 
+	"driftledger/server-go/internal/config"
 	"driftledger/server-go/internal/modules/drift"
 )
 
@@ -31,5 +36,30 @@ func TestValidateBenchmarkCaseCatchesLowConfidence(t *testing.T) {
 
 	if len(notes) == 0 {
 		t.Fatal("expected low confidence note")
+	}
+}
+
+func TestInferenceHealthSendsInternalCredential(t *testing.T) {
+	const apiKey = "0123456789abcdef0123456789abcdef"
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if got := r.Header.Get("X-Drift-Inference-Key"); got != apiKey {
+			t.Fatalf("expected inference credential, got %q", got)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"status":"ok","model_loaded":true}`))
+	}))
+	defer server.Close()
+
+	service := Service{cfg: config.Config{
+		DriftInferenceURL:     server.URL,
+		DriftInferenceAPIKey:  apiKey,
+		DriftInferenceTimeout: time.Second,
+	}}
+	result, err := service.inferenceHealth(context.Background())
+	if err != nil {
+		t.Fatalf("inference health failed: %v", err)
+	}
+	if result["status"] != "ok" {
+		t.Fatalf("unexpected health payload: %#v", result)
 	}
 }

@@ -1,0 +1,8 @@
+{
+  "name":"drift-retrieval-final","version":"1.0.0","role":"FINAL_TEST",
+  "dataset_file":"retrieval_final_v1.json","sha256":"3f2b2e7aa03d2d07f0b549f88a1d1fc55dc9cd04e4b728df1830bd3a00e95902",
+  "frozen_at":"2026-10-01","project_count":2,"query_count":12,"requirement_counts":[10,16],
+  "creation_methodology":"Prospective human-authored synthetic retrieval projects created and frozen before Phase III-B retrieval experiments.",
+  "access_policy":"Do not run, inspect per-query results, change expected IDs, or tune against this dataset until retrieval and combined candidate decisions are frozen.",
+  "limitations":["One engineering author; no independent relevance adjudication.","Held out from Phase III-B optimization only.","Synthetic projects do not establish real production retrieval distribution."]
+}

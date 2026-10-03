@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "dataset_sha256": "ee21e6d6bd2c36324c80e7020bd87d7c2094068d762d943ab7afe581e065e51b",
+  "r0_commit": "d07fbb1544a9f190b314d264bb9c9a787b27fbe3",
+  "r5_source_sha256": "04565fc32884031355c796a752c0b1691ff0dc4eb8c894f76d7ecb6e813b89ec",
+  "reports": {
+    "R0": "R0.json",
+    "R5": "R5.json"
+  },
+  "metrics": {
+    "R0": {
+      "all_expected_reached_count": 16,
+      "all_expected_reached_rate": 0.5,
+      "at_least_one_reached_count": 19,
+      "at_least_one_reached_rate": 0.59375,
+      "average_candidate_requirements": 10,
+      "average_selected_requirements": 0.825,
+      "by_project_size": {
+        "medium": {
+          "expected_requirements": 42,
+          "false_exposures": 8,
+          "model_hits": 25,
+          "model_input_micro_recall": 0.5952380952380952,
+          "queries": 40
+        }
+      },
+      "evaluation_duration_ms": 4,
+      "expected_requirement_count": 42,
+      "false_exposure_count": 8,
+      "hard_negative_query_count": 8,
+      "model_hit_count": 25,
+      "model_input_recall_macro": 0.5572916666666667,
+      "model_input_recall_micro": 0.5952380952380952,
+      "mrr": 0.84375,
+      "positive_query_count": 32,
+      "precision_at_1_macro": 0.575,
+      "precision_at_3_macro": 0.30833333333333335,
+      "precision_at_k_macro": 0.30833333333333335,
+      "query_count": 40,
+      "recall_at_1_macro": 0.6145833333333333,
+      "recall_at_3_macro": 0.9010416666666667,
+      "recall_at_k_macro": 0.9010416666666667
+    },
+    "R5": {
+      "all_expected_reached_count": 16,
+      "all_expected_reached_rate": 0.5,
+      "at_least_one_reached_count": 19,
+      "at_least_one_reached_rate": 0.59375,
+      "average_candidate_requirements": 10,
+      "average_selected_requirements": 0.85,
+      "by_project_size": {
+        "medium": {
+          "expected_requirements": 42,
+          "false_exposures": 9,
+          "model_hits": 25,
+          "model_input_micro_recall": 0.5952380952380952,
+          "queries": 40
+        }
+      },
+      "evaluation_duration_ms": 4,
+      "expected_requirement_count": 42,
+      "false_exposure_count": 9,
+      "hard_negative_query_count": 8,
+      "model_hit_count": 25,
+      "model_input_recall_macro": 0.5572916666666667,
+      "model_input_recall_micro": 0.5952380952380952,
+      "mrr": 0.84375,
+      "positive_query_count": 32,
+      "precision_at_1_macro": 0.575,
+      "precision_at_3_macro": 0.30833333333333335,
+      "precision_at_k_macro": 0.30833333333333335,
+      "query_count": 40,
+      "recall_at_1_macro": 0.6145833333333333,
+      "recall_at_3_macro": 0.9010416666666667,
+      "recall_at_k_macro": 0.9010416666666667
+    }
+  }
+}

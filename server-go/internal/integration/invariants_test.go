@@ -143,6 +143,8 @@ func TestAuthenticationAuthorizationAndTenantIsolation(t *testing.T) {
 	f := newFixture(t)
 	ctx := context.Background()
 	requirementID := primitive.NewObjectID()
+	baselineAID := primitive.NewObjectID()
+	baselineBID := primitive.NewObjectID()
 	driftID := primitive.NewObjectID()
 	changeRequestID := primitive.NewObjectID()
 	fileID := primitive.NewObjectID()
@@ -156,6 +158,12 @@ func TestAuthenticationAuthorizationAndTenantIsolation(t *testing.T) {
 		if _, err := f.db.Collection(collection).InsertOne(ctx, document); err != nil {
 			t.Fatalf("seed %s: %v", collection, err)
 		}
+	}
+	if _, err := f.db.Collection("requirementversions").InsertMany(ctx, []any{
+		bson.M{"_id": baselineAID, "project": f.projectA, "workspace": f.workspaceA, "versionNumber": 1, "requirementsSnapshot": []any{bson.M{"requirementId": "a-login", "title": "Tenant A login", "description": "Tenant A users shall sign in by email."}}},
+		bson.M{"_id": baselineBID, "project": f.projectB, "workspace": f.workspaceB, "versionNumber": 1, "requirementsSnapshot": []any{bson.M{"requirementId": "b-secret", "title": "Tenant B secret", "description": "Tenant B administrators shall export confidential audit records."}}},
+	}); err != nil {
+		t.Fatalf("seed tenant baselines: %v", err)
 	}
 	cfg := config.Config{
 		AppEnv: "test", JWTSecret: testJWTSecret, JWTExpiresInHours: 1,
@@ -177,6 +185,9 @@ func TestAuthenticationAuthorizationAndTenantIsolation(t *testing.T) {
 		{"malformed token", http.MethodGet, "/api/v1/projects", "not-a-jwt", nil, http.StatusUnauthorized},
 		{"nonexistent user", http.MethodGet, "/api/v1/projects", deletedUserToken, nil, http.StatusUnauthorized},
 		{"unauthenticated inference", http.MethodPost, "/api/v1/drift/analyze", "", bson.M{}, http.StatusUnauthorized},
+		{"viewer cannot analyze", http.MethodPost, "/api/v1/drift/analyze", viewerToken, bson.M{"projectId": f.projectA.Hex(), "baselineVersionId": baselineAID.Hex(), "inputText": "Use a password."}, http.StatusForbidden},
+		{"owner can analyze own baseline", http.MethodPost, "/api/v1/drift/analyze", ownerAToken, bson.M{"projectId": f.projectA.Hex(), "baselineVersionId": baselineAID.Hex(), "inputText": "Use a password."}, http.StatusOK},
+		{"cross-tenant baseline cannot be selected", http.MethodPost, "/api/v1/drift/analyze", ownerAToken, bson.M{"projectId": f.projectA.Hex(), "baselineVersionId": baselineBID.Hex(), "inputText": "Export confidential audit records."}, http.StatusNotFound},
 		{"viewer can read workspace", http.MethodGet, "/api/v1/workspaces/" + f.workspaceA.Hex(), viewerToken, nil, http.StatusOK},
 		{"viewer cannot update workspace", http.MethodPatch, "/api/v1/workspaces/" + f.workspaceA.Hex(), viewerToken, bson.M{"name": "Forbidden"}, http.StatusForbidden},
 		{"viewer cannot delete workspace", http.MethodDelete, "/api/v1/workspaces/" + f.workspaceA.Hex(), viewerToken, nil, http.StatusForbidden},

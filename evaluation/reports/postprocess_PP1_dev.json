@@ -1,0 +1,474 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "postprocess-PP1-dev",
+  "generated_at": "2026-10-01T14:22:11Z",
+  "source_evaluation_id": "raw-model-dev-v1-reconstructed-from-versioned-evidence",
+  "artifact_sha256": "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
+  "dataset": {
+    "case_count": 48,
+    "class_distribution": {
+      "added": 8,
+      "ambiguous": 8,
+      "contradiction": 8,
+      "modified": 8,
+      "removed": 8,
+      "unchanged": 8
+    },
+    "name": "drift-raw-dev",
+    "sha256": "5265b80a265ff7b1090ec1a6a7d4879a9b6e7a7d0a64123071af7b343fad31eb",
+    "version": "1.0.0"
+  },
+  "metrics": {
+    "case_count": 48,
+    "effect_counts": {
+      "POSTPROCESSOR_CHANGED_WRONG_TO_DIFFERENT_WRONG": 0,
+      "POSTPROCESSOR_CORRECTED_MODEL_ERROR": 0,
+      "POSTPROCESSOR_HAD_NO_EFFECT": 48,
+      "POSTPROCESSOR_INTRODUCED_ERROR": 0
+    },
+    "net_correct_case_contribution": 0,
+    "postprocessed_accuracy": 0.6666666666666666,
+    "postprocessed_correct": 32,
+    "raw_accuracy": 0.6666666666666666,
+    "raw_correct": 32
+  },
+  "cases": [
+    {
+      "case_id": "add_bank_01",
+      "expected_label": "added",
+      "raw_label": "added",
+      "postprocessed_label": "added",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "add_edu_01",
+      "expected_label": "added",
+      "raw_label": "added",
+      "postprocessed_label": "added",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "add_health_01",
+      "expected_label": "added",
+      "raw_label": "added",
+      "postprocessed_label": "added",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "add_hr_01",
+      "expected_label": "added",
+      "raw_label": "added",
+      "postprocessed_label": "added",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "add_logistics_01",
+      "expected_label": "added",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "add_saas_01",
+      "expected_label": "added",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "add_security_01",
+      "expected_label": "added",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "add_shop_01",
+      "expected_label": "added",
+      "raw_label": "added",
+      "postprocessed_label": "added",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "amb_analytics_01",
+      "expected_label": "ambiguous",
+      "raw_label": "ambiguous",
+      "postprocessed_label": "ambiguous",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "amb_booking_01",
+      "expected_label": "ambiguous",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "amb_crm_01",
+      "expected_label": "ambiguous",
+      "raw_label": "ambiguous",
+      "postprocessed_label": "ambiguous",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "amb_finance_01",
+      "expected_label": "ambiguous",
+      "raw_label": "unchanged",
+      "postprocessed_label": "unchanged",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "amb_health_01",
+      "expected_label": "ambiguous",
+      "raw_label": "ambiguous",
+      "postprocessed_label": "ambiguous",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "amb_hr_01",
+      "expected_label": "ambiguous",
+      "raw_label": "contradiction",
+      "postprocessed_label": "contradiction",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "amb_reporting_01",
+      "expected_label": "ambiguous",
+      "raw_label": "removed",
+      "postprocessed_label": "removed",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "amb_saas_01",
+      "expected_label": "ambiguous",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "con_bank_01",
+      "expected_label": "contradiction",
+      "raw_label": "contradiction",
+      "postprocessed_label": "contradiction",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "con_edu_01",
+      "expected_label": "contradiction",
+      "raw_label": "contradiction",
+      "postprocessed_label": "contradiction",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "con_gov_01",
+      "expected_label": "contradiction",
+      "raw_label": "contradiction",
+      "postprocessed_label": "contradiction",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "con_health_01",
+      "expected_label": "contradiction",
+      "raw_label": "contradiction",
+      "postprocessed_label": "contradiction",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "con_inventory_01",
+      "expected_label": "contradiction",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "con_logistics_01",
+      "expected_label": "contradiction",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "con_mobile_01",
+      "expected_label": "contradiction",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "con_security_01",
+      "expected_label": "contradiction",
+      "raw_label": "contradiction",
+      "postprocessed_label": "contradiction",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "mod_analytics_01",
+      "expected_label": "modified",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "mod_bank_01",
+      "expected_label": "modified",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "mod_booking_01",
+      "expected_label": "modified",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "mod_crm_01",
+      "expected_label": "modified",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "mod_gov_01",
+      "expected_label": "modified",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "mod_health_01",
+      "expected_label": "modified",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "mod_inventory_01",
+      "expected_label": "modified",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "mod_mobile_01",
+      "expected_label": "modified",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "rem_edu_01",
+      "expected_label": "removed",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "rem_finance_01",
+      "expected_label": "removed",
+      "raw_label": "removed",
+      "postprocessed_label": "removed",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "rem_health_01",
+      "expected_label": "removed",
+      "raw_label": "removed",
+      "postprocessed_label": "removed",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "rem_hr_01",
+      "expected_label": "removed",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "rem_logistics_01",
+      "expected_label": "removed",
+      "raw_label": "unchanged",
+      "postprocessed_label": "unchanged",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "rem_reporting_01",
+      "expected_label": "removed",
+      "raw_label": "removed",
+      "postprocessed_label": "removed",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "rem_security_01",
+      "expected_label": "removed",
+      "raw_label": "removed",
+      "postprocessed_label": "removed",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "rem_shop_01",
+      "expected_label": "removed",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "same_bank_01",
+      "expected_label": "unchanged",
+      "raw_label": "unchanged",
+      "postprocessed_label": "unchanged",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "same_edu_01",
+      "expected_label": "unchanged",
+      "raw_label": "unchanged",
+      "postprocessed_label": "unchanged",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "same_gov_01",
+      "expected_label": "unchanged",
+      "raw_label": "contradiction",
+      "postprocessed_label": "contradiction",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "same_health_01",
+      "expected_label": "unchanged",
+      "raw_label": "unchanged",
+      "postprocessed_label": "unchanged",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "same_inventory_01",
+      "expected_label": "unchanged",
+      "raw_label": "unchanged",
+      "postprocessed_label": "unchanged",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "same_logistics_01",
+      "expected_label": "unchanged",
+      "raw_label": "unchanged",
+      "postprocessed_label": "unchanged",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "same_mobile_01",
+      "expected_label": "unchanged",
+      "raw_label": "unchanged",
+      "postprocessed_label": "unchanged",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "same_security_01",
+      "expected_label": "unchanged",
+      "raw_label": "unchanged",
+      "postprocessed_label": "unchanged",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    }
+  ],
+  "limitations": [
+    "This isolates CleanDetectedChanges on one atomic change derived from each raw prediction.",
+    "It does not include retrieval, multi-requirement aggregation, scoring, or persistence.",
+    "The development dataset is not proven held out from the unrecovered adapter training data."
+  ]
+}

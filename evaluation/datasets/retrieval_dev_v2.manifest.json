@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "name": "drift-retrieval-dev",
+  "version": "2.0.0",
+  "role": "DEVELOPMENT",
+  "query_count": 60,
+  "project_count": 3,
+  "requirements_by_project": [8, 12, 20],
+  "target_count_distribution": {"zero":6,"one":38,"two":13,"three_or_more":3},
+  "sha256": "a000bc087bf3d1455f98600a76648a078315e8d7a4377e1c32f8ed0185971ae9",
+  "parent": {"name":"drift-retrieval-dev","version":"1.0.0","query_count":24,"sha256":"09f30bc801bcd8a4514f51c063ba58102238d365646949b61b6a45ffa90bd89c"},
+  "additions": {"query_count":36,"sha256":"bd1574acfb513d0d5aeedefffdf034ce0922ee83dafdbabde7a2b0cecc4c1b85"},
+  "provenance": "Prospective human-authored synthetic additions frozen after R0 diagnosis and before Phase III-C retrieval experiments.",
+  "label_review": "Single-author labels; independent domain review not yet performed.",
+  "allowed_use": "Retrieval development, error analysis, and candidate selection only.",
+  "prohibited_use": "Do not represent as independent final generalisation evidence or model-training data.",
+  "exact_overlap_audit": {"unique_query_messages":60,"closed_retrieval_final_query_overlap":0}
+}

@@ -1,0 +1,8 @@
+{
+  "name":"drift-retrieval-oracle-dev","version":"1.0.0","role":"DEVELOPMENT_DIAGNOSTIC",
+  "dataset_file":"retrieval_oracle_dev_v1.json","sha256":"d766e91dc31283360837f505ee1d6bbcf0e0d30bab54f3d795761a3fe43209a7","case_count":28,
+  "source_dataset":"drift-retrieval-dev@1.0.0","source_sha256":"09f30bc801bcd8a4514f51c063ba58102238d365646949b61b6a45ffa90bd89c",
+  "class_distribution":{"added":13,"modified":10,"removed":2,"contradiction":2,"ambiguous":0,"unchanged":1},
+  "methodology":"Every development retrieval query was paired directly with each human-labeled expected requirement; labels describe that atomic pair.",
+  "limitations":["Unbalanced and missing ambiguous support; macro F1 across all six labels is not a useful headline.","Diagnostic oracle only; does not represent production retrieval.","Atomic pair labels were authored by one engineering reviewer."]
+}

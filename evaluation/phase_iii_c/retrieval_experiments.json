@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "selection_dataset": "drift-retrieval-dev@2.0.0",
+  "selection_dataset_sha256": "a000bc087bf3d1455f98600a76648a078315e8d7a4377e1c32f8ed0185971ae9",
+  "experiments": [
+    {
+      "id":"R0","variable":"none","configuration":"V0 token normalization; threshold 0.25; specific gate enabled; k=3","status":"FROZEN_BASELINE",
+      "v2":{"all_expected":"34/54","at_least_one":"39/54","model_hits":"48/74","false_exposures":32,"average_selected":1.3333333333333333}
+    },
+    {
+      "id":"R1","hypothesis":"Conservative inflection normalization will recover lexical variants without materially increasing unrelated exposure.","variable":"normalize common -ing/-ed verb forms after existing plural normalization","configuration":"R0 plus suffix normalization","status":"ACCEPTED_COMPONENT",
+      "v2":{"all_expected":"36/54","at_least_one":"42/54","model_hits":"50/74","false_exposures":33,"average_selected":1.3833333333333333},
+      "decision_basis":"Recovered two net expected targets and three at-least-one queries for one additional false exposure; original v1 all-expected improved 16 to 18. One four-target selection changed unfavorably and remains documented."
+    },
+    {
+      "id":"R2","hypothesis":"Increasing k from 3 to 5 will recover eligible targets lost to requirement competition.","variable":"max selected 3 to 5","configuration":"R1; threshold 0.25; specific gate enabled; k=5","status":"REJECTED",
+      "v2":{"all_expected":"37/54","at_least_one":"43/54","model_hits":"52/74","false_exposures":41,"average_selected":1.55},
+      "decision_basis":"Two target hits cost eight false exposures and increased model calls; most remaining misses are not eligible."
+    },
+    {
+      "id":"R3","hypothesis":"A 0.20 threshold will recover low-overlap targets while the specific gate controls noise.","variable":"threshold 0.25 to 0.20","configuration":"R1; threshold 0.20; specific gate enabled; k=3","status":"REJECTED",
+      "v2":{"all_expected":"37/54","at_least_one":"44/54","model_hits":"52/74","false_exposures":53,"average_selected":1.75},
+      "decision_basis":"Two target hits cost twenty false exposures and 0.367 extra calls per query."
+    },
+    {
+      "id":"R4","hypothesis":"Removing the specific-match gate will recover domain-supported paraphrases.","variable":"specific-match gate enabled to disabled","configuration":"R1; threshold 0.25; no specific gate; k=3","status":"REJECTED",
+      "v2":{"all_expected":"38/54","at_least_one":"43/54","model_hits":"53/74","false_exposures":59,"average_selected":1.8666666666666667},
+      "decision_basis":"Three target hits cost twenty-six false exposures and substantially more downstream inference."
+    },
+    {
+      "id":"R5","hypothesis":"A compact domain-alias vocabulary will bridge recurring business paraphrases while preserving zero-target rejection.","variable":"add thirteen alias expansion entries to the existing synonym map","configuration":"R1 plus alias expansion; threshold 0.25; specific gate enabled; k=3","status":"SELECTED_DEVELOPMENT_CANDIDATE",
+      "v2":{"all_expected":"42/54","at_least_one":"47/54","model_hits":"59/74","false_exposures":37,"average_selected":1.6},
+      "decision_basis":"Nine net expected targets and six all-target queries were recovered for four false exposures; all six zero-target hard negatives still selected nothing. The evidence is development-only and alias selection is vulnerable to corpus-specific overfitting."
+    }
+  ],
+  "selected_candidate": "R5",
+  "generalisation_status": "INCONCLUSIVE_UNTIL_NEW_INDEPENDENT_FINAL_SET"
+}

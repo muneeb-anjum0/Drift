@@ -19,3 +19,6 @@ Actionable follow-up is tracked in the [GitHub issue backlog](https://github.com
 - `drift_postprocess.go` includes tested canonical rules for known model/evaluation domains. These compensate for model variability and should be reassessed using Phase III quality evidence, not removed during a structural refactor.
 - The frontend project-detail page is large, but it currently composes one coupled project workflow from already separated feature components. Further extraction should follow a real independent workflow, not a line-count target.
 - A dependency-level Starlette TestClient deprecation warning remains until the FastAPI/Starlette ecosystem migration is appropriate.
+- Retrieval development data is synthetic and single-author. R5's suffix and alias vocabulary improves development recall but may be corpus-specific; no untouched Phase III-C final set exists.
+- Baseline snapshots carry requirement status but do not define inactive/rejected exclusion. Historical version immutability and status filtering need a product-level contract before code changes.
+- The original LoRA training examples, split, deduplication record, and annotator agreement remain unavailable, so retraining readiness and evaluation independence cannot be established.

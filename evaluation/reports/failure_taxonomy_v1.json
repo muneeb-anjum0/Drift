@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "phase3-failure-taxonomy-v1",
+  "sources": ["raw-model-dev-v1","retrieval-dev-v1","postprocess-ablation-dev-v1","historical-go-direct-v0","runtime-recovery-v1"],
+  "raw_model": {
+    "incorrect_count": 16,
+    "primary_type": "LABEL_CONFUSION",
+    "confusions": {
+      "added_to_modified":3,
+      "removed_to_modified":3,
+      "removed_to_unchanged":1,
+      "contradiction_to_modified":3,
+      "ambiguous_to_modified":2,
+      "ambiguous_to_unchanged":1,
+      "ambiguous_to_contradiction":1,
+      "ambiguous_to_removed":1,
+      "unchanged_to_contradiction":1
+    },
+    "overlapping_failure_families": {
+      "AMBIGUITY_FAILURE":5,
+      "PROMPT_INJECTION_FAILURE":4,
+      "PARTIAL_OR_INDIRECT_REMOVAL_FAILURE":4,
+      "INVARIANT_OR_EXCEPTION_FAILURE":3
+    },
+    "high_confidence_incorrect_count_at_or_above_0_90":2,
+    "high_confidence_incorrect_cases":["rem_logistics_01","amb_finance_01"]
+  },
+  "format": {
+    "strict_json_count":25,
+    "recovered_trailing_period_count":9,
+    "recovered_trailing_period_and_newline_count":14,
+    "contract_parse_failure_count":0,
+    "unknown_label_count":0,
+    "missing_field_count":0,
+    "out_of_range_confidence_count":0,
+    "truncation_count":0
+  },
+  "retrieval": {
+    "RETRIEVAL_FAILURE_query_count":8,
+    "all_expected_reached_model_count":16,
+    "query_count":24,
+    "patterns":["lexical paraphrase below specific-match gate","multi-requirement partial recall","common-token distractor outranking intended requirement"]
+  },
+  "postprocessing": {
+    "POSTPROCESSING_FAILURE_introduced_error_count":2,
+    "corrected_model_error_count":1,
+    "net_correct_case_contribution":-1,
+    "patterns":["broad authentication-method phrase override","broad filters phrase override"]
+  },
+  "runtime_and_integration": {
+    "historical_initial_run":"RUNTIME_FAILURE caused by missing internal health credential; fixed in commit 372af75 without changing benchmark semantics",
+    "controlled_llama_unavailable":"Expected explicit RUNTIME_FAILURE: FastAPI 503 and backend 502 with zero persisted analyses",
+    "silent_success_fallback_observed":false
+  },
+  "dataset_label_issue": {
+    "confirmed_count":0,
+    "note":"Several class boundaries require human review, but no ground-truth label was changed in response to model disagreement."
+  }
+}

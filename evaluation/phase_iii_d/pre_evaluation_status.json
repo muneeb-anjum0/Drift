@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "phase": "III-D",
+  "status": "AWAITING_INDEPENDENT_HUMAN_LABEL_REVIEW",
+  "branch": "phase-3/generalisation-eval-v1",
+  "parent_commit": "1a3b1d4f4262472505b1e100684112f8c9226b31",
+  "blueprint_sha256": "1f5dca9e49357f2c80109bfea8db4d2ce9ff13ebe8b59fdd78fd59da59bcda1e",
+  "gates_sha256": "9a5be8452f2ab48403fc1a5415a4bc979f8763054d1f12e6bf336b57aa402aa0",
+  "draft_dataset_sha256": "f1dccb3c5706671e4304eb46b38de19d0d2f9ae05600a05fb72adffba9f0715d",
+  "draft_counts": {"projects":4,"requirements":40,"queries":40,"zero_targets":8,"one_target":20,"two_targets":10,"three_targets":2},
+  "provenance": "MODEL_GENERATED_SYNTHETIC; proposed labels have not been independently confirmed",
+  "mechanical_contamination_audit": {"exact_or_high_similarity_query_matches":0,"exact_or_high_similarity_requirement_matches":0,"historical_source_exact_message_matches":0,"original_adapter_training_overlap":"UNKNOWN"},
+  "review_status": "PENDING",
+  "reviewed_final_dataset_exists": false,
+  "predictions_run_on_draft": false,
+  "r5_generalisation_decision": "UNDETERMINED",
+  "v3_decision": "UNDETERMINED",
+  "retraining_decision": "UNDETERMINED",
+  "completed_verification": [
+    "Go full test suite and Mongo integration tests PASS",
+    "Go formatting, vet, and build PASS",
+    "Python inference tests 9/9 PASS; Ruff and compilation PASS",
+    "Frontend lint, typecheck, and production build PASS",
+    "Q4 configuration guard PASS",
+    "CPU and GPU Compose static validation PASS; GPU execution not used",
+    "pip-audit: no known vulnerabilities",
+    "npm audit --omit=dev: zero vulnerabilities",
+    "No tracked model binaries or files above 10 MB",
+    "No tracked-file matches for checked credential patterns",
+    "Historical model tag and closed-final hashes unchanged",
+    "Five existing containers running and healthy"
+  ],
+  "open_verification_findings": [
+    {"tool":"npm audit","result":"Five high advisories through development-only Tailwind 3.4.19 -> chokidar/micromatch -> braces 3.0.3; production-only audit is clean.","reference":"https://github.com/advisories/GHSA-vfj7-8cjw-p6xm"},
+    {"tool":"govulncheck","result":"One reachable initialization trace for GO-2026-6505 in transitive OpenTelemetry SDK 1.44.0; fixed in 1.45.0. Firebase storage is disabled in the local Compose runtime.","reference":"https://pkg.go.dev/vuln/GO-2026-6505"},
+    {"tool":"pytest","result":"One upstream Starlette TestClient deprecation warning."}
+  ],
+  "next_required_input": "Independent human target-label decisions for all 40 draft queries, with ambiguities adjudicated or excluded before final hashing and R0/R5 execution."
+}

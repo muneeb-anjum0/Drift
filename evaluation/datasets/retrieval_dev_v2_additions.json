@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "provenance": "Prospective human-authored synthetic additions frozen after R0 diagnosis and before Phase III-C retrieval experiments.",
+  "label_status": "single_author_pending_independent_review",
+  "projects": {
+    "clinic-small": [
+      {"id":"cq-09","message":"A locked-out patient should receive a fresh recovery link.","expected_requirement_ids":["c-reset"],"category":"hard_positive"},
+      {"id":"cq-10","message":"Accept debit cards when a patient settles an outstanding balance.","expected_requirement_ids":["c-invoice"],"category":"paraphrase"},
+      {"id":"cq-11","message":"Remind patients by text message on the morning of their visit.","expected_requirement_ids":["c-notify"],"category":"channel_change"},
+      {"id":"cq-12","message":"Let a patient print medication instructions from the visit record.","expected_requirement_ids":["c-prescription"],"category":"hard_positive"},
+      {"id":"cq-13","message":"Confirm a newly reserved consultation by email.","expected_requirement_ids":["c-book","c-notify"],"category":"multi_requirement"},
+      {"id":"cq-14","message":"Include paid invoice totals in the monthly clinic export.","expected_requirement_ids":["c-invoice","c-report"],"category":"multi_requirement"},
+      {"id":"cq-15","message":"After reserving a visit, email the patient and make the prescription and bill downloadable.","expected_requirement_ids":["c-book","c-notify","c-prescription","c-invoice"],"category":"three_plus_targets"},
+      {"id":"cq-16","message":"Use patient credentials for sign-in but send a recovery code when they are forgotten.","expected_requirement_ids":["c-login","c-reset"],"category":"requirement_competition"},
+      {"id":"cq-17","message":"Let clinicians conduct video consultations.","expected_requirement_ids":[],"category":"hard_negative"},
+      {"id":"cq-18","message":"Offer a dark visual theme for the patient portal.","expected_requirement_ids":[],"category":"hard_negative"},
+      {"id":"cq-19","message":"Change the booking window so visits can be reserved six months ahead.","expected_requirement_ids":["c-book"],"category":"numeric_policy_change"},
+      {"id":"cq-20","message":"Only clinic managers may download the monthly spreadsheet.","expected_requirement_ids":["c-report"],"category":"access_constraint"}
+    ],
+    "commerce-medium": [
+      {"id":"eq-09","message":"Permit checkout without opening a profile.","expected_requirement_ids":["e-guest"],"category":"hard_positive"},
+      {"id":"eq-10","message":"Find red shoes by SKU, then narrow the results to in-stock products under fifty dollars.","expected_requirement_ids":["e-search","e-filter"],"category":"requirement_competition"},
+      {"id":"eq-11","message":"Keep basket contents when a shopper changes item quantities.","expected_requirement_ids":["e-cart"],"category":"paraphrase"},
+      {"id":"eq-12","message":"Return a card payment in full when support approves the return.","expected_requirement_ids":["e-pay","e-refund"],"category":"multi_requirement"},
+      {"id":"eq-13","message":"Display sold-out catalog items and their expected restock date.","expected_requirement_ids":["e-stock"],"category":"hard_positive"},
+      {"id":"eq-14","message":"A verified buyer may edit their product rating after delivery.","expected_requirement_ids":["e-review"],"category":"morphology"},
+      {"id":"eq-15","message":"Apply a voucher only when its promotion is still valid.","expected_requirement_ids":["e-promo"],"category":"paraphrase"},
+      {"id":"eq-16","message":"Email the tracking number as soon as an order ships.","expected_requirement_ids":["e-ship","e-email"],"category":"multi_requirement"},
+      {"id":"eq-17","message":"Registered shoppers should authenticate with a password before viewing their account.","expected_requirement_ids":["e-auth"],"category":"hard_positive"},
+      {"id":"eq-18","message":"A signed-in buyer should add items to a basket and pay for the order.","expected_requirement_ids":["e-auth","e-cart","e-pay"],"category":"three_plus_targets"},
+      {"id":"eq-19","message":"Allow shoppers to save a wishlist for later.","expected_requirement_ids":[],"category":"hard_negative"},
+      {"id":"eq-20","message":"Give warehouse workers a packing productivity dashboard.","expected_requirement_ids":[],"category":"hard_negative"}
+    ],
+    "saas-large": [
+      {"id":"sq-09","message":"Company members must use the corporate identity provider instead of local credentials.","expected_requirement_ids":["s-sso"],"category":"hard_positive"},
+      {"id":"sq-10","message":"Invite a colleague as a read-only member.","expected_requirement_ids":["s-invite","s-role"],"category":"multi_requirement"},
+      {"id":"sq-11","message":"Bring a closed project back into the active workspace.","expected_requirement_ids":["s-archive"],"category":"hard_positive"},
+      {"id":"sq-12","message":"Let members reply to one another in a discussion attached to a task.","expected_requirement_ids":["s-comment"],"category":"paraphrase"},
+      {"id":"sq-13","message":"Bundle assignment alerts and due-date reminders into one daily message.","expected_requirement_ids":["s-notify","s-digest"],"category":"requirement_competition"},
+      {"id":"sq-14","message":"Put PDF status exports next to portfolio health charts.","expected_requirement_ids":["s-report","s-dashboard"],"category":"multi_requirement"},
+      {"id":"sq-15","message":"Let the owner download an invoice before paying the plan renewal.","expected_requirement_ids":["s-billing"],"category":"hard_positive"},
+      {"id":"sq-16","message":"Erase a terminated tenant and its projects without waiting thirty days.","expected_requirement_ids":["s-retain"],"category":"paraphrase"},
+      {"id":"sq-17","message":"Administrators need twelve months of searchable security events.","expected_requirement_ids":["s-audit"],"category":"numeric_policy_change"},
+      {"id":"sq-18","message":"Create a task, discuss it, and attach the supporting brief.","expected_requirement_ids":["s-task","s-comment","s-file"],"category":"three_plus_targets"},
+      {"id":"sq-19","message":"Track billable time spent on each task.","expected_requirement_ids":[],"category":"hard_negative"},
+      {"id":"sq-20","message":"Start a video call with everyone in the workspace.","expected_requirement_ids":[],"category":"hard_negative"}
+    ]
+  }
+}

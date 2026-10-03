@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "final-heldout-postprocess-V1",
+  "generated_at": "2026-10-01T14:40:44Z",
+  "source_evaluation_id": "final-heldout-raw-V1",
+  "artifact_sha256": "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
+  "dataset": {
+    "case_count": 24,
+    "class_distribution": {
+      "added": 4,
+      "ambiguous": 4,
+      "contradiction": 4,
+      "modified": 4,
+      "removed": 4,
+      "unchanged": 4
+    },
+    "name": "drift-raw-final",
+    "sha256": "5da735ac677e2824d80f5d22a68bb738d46b3c5aa4c9617f8cf3c88e0cb21253",
+    "version": "1.0.0"
+  },
+  "metrics": {
+    "case_count": 24,
+    "effect_counts": {
+      "POSTPROCESSOR_CHANGED_WRONG_TO_DIFFERENT_WRONG": 0,
+      "POSTPROCESSOR_CORRECTED_MODEL_ERROR": 0,
+      "POSTPROCESSOR_HAD_NO_EFFECT": 24,
+      "POSTPROCESSOR_INTRODUCED_ERROR": 0
+    },
+    "net_correct_case_contribution": 0,
+    "postprocessed_accuracy": 0.7916666666666666,
+    "postprocessed_correct": 19,
+    "raw_accuracy": 0.7916666666666666,
+    "raw_correct": 19
+  },
+  "cases": [
+    {
+      "case_id": "final_add_aviation_01",
+      "expected_label": "added",
+      "raw_label": "added",
+      "postprocessed_label": "added",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_add_energy_01",
+      "expected_label": "added",
+      "raw_label": "added",
+      "postprocessed_label": "added",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_add_insurance_01",
+      "expected_label": "added",
+      "raw_label": "added",
+      "postprocessed_label": "added",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_add_library_01",
+      "expected_label": "added",
+      "raw_label": "added",
+      "postprocessed_label": "added",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_amb_aviation_01",
+      "expected_label": "ambiguous",
+      "raw_label": "ambiguous",
+      "postprocessed_label": "ambiguous",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_amb_energy_01",
+      "expected_label": "ambiguous",
+      "raw_label": "contradiction",
+      "postprocessed_label": "contradiction",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "final_amb_insurance_01",
+      "expected_label": "ambiguous",
+      "raw_label": "ambiguous",
+      "postprocessed_label": "ambiguous",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_amb_library_01",
+      "expected_label": "ambiguous",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "final_con_agriculture_01",
+      "expected_label": "contradiction",
+      "raw_label": "contradiction",
+      "postprocessed_label": "contradiction",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_con_hospitality_01",
+      "expected_label": "contradiction",
+      "raw_label": "contradiction",
+      "postprocessed_label": "contradiction",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_con_legal_01",
+      "expected_label": "contradiction",
+      "raw_label": "contradiction",
+      "postprocessed_label": "contradiction",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_con_manufacturing_01",
+      "expected_label": "contradiction",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "final_mod_agriculture_01",
+      "expected_label": "modified",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_mod_hospitality_01",
+      "expected_label": "modified",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_mod_legal_01",
+      "expected_label": "modified",
+      "raw_label": "modified",
+      "postprocessed_label": "modified",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_mod_manufacturing_01",
+      "expected_label": "modified",
+      "raw_label": "added",
+      "postprocessed_label": "added",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "final_rem_aviation_01",
+      "expected_label": "removed",
+      "raw_label": "removed",
+      "postprocessed_label": "removed",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_rem_energy_01",
+      "expected_label": "removed",
+      "raw_label": "removed",
+      "postprocessed_label": "removed",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_rem_insurance_01",
+      "expected_label": "removed",
+      "raw_label": "removed",
+      "postprocessed_label": "removed",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_rem_library_01",
+      "expected_label": "removed",
+      "raw_label": "removed",
+      "postprocessed_label": "removed",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_same_agriculture_01",
+      "expected_label": "unchanged",
+      "raw_label": "removed",
+      "postprocessed_label": "removed",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": false,
+      "postprocessed_correct": false
+    },
+    {
+      "case_id": "final_same_hospitality_01",
+      "expected_label": "unchanged",
+      "raw_label": "unchanged",
+      "postprocessed_label": "unchanged",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_same_legal_01",
+      "expected_label": "unchanged",
+      "raw_label": "unchanged",
+      "postprocessed_label": "unchanged",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    },
+    {
+      "case_id": "final_same_manufacturing_01",
+      "expected_label": "unchanged",
+      "raw_label": "unchanged",
+      "postprocessed_label": "unchanged",
+      "effect": "POSTPROCESSOR_HAD_NO_EFFECT",
+      "raw_correct": true,
+      "postprocessed_correct": true
+    }
+  ],
+  "limitations": [
+    "This isolates CleanDetectedChanges on one atomic change derived from each raw prediction.",
+    "It does not include retrieval, multi-requirement aggregation, scoring, or persistence.",
+    "The development dataset is not proven held out from the unrecovered adapter training data."
+  ]
+}

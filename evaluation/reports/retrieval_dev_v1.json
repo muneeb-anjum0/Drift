@@ -1,0 +1,3163 @@
+{
+  "configuration": {
+    "max_selected": 3,
+    "threshold": 0.25
+  },
+  "dataset": {
+    "name": "drift-retrieval-dev",
+    "sha256": "09f30bc801bcd8a4514f51c063ba58102238d365646949b61b6a45ffa90bd89c",
+    "version": "1.0.0"
+  },
+  "evaluation_id": "retrieval-dev-v1",
+  "generated_at": "2026-09-30T18:52:27Z",
+  "limitations": [
+    "Synthetic prospective development corpus; human relevance labels were authored by one engineering agent.",
+    "Recall@k ranks all requirements; model-input recall also applies the production threshold and three-item cap.",
+    "This measures deterministic retrieval only and makes no model-quality claim."
+  ],
+  "metrics": {
+    "all_expected_reached_model_count": 16,
+    "all_expected_reached_model_rate": 0.6666666666666666,
+    "average_selected_requirements": 1.125,
+    "by_project_size": {
+      "large": {
+        "all_reached": 4,
+        "all_reached_rate": 0.5,
+        "model_input_recall": 0.5,
+        "queries": 8
+      },
+      "medium": {
+        "all_reached": 4,
+        "all_reached_rate": 0.5,
+        "model_input_recall": 0.5,
+        "queries": 8
+      },
+      "small": {
+        "all_reached": 8,
+        "all_reached_rate": 1,
+        "model_input_recall": 1,
+        "queries": 8
+      }
+    },
+    "model_input_recall": 0.6666666666666666,
+    "mrr": 0.8372023809523809,
+    "precision_at_3": 0.30555555555555547,
+    "query_count": 24,
+    "recall_at_1": 0.6875,
+    "recall_at_3": 0.8125
+  },
+  "results": [
+    {
+      "project_id": "clinic-small",
+      "project_size": "small",
+      "query_id": "cq-01",
+      "expected_requirement_ids": [
+        "c-reset"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "c-reset",
+          "score": 0.7107142857142856,
+          "is_relevant": true,
+          "matched_terms": [
+            "forgotten",
+            "password",
+            "patient"
+          ],
+          "matched_domains": [
+            "authentication"
+          ]
+        },
+        {
+          "id": "c-login",
+          "score": 0.5708333333333333,
+          "is_relevant": true,
+          "matched_terms": [
+            "password",
+            "patient"
+          ],
+          "matched_domains": [
+            "authentication"
+          ]
+        },
+        {
+          "id": "c-notify",
+          "score": 0.4111111111111111,
+          "is_relevant": false,
+          "matched_terms": [
+            "patient"
+          ],
+          "matched_domains": [
+            "authentication"
+          ]
+        },
+        {
+          "id": "c-cancel",
+          "score": 0.24222222222222223,
+          "is_relevant": false,
+          "matched_terms": [
+            "patient",
+            "time"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-book",
+          "score": 0.09166666666666667,
+          "is_relevant": false,
+          "matched_terms": [
+            "patient"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-invoice",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "patient"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-prescription",
+          "score": 0.061111111111111116,
+          "is_relevant": false,
+          "matched_terms": [
+            "patient"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-report",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "c-reset",
+        "c-login"
+      ],
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "clinic-small",
+      "project_size": "small",
+      "query_id": "cq-02",
+      "expected_requirement_ids": [
+        "c-cancel"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "c-cancel",
+          "score": 0.5800000000000001,
+          "is_relevant": true,
+          "matched_terms": [
+            "appointment",
+            "cancellation",
+            "hour"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-notify",
+          "score": 0.455,
+          "is_relevant": true,
+          "matched_terms": [
+            "appointment",
+            "cancellation",
+            "change"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-book",
+          "score": 0.23500000000000001,
+          "is_relevant": false,
+          "matched_terms": [
+            "appointment"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-login",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-reset",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-invoice",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-report",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-prescription",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "c-cancel",
+        "c-notify"
+      ],
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "clinic-small",
+      "project_size": "small",
+      "query_id": "cq-03",
+      "expected_requirement_ids": [
+        "c-invoice"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "c-invoice",
+          "score": 0.8357142857142856,
+          "is_relevant": true,
+          "matched_terms": [
+            "card",
+            "invoice",
+            "payment"
+          ],
+          "matched_domains": [
+            "billing"
+          ]
+        },
+        {
+          "id": "c-prescription",
+          "score": 0.35,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": [
+            "billing"
+          ]
+        },
+        {
+          "id": "c-login",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-reset",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-book",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-cancel",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-report",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-notify",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "c-invoice"
+      ],
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "clinic-small",
+      "project_size": "small",
+      "query_id": "cq-04",
+      "expected_requirement_ids": [
+        "c-notify"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "c-notify",
+          "score": 0.5333333333333333,
+          "is_relevant": true,
+          "matched_terms": [
+            "booking",
+            "email"
+          ],
+          "matched_domains": [
+            "authentication"
+          ]
+        },
+        {
+          "id": "c-login",
+          "score": 0.5249999999999999,
+          "is_relevant": false,
+          "matched_terms": [
+            "email"
+          ],
+          "matched_domains": [
+            "authentication"
+          ]
+        },
+        {
+          "id": "c-reset",
+          "score": 0.35,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": [
+            "authentication"
+          ]
+        },
+        {
+          "id": "c-book",
+          "score": 0.21666666666666667,
+          "is_relevant": false,
+          "matched_terms": [
+            "booking"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-cancel",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-invoice",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-report",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-prescription",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "c-notify"
+      ],
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "clinic-small",
+      "project_size": "small",
+      "query_id": "cq-05",
+      "expected_requirement_ids": [
+        "c-report"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "c-report",
+          "score": 0.494047619047619,
+          "is_relevant": true,
+          "matched_terms": [
+            "clinic",
+            "csv",
+            "monthly"
+          ],
+          "matched_domains": [
+            "reports_exports"
+          ]
+        },
+        {
+          "id": "c-prescription",
+          "score": 0.175,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": [
+            "reports_exports"
+          ]
+        },
+        {
+          "id": "c-login",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-reset",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-book",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-cancel",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-invoice",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-notify",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "c-report"
+      ],
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "clinic-small",
+      "project_size": "small",
+      "query_id": "cq-06",
+      "expected_requirement_ids": [
+        "c-prescription"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "c-prescription",
+          "score": 0.7194444444444444,
+          "is_relevant": true,
+          "matched_terms": [
+            "download",
+            "export",
+            "prescription",
+            "visit"
+          ],
+          "matched_domains": [
+            "reports_exports"
+          ]
+        },
+        {
+          "id": "c-report",
+          "score": 0.5119047619047619,
+          "is_relevant": false,
+          "matched_terms": [
+            "export"
+          ],
+          "matched_domains": [
+            "reports_exports"
+          ]
+        },
+        {
+          "id": "c-reset",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "link"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-login",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-book",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-cancel",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-invoice",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "c-notify",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "c-prescription"
+      ],
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "clinic-small",
+      "project_size": "small",
+      "query_id": "cq-07",
+      "expected_requirement_ids": [
+        "c-login"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "c-reset",
+          "score": 0.7107142857142856,
+          "is_relevant": true,
+          "matched_terms": [
+            "link",
+            "password",
+            "patient"
+          ],
+          "matched_domains": [
+            "authentication"
+          ]
+        },
+        {
+          "id": "c-login",
+          "score": 0.6395833333333334,
+          "is_relevant": true,
+          "matched_terms": [
+            "password",
+            "patient",
+            "sign"
+          ],
+          "matched_domains": [
+            "authentication"
+          ]
+        },
+        {
+          "id": "c-notify",
+          "score": 0.4111111111111111,
+          "is_relevant": false,
+          "matched_terms": [
+            "patient"
+          ],
+          "matched_domains": [
+            "authentication"
+          ]
+        },
+        {
+          "id": "c-book",
+          "score": 0.09166666666666667,
+          "is_relevant": false,
+          "matched_terms": [
+            "patient"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-invoice",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "patient"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-cancel",
+          "score": 0.061111111111111116,
+          "is_relevant": false,
+          "matched_terms": [
+            "patient"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-prescription",
+          "score": 0.061111111111111116,
+          "is_relevant": false,
+          "matched_terms": [
+            "patient"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-report",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "c-reset",
+        "c-login"
+      ],
+      "recall_at_1": 0,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 0.5,
+      "model_input_recall": 1,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "clinic-small",
+      "project_size": "small",
+      "query_id": "cq-08",
+      "expected_requirement_ids": [
+        "c-book",
+        "c-notify"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "c-notify",
+          "score": 0.75,
+          "is_relevant": true,
+          "matched_terms": [
+            "and",
+            "appointment",
+            "email",
+            "patient"
+          ],
+          "matched_domains": [
+            "authentication"
+          ]
+        },
+        {
+          "id": "c-login",
+          "score": 0.7229166666666667,
+          "is_relevant": true,
+          "matched_terms": [
+            "and",
+            "email",
+            "patient"
+          ],
+          "matched_domains": [
+            "authentication"
+          ]
+        },
+        {
+          "id": "c-reset",
+          "score": 0.42857142857142855,
+          "is_relevant": false,
+          "matched_terms": [
+            "patient"
+          ],
+          "matched_domains": [
+            "authentication"
+          ]
+        },
+        {
+          "id": "c-book",
+          "score": 0.42833333333333334,
+          "is_relevant": true,
+          "matched_terms": [
+            "appointment",
+            "patient"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-cancel",
+          "score": 0.3825,
+          "is_relevant": true,
+          "matched_terms": [
+            "appointment",
+            "patient"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-invoice",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "patient"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-prescription",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "patient"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "c-report",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "c-notify",
+        "c-login",
+        "c-book"
+      ],
+      "recall_at_1": 0.5,
+      "recall_at_3": 0.5,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "commerce-medium",
+      "project_size": "medium",
+      "query_id": "eq-01",
+      "expected_requirement_ids": [
+        "e-promo"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "e-promo",
+          "score": 0.27714285714285714,
+          "is_relevant": true,
+          "matched_terms": [
+            "checkout",
+            "one"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-guest",
+          "score": 0.20357142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "checkout"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-auth",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-search",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-filter",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-cart",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-pay",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-refund",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-ship",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-stock",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-review",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-email",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "e-promo"
+      ],
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "commerce-medium",
+      "project_size": "medium",
+      "query_id": "eq-02",
+      "expected_requirement_ids": [
+        "e-stock"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "e-pay",
+          "score": 0.19375,
+          "is_relevant": false,
+          "matched_terms": [
+            "order"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-email",
+          "score": 0.18611111111111112,
+          "is_relevant": false,
+          "matched_terms": [
+            "order"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-guest",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "order"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-ship",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "order"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-stock",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "hide"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-auth",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-search",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-filter",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-cart",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-refund",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-review",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-promo",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [],
+      "recall_at_1": 0,
+      "recall_at_3": 0,
+      "precision_at_3": 0,
+      "reciprocal_rank": 0.2,
+      "model_input_recall": 0,
+      "all_expected_reached_model": false
+    },
+    {
+      "project_id": "commerce-medium",
+      "project_size": "medium",
+      "query_id": "eq-03",
+      "expected_requirement_ids": [
+        "e-pay"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "e-pay",
+          "score": 0.7892857142857143,
+          "is_relevant": true,
+          "matched_terms": [
+            "bank",
+            "card",
+            "payment",
+            "transfer"
+          ],
+          "matched_domains": [
+            "billing"
+          ]
+        },
+        {
+          "id": "e-refund",
+          "score": 0.42857142857142855,
+          "is_relevant": false,
+          "matched_terms": [
+            "payment"
+          ],
+          "matched_domains": [
+            "billing"
+          ]
+        },
+        {
+          "id": "e-email",
+          "score": 0.42857142857142855,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": [
+            "billing"
+          ]
+        },
+        {
+          "id": "e-auth",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-search",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-filter",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-cart",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-review",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-guest",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-ship",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-stock",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-promo",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "e-pay"
+      ],
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "commerce-medium",
+      "project_size": "medium",
+      "query_id": "eq-04",
+      "expected_requirement_ids": [
+        "e-review"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "e-filter",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "rating"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-review",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "delivered"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-auth",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-guest",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-search",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-cart",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-pay",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-refund",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-ship",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-stock",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-promo",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-email",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [],
+      "recall_at_1": 0,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 0.5,
+      "model_input_recall": 0,
+      "all_expected_reached_model": false
+    },
+    {
+      "project_id": "commerce-medium",
+      "project_size": "medium",
+      "query_id": "eq-05",
+      "expected_requirement_ids": [
+        "e-ship",
+        "e-email"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "e-ship",
+          "score": 0.19375,
+          "is_relevant": false,
+          "matched_terms": [
+            "tracking"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-auth",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-search",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-review",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-cart",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-email",
+          "score": 0.061111111111111116,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-filter",
+          "score": 0.05500000000000001,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-guest",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-pay",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-refund",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-stock",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-promo",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [],
+      "recall_at_1": 0.5,
+      "recall_at_3": 0.5,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 0,
+      "all_expected_reached_model": false
+    },
+    {
+      "project_id": "commerce-medium",
+      "project_size": "medium",
+      "query_id": "eq-06",
+      "expected_requirement_ids": [
+        "e-guest",
+        "e-auth"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "e-cart",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "remove"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-auth",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-guest",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-search",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-filter",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-pay",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-refund",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-ship",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-stock",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-review",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-promo",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-email",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [],
+      "recall_at_1": 0,
+      "recall_at_3": 1,
+      "precision_at_3": 0.6666666666666666,
+      "reciprocal_rank": 0.5,
+      "model_input_recall": 0,
+      "all_expected_reached_model": false
+    },
+    {
+      "project_id": "commerce-medium",
+      "project_size": "medium",
+      "query_id": "eq-07",
+      "expected_requirement_ids": [
+        "e-search"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "e-search",
+          "score": 0.8357142857142856,
+          "is_relevant": true,
+          "matched_terms": [
+            "name",
+            "product",
+            "search"
+          ],
+          "matched_domains": [
+            "products_content"
+          ]
+        },
+        {
+          "id": "e-review",
+          "score": 0.5535714285714286,
+          "is_relevant": true,
+          "matched_terms": [
+            "product"
+          ],
+          "matched_domains": [
+            "products_content"
+          ]
+        },
+        {
+          "id": "e-filter",
+          "score": 0.42857142857142855,
+          "is_relevant": false,
+          "matched_terms": [
+            "product"
+          ],
+          "matched_domains": [
+            "products_content"
+          ]
+        },
+        {
+          "id": "e-cart",
+          "score": 0.42857142857142855,
+          "is_relevant": false,
+          "matched_terms": [
+            "product"
+          ],
+          "matched_domains": [
+            "products_content"
+          ]
+        },
+        {
+          "id": "e-stock",
+          "score": 0.42857142857142855,
+          "is_relevant": false,
+          "matched_terms": [
+            "product"
+          ],
+          "matched_domains": [
+            "products_content"
+          ]
+        },
+        {
+          "id": "e-auth",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-guest",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-pay",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-refund",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-ship",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-promo",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-email",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "e-search",
+        "e-review"
+      ],
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "commerce-medium",
+      "project_size": "medium",
+      "query_id": "eq-08",
+      "expected_requirement_ids": [
+        "e-refund"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "e-refund",
+          "score": 0.30333333333333334,
+          "is_relevant": true,
+          "matched_terms": [
+            "agent",
+            "original",
+            "support"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "e-auth",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-guest",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-search",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-filter",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-cart",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-pay",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-ship",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-stock",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-review",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-promo",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "e-email",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "e-refund"
+      ],
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "saas-large",
+      "project_size": "large",
+      "query_id": "sq-01",
+      "expected_requirement_ids": [
+        "s-file"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "s-file",
+          "score": 0.45999999999999996,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": [
+            "documents"
+          ]
+        },
+        {
+          "id": "s-report",
+          "score": 0.35,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": [
+            "documents"
+          ]
+        },
+        {
+          "id": "s-task",
+          "score": 0.21666666666666667,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-comment",
+          "score": 0.21666666666666667,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-filter",
+          "score": 0.21666666666666667,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-search",
+          "score": 0.09166666666666667,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-api",
+          "score": 0.09166666666666667,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-hook",
+          "score": 0.09166666666666667,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-login",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-sso",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-invite",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-role",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-project",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-archive",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-notify",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-digest",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-dashboard",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-audit",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-billing",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-retain",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [],
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 0,
+      "all_expected_reached_model": false
+    },
+    {
+      "project_id": "saas-large",
+      "project_size": "large",
+      "query_id": "sq-02",
+      "expected_requirement_ids": [
+        "s-notify"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "s-notify",
+          "score": 0.6950000000000001,
+          "is_relevant": true,
+          "matched_terms": [
+            "alert",
+            "and",
+            "assignment",
+            "email"
+          ],
+          "matched_domains": [
+            "authentication",
+            "notifications"
+          ]
+        },
+        {
+          "id": "s-login",
+          "score": 0.4875,
+          "is_relevant": true,
+          "matched_terms": [
+            "and",
+            "email"
+          ],
+          "matched_domains": [
+            "authentication"
+          ]
+        },
+        {
+          "id": "s-digest",
+          "score": 0.4722222222222222,
+          "is_relevant": true,
+          "matched_terms": [
+            "email",
+            "into"
+          ],
+          "matched_domains": [
+            "authentication",
+            "notifications"
+          ]
+        },
+        {
+          "id": "s-invite",
+          "score": 0.42857142857142855,
+          "is_relevant": false,
+          "matched_terms": [
+            "email"
+          ],
+          "matched_domains": [
+            "authentication"
+          ]
+        },
+        {
+          "id": "s-dashboard",
+          "score": 0.23,
+          "is_relevant": false,
+          "matched_terms": [
+            "and",
+            "deadline"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-billing",
+          "score": 0.22999999999999998,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": [
+            "notifications"
+          ]
+        },
+        {
+          "id": "s-archive",
+          "score": 0.11000000000000001,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-search",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-task",
+          "score": 0.061111111111111116,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-filter",
+          "score": 0.061111111111111116,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-hook",
+          "score": 0.061111111111111116,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-api",
+          "score": 0.05500000000000001,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-audit",
+          "score": 0.05500000000000001,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-sso",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-role",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-project",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-comment",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-file",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-report",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-retain",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "s-notify",
+        "s-login",
+        "s-digest"
+      ],
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "saas-large",
+      "project_size": "large",
+      "query_id": "sq-03",
+      "expected_requirement_ids": [
+        "s-audit"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "s-audit",
+          "score": 0.28500000000000003,
+          "is_relevant": true,
+          "matched_terms": [
+            "days",
+            "for",
+            "security"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-retain",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "days"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-hook",
+          "score": 0.061111111111111116,
+          "is_relevant": false,
+          "matched_terms": [
+            "for"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-notify",
+          "score": 0.05500000000000001,
+          "is_relevant": false,
+          "matched_terms": [
+            "for"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-login",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-sso",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-invite",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-role",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-project",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-archive",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-task",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-comment",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-file",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-digest",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-search",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-filter",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-report",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-dashboard",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-api",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-billing",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "s-audit"
+      ],
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "saas-large",
+      "project_size": "large",
+      "query_id": "sq-04",
+      "expected_requirement_ids": [
+        "s-api"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "s-dashboard",
+          "score": 0.4875,
+          "is_relevant": true,
+          "matched_terms": [
+            "and",
+            "project"
+          ],
+          "matched_domains": [
+            "admin_access"
+          ]
+        },
+        {
+          "id": "s-archive",
+          "score": 0.465,
+          "is_relevant": true,
+          "matched_terms": [
+            "and",
+            "project"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-task",
+          "score": 0.45125000000000004,
+          "is_relevant": true,
+          "matched_terms": [
+            "and",
+            "project",
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-api",
+          "score": 0.395,
+          "is_relevant": true,
+          "matched_terms": [
+            "and",
+            "project",
+            "rest",
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-filter",
+          "score": 0.3825,
+          "is_relevant": true,
+          "matched_terms": [
+            "and",
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-role",
+          "score": 0.35,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": [
+            "admin_access"
+          ]
+        },
+        {
+          "id": "s-search",
+          "score": 0.32625000000000004,
+          "is_relevant": true,
+          "matched_terms": [
+            "and",
+            "project",
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-hook",
+          "score": 0.32625000000000004,
+          "is_relevant": true,
+          "matched_terms": [
+            "and",
+            "project",
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-project",
+          "score": 0.21666666666666667,
+          "is_relevant": false,
+          "matched_terms": [
+            "project"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-comment",
+          "score": 0.21666666666666667,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-report",
+          "score": 0.20357142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "project"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-file",
+          "score": 0.11000000000000001,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-login",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-notify",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-audit",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-billing",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "and"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-sso",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-invite",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-digest",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-retain",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "s-dashboard",
+        "s-archive",
+        "s-task"
+      ],
+      "recall_at_1": 0,
+      "recall_at_3": 0,
+      "precision_at_3": 0,
+      "reciprocal_rank": 0.25,
+      "model_input_recall": 0,
+      "all_expected_reached_model": false
+    },
+    {
+      "project_id": "saas-large",
+      "project_size": "large",
+      "query_id": "sq-05",
+      "expected_requirement_ids": [
+        "s-hook"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "s-comment",
+          "score": 0.21666666666666667,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-task",
+          "score": 0.19375,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-filter",
+          "score": 0.19375,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-file",
+          "score": 0.11000000000000001,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-search",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-api",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-hook",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-login",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-sso",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-invite",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-role",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-project",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-archive",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-notify",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-digest",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-report",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-dashboard",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-audit",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-billing",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-retain",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [],
+      "recall_at_1": 0,
+      "recall_at_3": 0,
+      "precision_at_3": 0,
+      "reciprocal_rank": 0.14285714285714285,
+      "model_input_recall": 0,
+      "all_expected_reached_model": false
+    },
+    {
+      "project_id": "saas-large",
+      "project_size": "large",
+      "query_id": "sq-06",
+      "expected_requirement_ids": [
+        "s-dashboard"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "s-dashboard",
+          "score": 0.27714285714285714,
+          "is_relevant": true,
+          "matched_terms": [
+            "project",
+            "workload"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-archive",
+          "score": 0.23500000000000001,
+          "is_relevant": false,
+          "matched_terms": [
+            "project"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-project",
+          "score": 0.21666666666666667,
+          "is_relevant": false,
+          "matched_terms": [
+            "project"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-report",
+          "score": 0.20357142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "project"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-task",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "project"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-search",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "project"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-api",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "project"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-hook",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "project"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-login",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-sso",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-invite",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-role",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-comment",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-file",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-notify",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-digest",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-filter",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-audit",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-billing",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-retain",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "s-dashboard"
+      ],
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "saas-large",
+      "project_size": "large",
+      "query_id": "sq-07",
+      "expected_requirement_ids": [
+        "s-search",
+        "s-file"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "s-file",
+          "score": 0.45999999999999996,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": [
+            "documents"
+          ]
+        },
+        {
+          "id": "s-report",
+          "score": 0.35,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": [
+            "documents"
+          ]
+        },
+        {
+          "id": "s-comment",
+          "score": 0.21666666666666667,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-task",
+          "score": 0.19375,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-filter",
+          "score": 0.19375,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-search",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-api",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-hook",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "task"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-login",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-sso",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-invite",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-role",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-project",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-archive",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-notify",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-digest",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-dashboard",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-audit",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-billing",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-retain",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [],
+      "recall_at_1": 0.5,
+      "recall_at_3": 0.5,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 0,
+      "all_expected_reached_model": false
+    },
+    {
+      "project_id": "saas-large",
+      "project_size": "large",
+      "query_id": "sq-08",
+      "expected_requirement_ids": [
+        "s-retain"
+      ],
+      "ranked_requirements": [
+        {
+          "id": "s-retain",
+          "score": 0.75,
+          "is_relevant": true,
+          "matched_terms": [
+            "data",
+            "days",
+            "deleted",
+            "workspace"
+          ],
+          "matched_domains": [
+            "reports_exports"
+          ]
+        },
+        {
+          "id": "s-report",
+          "score": 0.35,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": [
+            "reports_exports"
+          ]
+        },
+        {
+          "id": "s-dashboard",
+          "score": 0.35,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": [
+            "reports_exports"
+          ]
+        },
+        {
+          "id": "s-hook",
+          "score": 0.24222222222222223,
+          "is_relevant": false,
+          "matched_terms": [
+            "for",
+            "workspace"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-audit",
+          "score": 0.23,
+          "is_relevant": false,
+          "matched_terms": [
+            "days",
+            "for"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-role",
+          "score": 0.20357142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "workspace"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-search",
+          "score": 0.19375,
+          "is_relevant": false,
+          "matched_terms": [
+            "workspace"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-project",
+          "score": 0.09166666666666667,
+          "is_relevant": false,
+          "matched_terms": [
+            "workspace"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-invite",
+          "score": 0.07857142857142857,
+          "is_relevant": false,
+          "matched_terms": [
+            "workspace"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-login",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "workspace"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-sso",
+          "score": 0.06875,
+          "is_relevant": false,
+          "matched_terms": [
+            "workspace"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-digest",
+          "score": 0.061111111111111116,
+          "is_relevant": false,
+          "matched_terms": [
+            "workspace"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-billing",
+          "score": 0.05500000000000001,
+          "is_relevant": false,
+          "matched_terms": [
+            "workspace"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-notify",
+          "score": 0.05,
+          "is_relevant": false,
+          "matched_terms": [
+            "for"
+          ],
+          "matched_domains": []
+        },
+        {
+          "id": "s-archive",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-task",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-comment",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-file",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-filter",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        },
+        {
+          "id": "s-api",
+          "score": 0,
+          "is_relevant": false,
+          "matched_terms": [],
+          "matched_domains": []
+        }
+      ],
+      "selected_requirement_ids": [
+        "s-retain"
+      ],
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "precision_at_3": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "all_expected_reached_model": true
+    }
+  ],
+  "schema_version": 1
+}
