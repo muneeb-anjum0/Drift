@@ -10,6 +10,7 @@
 | `drift-retrieval-dev` 2.0.0 | Expanded retrieval development | Yes | v1 plus 36 frozen synthetic additions; 60 queries including hard negatives and multi-target cases; single-author labels pending review. |
 | `drift-raw-final` 1.0.0 | Phase III-B final raw test | No | Frozen before experiments; executed once per V0/V1; now closed to tuning. |
 | `drift-retrieval-final` 1.0.0 | Phase III-B final retrieval test | No | Frozen before experiments; executed once per V0/V1; now closed to tuning. |
+| `drift-retrieval-independent-evaluation` 1.0.0 | Phase III-D protected retrieval evaluation | No | Four new synthetic medium-sized projects; 40 user-supplied reviewed decisions; frozen before R0/R5. R5 did not generalize. Reviewer human independence and original adapter-training non-overlap cannot be independently verified. |
 
 The recovered adapter's TRAIN split is unknown. No recovered artifact establishes its contents, hash, sampling, labels, or split method. Therefore none of the current corpora can be called held out from adapter training.
 
@@ -53,4 +54,10 @@ The evaluator now records the exact production-normalized tokens, domains, compo
 
 R0 was frozen before the v2 additions were used for candidate selection. Experiments then changed one major variable at a time: suffix normalization (R1 retained), k=5 (R2 rejected), threshold 0.20 (R3 rejected), specific-gate removal (R4 rejected), and alias expansion (R5 development-selected). R2–R4 recovered too few targets for their false-exposure/call cost. Exact reports and negative results remain in `evaluation/phase_iii_c`.
 
-R5 cannot enter final-test acceptance because no new independent final corpus was frozen before its development. The next cycle must commission that corpus under the protocol above. The closed Phase III-B final sets may be cited as historical evidence but never used to select or tune R5.
+At the end of Phase III-C, R5 could not enter final-test acceptance because no new independent final corpus had been frozen before its development. The next cycle had to commission that corpus under the protocol above. The closed Phase III-B final sets may be cited as historical evidence but never used to select or tune R5.
+
+## Phase III-D disposition
+
+A new retrieval draft was reviewed with 35 confirmed and five revised decisions; proposal and review were preserved separately. The reviewed 40-query set was committed and hashed before executing the frozen R0 and R5 scorers. Both delivered 25/42 expected links and fully reached 16/32 positive queries; R5 added one false exposure and no true hit. It failed the frozen generalisation gate. Full evidence and category-level results are in [the Phase III-D final report](phase_iii_d_final_report.md).
+
+This protected set is now closed to tuning. Do not modify its labels, use its individual failures to tune R5, or rerun an altered R5 against it as a new blind test. A future retrieval candidate needs a new independently reviewed evaluation set, ideally including small and large projects. Phase III-D V3 was not run because its predeclared R5 prerequisite failed, so there is no new independent model-quality claim or retraining justification.

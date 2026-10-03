@@ -1,4 +1,4 @@
-# DriftLedger Model Card — Baseline V0 through Phase III-C Evidence
+# DriftLedger Model Card — Baseline V0 through Phase III-D Evidence
 
 ## Purpose and boundary
 
@@ -47,7 +47,15 @@ Phase III-C restored exact V0 retrieval while preserving P1 and PP1, added score
 
 R0 delivered 48/74 expected links to the model (64.9% micro recall), reached all targets for 34/54 positive queries, produced 32 false exposures, and selected 1.33 requirements/query. The selected development candidate R5 adds conservative verb-suffix normalization and a compact business-domain alias vocabulary. It delivered 59/74 links (79.7%), reached all targets for 42/54 queries, produced 37 false exposures, and selected 1.60 requirements/query. All six zero-target cases remained unselected. R5 remains below the existing 90% overall and 85%-per-size acceptance gates: small/medium/large micro recall is 68.0%/92.0%/79.2%.
 
-R5 is therefore a **development-selected retrieval candidate, not a promoted V2**. Phase III-B final sets are closed, no new independently reviewed final set exists, and the user prohibited local model execution. Downstream R5 + raw/P1/PP1 inference was not run. P1 and PP1 source stayed unchanged, and retrieval-specific normalization was explicitly isolated from PP1 grouping.
+R5 was therefore a **development-selected retrieval candidate, not a promoted V2**. At the end of Phase III-C, the Phase III-B final sets were closed and no new independently reviewed retrieval set existed. Downstream R5 + raw/P1/PP1 inference was not run. P1 and PP1 source stayed unchanged, and retrieval-specific normalization was explicitly isolated from PP1 grouping.
+
+## Phase III-D independent retrieval check
+
+After the Phase III-C development selection, 40 synthetic queries across four new medium-sized projects received user-supplied review decisions (35 confirmed, five revised) and were frozen before R0/R5 execution. The reviewer identifier was supplied as `independent-reviewer-gpt-5.6-sol`; this record does not independently prove human identity or reviewer independence. Original adapter-training overlap also remains unknown. The complete [Phase III-D report](phase_iii_d_final_report.md) retains the proposed and reviewed labels, hashes, case-level traces, and limitations.
+
+R0 and R5 each delivered 25/42 reviewed expected requirement links and fully reached 16/32 positive queries. R5 created one additional false exposure, selecting `bm-images` for `bm-q08` without a new correct hit. Both had zero selections on eight hard negatives. R5 **failed** the predeclared independent generalisation gate and remains unpromoted. Only medium-sized projects were measured; no small/large claim is supported.
+
+The predeclared V3 end-to-end prerequisite was therefore false. No Phase III-D model inference, oracle ablation, P1/PP1 independent effect, or model latency was measured. These missing measurements are not model failures. Retraining remains **NOT YET JUSTIFIED** because retrieval omitted 17/42 expected links, and new semantic model errors after correct delivery have not been isolated with reviewed end-to-end labels. No weights, prompt, postprocessor, or model configuration changed.
 
 Retraining is **NOT YET JUSTIFIED**. Deterministic retrieval remains below gate, the model improved materially from prompting alone, training provenance is missing, and there is no clean training corpus or independent future test.
 
@@ -70,6 +78,6 @@ Supported: local, review-assisted requirement-drift analysis under the validated
 - P1 improved the tested label boundary but still missed 5/24 final raw cases, including one modification, one contradiction, two ambiguous cases, and one unchanged case.
 - Retrieval remains the promotion blocker. Development-only improvements did not generalize under the final all-expected-reach gate.
 - Phase III-B final sets are closed to future tuning. They are prospective relative to this phase but synthetic, single-author, and not provably independent of the missing adapter-training corpus.
-- Phase III-C R5 aliases were selected on synthetic development data and may overfit its vocabulary; independent generalization is unknown.
+- Phase III-C R5 aliases were selected on synthetic development data; the Phase III-D protected retrieval check found no target-reach gain and one extra false exposure, so independent generalisation was not supported.
 - R5 still misses 15/74 expected links: eight below threshold, four at the specific-match gate, and three under top-k competition.
 - Requirement status exists in snapshots, but inactive/rejected filtering has no defined baseline contract; immutable historical baseline semantics currently include every snapshotted non-empty requirement.
