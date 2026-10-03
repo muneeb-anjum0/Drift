@@ -1,0 +1,448 @@
+{
+  "schema_version": 1,
+  "reviewer": "independent-reviewer-gpt-5.6-sol",
+  "reviewed_at": "2026-10-04",
+  "decision_counts": {
+    "CONFIRMED": 35,
+    "REVISED": 5
+  },
+  "included_query_count": 40,
+  "cases": [
+    {
+      "case_id": "mp-q01",
+      "proposed_requirement_ids": [
+        "mp-plan"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "mp-plan"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "mp-q02",
+      "proposed_requirement_ids": [
+        "mp-appeal"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "mp-appeal"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "mp-q03",
+      "proposed_requirement_ids": [
+        "mp-signoff"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "mp-signoff"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "mp-q04",
+      "proposed_requirement_ids": [
+        "mp-register"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "mp-register"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "mp-q05",
+      "proposed_requirement_ids": [
+        "mp-renew"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "mp-renew"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "mp-q06",
+      "proposed_requirement_ids": [
+        "mp-visit",
+        "mp-notice"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "mp-visit"
+      ],
+      "decision": "REVISED",
+      "note": "Booking confirmation is not covered by the baseline's application-status-change notification."
+    },
+    {
+      "case_id": "mp-q07",
+      "proposed_requirement_ids": [
+        "mp-visit",
+        "mp-evidence"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "mp-evidence"
+      ],
+      "decision": "REVISED",
+      "note": "The booked inspection is context; the requested change concerns uploading inspection evidence."
+    },
+    {
+      "case_id": "mp-q08",
+      "proposed_requirement_ids": [
+        "mp-plan",
+        "mp-fee",
+        "mp-signoff"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "mp-plan",
+        "mp-fee",
+        "mp-signoff"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "mp-q09",
+      "proposed_requirement_ids": [],
+      "reviewer_expected_requirement_ids": [],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "mp-q10",
+      "proposed_requirement_ids": [],
+      "reviewer_expected_requirement_ids": [],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "cc-q01",
+      "proposed_requirement_ids": [
+        "cc-alarm"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "cc-alarm"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "cc-q02",
+      "proposed_requirement_ids": [
+        "cc-hold"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "cc-hold"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "cc-q03",
+      "proposed_requirement_ids": [
+        "cc-sheet"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "cc-sheet"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "cc-q04",
+      "proposed_requirement_ids": [
+        "cc-route"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "cc-route"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "cc-q05",
+      "proposed_requirement_ids": [
+        "cc-lot"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "cc-lot"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "cc-q06",
+      "proposed_requirement_ids": [
+        "cc-probe",
+        "cc-alarm"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "cc-probe",
+        "cc-alarm"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "cc-q07",
+      "proposed_requirement_ids": [
+        "cc-sign",
+        "cc-photo"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "cc-sign",
+        "cc-photo"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "cc-q08",
+      "proposed_requirement_ids": [
+        "cc-login",
+        "cc-route",
+        "cc-sign"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "cc-login",
+        "cc-route",
+        "cc-sign"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "cc-q09",
+      "proposed_requirement_ids": [],
+      "reviewer_expected_requirement_ids": [],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "cc-q10",
+      "proposed_requirement_ids": [],
+      "reviewer_expected_requirement_ids": [],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "bm-q01",
+      "proposed_requirement_ids": [
+        "bm-request"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "bm-request"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "bm-q02",
+      "proposed_requirement_ids": [
+        "bm-urgent"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "bm-urgent"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "bm-q03",
+      "proposed_requirement_ids": [
+        "bm-limit"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "bm-limit"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "bm-q04",
+      "proposed_requirement_ids": [
+        "bm-images"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "bm-images"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "bm-q05",
+      "proposed_requirement_ids": [
+        "bm-summary"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "bm-summary"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "bm-q06",
+      "proposed_requirement_ids": [
+        "bm-slot",
+        "bm-text"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "bm-slot",
+        "bm-text"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "bm-q07",
+      "proposed_requirement_ids": [
+        "bm-assign",
+        "bm-spares"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "bm-assign",
+        "bm-spares"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "bm-q08",
+      "proposed_requirement_ids": [
+        "bm-request",
+        "bm-charge"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "bm-request",
+        "bm-charge"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "bm-q09",
+      "proposed_requirement_ids": [],
+      "reviewer_expected_requirement_ids": [],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "bm-q10",
+      "proposed_requirement_ids": [],
+      "reviewer_expected_requirement_ids": [],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "eo-q01",
+      "proposed_requirement_ids": [
+        "eo-move"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "eo-move"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "eo-q02",
+      "proposed_requirement_ids": [
+        "eo-money"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "eo-money"
+      ],
+      "decision": "REVISED",
+      "note": "Exactly 48 hours changes the baseline boundary of more than 48 hours; the target ID remains eo-money."
+    },
+    {
+      "case_id": "eo-q03",
+      "proposed_requirement_ids": [
+        "eo-scan"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "eo-scan"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "eo-q04",
+      "proposed_requirement_ids": [
+        "eo-access"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "eo-access"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "eo-q05",
+      "proposed_requirement_ids": [
+        "eo-seat"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "eo-seat"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "eo-q06",
+      "proposed_requirement_ids": [
+        "eo-sale",
+        "eo-confirm"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "eo-sale",
+        "eo-confirm"
+      ],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "eo-q07",
+      "proposed_requirement_ids": [
+        "eo-staff",
+        "eo-sales"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "eo-sales"
+      ],
+      "decision": "REVISED",
+      "note": "Finance-team access is context; the requested capability is access to the daily sales export."
+    },
+    {
+      "case_id": "eo-q08",
+      "proposed_requirement_ids": [
+        "eo-queue",
+        "eo-seat"
+      ],
+      "reviewer_expected_requirement_ids": [
+        "eo-queue"
+      ],
+      "decision": "REVISED",
+      "note": "The numbered seat is context for an opened place; the requested waitlist and notification behavior targets eo-queue."
+    },
+    {
+      "case_id": "eo-q09",
+      "proposed_requirement_ids": [],
+      "reviewer_expected_requirement_ids": [],
+      "decision": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "eo-q10",
+      "proposed_requirement_ids": [],
+      "reviewer_expected_requirement_ids": [],
+      "decision": "CONFIRMED",
+      "note": ""
+    }
+  ],
+  "warning": "The tool validates the review record structure but cannot verify reviewer independence or original adapter-training overlap.",
+  "draft_sha256": "f1dccb3c5706671e4304eb46b38de19d0d2f9ae05600a05fb72adffba9f0715d",
+  "review_sha256": "f2f7a7615d0d1557f9af9070a52dd410e7c34e1ae6a32119bdefa50310b04676",
+  "dataset_sha256": "ee21e6d6bd2c36324c80e7020bd87d7c2094068d762d943ab7afe581e065e51b"
+}
