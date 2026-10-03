@@ -16,6 +16,8 @@ For each query, a reviewer should provide:
 
 Use `decision` values `CONFIRMED`, `REVISED`, `AMBIGUOUS`, or `EXCLUDE`. A separate reviewer name or stable pseudonym and review date should accompany the decisions. An `AMBIGUOUS` case cannot be used as strong correctness evidence until adjudicated. A second reviewer is preferred for contested cases.
 
+Submit one JSON object containing `reviewer`, ISO-8601 `reviewed_at`, and a `cases` array with one such decision for every case ID. The repository tool `tools/verification/freeze_phase3d_retrieval.py` validates IDs and target membership, excludes ambiguous/excluded cases from scored evaluation, preserves the original proposal beside the reviewed decision, and writes a versioned dataset only after that review record is supplied. It refuses to overwrite an existing freeze.
+
 ## Pre-prediction audit
 
 The draft follows the frozen target-count plan: eight zero-target, twenty one-target, ten two-target, and two three-target queries. A mechanical comparison found no exact or high-similarity query or requirement text overlap with the repository's raw/retrieval development, oracle, or closed-final JSON datasets; no new query text appears verbatim in the two historical benchmark source files. This does not establish semantic or original-training independence. The original LoRA training examples are unavailable.
