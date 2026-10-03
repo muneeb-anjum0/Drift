@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "id": "drift-phase-iii-d-predeclared-gates@1.0.0",
+  "frozen_before_case_predictions": true,
+  "retrieval_generalisation": {
+    "primary": "R5 must improve expected-target model-input hits and all-target query reach relative to R0 on the same independently reviewed eligible cases.",
+    "precision_cost": "The increase in false exposed requirements must not exceed the increase in correctly exposed expected requirements; average selected candidates per query must remain no more than 0.3 above R0.",
+    "safety": "R5 must not select requirements on more zero-target hard-negative queries than R0, and no domain may lose more than one expected-target hit.",
+    "uncertainty": "Report paired case transitions, denominators, and bootstrap intervals. If reviewer coverage or sample size prevents a defensible claim, classify INCONCLUSIVE.",
+    "classification": "GENERALISATION SUPPORTED only if all preceding conditions hold. GENERALISATION NOT SUPPORTED if a reviewed, eligible comparison violates the primary or safety conditions. Otherwise INCONCLUSIVE.",
+    "promotion_gate_separate": "Existing retrieval promotion gate remains >=0.90 overall model-input recall and >=0.85 at each measured project size; this phase does not silently relax it."
+  },
+  "v3_acceptance": {
+    "prerequisite": "R5 GENERALISATION SUPPORTED and independent reviewed end-to-end data frozen before V3 predictions.",
+    "retrieval": "Existing overall/per-size gate must pass and no material hard-negative or false-exposure regression.",
+    "raw_model": "Use existing model gate: development macro F1 >=0.80, contradiction and removed recall >=0.80, no class recall below 0.70, contract parsing 100%, and strict JSON >=0.95. Independent scores and intervals must be reported; do not redefine development gates post hoc.",
+    "system": "No statistically credible or material degradation in complete-pipeline accuracy and macro F1 versus the frozen comparison baseline; report all classes, false drift from extra candidates, and real versus oracle gap.",
+    "runtime": "CPU only; p95 sequential inference <=18 seconds under the established hardware and runtime, with zero quality-run runtime errors and explicit failure on model outage.",
+    "postprocessing": "PP1 must introduce zero semantic-label errors on the new reviewed cases.",
+    "classification": "V3 ACCEPT only if all applicable gates pass with reviewed evidence. V3 REJECT for a confirmed failure. V3 INCONCLUSIVE if required reviewed data, execution, or uncertainty evidence is missing. Acceptance is an experiment decision, not deployment authority."
+  },
+  "retraining": {
+    "justification_requires": ["acceptable retrieval delivery", "recurring semantic errors after correct retrieval", "reviewed label ontology", "clean and sufficient training data", "defensible train/dev/test separation", "understood contamination", "new independent measurement path"],
+    "classification": ["RETRAINING JUSTIFIED", "RETRAINING NOT YET JUSTIFIED", "RETRAINING INCONCLUSIVE"],
+    "training_authorized": false
+  }
+}
