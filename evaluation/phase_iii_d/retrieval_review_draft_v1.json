@@ -1,0 +1,124 @@
+{
+  "name": "drift-retrieval-independent-review-draft",
+  "version": "1.0.0-draft",
+  "role": "REVIEW_DRAFT_NOT_FINAL_TEST",
+  "label_status": "PROPOSED_PENDING_INDEPENDENT_HUMAN_REVIEW",
+  "author_provenance": ["MODEL_GENERATED", "SYNTHETIC"],
+  "blueprint": "blueprint_v1.json",
+  "threshold": 0.25,
+  "max_selected": 3,
+  "projects": [
+    {
+      "id": "municipal-permits",
+      "size": "medium",
+      "requirements": [
+        {"id":"mp-plan","title":"Application drawings","description":"Applicants shall submit site plans and building drawings with a permit application."},
+        {"id":"mp-fee","title":"Application charge","description":"Applicants shall pay the permit filing charge by debit or credit card."},
+        {"id":"mp-visit","title":"Site visit booking","description":"Applicants shall book a site inspection slot with a municipal inspector."},
+        {"id":"mp-notice","title":"Decision notifications","description":"Applicants shall receive an email when the permit application status changes."},
+        {"id":"mp-register","title":"Public permit register","description":"Visitors shall search issued permits by street address."},
+        {"id":"mp-appeal","title":"Refusal appeal","description":"Applicants may appeal a refused permit within 21 days of the decision."},
+        {"id":"mp-evidence","title":"Inspection evidence","description":"Inspectors shall attach photographs and notes to the inspection record."},
+        {"id":"mp-signoff","title":"Supervisor sign-off","description":"A supervisor must approve an application before its permit is issued."},
+        {"id":"mp-renew","title":"Permit renewal","description":"Holders shall request renewal before a permit expires."},
+        {"id":"mp-history","title":"Change history","description":"The system shall record who changed an application and when."}
+      ],
+      "queries": [
+        {"id":"mp-q01","message":"Can builders send blueprints from a phone when filing?","expected_requirement_ids":["mp-plan"],"categories":["low_overlap_positive","informal_or_implicit"],"provenance":"MODEL_GENERATED"},
+        {"id":"mp-q02","message":"Give rejected applicants a month to challenge the decision.","expected_requirement_ids":["mp-appeal"],"categories":["low_overlap_positive","partial_modification"],"provenance":"MODEL_GENERATED"},
+        {"id":"mp-q03","message":"A permit must never be released until a manager signs it.","expected_requirement_ids":["mp-signoff"],"categories":["paraphrase"],"provenance":"MODEL_GENERATED"},
+        {"id":"mp-q04","message":"Remove the address lookup for members of the public.","expected_requirement_ids":["mp-register"],"categories":["negation_or_removal"],"provenance":"MODEL_GENERATED"},
+        {"id":"mp-q05","message":"Could someone extend a permit after it has already run out? We are only exploring the idea.","expected_requirement_ids":["mp-renew"],"categories":["question_or_hypothetical","ambiguous_intent"],"provenance":"MODEL_GENERATED"},
+        {"id":"mp-q06","message":"When the site visit is reserved, send the applicant a confirmation email.","expected_requirement_ids":["mp-visit","mp-notice"],"categories":["multi_target","competing_requirements"],"provenance":"MODEL_GENERATED","review_note":"Reviewer must decide whether status-change email covers a booking confirmation."},
+        {"id":"mp-q07","message":"During the booked inspection, let the officer upload photos of the site.","expected_requirement_ids":["mp-visit","mp-evidence"],"categories":["multi_target","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"mp-q08","message":"The clerk should verify the plan upload and card payment before sending the file for supervisor sign-off.","expected_requirement_ids":["mp-plan","mp-fee","mp-signoff"],"categories":["multi_target","long_message"],"provenance":"MODEL_GENERATED"},
+        {"id":"mp-q09","message":"Add an interactive map of public toilets.","expected_requirement_ids":[],"categories":["hard_negative"],"provenance":"MODEL_GENERATED"},
+        {"id":"mp-q10","message":"Could the city website use the new council colour palette?","expected_requirement_ids":[],"categories":["hard_negative"],"provenance":"MODEL_GENERATED"}
+      ]
+    },
+    {
+      "id": "cold-chain-delivery",
+      "size": "medium",
+      "requirements": [
+        {"id":"cc-probe","title":"Container temperature log","description":"A sensor shall record each refrigerated container's temperature every five minutes."},
+        {"id":"cc-alarm","title":"Warm-container warning","description":"Dispatchers shall receive an alert when a container exceeds 8 C for ten minutes."},
+        {"id":"cc-route","title":"Driver route","description":"Drivers shall view their assigned delivery route on a map."},
+        {"id":"cc-sign","title":"Receiver signature","description":"The receiver shall sign to confirm delivery of the shipment."},
+        {"id":"cc-photo","title":"Drop-off photograph","description":"Drivers shall photograph each package at the drop-off location."},
+        {"id":"cc-lot","title":"Vaccine lot ledger","description":"The system shall track vaccine lot identifiers and their expiry dates."},
+        {"id":"cc-hold","title":"Temperature-excursion hold","description":"A shipment affected by a temperature excursion must be quarantined until quality staff release it."},
+        {"id":"cc-sheet","title":"Weekly temperature export","description":"Operations staff shall export weekly container temperature logs as CSV."},
+        {"id":"cc-login","title":"Driver sign-in","description":"Drivers shall log in with an employee identifier and PIN."},
+        {"id":"cc-service","title":"Refrigeration servicing","description":"Fleet staff shall record monthly service of truck refrigeration units."}
+      ],
+      "queries": [
+        {"id":"cc-q01","message":"Text the shift lead if a cooler stays warm for ten minutes.","expected_requirement_ids":["cc-alarm"],"categories":["low_overlap_positive","informal_or_implicit"],"provenance":"MODEL_GENERATED"},
+        {"id":"cc-q02","message":"Do not release boxes after a cooling failure until QA clears them.","expected_requirement_ids":["cc-hold"],"categories":["low_overlap_positive","negation_or_removal"],"provenance":"MODEL_GENERATED"},
+        {"id":"cc-q03","message":"Can ops download last week's readings in a spreadsheet?","expected_requirement_ids":["cc-sheet"],"categories":["question_or_hypothetical"],"provenance":"MODEL_GENERATED"},
+        {"id":"cc-q04","message":"Let the driver propose a detour on the assigned itinerary.","expected_requirement_ids":["cc-route"],"categories":["low_overlap_positive"],"provenance":"MODEL_GENERATED"},
+        {"id":"cc-q05","message":"Stop allocating medicine batches past their use-by date.","expected_requirement_ids":["cc-lot"],"categories":["low_overlap_positive"],"provenance":"MODEL_GENERATED"},
+        {"id":"cc-q06","message":"Keep the probe's readings and alert dispatch if it stays above eight degrees for ten minutes.","expected_requirement_ids":["cc-probe","cc-alarm"],"categories":["multi_target","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"cc-q07","message":"At the doorstep collect a receiver signature and a photograph of the package.","expected_requirement_ids":["cc-sign","cc-photo"],"categories":["multi_target","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"cc-q08","message":"Use the employee PIN before opening the assigned route, and require the recipient to sign at hand-off.","expected_requirement_ids":["cc-login","cc-route","cc-sign"],"categories":["multi_target","long_message"],"provenance":"MODEL_GENERATED"},
+        {"id":"cc-q09","message":"Introduce a fuel-card wallet for drivers.","expected_requirement_ids":[],"categories":["hard_negative"],"provenance":"MODEL_GENERATED"},
+        {"id":"cc-q10","message":"What music may couriers play during their shift?","expected_requirement_ids":[],"categories":["hard_negative"],"provenance":"MODEL_GENERATED"}
+      ]
+    },
+    {
+      "id": "building-maintenance",
+      "size": "medium",
+      "requirements": [
+        {"id":"bm-request","title":"Tenant repair requests","description":"Tenants shall submit maintenance work orders through the building portal."},
+        {"id":"bm-urgent","title":"Emergency triage","description":"Emergency work orders shall be classified within fifteen minutes."},
+        {"id":"bm-assign","title":"Technician assignment","description":"A property manager shall assign each work order to a technician."},
+        {"id":"bm-slot","title":"Repair appointments","description":"Tenants shall choose an available repair appointment slot."},
+        {"id":"bm-text","title":"Appointment texts","description":"Tenants shall receive SMS messages when a repair appointment changes."},
+        {"id":"bm-spares","title":"Spare-part inventory","description":"The system shall track available replacement parts for building repairs."},
+        {"id":"bm-images","title":"Before-and-after evidence","description":"Technicians shall upload photographs before and after a repair."},
+        {"id":"bm-limit","title":"Large repair approval","description":"A landlord must approve repairs costing more than 500 dollars before work begins."},
+        {"id":"bm-charge","title":"Damage billing","description":"The manager shall bill a tenant for damage the tenant caused."},
+        {"id":"bm-summary","title":"Monthly repair summary","description":"Managers shall download a monthly PDF of repair counts and completion times."}
+      ],
+      "queries": [
+        {"id":"bm-q01","message":"Residents need to report a leaking pipe through the portal.","expected_requirement_ids":["bm-request"],"categories":["low_overlap_positive","informal_or_implicit"],"provenance":"MODEL_GENERATED"},
+        {"id":"bm-q02","message":"Flag a burst water main as urgent within five minutes.","expected_requirement_ids":["bm-urgent"],"categories":["partial_modification"],"provenance":"MODEL_GENERATED"},
+        {"id":"bm-q03","message":"Make the owner sign off on expensive repairs over four hundred dollars.","expected_requirement_ids":["bm-limit"],"categories":["partial_modification"],"provenance":"MODEL_GENERATED"},
+        {"id":"bm-q04","message":"Only use photos taken after the repair; stop taking an initial picture.","expected_requirement_ids":["bm-images"],"categories":["negation_or_removal"],"provenance":"MODEL_GENERATED"},
+        {"id":"bm-q05","message":"Could we include average completion time in the monthly management document?","expected_requirement_ids":["bm-summary"],"categories":["question_or_hypothetical"],"provenance":"MODEL_GENERATED"},
+        {"id":"bm-q06","message":"When a tenant reschedules the repair slot, send an SMS update.","expected_requirement_ids":["bm-slot","bm-text"],"categories":["multi_target","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"bm-q07","message":"Assign the plumber and reserve the replacement valve from the stockroom.","expected_requirement_ids":["bm-assign","bm-spares"],"categories":["multi_target"],"provenance":"MODEL_GENERATED"},
+        {"id":"bm-q08","message":"Let a tenant file a damage report through the portal and charge them if the damage was their fault.","expected_requirement_ids":["bm-request","bm-charge"],"categories":["multi_target","long_message"],"provenance":"MODEL_GENERATED"},
+        {"id":"bm-q09","message":"Add a parcel locker reservation screen to the lobby portal.","expected_requirement_ids":[],"categories":["hard_negative"],"provenance":"MODEL_GENERATED"},
+        {"id":"bm-q10","message":"Publish the building's recycling calendar on the homepage.","expected_requirement_ids":[],"categories":["hard_negative"],"provenance":"MODEL_GENERATED"}
+      ]
+    },
+    {
+      "id": "event-operations",
+      "size": "medium",
+      "requirements": [
+        {"id":"eo-sale","title":"Card ticket sales","description":"Attendees shall purchase event tickets with a payment card."},
+        {"id":"eo-scan","title":"QR admission","description":"Door staff shall scan a ticket QR code to admit an attendee."},
+        {"id":"eo-money","title":"Cancellation refunds","description":"Attendees may receive a refund when cancelling more than 48 hours before the event."},
+        {"id":"eo-seat","title":"Seat selection","description":"Attendees shall choose an available numbered seat."},
+        {"id":"eo-access","title":"Accessible seating","description":"The venue shall reserve accessible seats for attendees who need them."},
+        {"id":"eo-confirm","title":"Ticket confirmation","description":"The system shall email a ticket receipt after purchase."},
+        {"id":"eo-queue","title":"Capacity waitlist","description":"When an event is full, visitors may join a waitlist for an open place."},
+        {"id":"eo-staff","title":"Staff permissions","description":"Organizers shall grant door, finance, or manager roles to staff."},
+        {"id":"eo-sales","title":"Daily sales sheet","description":"Finance staff shall export daily ticket-sales totals as CSV."},
+        {"id":"eo-move","title":"Ticket transfer","description":"An attendee shall transfer a valid ticket to another named person."}
+      ],
+      "queries": [
+        {"id":"eo-q01","message":"Let guests hand their admission pass to a friend by changing the named holder.","expected_requirement_ids":["eo-move"],"categories":["low_overlap_positive","informal_or_implicit"],"provenance":"MODEL_GENERATED"},
+        {"id":"eo-q02","message":"Issue the money back when a guest cancels two days ahead of the show.","expected_requirement_ids":["eo-money"],"categories":["partial_modification"],"provenance":"MODEL_GENERATED","review_note":"Boundary at exactly 48 hours needs explicit adjudication."},
+        {"id":"eo-q03","message":"Door volunteers should read the QR square to let people inside.","expected_requirement_ids":["eo-scan"],"categories":["paraphrase"],"provenance":"MODEL_GENERATED"},
+        {"id":"eo-q04","message":"Stop reserving step-free places for visitors with mobility needs.","expected_requirement_ids":["eo-access"],"categories":["negation_or_removal"],"provenance":"MODEL_GENERATED"},
+        {"id":"eo-q05","message":"Could we allow patrons to pick their numbered chair during booking?","expected_requirement_ids":["eo-seat"],"categories":["question_or_hypothetical"],"provenance":"MODEL_GENERATED"},
+        {"id":"eo-q06","message":"Once card payment succeeds, email the buyer their ticket receipt.","expected_requirement_ids":["eo-sale","eo-confirm"],"categories":["multi_target","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"eo-q07","message":"Give the finance team access to the daily sales spreadsheet.","expected_requirement_ids":["eo-staff","eo-sales"],"categories":["multi_target"],"provenance":"MODEL_GENERATED"},
+        {"id":"eo-q08","message":"When a show sells out, put a guest on the queue and email them if a numbered seat opens.","expected_requirement_ids":["eo-queue","eo-seat"],"categories":["multi_target","long_message"],"provenance":"MODEL_GENERATED"},
+        {"id":"eo-q09","message":"Add a live translation channel for the keynote.","expected_requirement_ids":[],"categories":["hard_negative"],"provenance":"MODEL_GENERATED"},
+        {"id":"eo-q10","message":"Can the venue display tomorrow's weather at the entrance?","expected_requirement_ids":[],"categories":["hard_negative"],"provenance":"MODEL_GENERATED"}
+      ]
+    }
+  ]
+}
