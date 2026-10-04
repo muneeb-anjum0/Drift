@@ -1,0 +1,91 @@
+{
+  "role": "DEVELOPMENT_CPU_PILOT_NOT_INDEPENDENT",
+  "dataset_sha256": "1f8f4acbb78e0d2f777295411afda2f0113443404df83ec3b79aa47c29a952cd",
+  "model_sha256": "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
+  "results": [
+    {
+      "case_id": "g-add-sms",
+      "size": 1,
+      "ids": [
+        "cl-email"
+      ],
+      "prompt_tokens": 303,
+      "elapsed_seconds": 18.1,
+      "generated_tokens": 18,
+      "stopped_eos": null,
+      "stopped_limit": null,
+      "raw": "{\"results\":[{\"id\":\"cl-email\",\"affected\":true,\"label\":\"added\"}]}",
+      "parsed": [
+        {
+          "id": "cl-email",
+          "affected": true,
+          "label": "added"
+        }
+      ],
+      "valid_contract": true
+    },
+    {
+      "case_id": "g-add-sms",
+      "size": 2,
+      "ids": [
+        "cl-email",
+        "cl-book"
+      ],
+      "prompt_tokens": 319,
+      "elapsed_seconds": 9.834,
+      "generated_tokens": 31,
+      "stopped_eos": null,
+      "stopped_limit": null,
+      "raw": "{\"results\":[{\"id\":\"cl-email\",\"affected\":false,\"label\":null},{\"id\":\"cl-book\",\"affected\":false,\"label\":null}]}",
+      "parsed": [
+        {
+          "id": "cl-email",
+          "affected": false,
+          "label": null
+        },
+        {
+          "id": "cl-book",
+          "affected": false,
+          "label": null
+        }
+      ],
+      "valid_contract": true
+    },
+    {
+      "case_id": "g-add-sms",
+      "size": 3,
+      "ids": [
+        "cl-email",
+        "cl-book",
+        "cl-pay"
+      ],
+      "prompt_tokens": 336,
+      "elapsed_seconds": 13.083,
+      "generated_tokens": 46,
+      "stopped_eos": null,
+      "stopped_limit": null,
+      "raw": "{\"results\":[{\"id\":\"cl-email\",\"affected\":true,\"label\":\"added\"},{\"id\":\"cl-book\",\"affected\":false,\"label\":\"unchanged\"},{\"id\":\"cl-pay\",\"affected\":false,\"label\":\"unchanged\"}]}",
+      "valid_contract": false,
+      "error": "unaffected item requires null class"
+    },
+    {
+      "case_id": "g-add-sms",
+      "size": 5,
+      "ids": [
+        "cl-email",
+        "cl-book",
+        "cl-pay",
+        "cl-prescription",
+        "cl-report"
+      ],
+      "prompt_tokens": 372,
+      "elapsed_seconds": 6.955,
+      "generated_tokens": 18,
+      "stopped_eos": null,
+      "stopped_limit": null,
+      "raw": "{\"results\":[{\"id\":\"cl-email\",\"affected\":true,\"label\":\"added\"}]}",
+      "valid_contract": false,
+      "error": "missing or extra batch results"
+    }
+  ]
+}

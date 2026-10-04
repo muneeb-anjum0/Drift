@@ -1,0 +1,110 @@
+{
+  "name": "drift-phase-iii-g-batch-development",
+  "version": "1.0.0",
+  "role": "DEVELOPMENT_NOT_FINAL",
+  "provenance": ["DERIVED", "SYNTHETIC"],
+  "label_status": "AUTHOR_LABELS_NOT_INDEPENDENTLY_REVIEWED",
+  "source": "evaluation/datasets/drift_raw_dev_v1.json and open Phase III-F farm development requirements",
+  "notes": "Single-target positive labels inherit open raw-development labels. Irrelevant candidate affectedness and multi-target labels are author-derived, not independent truth. No closed III-D/E examples were used.",
+  "cases": [
+    {
+      "id": "g-add-sms", "project_id": "synthetic-clinic", "project_size": 5,
+      "message": "Please also send appointment confirmations by SMS.", "source_case": "add_health_01",
+      "requirements": [
+        {"id":"cl-email","text":"Patients shall receive appointment confirmations by email."},
+        {"id":"cl-book","text":"Patients shall book available appointment slots online."},
+        {"id":"cl-pay","text":"Patients shall pay outstanding invoices online by card."},
+        {"id":"cl-prescription","text":"Clinicians shall upload prescription documents for patients."},
+        {"id":"cl-report","text":"Managers shall export a monthly clinic activity report."}
+      ],
+      "expected_affected_ids": ["cl-email"], "expected_labels": {"cl-email":"added"},
+      "categories": ["single_target","added","same_domain_distractors"], "ambiguous": false,
+      "notes": "Positive requirement/message/label inherited from open raw development; distractor affectedness author-derived."
+    },
+    {
+      "id": "g-mod-limit", "project_id": "synthetic-bank", "project_size": 5,
+      "message": "Supervisor approval should begin at $5,000 instead.", "source_case": "mod_bank_01",
+      "requirements": [
+        {"id":"bk-approval","text":"Transfers above $10,000 shall require supervisor approval."},
+        {"id":"bk-statement","text":"Customers shall download monthly account statements as PDF files."},
+        {"id":"bk-card","text":"The system must never reveal a full card number after initial entry."},
+        {"id":"bk-login","text":"Customers shall authenticate before viewing their account."},
+        {"id":"bk-notify","text":"Customers shall receive a security alert for a new login."}
+      ],
+      "expected_affected_ids": ["bk-approval"], "expected_labels": {"bk-approval":"modified"},
+      "categories": ["single_target","modified","numeric_constraint"], "ambiguous": false,
+      "notes": "Positive requirement/message/label inherited from open raw development."
+    },
+    {
+      "id": "g-remove-guest", "project_id": "synthetic-commerce", "project_size": 5,
+      "message": "Disable guest checkout; only registered users may order.", "source_case": "rem_shop_01",
+      "requirements": [
+        {"id":"co-guest","text":"Guests and registered users shall place orders."},
+        {"id":"co-cart","text":"Shoppers shall add products to a shopping cart."},
+        {"id":"co-pay","text":"Shoppers shall pay by credit or debit card."},
+        {"id":"co-search","text":"Visitors shall search products by title and category."},
+        {"id":"co-review","text":"Registered users shall write product reviews."}
+      ],
+      "expected_affected_ids": ["co-guest"], "expected_labels": {"co-guest":"removed"},
+      "categories": ["single_target","removed","negation"], "ambiguous": false,
+      "notes": "Positive requirement/message/label inherited from open raw development."
+    },
+    {
+      "id": "g-con-approval", "project_id": "synthetic-pharmacy", "project_size": 5,
+      "message": "Renew prescriptions automatically without any clinician approval.", "source_case": "con_health_01",
+      "requirements": [
+        {"id":"ph-approval","text":"A prescription may be renewed only after clinician approval."},
+        {"id":"ph-document","text":"Clinicians shall upload prescription documents for patients."},
+        {"id":"ph-history","text":"Patients shall view their prescription history."},
+        {"id":"ph-reminder","text":"Patients shall receive a refill reminder before expiry."},
+        {"id":"ph-login","text":"Patients shall sign in to view health records."}
+      ],
+      "expected_affected_ids": ["ph-approval"], "expected_labels": {"ph-approval":"contradiction"},
+      "categories": ["single_target","contradiction","explicit_invariant"], "ambiguous": false,
+      "notes": "Positive requirement/message/label inherited from open raw development."
+    },
+    {
+      "id": "g-two-removals", "project_id": "synthetic-commerce", "project_size": 5,
+      "message": "Disable guest checkout and remove payment by card; keep account checkout and bank transfer.",
+      "requirements": [
+        {"id":"co-guest","text":"Guests and registered users shall place orders."},
+        {"id":"co-pay","text":"Shoppers shall pay by credit or debit card or bank transfer."},
+        {"id":"co-cart","text":"Shoppers shall add products to a shopping cart."},
+        {"id":"co-search","text":"Visitors shall search products by title and category."},
+        {"id":"co-review","text":"Registered users shall write product reviews."}
+      ],
+      "expected_affected_ids": ["co-guest","co-pay"], "expected_labels": {"co-guest":"removed","co-pay":"removed"},
+      "categories": ["two_target","multi_intent","removed"], "ambiguous": false,
+      "notes": "Author-created development semantics; not independently reviewed."
+    },
+    {
+      "id": "g-four-removals", "project_id": "synthetic-farm", "project_size": 5,
+      "message": "Stop recording planted crops, field boundaries, watering schedules, and irrigation water volume.",
+      "requirements": [
+        {"id":"fm-crop","text":"Growers shall record the crop planted in each field."},
+        {"id":"fm-field","text":"Growers shall register fields with boundary coordinates."},
+        {"id":"fm-water","text":"Growers shall schedule watering for each field."},
+        {"id":"fm-meter","text":"Sensors shall record irrigation water volume by field."},
+        {"id":"fm-pump","text":"Operators shall start and stop irrigation pumps remotely."}
+      ],
+      "expected_affected_ids": ["fm-crop","fm-field","fm-water","fm-meter"],
+      "expected_labels": {"fm-crop":"removed","fm-field":"removed","fm-water":"removed","fm-meter":"removed"},
+      "categories": ["four_target","multi_intent","removed","negation"], "ambiguous": false,
+      "notes": "Author-created development semantics; not independently reviewed."
+    },
+    {
+      "id": "g-zero-cafe", "project_id": "synthetic-farm", "project_size": 5,
+      "message": "Add a cafeteria menu for farm staff.",
+      "requirements": [
+        {"id":"fm-crop","text":"Growers shall record the crop planted in each field."},
+        {"id":"fm-field","text":"Growers shall register fields with boundary coordinates."},
+        {"id":"fm-water","text":"Growers shall schedule watering for each field."},
+        {"id":"fm-meter","text":"Sensors shall record irrigation water volume by field."},
+        {"id":"fm-pump","text":"Operators shall start and stop irrigation pumps remotely."}
+      ],
+      "expected_affected_ids": [], "expected_labels": {},
+      "categories": ["zero_target","hard_negative"], "ambiguous": false,
+      "notes": "Adapted from open Phase III-F synthetic development query, not a held-out case."
+    }
+  ]
+}

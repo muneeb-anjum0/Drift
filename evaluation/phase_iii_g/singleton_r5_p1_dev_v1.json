@@ -1,0 +1,224 @@
+{
+  "role": "DEVELOPMENT_P1_COMPONENT_NOT_FULL_PRODUCT",
+  "dataset_sha256": "1f8f4acbb78e0d2f777295411afda2f0113443404df83ec3b79aa47c29a952cd",
+  "model_sha256": "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
+  "results": [
+    {
+      "case_id": "g-add-sms",
+      "requirement_id": "cl-email",
+      "expected_affected": true,
+      "expected_label": "added",
+      "prompt_tokens": 282,
+      "generated_tokens": 48,
+      "elapsed_seconds": 21.761,
+      "raw": "{\"label\": \"added\", \"confidence\": 0.95, \"reasoning\": \"SMS is a new channel for appointment confirmations beyond the existing email requirement.\", \"changed_elements\": [\"SMS as a new delivery channel\"]}",
+      "parsed": {
+        "label": "added",
+        "confidence": 0.95,
+        "reasoning": "SMS is a new channel for appointment confirmations beyond the existing email requirement.",
+        "changed_elements": [
+          "SMS as a new delivery channel"
+        ]
+      },
+      "valid_contract": true
+    },
+    {
+      "case_id": "g-mod-limit",
+      "requirement_id": "bk-approval",
+      "expected_affected": true,
+      "expected_label": "modified",
+      "prompt_tokens": 293,
+      "generated_tokens": 67,
+      "elapsed_seconds": 14.216,
+      "raw": "{\"label\": \"modified\", \"confidence\": 0.94, \"reasoning\": \"The threshold for supervisor approval is being lowered from $10,000 to $5,000.\", \"changed_elements\": [\"$10,000 threshold\", \"$5,000 threshold\"]}",
+      "parsed": {
+        "label": "modified",
+        "confidence": 0.94,
+        "reasoning": "The threshold for supervisor approval is being lowered from $10,000 to $5,000.",
+        "changed_elements": [
+          "$10,000 threshold",
+          "$5,000 threshold"
+        ]
+      },
+      "valid_contract": true
+    },
+    {
+      "case_id": "g-remove-guest",
+      "requirement_id": "co-guest",
+      "expected_affected": true,
+      "expected_label": "removed",
+      "prompt_tokens": 283,
+      "generated_tokens": 43,
+      "elapsed_seconds": 9.614,
+      "raw": "{\"label\": \"modified\", \"confidence\": 0.9, \"reasoning\": \"The baseline remains, but the new message changes the access control logic.\", \"changed_elements\": [\"guest checkout disabled\"]}",
+      "parsed": {
+        "label": "modified",
+        "confidence": 0.9,
+        "reasoning": "The baseline remains, but the new message changes the access control logic.",
+        "changed_elements": [
+          "guest checkout disabled"
+        ]
+      },
+      "valid_contract": true
+    },
+    {
+      "case_id": "g-remove-guest",
+      "requirement_id": "co-review",
+      "expected_affected": false,
+      "expected_label": null,
+      "prompt_tokens": 281,
+      "generated_tokens": 51,
+      "elapsed_seconds": 12.194,
+      "raw": "{\"label\": \"modified\", \"confidence\": 0.9, \"reasoning\": \"The baseline remains, but the new message changes access control from 'shall' to 'only', restricting guest checkout.\", \"changed_elements\": [\"access_control\"]}",
+      "parsed": {
+        "label": "modified",
+        "confidence": 0.9,
+        "reasoning": "The baseline remains, but the new message changes access control from 'shall' to 'only', restricting guest checkout.",
+        "changed_elements": [
+          "access_control"
+        ]
+      },
+      "valid_contract": true
+    },
+    {
+      "case_id": "g-con-approval",
+      "requirement_id": "ph-approval",
+      "expected_affected": true,
+      "expected_label": "contradiction",
+      "prompt_tokens": 285,
+      "generated_tokens": 46,
+      "elapsed_seconds": 10.942,
+      "raw": "{\"label\": \"contradiction\", \"confidence\": 0.95, \"reasoning\": \"The new message conflicts with the baseline requirement's approval-only constraint.\", \"changed_elements\": [\"approval-only renewal policy\"]}",
+      "parsed": {
+        "label": "contradiction",
+        "confidence": 0.95,
+        "reasoning": "The new message conflicts with the baseline requirement's approval-only constraint.",
+        "changed_elements": [
+          "approval-only renewal policy"
+        ]
+      },
+      "valid_contract": true
+    },
+    {
+      "case_id": "g-con-approval",
+      "requirement_id": "ph-document",
+      "expected_affected": false,
+      "expected_label": null,
+      "prompt_tokens": 283,
+      "generated_tokens": 56,
+      "elapsed_seconds": 12.545,
+      "raw": "{\"label\": \"contradiction\", \"confidence\": 0.95, \"reasoning\": \"Automatically renewing prescriptions without clinician approval conflicts with the requirement that clinicians must upload prescription documents.\", \"changed_elements\": [\"approval requirement\", \"automated process\"]}",
+      "parsed": {
+        "label": "contradiction",
+        "confidence": 0.95,
+        "reasoning": "Automatically renewing prescriptions without clinician approval conflicts with the requirement that clinicians must upload prescription documents.",
+        "changed_elements": [
+          "approval requirement",
+          "automated process"
+        ]
+      },
+      "valid_contract": true
+    },
+    {
+      "case_id": "g-two-removals",
+      "requirement_id": "co-guest",
+      "expected_affected": true,
+      "expected_label": "removed",
+      "prompt_tokens": 289,
+      "generated_tokens": 34,
+      "elapsed_seconds": 9.433,
+      "raw": "{\"label\": \"removed\", \"confidence\": 0.9, \"reasoning\": \"Removing guest checkout capability.\", \"changed_elements\": [\"guest checkout capability\"]}",
+      "parsed": {
+        "label": "removed",
+        "confidence": 0.9,
+        "reasoning": "Removing guest checkout capability.",
+        "changed_elements": [
+          "guest checkout capability"
+        ]
+      },
+      "valid_contract": true
+    },
+    {
+      "case_id": "g-two-removals",
+      "requirement_id": "co-pay",
+      "expected_affected": true,
+      "expected_label": "removed",
+      "prompt_tokens": 293,
+      "generated_tokens": 39,
+      "elapsed_seconds": 9.953,
+      "raw": "{\"label\": \"removed\", \"confidence\": 0.95, \"reasoning\": \"Removing credit/debit card payment capability.\", \"changed_elements\": [\"credit or debit card\"]}",
+      "parsed": {
+        "label": "removed",
+        "confidence": 0.95,
+        "reasoning": "Removing credit/debit card payment capability.",
+        "changed_elements": [
+          "credit or debit card"
+        ]
+      },
+      "valid_contract": true
+    },
+    {
+      "case_id": "g-four-removals",
+      "requirement_id": "fm-crop",
+      "expected_affected": true,
+      "expected_label": "removed",
+      "prompt_tokens": 291,
+      "generated_tokens": 41,
+      "elapsed_seconds": 11.13,
+      "raw": "{\"label\": \"removed\", \"confidence\": 0.98, \"reasoning\": \"The baseline requirement for recording planted crops is explicitly removed.\", \"changed_elements\": [\"Crop planting records\"]}",
+      "parsed": {
+        "label": "removed",
+        "confidence": 0.98,
+        "reasoning": "The baseline requirement for recording planted crops is explicitly removed.",
+        "changed_elements": [
+          "Crop planting records"
+        ]
+      },
+      "valid_contract": true
+    },
+    {
+      "case_id": "g-four-removals",
+      "requirement_id": "fm-meter",
+      "expected_affected": true,
+      "expected_label": "removed",
+      "prompt_tokens": 290,
+      "generated_tokens": 76,
+      "elapsed_seconds": 18.822,
+      "raw": "{\"label\": \"removed\", \"confidence\": 0.95, \"reasoning\": \"The baseline requirement explicitly defines the scope of data to be recorded (irrigation water volume by field). The new message removes all data collection capabilities.\", \"changed_elements\": [\"planted crops\", \"field boundaries\", \"watering schedules\", \"irrigation water volume\"]}",
+      "parsed": {
+        "label": "removed",
+        "confidence": 0.95,
+        "reasoning": "The baseline requirement explicitly defines the scope of data to be recorded (irrigation water volume by field). The new message removes all data collection capabilities.",
+        "changed_elements": [
+          "planted crops",
+          "field boundaries",
+          "watering schedules",
+          "irrigation water volume"
+        ]
+      },
+      "valid_contract": true
+    },
+    {
+      "case_id": "g-four-removals",
+      "requirement_id": "fm-water",
+      "expected_affected": true,
+      "expected_label": "removed",
+      "prompt_tokens": 289,
+      "generated_tokens": 68,
+      "elapsed_seconds": 18.45,
+      "raw": "{\"label\": \"removed\", \"confidence\": 0.95, \"reasoning\": \"The baseline requirement defines a process (watering schedule), while the new message explicitly stops recording all related data.\", \"changed_elements\": [\"planted crops\", \"field boundaries\", \"watering schedules\", \"irrigation water volume\"]}",
+      "parsed": {
+        "label": "removed",
+        "confidence": 0.95,
+        "reasoning": "The baseline requirement defines a process (watering schedule), while the new message explicitly stops recording all related data.",
+        "changed_elements": [
+          "planted crops",
+          "field boundaries",
+          "watering schedules",
+          "irrigation water volume"
+        ]
+      },
+      "valid_contract": true
+    }
+  ]
+}

@@ -1,0 +1,290 @@
+{
+  "name": "phase-iii-g-frozen-development-adapter",
+  "version": "1.0.0",
+  "threshold": 0.25,
+  "max_selected": 3,
+  "projects": [
+    {
+      "id": "g-add-sms",
+      "size": "small",
+      "requirements": [
+        {
+          "id": "cl-email",
+          "title": "",
+          "description": "Patients shall receive appointment confirmations by email."
+        },
+        {
+          "id": "cl-book",
+          "title": "",
+          "description": "Patients shall book available appointment slots online."
+        },
+        {
+          "id": "cl-pay",
+          "title": "",
+          "description": "Patients shall pay outstanding invoices online by card."
+        },
+        {
+          "id": "cl-prescription",
+          "title": "",
+          "description": "Clinicians shall upload prescription documents for patients."
+        },
+        {
+          "id": "cl-report",
+          "title": "",
+          "description": "Managers shall export a monthly clinic activity report."
+        }
+      ],
+      "queries": [
+        {
+          "id": "g-add-sms",
+          "message": "Please also send appointment confirmations by SMS.",
+          "expected_requirement_ids": [
+            "cl-email"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "g-mod-limit",
+      "size": "small",
+      "requirements": [
+        {
+          "id": "bk-approval",
+          "title": "",
+          "description": "Transfers above $10,000 shall require supervisor approval."
+        },
+        {
+          "id": "bk-statement",
+          "title": "",
+          "description": "Customers shall download monthly account statements as PDF files."
+        },
+        {
+          "id": "bk-card",
+          "title": "",
+          "description": "The system must never reveal a full card number after initial entry."
+        },
+        {
+          "id": "bk-login",
+          "title": "",
+          "description": "Customers shall authenticate before viewing their account."
+        },
+        {
+          "id": "bk-notify",
+          "title": "",
+          "description": "Customers shall receive a security alert for a new login."
+        }
+      ],
+      "queries": [
+        {
+          "id": "g-mod-limit",
+          "message": "Supervisor approval should begin at $5,000 instead.",
+          "expected_requirement_ids": [
+            "bk-approval"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "g-remove-guest",
+      "size": "small",
+      "requirements": [
+        {
+          "id": "co-guest",
+          "title": "",
+          "description": "Guests and registered users shall place orders."
+        },
+        {
+          "id": "co-cart",
+          "title": "",
+          "description": "Shoppers shall add products to a shopping cart."
+        },
+        {
+          "id": "co-pay",
+          "title": "",
+          "description": "Shoppers shall pay by credit or debit card."
+        },
+        {
+          "id": "co-search",
+          "title": "",
+          "description": "Visitors shall search products by title and category."
+        },
+        {
+          "id": "co-review",
+          "title": "",
+          "description": "Registered users shall write product reviews."
+        }
+      ],
+      "queries": [
+        {
+          "id": "g-remove-guest",
+          "message": "Disable guest checkout; only registered users may order.",
+          "expected_requirement_ids": [
+            "co-guest"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "g-con-approval",
+      "size": "small",
+      "requirements": [
+        {
+          "id": "ph-approval",
+          "title": "",
+          "description": "A prescription may be renewed only after clinician approval."
+        },
+        {
+          "id": "ph-document",
+          "title": "",
+          "description": "Clinicians shall upload prescription documents for patients."
+        },
+        {
+          "id": "ph-history",
+          "title": "",
+          "description": "Patients shall view their prescription history."
+        },
+        {
+          "id": "ph-reminder",
+          "title": "",
+          "description": "Patients shall receive a refill reminder before expiry."
+        },
+        {
+          "id": "ph-login",
+          "title": "",
+          "description": "Patients shall sign in to view health records."
+        }
+      ],
+      "queries": [
+        {
+          "id": "g-con-approval",
+          "message": "Renew prescriptions automatically without any clinician approval.",
+          "expected_requirement_ids": [
+            "ph-approval"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "g-two-removals",
+      "size": "small",
+      "requirements": [
+        {
+          "id": "co-guest",
+          "title": "",
+          "description": "Guests and registered users shall place orders."
+        },
+        {
+          "id": "co-pay",
+          "title": "",
+          "description": "Shoppers shall pay by credit or debit card or bank transfer."
+        },
+        {
+          "id": "co-cart",
+          "title": "",
+          "description": "Shoppers shall add products to a shopping cart."
+        },
+        {
+          "id": "co-search",
+          "title": "",
+          "description": "Visitors shall search products by title and category."
+        },
+        {
+          "id": "co-review",
+          "title": "",
+          "description": "Registered users shall write product reviews."
+        }
+      ],
+      "queries": [
+        {
+          "id": "g-two-removals",
+          "message": "Disable guest checkout and remove payment by card; keep account checkout and bank transfer.",
+          "expected_requirement_ids": [
+            "co-guest",
+            "co-pay"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "g-four-removals",
+      "size": "small",
+      "requirements": [
+        {
+          "id": "fm-crop",
+          "title": "",
+          "description": "Growers shall record the crop planted in each field."
+        },
+        {
+          "id": "fm-field",
+          "title": "",
+          "description": "Growers shall register fields with boundary coordinates."
+        },
+        {
+          "id": "fm-water",
+          "title": "",
+          "description": "Growers shall schedule watering for each field."
+        },
+        {
+          "id": "fm-meter",
+          "title": "",
+          "description": "Sensors shall record irrigation water volume by field."
+        },
+        {
+          "id": "fm-pump",
+          "title": "",
+          "description": "Operators shall start and stop irrigation pumps remotely."
+        }
+      ],
+      "queries": [
+        {
+          "id": "g-four-removals",
+          "message": "Stop recording planted crops, field boundaries, watering schedules, and irrigation water volume.",
+          "expected_requirement_ids": [
+            "fm-crop",
+            "fm-field",
+            "fm-water",
+            "fm-meter"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "g-zero-cafe",
+      "size": "small",
+      "requirements": [
+        {
+          "id": "fm-crop",
+          "title": "",
+          "description": "Growers shall record the crop planted in each field."
+        },
+        {
+          "id": "fm-field",
+          "title": "",
+          "description": "Growers shall register fields with boundary coordinates."
+        },
+        {
+          "id": "fm-water",
+          "title": "",
+          "description": "Growers shall schedule watering for each field."
+        },
+        {
+          "id": "fm-meter",
+          "title": "",
+          "description": "Sensors shall record irrigation water volume by field."
+        },
+        {
+          "id": "fm-pump",
+          "title": "",
+          "description": "Operators shall start and stop irrigation pumps remotely."
+        }
+      ],
+      "queries": [
+        {
+          "id": "g-zero-cafe",
+          "message": "Add a cafeteria menu for farm staff.",
+          "expected_requirement_ids": []
+        }
+      ]
+    }
+  ]
+}

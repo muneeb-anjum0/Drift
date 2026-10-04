@@ -1,0 +1,692 @@
+{
+  "role": "DEVELOPMENT_MODEL_FREE_PIPELINE_FEASIBILITY",
+  "dataset_sha256": "1f8f4acbb78e0d2f777295411afda2f0113443404df83ec3b79aa47c29a952cd",
+  "runtime_context_tokens": 768,
+  "output_reserve_tokens": 120,
+  "additional_headroom_tokens": 80,
+  "prompt_limit_tokens": 568,
+  "batch_sizing": [
+    {
+      "case_id": "g-add-sms",
+      "batch_size": 1,
+      "position": "first",
+      "prompt_tokens": 303,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-add-sms",
+      "batch_size": 1,
+      "position": "middle",
+      "prompt_tokens": 303,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-add-sms",
+      "batch_size": 1,
+      "position": "last",
+      "prompt_tokens": 303,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-add-sms",
+      "batch_size": 2,
+      "position": "first",
+      "prompt_tokens": 319,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-add-sms",
+      "batch_size": 2,
+      "position": "middle",
+      "prompt_tokens": 319,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-add-sms",
+      "batch_size": 2,
+      "position": "last",
+      "prompt_tokens": 319,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-add-sms",
+      "batch_size": 3,
+      "position": "first",
+      "prompt_tokens": 336,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-add-sms",
+      "batch_size": 3,
+      "position": "middle",
+      "prompt_tokens": 336,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-add-sms",
+      "batch_size": 3,
+      "position": "last",
+      "prompt_tokens": 336,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-add-sms",
+      "batch_size": 5,
+      "position": "first",
+      "prompt_tokens": 372,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-add-sms",
+      "batch_size": 5,
+      "position": "middle",
+      "prompt_tokens": 372,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-add-sms",
+      "batch_size": 5,
+      "position": "last",
+      "prompt_tokens": 372,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-mod-limit",
+      "batch_size": 1,
+      "position": "first",
+      "prompt_tokens": 315,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-mod-limit",
+      "batch_size": 1,
+      "position": "middle",
+      "prompt_tokens": 315,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-mod-limit",
+      "batch_size": 1,
+      "position": "last",
+      "prompt_tokens": 315,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-mod-limit",
+      "batch_size": 2,
+      "position": "first",
+      "prompt_tokens": 334,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-mod-limit",
+      "batch_size": 2,
+      "position": "middle",
+      "prompt_tokens": 334,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-mod-limit",
+      "batch_size": 2,
+      "position": "last",
+      "prompt_tokens": 334,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-mod-limit",
+      "batch_size": 3,
+      "position": "first",
+      "prompt_tokens": 355,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-mod-limit",
+      "batch_size": 3,
+      "position": "middle",
+      "prompt_tokens": 355,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-mod-limit",
+      "batch_size": 3,
+      "position": "last",
+      "prompt_tokens": 355,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-mod-limit",
+      "batch_size": 5,
+      "position": "first",
+      "prompt_tokens": 391,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-mod-limit",
+      "batch_size": 5,
+      "position": "middle",
+      "prompt_tokens": 391,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-mod-limit",
+      "batch_size": 5,
+      "position": "last",
+      "prompt_tokens": 391,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-remove-guest",
+      "batch_size": 1,
+      "position": "first",
+      "prompt_tokens": 305,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-remove-guest",
+      "batch_size": 1,
+      "position": "middle",
+      "prompt_tokens": 305,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-remove-guest",
+      "batch_size": 1,
+      "position": "last",
+      "prompt_tokens": 305,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-remove-guest",
+      "batch_size": 2,
+      "position": "first",
+      "prompt_tokens": 323,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-remove-guest",
+      "batch_size": 2,
+      "position": "middle",
+      "prompt_tokens": 323,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-remove-guest",
+      "batch_size": 2,
+      "position": "last",
+      "prompt_tokens": 323,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-remove-guest",
+      "batch_size": 3,
+      "position": "first",
+      "prompt_tokens": 341,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-remove-guest",
+      "batch_size": 3,
+      "position": "middle",
+      "prompt_tokens": 341,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-remove-guest",
+      "batch_size": 3,
+      "position": "last",
+      "prompt_tokens": 341,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-remove-guest",
+      "batch_size": 5,
+      "position": "first",
+      "prompt_tokens": 374,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-remove-guest",
+      "batch_size": 5,
+      "position": "middle",
+      "prompt_tokens": 374,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-remove-guest",
+      "batch_size": 5,
+      "position": "last",
+      "prompt_tokens": 374,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-con-approval",
+      "batch_size": 1,
+      "position": "first",
+      "prompt_tokens": 307,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-con-approval",
+      "batch_size": 1,
+      "position": "middle",
+      "prompt_tokens": 307,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-con-approval",
+      "batch_size": 1,
+      "position": "last",
+      "prompt_tokens": 307,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-con-approval",
+      "batch_size": 2,
+      "position": "first",
+      "prompt_tokens": 324,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-con-approval",
+      "batch_size": 2,
+      "position": "middle",
+      "prompt_tokens": 324,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-con-approval",
+      "batch_size": 2,
+      "position": "last",
+      "prompt_tokens": 324,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-con-approval",
+      "batch_size": 3,
+      "position": "first",
+      "prompt_tokens": 339,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-con-approval",
+      "batch_size": 3,
+      "position": "middle",
+      "prompt_tokens": 339,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-con-approval",
+      "batch_size": 3,
+      "position": "last",
+      "prompt_tokens": 339,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-con-approval",
+      "batch_size": 5,
+      "position": "first",
+      "prompt_tokens": 374,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-con-approval",
+      "batch_size": 5,
+      "position": "middle",
+      "prompt_tokens": 374,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-con-approval",
+      "batch_size": 5,
+      "position": "last",
+      "prompt_tokens": 374,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-two-removals",
+      "batch_size": 1,
+      "position": "first",
+      "prompt_tokens": 311,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-two-removals",
+      "batch_size": 1,
+      "position": "middle",
+      "prompt_tokens": 311,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-two-removals",
+      "batch_size": 1,
+      "position": "last",
+      "prompt_tokens": 311,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-two-removals",
+      "batch_size": 2,
+      "position": "first",
+      "prompt_tokens": 332,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-two-removals",
+      "batch_size": 2,
+      "position": "middle",
+      "prompt_tokens": 332,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-two-removals",
+      "batch_size": 2,
+      "position": "last",
+      "prompt_tokens": 332,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-two-removals",
+      "batch_size": 3,
+      "position": "first",
+      "prompt_tokens": 350,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-two-removals",
+      "batch_size": 3,
+      "position": "middle",
+      "prompt_tokens": 350,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-two-removals",
+      "batch_size": 3,
+      "position": "last",
+      "prompt_tokens": 350,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-two-removals",
+      "batch_size": 5,
+      "position": "first",
+      "prompt_tokens": 383,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-two-removals",
+      "batch_size": 5,
+      "position": "middle",
+      "prompt_tokens": 383,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-two-removals",
+      "batch_size": 5,
+      "position": "last",
+      "prompt_tokens": 383,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-four-removals",
+      "batch_size": 1,
+      "position": "first",
+      "prompt_tokens": 313,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-four-removals",
+      "batch_size": 1,
+      "position": "middle",
+      "prompt_tokens": 313,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-four-removals",
+      "batch_size": 1,
+      "position": "last",
+      "prompt_tokens": 313,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-four-removals",
+      "batch_size": 2,
+      "position": "first",
+      "prompt_tokens": 330,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-four-removals",
+      "batch_size": 2,
+      "position": "middle",
+      "prompt_tokens": 330,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-four-removals",
+      "batch_size": 2,
+      "position": "last",
+      "prompt_tokens": 330,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-four-removals",
+      "batch_size": 3,
+      "position": "first",
+      "prompt_tokens": 347,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-four-removals",
+      "batch_size": 3,
+      "position": "middle",
+      "prompt_tokens": 347,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-four-removals",
+      "batch_size": 3,
+      "position": "last",
+      "prompt_tokens": 347,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-four-removals",
+      "batch_size": 5,
+      "position": "first",
+      "prompt_tokens": 383,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-four-removals",
+      "batch_size": 5,
+      "position": "middle",
+      "prompt_tokens": 383,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-four-removals",
+      "batch_size": 5,
+      "position": "last",
+      "prompt_tokens": 383,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-zero-cafe",
+      "batch_size": 1,
+      "position": "original",
+      "prompt_tokens": 305,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-zero-cafe",
+      "batch_size": 2,
+      "position": "original",
+      "prompt_tokens": 322,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-zero-cafe",
+      "batch_size": 3,
+      "position": "original",
+      "prompt_tokens": 339,
+      "fits_768_with_reserve": true
+    },
+    {
+      "case_id": "g-zero-cafe",
+      "batch_size": 5,
+      "position": "original",
+      "prompt_tokens": 375,
+      "fits_768_with_reserve": true
+    }
+  ],
+  "whole_baseline_sizing": [
+    {
+      "project_size": 5,
+      "prompt_tokens": 394,
+      "fits_768_with_reserve": true,
+      "output_token_lower_bound_estimate": 60,
+      "output_bound_note": "12 tokens/result is a rough JSON lower bound, not tokenizer measurement"
+    },
+    {
+      "project_size": 8,
+      "prompt_tokens": 475,
+      "fits_768_with_reserve": true,
+      "output_token_lower_bound_estimate": 96,
+      "output_bound_note": "12 tokens/result is a rough JSON lower bound, not tokenizer measurement"
+    },
+    {
+      "project_size": 10,
+      "prompt_tokens": 524,
+      "fits_768_with_reserve": true,
+      "output_token_lower_bound_estimate": 120,
+      "output_bound_note": "12 tokens/result is a rough JSON lower bound, not tokenizer measurement"
+    },
+    {
+      "project_size": 16,
+      "prompt_tokens": 658,
+      "fits_768_with_reserve": false,
+      "output_token_lower_bound_estimate": 192,
+      "output_bound_note": "12 tokens/result is a rough JSON lower bound, not tokenizer measurement"
+    },
+    {
+      "project_size": 20,
+      "prompt_tokens": 745,
+      "fits_768_with_reserve": false,
+      "output_token_lower_bound_estimate": 240,
+      "output_bound_note": "12 tokens/result is a rough JSON lower bound, not tokenizer measurement"
+    },
+    {
+      "project_size": 32,
+      "prompt_tokens": 1006,
+      "fits_768_with_reserve": false,
+      "output_token_lower_bound_estimate": 384,
+      "output_bound_note": "12 tokens/result is a rough JSON lower bound, not tokenizer measurement"
+    },
+    {
+      "project_size": 50,
+      "prompt_tokens": 1436,
+      "fits_768_with_reserve": false,
+      "output_token_lower_bound_estimate": 600,
+      "output_bound_note": "12 tokens/result is a rough JSON lower bound, not tokenizer measurement"
+    },
+    {
+      "project_size": 75,
+      "prompt_tokens": 2010,
+      "fits_768_with_reserve": false,
+      "output_token_lower_bound_estimate": 900,
+      "output_bound_note": "12 tokens/result is a rough JSON lower bound, not tokenizer measurement"
+    },
+    {
+      "project_size": 100,
+      "prompt_tokens": 2588,
+      "fits_768_with_reserve": false,
+      "output_token_lower_bound_estimate": 1200,
+      "output_bound_note": "12 tokens/result is a rough JSON lower bound, not tokenizer measurement"
+    }
+  ],
+  "batch_by_size": {
+    "1": {
+      "count": 19,
+      "min_prompt_tokens": 303,
+      "median_prompt_tokens": 307,
+      "max_prompt_tokens": 315,
+      "fitting": 19
+    },
+    "2": {
+      "count": 19,
+      "min_prompt_tokens": 319,
+      "median_prompt_tokens": 324,
+      "max_prompt_tokens": 334,
+      "fitting": 19
+    },
+    "3": {
+      "count": 19,
+      "min_prompt_tokens": 336,
+      "median_prompt_tokens": 341,
+      "max_prompt_tokens": 355,
+      "fitting": 19
+    },
+    "5": {
+      "count": 19,
+      "min_prompt_tokens": 372,
+      "median_prompt_tokens": 375,
+      "max_prompt_tokens": 391,
+      "fitting": 19
+    }
+  },
+  "frozen_r5_scaling": {
+    "dataset_sha256": "c4446a726838c6dbefa655a1762ce920b3aec8ffd15aeef2c2b9b4790d9ae382",
+    "queries": 90,
+    "current_selected_calls": 188,
+    "current_target_hits": 102,
+    "current_false_exposures": 86,
+    "threshold_free_budgets": {
+      "3": {
+        "queries": 90,
+        "expected_links": 135,
+        "target_hits": 112,
+        "false_exposures": 158,
+        "candidate_calls_if_singleton": 270,
+        "complete_positive_queries": 54
+      },
+      "5": {
+        "queries": 90,
+        "expected_links": 135,
+        "target_hits": 128,
+        "false_exposures": 322,
+        "candidate_calls_if_singleton": 450,
+        "complete_positive_queries": 65
+      },
+      "8": {
+        "queries": 90,
+        "expected_links": 135,
+        "target_hits": 131,
+        "false_exposures": 559,
+        "candidate_calls_if_singleton": 690,
+        "complete_positive_queries": 68
+      },
+      "10": {
+        "queries": 90,
+        "expected_links": 135,
+        "target_hits": 135,
+        "false_exposures": 695,
+        "candidate_calls_if_singleton": 830,
+        "complete_positive_queries": 72
+      }
+    },
+    "adaptive_margin_le_0_05_top5_else_top3": {
+      "queries": 90,
+      "expected_links": 135,
+      "target_hits": 115,
+      "false_exposures": 253,
+      "candidate_calls_if_singleton": 368,
+      "complete_positive_queries": 56
+    }
+  },
+  "limitations": [
+    "Token counts use running llama.cpp tokenizer; no completion was generated.",
+    "Batch output length lower bound is estimated; actual JSON generation may be longer.",
+    "Scaling requirements are short synthetic text; real long requirements/acceptance criteria are unmeasured.",
+    "The seven panel cases are author-labeled development data, not independent evidence."
+  ]
+}

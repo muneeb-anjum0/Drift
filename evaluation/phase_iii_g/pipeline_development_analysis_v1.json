@@ -1,0 +1,218 @@
+{
+  "role": "DEVELOPMENT_NOT_INDEPENDENT_NOT_FULL_PRODUCT",
+  "dataset_sha256": "1f8f4acbb78e0d2f777295411afda2f0113443404df83ec3b79aa47c29a952cd",
+  "retrieval": {
+    "query_count": 7,
+    "positive_queries": 6,
+    "expected_links": 10,
+    "selected_hits": 9,
+    "false_exposures": 2,
+    "complete_positive_queries": 5,
+    "selected_calls": 11
+  },
+  "singleton_p1": {
+    "calls": 11,
+    "valid_contract_calls": 11,
+    "correct_selected_target_labels": 8,
+    "false_candidate_drift_at_p1_stage": 2,
+    "p1_component_complete_positive_queries": 3,
+    "by_expected_class": {
+      "added": {
+        "reached": 1,
+        "correct": 1
+      },
+      "modified": {
+        "reached": 1,
+        "correct": 1
+      },
+      "removed": {
+        "reached": 6,
+        "correct": 5
+      },
+      "contradiction": {
+        "reached": 1,
+        "correct": 1
+      }
+    },
+    "total_sequential_seconds": 149.06,
+    "positive_message_median_seconds": 21.7845,
+    "prompt_tokens": 3159,
+    "generated_tokens": 569
+  },
+  "batch_pilot": {
+    "calls": 8,
+    "valid_contract_calls": 2,
+    "valid_and_correct_affectedness_and_label": 1,
+    "by_batch_size": {
+      "1": {
+        "calls": 1,
+        "valid_contract_calls": 1,
+        "elapsed_seconds": [
+          18.1
+        ],
+        "prompt_tokens": [
+          303
+        ],
+        "generated_tokens": [
+          18
+        ]
+      },
+      "2": {
+        "calls": 3,
+        "valid_contract_calls": 1,
+        "elapsed_seconds": [
+          9.834,
+          9.454,
+          8.738
+        ],
+        "prompt_tokens": [
+          319,
+          319,
+          334
+        ],
+        "generated_tokens": [
+          31,
+          32,
+          19
+        ]
+      },
+      "3": {
+        "calls": 3,
+        "valid_contract_calls": 0,
+        "elapsed_seconds": [
+          13.083,
+          6.678,
+          8.144
+        ],
+        "prompt_tokens": [
+          336,
+          336,
+          355
+        ],
+        "generated_tokens": [
+          46,
+          18,
+          19
+        ]
+      },
+      "5": {
+        "calls": 1,
+        "valid_contract_calls": 0,
+        "elapsed_seconds": [
+          6.955
+        ],
+        "prompt_tokens": [
+          372
+        ],
+        "generated_tokens": [
+          18
+        ]
+      }
+    },
+    "failure_types": {
+      "valid": 2,
+      "unaffected item requires null class": 2,
+      "missing or extra batch results": 4
+    }
+  },
+  "query_results": [
+    {
+      "case_id": "g-add-sms",
+      "expected_targets": 1,
+      "selected_candidates": 1,
+      "retrieval_hits": 1,
+      "correct_selected_labels": 1,
+      "false_candidate_drift_at_p1_stage": 0,
+      "p1_component_complete_positive": true,
+      "p1_calls": 1,
+      "p1_sequential_seconds": 21.761,
+      "p1_prompt_tokens": 282,
+      "p1_generated_tokens": 48
+    },
+    {
+      "case_id": "g-mod-limit",
+      "expected_targets": 1,
+      "selected_candidates": 1,
+      "retrieval_hits": 1,
+      "correct_selected_labels": 1,
+      "false_candidate_drift_at_p1_stage": 0,
+      "p1_component_complete_positive": true,
+      "p1_calls": 1,
+      "p1_sequential_seconds": 14.216,
+      "p1_prompt_tokens": 293,
+      "p1_generated_tokens": 67
+    },
+    {
+      "case_id": "g-remove-guest",
+      "expected_targets": 1,
+      "selected_candidates": 2,
+      "retrieval_hits": 1,
+      "correct_selected_labels": 0,
+      "false_candidate_drift_at_p1_stage": 1,
+      "p1_component_complete_positive": false,
+      "p1_calls": 2,
+      "p1_sequential_seconds": 21.808,
+      "p1_prompt_tokens": 564,
+      "p1_generated_tokens": 94
+    },
+    {
+      "case_id": "g-con-approval",
+      "expected_targets": 1,
+      "selected_candidates": 2,
+      "retrieval_hits": 1,
+      "correct_selected_labels": 1,
+      "false_candidate_drift_at_p1_stage": 1,
+      "p1_component_complete_positive": false,
+      "p1_calls": 2,
+      "p1_sequential_seconds": 23.487,
+      "p1_prompt_tokens": 568,
+      "p1_generated_tokens": 102
+    },
+    {
+      "case_id": "g-two-removals",
+      "expected_targets": 2,
+      "selected_candidates": 2,
+      "retrieval_hits": 2,
+      "correct_selected_labels": 2,
+      "false_candidate_drift_at_p1_stage": 0,
+      "p1_component_complete_positive": true,
+      "p1_calls": 2,
+      "p1_sequential_seconds": 19.386,
+      "p1_prompt_tokens": 582,
+      "p1_generated_tokens": 73
+    },
+    {
+      "case_id": "g-four-removals",
+      "expected_targets": 4,
+      "selected_candidates": 3,
+      "retrieval_hits": 3,
+      "correct_selected_labels": 3,
+      "false_candidate_drift_at_p1_stage": 0,
+      "p1_component_complete_positive": false,
+      "p1_calls": 3,
+      "p1_sequential_seconds": 48.402,
+      "p1_prompt_tokens": 870,
+      "p1_generated_tokens": 185
+    },
+    {
+      "case_id": "g-zero-cafe",
+      "expected_targets": 0,
+      "selected_candidates": 0,
+      "retrieval_hits": 0,
+      "correct_selected_labels": 0,
+      "false_candidate_drift_at_p1_stage": 0,
+      "p1_component_complete_positive": false,
+      "p1_calls": 0,
+      "p1_sequential_seconds": 0,
+      "p1_prompt_tokens": 0,
+      "p1_generated_tokens": 0
+    }
+  ],
+  "limitations": [
+    "Author-labeled small development panel, not independent generalisation evidence",
+    "P1 comparison calls the model/parser directly, not authenticated Go Analyze or PP1",
+    "Zero-target retrieval query would trigger production new-requirement fallback; it is not a no-drift product label",
+    "Batch probe is eight deliberately diagnostic calls, not a statistical accuracy estimate",
+    "Pilot latency is warm sequential CPU, no representative p95 or cold-start measurement"
+  ]
+}

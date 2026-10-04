@@ -1,0 +1,2030 @@
+{
+  "configuration": {
+    "max_selected": 3,
+    "specific_match_gate_enabled": true,
+    "threshold": 0.25,
+    "tie_breaking": "stable source order"
+  },
+  "dataset": {
+    "name": "phase-iii-g-frozen-development-adapter",
+    "sha256": "bfabdb2a337617f2a4a6d3aba89ff675b2bf9627455a311ccafa698e962ef63e",
+    "version": "1.0.0"
+  },
+  "evaluation_id": "phase3g-r5-dev",
+  "generated_at": "2026-10-04T18:24:27Z",
+  "limitations": [
+    "Synthetic prospective development corpus; labels were authored by one engineering agent.",
+    "Recall@k ranks all requirements; model-input recall also applies the configured threshold, gate, and selection cap.",
+    "Null recall identifies zero-expected hard-negative queries.",
+    "Wall-clock duration is observational, not a controlled benchmark.",
+    "This measures deterministic retrieval only and makes no model-quality claim."
+  ],
+  "metrics": {
+    "all_expected_reached_count": 5,
+    "all_expected_reached_rate": 0.8333333333333334,
+    "at_least_one_reached_count": 6,
+    "at_least_one_reached_rate": 1,
+    "average_candidate_requirements": 5,
+    "average_selected_requirements": 1.5714285714285714,
+    "by_project_size": {
+      "small": {
+        "expected_requirements": 10,
+        "false_exposures": 2,
+        "model_hits": 9,
+        "model_input_micro_recall": 0.9,
+        "queries": 7
+      }
+    },
+    "evaluation_duration_ms": 0,
+    "expected_requirement_count": 10,
+    "false_exposure_count": 2,
+    "hard_negative_query_count": 1,
+    "model_hit_count": 9,
+    "model_input_recall_macro": 0.9583333333333334,
+    "model_input_recall_micro": 0.9,
+    "mrr": 1,
+    "positive_query_count": 6,
+    "precision_at_1_macro": 0.8571428571428571,
+    "precision_at_3_macro": 0.42857142857142855,
+    "precision_at_k_macro": 0.42857142857142855,
+    "query_count": 7,
+    "recall_at_1_macro": 0.7916666666666666,
+    "recall_at_3_macro": 0.9583333333333334,
+    "recall_at_k_macro": 0.9583333333333334
+  },
+  "results": [
+    {
+      "project_id": "g-add-sms",
+      "project_size": "small",
+      "query_id": "g-add-sms",
+      "message": "Please also send appointment confirmations by SMS.",
+      "expected_requirement_ids": [
+        "cl-email"
+      ],
+      "expected_count": 1,
+      "candidate_count": 5,
+      "ranked_requirements": [
+        {
+          "id": "cl-email",
+          "rank": 1,
+          "expected": true,
+          "selected": true,
+          "decision": "SELECTED",
+          "score": 0.395,
+          "trace": {
+            "result": {
+              "score": 0.395,
+              "matchedTerms": [
+                "appointment",
+                "confirmation"
+              ],
+              "matchedDomains": [],
+              "isRelevant": true,
+              "reason": "Relevant domain or requirement terms matched the client message"
+            },
+            "input_tokens": [
+              "appointment",
+              "confirmation",
+              "send",
+              "sms"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "appointment",
+              "confirmation",
+              "email",
+              "patient",
+              "receive"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [
+              "authentication"
+            ],
+            "direct_score": 0.5,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0.12,
+            "threshold": 0.25,
+            "passed_threshold": true,
+            "passed_specific_gate": true
+          }
+        },
+        {
+          "id": "cl-book",
+          "rank": 2,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0.1375,
+          "trace": {
+            "result": {
+              "score": 0.1375,
+              "matchedTerms": [
+                "appointment"
+              ],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "appointment",
+              "confirmation",
+              "send",
+              "sms"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "appointment",
+              "available",
+              "book",
+              "online",
+              "patient",
+              "slot"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [],
+            "direct_score": 0.25,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        },
+        {
+          "id": "cl-pay",
+          "rank": 3,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "appointment",
+              "confirmation",
+              "send",
+              "sms"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "card",
+              "invoice",
+              "online",
+              "outstand",
+              "patient",
+              "pay"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [
+              "billing"
+            ],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        },
+        {
+          "id": "cl-prescription",
+          "rank": 4,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "appointment",
+              "confirmation",
+              "send",
+              "sms"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "attachment",
+              "clinician",
+              "document",
+              "file",
+              "for",
+              "patient",
+              "prescription",
+              "upload"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [
+              "documents"
+            ],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        },
+        {
+          "id": "cl-report",
+          "rank": 5,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "appointment",
+              "confirmation",
+              "send",
+              "sms"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "activity",
+              "clinic",
+              "export",
+              "manager",
+              "monthly",
+              "report"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [
+              "reports_exports"
+            ],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        }
+      ],
+      "selected_requirement_ids": [
+        "cl-email"
+      ],
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "model_hits": 1,
+      "false_exposures": 0,
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "recall_at_k": 1,
+      "precision_at_1": 1,
+      "precision_at_3": 0.3333333333333333,
+      "precision_at_k": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "at_least_one_expected_reached_model": true,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "g-mod-limit",
+      "project_size": "small",
+      "query_id": "g-mod-limit",
+      "message": "Supervisor approval should begin at $5,000 instead.",
+      "expected_requirement_ids": [
+        "bk-approval"
+      ],
+      "expected_count": 1,
+      "candidate_count": 5,
+      "ranked_requirements": [
+        {
+          "id": "bk-approval",
+          "rank": 1,
+          "expected": true,
+          "selected": true,
+          "decision": "SELECTED",
+          "score": 0.45,
+          "trace": {
+            "result": {
+              "score": 0.45,
+              "matchedTerms": [
+                "000",
+                "approval",
+                "supervisor"
+              ],
+              "matchedDomains": [],
+              "isRelevant": true,
+              "reason": "Relevant domain or requirement terms matched the client message"
+            },
+            "input_tokens": [
+              "000",
+              "approval",
+              "begin",
+              "instead",
+              "supervisor"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "000",
+              "above",
+              "approval",
+              "require",
+              "supervisor",
+              "transfer"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [],
+            "direct_score": 0.6,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0.12,
+            "threshold": 0.25,
+            "passed_threshold": true,
+            "passed_specific_gate": true
+          }
+        },
+        {
+          "id": "bk-statement",
+          "rank": 2,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "000",
+              "approval",
+              "begin",
+              "instead",
+              "supervisor"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "account",
+              "customer",
+              "download",
+              "export",
+              "file",
+              "monthly",
+              "pdf",
+              "statement"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [
+              "authentication",
+              "billing",
+              "documents",
+              "reports_exports"
+            ],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        },
+        {
+          "id": "bk-card",
+          "rank": 3,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "000",
+              "approval",
+              "begin",
+              "instead",
+              "supervisor"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "after",
+              "card",
+              "entry",
+              "full",
+              "initial",
+              "must",
+              "never",
+              "number",
+              "reveal"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        },
+        {
+          "id": "bk-login",
+          "rank": 4,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "000",
+              "approval",
+              "begin",
+              "instead",
+              "supervisor"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "account",
+              "authenticate",
+              "before",
+              "customer",
+              "view"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [
+              "authentication"
+            ],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        },
+        {
+          "id": "bk-notify",
+          "rank": 5,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "000",
+              "approval",
+              "begin",
+              "instead",
+              "supervisor"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "alert",
+              "customer",
+              "for",
+              "login",
+              "new",
+              "receive",
+              "security"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [
+              "authentication",
+              "notifications"
+            ],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        }
+      ],
+      "selected_requirement_ids": [
+        "bk-approval"
+      ],
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "model_hits": 1,
+      "false_exposures": 0,
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "recall_at_k": 1,
+      "precision_at_1": 1,
+      "precision_at_3": 0.3333333333333333,
+      "precision_at_k": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "at_least_one_expected_reached_model": true,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "g-remove-guest",
+      "project_size": "small",
+      "query_id": "g-remove-guest",
+      "message": "Disable guest checkout; only registered users may order.",
+      "expected_requirement_ids": [
+        "co-guest"
+      ],
+      "expected_count": 1,
+      "candidate_count": 5,
+      "ranked_requirements": [
+        {
+          "id": "co-guest",
+          "rank": 1,
+          "expected": true,
+          "selected": true,
+          "decision": "SELECTED",
+          "score": 0.7428571428571429,
+          "trace": {
+            "result": {
+              "score": 0.7428571428571429,
+              "matchedTerms": [
+                "account",
+                "authentication",
+                "guest",
+                "order",
+                "register"
+              ],
+              "matchedDomains": [
+                "authentication"
+              ],
+              "isRelevant": true,
+              "reason": "Relevant domain or requirement terms matched the client message"
+            },
+            "input_tokens": [
+              "account",
+              "authentication",
+              "checkout",
+              "disable",
+              "guest",
+              "may",
+              "only",
+              "order",
+              "register"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "account",
+              "and",
+              "authentication",
+              "guest",
+              "order",
+              "place",
+              "register"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [
+              "authentication"
+            ],
+            "baseline_domains": [
+              "authentication"
+            ],
+            "direct_score": 0.7142857142857143,
+            "title_score": 0,
+            "domain_score": 1,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": true,
+            "passed_specific_gate": true
+          }
+        },
+        {
+          "id": "co-review",
+          "rank": 2,
+          "expected": false,
+          "selected": true,
+          "decision": "SELECTED",
+          "score": 0.625,
+          "trace": {
+            "result": {
+              "score": 0.625,
+              "matchedTerms": [
+                "account",
+                "authentication",
+                "register"
+              ],
+              "matchedDomains": [
+                "authentication"
+              ],
+              "isRelevant": true,
+              "reason": "Relevant domain or requirement terms matched the client message"
+            },
+            "input_tokens": [
+              "account",
+              "authentication",
+              "checkout",
+              "disable",
+              "guest",
+              "may",
+              "only",
+              "order",
+              "register"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "account",
+              "authentication",
+              "product",
+              "register",
+              "review",
+              "write"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [
+              "authentication"
+            ],
+            "baseline_domains": [
+              "authentication",
+              "products_content"
+            ],
+            "direct_score": 0.5,
+            "title_score": 0,
+            "domain_score": 1,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": true,
+            "passed_specific_gate": true
+          }
+        },
+        {
+          "id": "co-cart",
+          "rank": 3,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "account",
+              "authentication",
+              "checkout",
+              "disable",
+              "guest",
+              "may",
+              "only",
+              "order",
+              "register"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "cart",
+              "product",
+              "shop",
+              "shopper"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [
+              "authentication"
+            ],
+            "baseline_domains": [
+              "products_content"
+            ],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        },
+        {
+          "id": "co-pay",
+          "rank": 4,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "account",
+              "authentication",
+              "checkout",
+              "disable",
+              "guest",
+              "may",
+              "only",
+              "order",
+              "register"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "card",
+              "credit",
+              "debit",
+              "pay",
+              "shopper"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [
+              "authentication"
+            ],
+            "baseline_domains": [],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        },
+        {
+          "id": "co-search",
+          "rank": 5,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "account",
+              "authentication",
+              "checkout",
+              "disable",
+              "guest",
+              "may",
+              "only",
+              "order",
+              "register"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "and",
+              "category",
+              "product",
+              "search",
+              "title",
+              "visitor"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [
+              "authentication"
+            ],
+            "baseline_domains": [
+              "products_content"
+            ],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        }
+      ],
+      "selected_requirement_ids": [
+        "co-guest",
+        "co-review"
+      ],
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "model_hits": 1,
+      "false_exposures": 1,
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "recall_at_k": 1,
+      "precision_at_1": 1,
+      "precision_at_3": 0.3333333333333333,
+      "precision_at_k": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "at_least_one_expected_reached_model": true,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "g-con-approval",
+      "project_size": "small",
+      "query_id": "g-con-approval",
+      "message": "Renew prescriptions automatically without any clinician approval.",
+      "expected_requirement_ids": [
+        "ph-approval"
+      ],
+      "expected_count": 1,
+      "candidate_count": 5,
+      "ranked_requirements": [
+        {
+          "id": "ph-approval",
+          "rank": 1,
+          "expected": true,
+          "selected": true,
+          "decision": "SELECTED",
+          "score": 0.4342857142857143,
+          "trace": {
+            "result": {
+              "score": 0.4342857142857143,
+              "matchedTerms": [
+                "approval",
+                "clinician",
+                "prescription",
+                "renew"
+              ],
+              "matchedDomains": [],
+              "isRelevant": true,
+              "reason": "Relevant domain or requirement terms matched the client message"
+            },
+            "input_tokens": [
+              "any",
+              "approval",
+              "automatically",
+              "clinician",
+              "prescription",
+              "renew",
+              "without"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "after",
+              "approval",
+              "clinician",
+              "may",
+              "only",
+              "prescription",
+              "renew"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [],
+            "direct_score": 0.5714285714285714,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0.12,
+            "threshold": 0.25,
+            "passed_threshold": true,
+            "passed_specific_gate": true
+          }
+        },
+        {
+          "id": "ph-document",
+          "rank": 2,
+          "expected": false,
+          "selected": true,
+          "decision": "SELECTED",
+          "score": 0.27714285714285714,
+          "trace": {
+            "result": {
+              "score": 0.27714285714285714,
+              "matchedTerms": [
+                "clinician",
+                "prescription"
+              ],
+              "matchedDomains": [],
+              "isRelevant": true,
+              "reason": "Relevant domain or requirement terms matched the client message"
+            },
+            "input_tokens": [
+              "any",
+              "approval",
+              "automatically",
+              "clinician",
+              "prescription",
+              "renew",
+              "without"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "attachment",
+              "clinician",
+              "document",
+              "file",
+              "for",
+              "patient",
+              "prescription",
+              "upload"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [
+              "documents"
+            ],
+            "direct_score": 0.2857142857142857,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0.12,
+            "threshold": 0.25,
+            "passed_threshold": true,
+            "passed_specific_gate": true
+          }
+        },
+        {
+          "id": "ph-history",
+          "rank": 3,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0.1375,
+          "trace": {
+            "result": {
+              "score": 0.1375,
+              "matchedTerms": [
+                "prescription"
+              ],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "any",
+              "approval",
+              "automatically",
+              "clinician",
+              "prescription",
+              "renew",
+              "without"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "history",
+              "patient",
+              "prescription",
+              "view"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [],
+            "direct_score": 0.25,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        },
+        {
+          "id": "ph-reminder",
+          "rank": 4,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "any",
+              "approval",
+              "automatically",
+              "clinician",
+              "prescription",
+              "renew",
+              "without"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "before",
+              "expiry",
+              "patient",
+              "receive",
+              "refill",
+              "reminder"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [
+              "notifications"
+            ],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        },
+        {
+          "id": "ph-login",
+          "rank": 5,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "any",
+              "approval",
+              "automatically",
+              "clinician",
+              "prescription",
+              "renew",
+              "without"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "health",
+              "patient",
+              "record",
+              "sign",
+              "view"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        }
+      ],
+      "selected_requirement_ids": [
+        "ph-approval",
+        "ph-document"
+      ],
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "model_hits": 1,
+      "false_exposures": 1,
+      "recall_at_1": 1,
+      "recall_at_3": 1,
+      "recall_at_k": 1,
+      "precision_at_1": 1,
+      "precision_at_3": 0.3333333333333333,
+      "precision_at_k": 0.3333333333333333,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "at_least_one_expected_reached_model": true,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "g-two-removals",
+      "project_size": "small",
+      "query_id": "g-two-removals",
+      "message": "Disable guest checkout and remove payment by card; keep account checkout and bank transfer.",
+      "expected_requirement_ids": [
+        "co-guest",
+        "co-pay"
+      ],
+      "expected_count": 2,
+      "candidate_count": 5,
+      "ranked_requirements": [
+        {
+          "id": "co-guest",
+          "rank": 1,
+          "expected": true,
+          "selected": true,
+          "decision": "SELECTED",
+          "score": 0.5857142857142856,
+          "trace": {
+            "result": {
+              "score": 0.5857142857142856,
+              "matchedTerms": [
+                "account",
+                "and",
+                "guest"
+              ],
+              "matchedDomains": [
+                "authentication"
+              ],
+              "isRelevant": true,
+              "reason": "Relevant domain or requirement terms matched the client message"
+            },
+            "input_tokens": [
+              "account",
+              "and",
+              "bank",
+              "card",
+              "checkout",
+              "disable",
+              "guest",
+              "keep",
+              "payment",
+              "remove",
+              "transfer"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "account",
+              "and",
+              "authentication",
+              "guest",
+              "order",
+              "place",
+              "register"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [
+              "authentication",
+              "billing"
+            ],
+            "baseline_domains": [
+              "authentication"
+            ],
+            "direct_score": 0.42857142857142855,
+            "title_score": 0,
+            "domain_score": 1,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": true,
+            "passed_specific_gate": true
+          }
+        },
+        {
+          "id": "co-pay",
+          "rank": 2,
+          "expected": true,
+          "selected": true,
+          "decision": "SELECTED",
+          "score": 0.3557142857142857,
+          "trace": {
+            "result": {
+              "score": 0.3557142857142857,
+              "matchedTerms": [
+                "bank",
+                "card",
+                "transfer"
+              ],
+              "matchedDomains": [],
+              "isRelevant": true,
+              "reason": "Relevant domain or requirement terms matched the client message"
+            },
+            "input_tokens": [
+              "account",
+              "and",
+              "bank",
+              "card",
+              "checkout",
+              "disable",
+              "guest",
+              "keep",
+              "payment",
+              "remove",
+              "transfer"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "bank",
+              "card",
+              "credit",
+              "debit",
+              "pay",
+              "shopper",
+              "transfer"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [
+              "authentication",
+              "billing"
+            ],
+            "baseline_domains": [],
+            "direct_score": 0.42857142857142855,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0.12,
+            "threshold": 0.25,
+            "passed_threshold": true,
+            "passed_specific_gate": true
+          }
+        },
+        {
+          "id": "co-review",
+          "rank": 3,
+          "expected": false,
+          "selected": false,
+          "decision": "FAILED_SPECIFIC_MATCH_GATE",
+          "score": 0.26666666666666666,
+          "trace": {
+            "result": {
+              "score": 0.26666666666666666,
+              "matchedTerms": [
+                "account"
+              ],
+              "matchedDomains": [
+                "authentication"
+              ],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "account",
+              "and",
+              "bank",
+              "card",
+              "checkout",
+              "disable",
+              "guest",
+              "keep",
+              "payment",
+              "remove",
+              "transfer"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "account",
+              "authentication",
+              "product",
+              "register",
+              "review",
+              "write"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [
+              "authentication",
+              "billing"
+            ],
+            "baseline_domains": [
+              "authentication",
+              "products_content"
+            ],
+            "direct_score": 0.16666666666666666,
+            "title_score": 0,
+            "domain_score": 0.5,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": true,
+            "passed_specific_gate": false
+          }
+        },
+        {
+          "id": "co-search",
+          "rank": 4,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0.09166666666666667,
+          "trace": {
+            "result": {
+              "score": 0.09166666666666667,
+              "matchedTerms": [
+                "and"
+              ],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "account",
+              "and",
+              "bank",
+              "card",
+              "checkout",
+              "disable",
+              "guest",
+              "keep",
+              "payment",
+              "remove",
+              "transfer"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "and",
+              "category",
+              "product",
+              "search",
+              "title",
+              "visitor"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [
+              "authentication",
+              "billing"
+            ],
+            "baseline_domains": [
+              "products_content"
+            ],
+            "direct_score": 0.16666666666666666,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        },
+        {
+          "id": "co-cart",
+          "rank": 5,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "account",
+              "and",
+              "bank",
+              "card",
+              "checkout",
+              "disable",
+              "guest",
+              "keep",
+              "payment",
+              "remove",
+              "transfer"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "cart",
+              "product",
+              "shop",
+              "shopper"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [
+              "authentication",
+              "billing"
+            ],
+            "baseline_domains": [
+              "products_content"
+            ],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        }
+      ],
+      "selected_requirement_ids": [
+        "co-guest",
+        "co-pay"
+      ],
+      "hits_at_1": 1,
+      "hits_at_3": 2,
+      "hits_at_k": 2,
+      "model_hits": 2,
+      "false_exposures": 0,
+      "recall_at_1": 0.5,
+      "recall_at_3": 1,
+      "recall_at_k": 1,
+      "precision_at_1": 1,
+      "precision_at_3": 0.6666666666666666,
+      "precision_at_k": 0.6666666666666666,
+      "reciprocal_rank": 1,
+      "model_input_recall": 1,
+      "at_least_one_expected_reached_model": true,
+      "all_expected_reached_model": true
+    },
+    {
+      "project_id": "g-four-removals",
+      "project_size": "small",
+      "query_id": "g-four-removals",
+      "message": "Stop recording planted crops, field boundaries, watering schedules, and irrigation water volume.",
+      "expected_requirement_ids": [
+        "fm-crop",
+        "fm-field",
+        "fm-water",
+        "fm-meter"
+      ],
+      "expected_count": 4,
+      "candidate_count": 5,
+      "ranked_requirements": [
+        {
+          "id": "fm-crop",
+          "rank": 1,
+          "expected": true,
+          "selected": true,
+          "decision": "SELECTED",
+          "score": 0.4866666666666667,
+          "trace": {
+            "result": {
+              "score": 0.4866666666666667,
+              "matchedTerms": [
+                "crop",
+                "field",
+                "plant",
+                "record"
+              ],
+              "matchedDomains": [],
+              "isRelevant": true,
+              "reason": "Relevant domain or requirement terms matched the client message"
+            },
+            "input_tokens": [
+              "and",
+              "boundary",
+              "crop",
+              "field",
+              "irrigation",
+              "plant",
+              "record",
+              "schedule",
+              "stop",
+              "volume",
+              "water"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "crop",
+              "each",
+              "field",
+              "grower",
+              "plant",
+              "record"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [],
+            "direct_score": 0.6666666666666666,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0.12,
+            "threshold": 0.25,
+            "passed_threshold": true,
+            "passed_specific_gate": true
+          }
+        },
+        {
+          "id": "fm-meter",
+          "rank": 2,
+          "expected": true,
+          "selected": true,
+          "decision": "SELECTED",
+          "score": 0.45833333333333337,
+          "trace": {
+            "result": {
+              "score": 0.45833333333333337,
+              "matchedTerms": [
+                "field",
+                "irrigation",
+                "record",
+                "volume",
+                "water"
+              ],
+              "matchedDomains": [],
+              "isRelevant": true,
+              "reason": "Relevant domain or requirement terms matched the client message"
+            },
+            "input_tokens": [
+              "and",
+              "boundary",
+              "crop",
+              "field",
+              "irrigation",
+              "plant",
+              "record",
+              "schedule",
+              "stop",
+              "volume",
+              "water"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "field",
+              "irrigation",
+              "record",
+              "sensor",
+              "volume",
+              "water"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [],
+            "direct_score": 0.8333333333333334,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": true,
+            "passed_specific_gate": true
+          }
+        },
+        {
+          "id": "fm-water",
+          "rank": 3,
+          "expected": true,
+          "selected": true,
+          "decision": "SELECTED",
+          "score": 0.395,
+          "trace": {
+            "result": {
+              "score": 0.395,
+              "matchedTerms": [
+                "field",
+                "schedule",
+                "water"
+              ],
+              "matchedDomains": [],
+              "isRelevant": true,
+              "reason": "Relevant domain or requirement terms matched the client message"
+            },
+            "input_tokens": [
+              "and",
+              "boundary",
+              "crop",
+              "field",
+              "irrigation",
+              "plant",
+              "record",
+              "schedule",
+              "stop",
+              "volume",
+              "water"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "each",
+              "field",
+              "for",
+              "grower",
+              "schedule",
+              "water"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [],
+            "direct_score": 0.5,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0.12,
+            "threshold": 0.25,
+            "passed_threshold": true,
+            "passed_specific_gate": true
+          }
+        },
+        {
+          "id": "fm-pump",
+          "rank": 4,
+          "expected": false,
+          "selected": false,
+          "decision": "TOP_K_EXCLUDED",
+          "score": 0.3557142857142857,
+          "trace": {
+            "result": {
+              "score": 0.3557142857142857,
+              "matchedTerms": [
+                "and",
+                "irrigation",
+                "stop"
+              ],
+              "matchedDomains": [],
+              "isRelevant": true,
+              "reason": "Relevant domain or requirement terms matched the client message"
+            },
+            "input_tokens": [
+              "and",
+              "boundary",
+              "crop",
+              "field",
+              "irrigation",
+              "plant",
+              "record",
+              "schedule",
+              "stop",
+              "volume",
+              "water"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "and",
+              "irrigation",
+              "operator",
+              "pump",
+              "remotely",
+              "start",
+              "stop"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [],
+            "direct_score": 0.42857142857142855,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0.12,
+            "threshold": 0.25,
+            "passed_threshold": true,
+            "passed_specific_gate": true
+          }
+        },
+        {
+          "id": "fm-field",
+          "rank": 5,
+          "expected": true,
+          "selected": false,
+          "decision": "TOP_K_EXCLUDED",
+          "score": 0.27714285714285714,
+          "trace": {
+            "result": {
+              "score": 0.27714285714285714,
+              "matchedTerms": [
+                "boundary",
+                "field"
+              ],
+              "matchedDomains": [],
+              "isRelevant": true,
+              "reason": "Relevant domain or requirement terms matched the client message"
+            },
+            "input_tokens": [
+              "and",
+              "boundary",
+              "crop",
+              "field",
+              "irrigation",
+              "plant",
+              "record",
+              "schedule",
+              "stop",
+              "volume",
+              "water"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "account",
+              "authentication",
+              "boundary",
+              "coordinate",
+              "field",
+              "grower",
+              "register"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [],
+            "baseline_domains": [
+              "authentication"
+            ],
+            "direct_score": 0.2857142857142857,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0.12,
+            "threshold": 0.25,
+            "passed_threshold": true,
+            "passed_specific_gate": true
+          }
+        }
+      ],
+      "selected_requirement_ids": [
+        "fm-crop",
+        "fm-meter",
+        "fm-water"
+      ],
+      "hits_at_1": 1,
+      "hits_at_3": 3,
+      "hits_at_k": 3,
+      "model_hits": 3,
+      "false_exposures": 0,
+      "recall_at_1": 0.25,
+      "recall_at_3": 0.75,
+      "recall_at_k": 0.75,
+      "precision_at_1": 1,
+      "precision_at_3": 1,
+      "precision_at_k": 1,
+      "reciprocal_rank": 1,
+      "model_input_recall": 0.75,
+      "at_least_one_expected_reached_model": true,
+      "all_expected_reached_model": false
+    },
+    {
+      "project_id": "g-zero-cafe",
+      "project_size": "small",
+      "query_id": "g-zero-cafe",
+      "message": "Add a cafeteria menu for farm staff.",
+      "expected_requirement_ids": [],
+      "expected_count": 0,
+      "candidate_count": 5,
+      "ranked_requirements": [
+        {
+          "id": "fm-water",
+          "rank": 1,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0.11000000000000001,
+          "trace": {
+            "result": {
+              "score": 0.11000000000000001,
+              "matchedTerms": [
+                "for"
+              ],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "cafeteria",
+              "farm",
+              "for",
+              "menu",
+              "staff"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "each",
+              "field",
+              "for",
+              "grower",
+              "schedule",
+              "water"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [
+              "admin_access"
+            ],
+            "baseline_domains": [],
+            "direct_score": 0.2,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        },
+        {
+          "id": "fm-crop",
+          "rank": 2,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "cafeteria",
+              "farm",
+              "for",
+              "menu",
+              "staff"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "crop",
+              "each",
+              "field",
+              "grower",
+              "plant",
+              "record"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [
+              "admin_access"
+            ],
+            "baseline_domains": [],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        },
+        {
+          "id": "fm-field",
+          "rank": 3,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "cafeteria",
+              "farm",
+              "for",
+              "menu",
+              "staff"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "account",
+              "authentication",
+              "boundary",
+              "coordinate",
+              "field",
+              "grower",
+              "register"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [
+              "admin_access"
+            ],
+            "baseline_domains": [
+              "authentication"
+            ],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        },
+        {
+          "id": "fm-meter",
+          "rank": 4,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "cafeteria",
+              "farm",
+              "for",
+              "menu",
+              "staff"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "field",
+              "irrigation",
+              "record",
+              "sensor",
+              "volume",
+              "water"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [
+              "admin_access"
+            ],
+            "baseline_domains": [],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        },
+        {
+          "id": "fm-pump",
+          "rank": 5,
+          "expected": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD",
+          "score": 0,
+          "trace": {
+            "result": {
+              "score": 0,
+              "matchedTerms": [],
+              "matchedDomains": [],
+              "isRelevant": false,
+              "reason": "Low relevance to the client message"
+            },
+            "input_tokens": [
+              "cafeteria",
+              "farm",
+              "for",
+              "menu",
+              "staff"
+            ],
+            "title_tokens": [],
+            "baseline_tokens": [
+              "and",
+              "irrigation",
+              "operator",
+              "pump",
+              "remotely",
+              "start",
+              "stop"
+            ],
+            "matched_title_terms": [],
+            "input_domains": [
+              "admin_access"
+            ],
+            "baseline_domains": [],
+            "direct_score": 0,
+            "title_score": 0,
+            "domain_score": 0,
+            "multi_term_bonus": 0,
+            "threshold": 0.25,
+            "passed_threshold": false,
+            "passed_specific_gate": false
+          }
+        }
+      ],
+      "selected_requirement_ids": [],
+      "hits_at_1": 0,
+      "hits_at_3": 0,
+      "hits_at_k": 0,
+      "model_hits": 0,
+      "false_exposures": 0,
+      "recall_at_1": null,
+      "recall_at_3": null,
+      "recall_at_k": null,
+      "precision_at_1": 0,
+      "precision_at_3": 0,
+      "precision_at_k": 0,
+      "reciprocal_rank": 0,
+      "model_input_recall": null,
+      "at_least_one_expected_reached_model": false,
+      "all_expected_reached_model": false
+    }
+  ],
+  "schema_version": 2
+}
