@@ -1,0 +1,67 @@
+{
+  "role": "DEVELOPMENT_AGGREGATE_CONTAMINATION_AUDIT",
+  "dataset_sha256": "c4446a726838c6dbefa655a1762ce920b3aec8ffd15aeef2c2b9b4790d9ae382",
+  "unique_query_count": 10,
+  "repeated_query_instances": 80,
+  "sources": {
+    "retrieval_dev_v1": {
+      "source_queries": 24,
+      "exact_pairs": 0,
+      "near_pairs_jaccard_ge_0_8": 0,
+      "max_token_jaccard": 0.15789473684210525
+    },
+    "retrieval_dev_v2": {
+      "source_queries": 60,
+      "exact_pairs": 0,
+      "near_pairs_jaccard_ge_0_8": 0,
+      "max_token_jaccard": 0.16666666666666666
+    },
+    "phase_iii_e_dev": {
+      "source_queries": 30,
+      "exact_pairs": 0,
+      "near_pairs_jaccard_ge_0_8": 0,
+      "max_token_jaccard": 0.45454545454545453
+    },
+    "raw_dev": {
+      "source_queries": 48,
+      "exact_pairs": 0,
+      "near_pairs_jaccard_ge_0_8": 0,
+      "max_token_jaccard": 0.14285714285714285
+    },
+    "historical_retrieval_final": {
+      "source_queries": 12,
+      "exact_pairs": 0,
+      "near_pairs_jaccard_ge_0_8": 0,
+      "max_token_jaccard": 0.14285714285714285
+    },
+    "phase_iii_d_closed": {
+      "source_queries": 40,
+      "exact_pairs": 0,
+      "near_pairs_jaccard_ge_0_8": 0,
+      "max_token_jaccard": 0.25
+    },
+    "phase_iii_e_closed": {
+      "source_queries": 30,
+      "exact_pairs": 0,
+      "near_pairs_jaccard_ge_0_8": 0,
+      "max_token_jaccard": 0.21428571428571427
+    },
+    "prompt_examples": {
+      "source_queries": 0,
+      "exact_pairs": 0,
+      "near_pairs_jaccard_ge_0_8": 0,
+      "max_token_jaccard": 0
+    },
+    "repository_tests": {
+      "source_queries": 1718,
+      "exact_pairs": 0,
+      "near_pairs_jaccard_ge_0_8": 0,
+      "max_token_jaccard": 0.2
+    }
+  },
+  "limitations": [
+    "No case-level closed records emitted; aggregate token overlap is not semantic contamination proof.",
+    "Requirements are intentionally reused from open development sources.",
+    "Unknown original adapter-training overlap remains UNKNOWN."
+  ]
+}

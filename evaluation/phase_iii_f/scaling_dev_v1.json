@@ -1,0 +1,3288 @@
+{
+  "name": "drift-phase-iii-f-derived-scaling-development",
+  "version": "1.0.0",
+  "role": "DEVELOPMENT_NOT_FINAL",
+  "provenance": [
+    "DERIVED",
+    "SYNTHETIC"
+  ],
+  "generation_method": "fixed 10-query farm panel over nested requirements; four authored same-domain distractors plus open-development requirements",
+  "notes": "Not a new independent test. Repeated queries are intentional paired controls. At N>36 additional requirements are predominantly cross-domain; scaling beyond 36 is optimistic and labels may be incomplete for broad cross-domain queries.",
+  "threshold": 0.25,
+  "max_selected": 3,
+  "projects": [
+    {
+      "id": "scale-5",
+      "size": "small",
+      "project_size": 5,
+      "requirements": [
+        {
+          "id": "fl-water",
+          "title": "Irrigation schedule",
+          "description": "Growers shall schedule watering for each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pump",
+          "title": "Pump control",
+          "description": "Operators shall start and stop irrigation pumps remotely.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-meter",
+          "title": "Water meter",
+          "description": "Sensors shall record irrigation water volume by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-field",
+          "title": "Field registry",
+          "description": "Growers shall register fields with boundary coordinates.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-crop",
+          "title": "Crop plan",
+          "description": "Growers shall record the crop planted in each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        }
+      ],
+      "queries": [
+        {
+          "id": "scale-5-q01",
+          "message": "Let growers choose when each field gets irrigated.",
+          "expected_requirement_ids": [
+            "fl-water"
+          ],
+          "categories": [
+            "one_target",
+            "paraphrase"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-5-q02",
+          "message": "Allow operators to turn an irrigation pump off from their phone.",
+          "expected_requirement_ids": [
+            "fl-pump"
+          ],
+          "categories": [
+            "one_target",
+            "partial_modification"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-5-q03",
+          "message": "Track how much water every paddock consumes.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "low_overlap"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-5-q04",
+          "message": "Record what was planted and adjust its watering timetable.",
+          "expected_requirement_ids": [
+            "fl-crop",
+            "fl-water"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-5-q05",
+          "message": "Register the boundary of each field and its planted crop.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-5-q06",
+          "message": "Schedule field watering, start the pump remotely, and log the water volume used.",
+          "expected_requirement_ids": [
+            "fl-water",
+            "fl-pump",
+            "fl-meter"
+          ],
+          "categories": [
+            "three_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-5-q07",
+          "message": "Register field boundaries, note the crop planted, schedule watering, and record the volume consumed.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop",
+            "fl-water",
+            "fl-meter"
+          ],
+          "categories": [
+            "four_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-5-q08",
+          "message": "Add a cafeteria menu for farm staff.",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-5-q09",
+          "message": "Stop recording the irrigation water volume by field.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "negation"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-5-q10",
+          "message": "Could the farm publish a children's music playlist?",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative",
+            "question"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        }
+      ]
+    },
+    {
+      "id": "scale-8",
+      "size": "small",
+      "project_size": 8,
+      "requirements": [
+        {
+          "id": "fl-water",
+          "title": "Irrigation schedule",
+          "description": "Growers shall schedule watering for each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pump",
+          "title": "Pump control",
+          "description": "Operators shall start and stop irrigation pumps remotely.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-meter",
+          "title": "Water meter",
+          "description": "Sensors shall record irrigation water volume by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-field",
+          "title": "Field registry",
+          "description": "Growers shall register fields with boundary coordinates.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-crop",
+          "title": "Crop plan",
+          "description": "Growers shall record the crop planted in each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "synthetic-allocation",
+          "title": "Water allocation approval",
+          "description": "Supervisors shall approve monthly irrigation water allocations for farm departments.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-pump-service",
+          "title": "Irrigation pump maintenance",
+          "description": "Mechanics shall inspect irrigation pumps for wear each month.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-drainage",
+          "title": "Field drainage survey",
+          "description": "Surveyors shall map standing water and drainage channels in each field.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        }
+      ],
+      "queries": [
+        {
+          "id": "scale-8-q01",
+          "message": "Let growers choose when each field gets irrigated.",
+          "expected_requirement_ids": [
+            "fl-water"
+          ],
+          "categories": [
+            "one_target",
+            "paraphrase"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-8-q02",
+          "message": "Allow operators to turn an irrigation pump off from their phone.",
+          "expected_requirement_ids": [
+            "fl-pump"
+          ],
+          "categories": [
+            "one_target",
+            "partial_modification"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-8-q03",
+          "message": "Track how much water every paddock consumes.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "low_overlap"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-8-q04",
+          "message": "Record what was planted and adjust its watering timetable.",
+          "expected_requirement_ids": [
+            "fl-crop",
+            "fl-water"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-8-q05",
+          "message": "Register the boundary of each field and its planted crop.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-8-q06",
+          "message": "Schedule field watering, start the pump remotely, and log the water volume used.",
+          "expected_requirement_ids": [
+            "fl-water",
+            "fl-pump",
+            "fl-meter"
+          ],
+          "categories": [
+            "three_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-8-q07",
+          "message": "Register field boundaries, note the crop planted, schedule watering, and record the volume consumed.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop",
+            "fl-water",
+            "fl-meter"
+          ],
+          "categories": [
+            "four_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-8-q08",
+          "message": "Add a cafeteria menu for farm staff.",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-8-q09",
+          "message": "Stop recording the irrigation water volume by field.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "negation"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-8-q10",
+          "message": "Could the farm publish a children's music playlist?",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative",
+            "question"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        }
+      ]
+    },
+    {
+      "id": "scale-10",
+      "size": "small",
+      "project_size": 10,
+      "requirements": [
+        {
+          "id": "fl-water",
+          "title": "Irrigation schedule",
+          "description": "Growers shall schedule watering for each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pump",
+          "title": "Pump control",
+          "description": "Operators shall start and stop irrigation pumps remotely.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-meter",
+          "title": "Water meter",
+          "description": "Sensors shall record irrigation water volume by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-field",
+          "title": "Field registry",
+          "description": "Growers shall register fields with boundary coordinates.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-crop",
+          "title": "Crop plan",
+          "description": "Growers shall record the crop planted in each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "synthetic-allocation",
+          "title": "Water allocation approval",
+          "description": "Supervisors shall approve monthly irrigation water allocations for farm departments.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-pump-service",
+          "title": "Irrigation pump maintenance",
+          "description": "Mechanics shall inspect irrigation pumps for wear each month.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-drainage",
+          "title": "Field drainage survey",
+          "description": "Surveyors shall map standing water and drainage channels in each field.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-crop-forecast",
+          "title": "Crop yield forecast",
+          "description": "Analysts shall estimate seasonal crop yield from historical records.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "fl-seed",
+          "title": "Seed stock",
+          "description": "Storekeepers shall track quantities of seed by variety.",
+          "source": "phase_iii_e_dev:farm-large"
+        }
+      ],
+      "queries": [
+        {
+          "id": "scale-10-q01",
+          "message": "Let growers choose when each field gets irrigated.",
+          "expected_requirement_ids": [
+            "fl-water"
+          ],
+          "categories": [
+            "one_target",
+            "paraphrase"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-10-q02",
+          "message": "Allow operators to turn an irrigation pump off from their phone.",
+          "expected_requirement_ids": [
+            "fl-pump"
+          ],
+          "categories": [
+            "one_target",
+            "partial_modification"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-10-q03",
+          "message": "Track how much water every paddock consumes.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "low_overlap"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-10-q04",
+          "message": "Record what was planted and adjust its watering timetable.",
+          "expected_requirement_ids": [
+            "fl-crop",
+            "fl-water"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-10-q05",
+          "message": "Register the boundary of each field and its planted crop.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-10-q06",
+          "message": "Schedule field watering, start the pump remotely, and log the water volume used.",
+          "expected_requirement_ids": [
+            "fl-water",
+            "fl-pump",
+            "fl-meter"
+          ],
+          "categories": [
+            "three_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-10-q07",
+          "message": "Register field boundaries, note the crop planted, schedule watering, and record the volume consumed.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop",
+            "fl-water",
+            "fl-meter"
+          ],
+          "categories": [
+            "four_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-10-q08",
+          "message": "Add a cafeteria menu for farm staff.",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-10-q09",
+          "message": "Stop recording the irrigation water volume by field.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "negation"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-10-q10",
+          "message": "Could the farm publish a children's music playlist?",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative",
+            "question"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        }
+      ]
+    },
+    {
+      "id": "scale-16",
+      "size": "medium",
+      "project_size": 16,
+      "requirements": [
+        {
+          "id": "fl-water",
+          "title": "Irrigation schedule",
+          "description": "Growers shall schedule watering for each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pump",
+          "title": "Pump control",
+          "description": "Operators shall start and stop irrigation pumps remotely.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-meter",
+          "title": "Water meter",
+          "description": "Sensors shall record irrigation water volume by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-field",
+          "title": "Field registry",
+          "description": "Growers shall register fields with boundary coordinates.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-crop",
+          "title": "Crop plan",
+          "description": "Growers shall record the crop planted in each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "synthetic-allocation",
+          "title": "Water allocation approval",
+          "description": "Supervisors shall approve monthly irrigation water allocations for farm departments.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-pump-service",
+          "title": "Irrigation pump maintenance",
+          "description": "Mechanics shall inspect irrigation pumps for wear each month.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-drainage",
+          "title": "Field drainage survey",
+          "description": "Surveyors shall map standing water and drainage channels in each field.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-crop-forecast",
+          "title": "Crop yield forecast",
+          "description": "Analysts shall estimate seasonal crop yield from historical records.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "fl-seed",
+          "title": "Seed stock",
+          "description": "Storekeepers shall track quantities of seed by variety.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-soil",
+          "title": "Soil sample",
+          "description": "Technicians shall record soil test results by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-rain",
+          "title": "Rainfall log",
+          "description": "Sensors shall record daily rainfall at each farm.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-temp",
+          "title": "Air temperature log",
+          "description": "Sensors shall record hourly air temperature at each farm.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-frost",
+          "title": "Frost warning",
+          "description": "Growers shall receive an alert before forecast frost.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pest",
+          "title": "Pest sighting",
+          "description": "Workers shall report pest sightings by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-spray",
+          "title": "Spray plan",
+          "description": "Supervisors shall approve pesticide spray plans before application.",
+          "source": "phase_iii_e_dev:farm-large"
+        }
+      ],
+      "queries": [
+        {
+          "id": "scale-16-q01",
+          "message": "Let growers choose when each field gets irrigated.",
+          "expected_requirement_ids": [
+            "fl-water"
+          ],
+          "categories": [
+            "one_target",
+            "paraphrase"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-16-q02",
+          "message": "Allow operators to turn an irrigation pump off from their phone.",
+          "expected_requirement_ids": [
+            "fl-pump"
+          ],
+          "categories": [
+            "one_target",
+            "partial_modification"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-16-q03",
+          "message": "Track how much water every paddock consumes.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "low_overlap"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-16-q04",
+          "message": "Record what was planted and adjust its watering timetable.",
+          "expected_requirement_ids": [
+            "fl-crop",
+            "fl-water"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-16-q05",
+          "message": "Register the boundary of each field and its planted crop.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-16-q06",
+          "message": "Schedule field watering, start the pump remotely, and log the water volume used.",
+          "expected_requirement_ids": [
+            "fl-water",
+            "fl-pump",
+            "fl-meter"
+          ],
+          "categories": [
+            "three_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-16-q07",
+          "message": "Register field boundaries, note the crop planted, schedule watering, and record the volume consumed.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop",
+            "fl-water",
+            "fl-meter"
+          ],
+          "categories": [
+            "four_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-16-q08",
+          "message": "Add a cafeteria menu for farm staff.",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-16-q09",
+          "message": "Stop recording the irrigation water volume by field.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "negation"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-16-q10",
+          "message": "Could the farm publish a children's music playlist?",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative",
+            "question"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        }
+      ]
+    },
+    {
+      "id": "scale-20",
+      "size": "medium",
+      "project_size": 20,
+      "requirements": [
+        {
+          "id": "fl-water",
+          "title": "Irrigation schedule",
+          "description": "Growers shall schedule watering for each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pump",
+          "title": "Pump control",
+          "description": "Operators shall start and stop irrigation pumps remotely.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-meter",
+          "title": "Water meter",
+          "description": "Sensors shall record irrigation water volume by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-field",
+          "title": "Field registry",
+          "description": "Growers shall register fields with boundary coordinates.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-crop",
+          "title": "Crop plan",
+          "description": "Growers shall record the crop planted in each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "synthetic-allocation",
+          "title": "Water allocation approval",
+          "description": "Supervisors shall approve monthly irrigation water allocations for farm departments.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-pump-service",
+          "title": "Irrigation pump maintenance",
+          "description": "Mechanics shall inspect irrigation pumps for wear each month.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-drainage",
+          "title": "Field drainage survey",
+          "description": "Surveyors shall map standing water and drainage channels in each field.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-crop-forecast",
+          "title": "Crop yield forecast",
+          "description": "Analysts shall estimate seasonal crop yield from historical records.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "fl-seed",
+          "title": "Seed stock",
+          "description": "Storekeepers shall track quantities of seed by variety.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-soil",
+          "title": "Soil sample",
+          "description": "Technicians shall record soil test results by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-rain",
+          "title": "Rainfall log",
+          "description": "Sensors shall record daily rainfall at each farm.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-temp",
+          "title": "Air temperature log",
+          "description": "Sensors shall record hourly air temperature at each farm.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-frost",
+          "title": "Frost warning",
+          "description": "Growers shall receive an alert before forecast frost.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pest",
+          "title": "Pest sighting",
+          "description": "Workers shall report pest sightings by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-spray",
+          "title": "Spray plan",
+          "description": "Supervisors shall approve pesticide spray plans before application.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-chem",
+          "title": "Chemical inventory",
+          "description": "Storekeepers shall track pesticide container quantities and expiry dates.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-tractor",
+          "title": "Tractor assignment",
+          "description": "Managers shall assign tractors to field jobs.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-fuel",
+          "title": "Fuel log",
+          "description": "Drivers shall log fuel added to farm vehicles.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-service",
+          "title": "Machine service",
+          "description": "Mechanics shall record scheduled maintenance of farm machines.",
+          "source": "phase_iii_e_dev:farm-large"
+        }
+      ],
+      "queries": [
+        {
+          "id": "scale-20-q01",
+          "message": "Let growers choose when each field gets irrigated.",
+          "expected_requirement_ids": [
+            "fl-water"
+          ],
+          "categories": [
+            "one_target",
+            "paraphrase"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-20-q02",
+          "message": "Allow operators to turn an irrigation pump off from their phone.",
+          "expected_requirement_ids": [
+            "fl-pump"
+          ],
+          "categories": [
+            "one_target",
+            "partial_modification"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-20-q03",
+          "message": "Track how much water every paddock consumes.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "low_overlap"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-20-q04",
+          "message": "Record what was planted and adjust its watering timetable.",
+          "expected_requirement_ids": [
+            "fl-crop",
+            "fl-water"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-20-q05",
+          "message": "Register the boundary of each field and its planted crop.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-20-q06",
+          "message": "Schedule field watering, start the pump remotely, and log the water volume used.",
+          "expected_requirement_ids": [
+            "fl-water",
+            "fl-pump",
+            "fl-meter"
+          ],
+          "categories": [
+            "three_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-20-q07",
+          "message": "Register field boundaries, note the crop planted, schedule watering, and record the volume consumed.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop",
+            "fl-water",
+            "fl-meter"
+          ],
+          "categories": [
+            "four_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-20-q08",
+          "message": "Add a cafeteria menu for farm staff.",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-20-q09",
+          "message": "Stop recording the irrigation water volume by field.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "negation"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-20-q10",
+          "message": "Could the farm publish a children's music playlist?",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative",
+            "question"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        }
+      ]
+    },
+    {
+      "id": "scale-32",
+      "size": "medium",
+      "project_size": 32,
+      "requirements": [
+        {
+          "id": "fl-water",
+          "title": "Irrigation schedule",
+          "description": "Growers shall schedule watering for each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pump",
+          "title": "Pump control",
+          "description": "Operators shall start and stop irrigation pumps remotely.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-meter",
+          "title": "Water meter",
+          "description": "Sensors shall record irrigation water volume by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-field",
+          "title": "Field registry",
+          "description": "Growers shall register fields with boundary coordinates.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-crop",
+          "title": "Crop plan",
+          "description": "Growers shall record the crop planted in each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "synthetic-allocation",
+          "title": "Water allocation approval",
+          "description": "Supervisors shall approve monthly irrigation water allocations for farm departments.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-pump-service",
+          "title": "Irrigation pump maintenance",
+          "description": "Mechanics shall inspect irrigation pumps for wear each month.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-drainage",
+          "title": "Field drainage survey",
+          "description": "Surveyors shall map standing water and drainage channels in each field.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-crop-forecast",
+          "title": "Crop yield forecast",
+          "description": "Analysts shall estimate seasonal crop yield from historical records.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "fl-seed",
+          "title": "Seed stock",
+          "description": "Storekeepers shall track quantities of seed by variety.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-soil",
+          "title": "Soil sample",
+          "description": "Technicians shall record soil test results by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-rain",
+          "title": "Rainfall log",
+          "description": "Sensors shall record daily rainfall at each farm.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-temp",
+          "title": "Air temperature log",
+          "description": "Sensors shall record hourly air temperature at each farm.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-frost",
+          "title": "Frost warning",
+          "description": "Growers shall receive an alert before forecast frost.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pest",
+          "title": "Pest sighting",
+          "description": "Workers shall report pest sightings by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-spray",
+          "title": "Spray plan",
+          "description": "Supervisors shall approve pesticide spray plans before application.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-chem",
+          "title": "Chemical inventory",
+          "description": "Storekeepers shall track pesticide container quantities and expiry dates.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-tractor",
+          "title": "Tractor assignment",
+          "description": "Managers shall assign tractors to field jobs.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-fuel",
+          "title": "Fuel log",
+          "description": "Drivers shall log fuel added to farm vehicles.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-service",
+          "title": "Machine service",
+          "description": "Mechanics shall record scheduled maintenance of farm machines.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-crew",
+          "title": "Worker roster",
+          "description": "Managers shall assign workers to daily farm shifts.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-hours",
+          "title": "Work hours",
+          "description": "Workers shall submit hours worked per shift.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-safety",
+          "title": "Safety incident",
+          "description": "Supervisors shall record workplace safety incidents.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-harvest",
+          "title": "Harvest record",
+          "description": "Workers shall record harvested crop weight by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-quality",
+          "title": "Produce grade",
+          "description": "Inspectors shall grade harvested produce by batch.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-batch",
+          "title": "Batch traceability",
+          "description": "Packers shall link produce batches to source fields.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pack",
+          "title": "Packing order",
+          "description": "Packers shall record cases packed for each customer order.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-cold",
+          "title": "Cold room temperature",
+          "description": "Sensors shall log cold room temperature every fifteen minutes.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-ship",
+          "title": "Shipment dispatch",
+          "description": "Dispatchers shall record produce shipments leaving the farm.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-recall",
+          "title": "Produce recall",
+          "description": "Quality staff shall identify and hold batches affected by a recall.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-sale",
+          "title": "Produce sale",
+          "description": "Sales staff shall invoice customers for produce orders.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pay",
+          "title": "Customer payment",
+          "description": "Finance staff shall record payments received against invoices.",
+          "source": "phase_iii_e_dev:farm-large"
+        }
+      ],
+      "queries": [
+        {
+          "id": "scale-32-q01",
+          "message": "Let growers choose when each field gets irrigated.",
+          "expected_requirement_ids": [
+            "fl-water"
+          ],
+          "categories": [
+            "one_target",
+            "paraphrase"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-32-q02",
+          "message": "Allow operators to turn an irrigation pump off from their phone.",
+          "expected_requirement_ids": [
+            "fl-pump"
+          ],
+          "categories": [
+            "one_target",
+            "partial_modification"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-32-q03",
+          "message": "Track how much water every paddock consumes.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "low_overlap"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-32-q04",
+          "message": "Record what was planted and adjust its watering timetable.",
+          "expected_requirement_ids": [
+            "fl-crop",
+            "fl-water"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-32-q05",
+          "message": "Register the boundary of each field and its planted crop.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-32-q06",
+          "message": "Schedule field watering, start the pump remotely, and log the water volume used.",
+          "expected_requirement_ids": [
+            "fl-water",
+            "fl-pump",
+            "fl-meter"
+          ],
+          "categories": [
+            "three_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-32-q07",
+          "message": "Register field boundaries, note the crop planted, schedule watering, and record the volume consumed.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop",
+            "fl-water",
+            "fl-meter"
+          ],
+          "categories": [
+            "four_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-32-q08",
+          "message": "Add a cafeteria menu for farm staff.",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-32-q09",
+          "message": "Stop recording the irrigation water volume by field.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "negation"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-32-q10",
+          "message": "Could the farm publish a children's music playlist?",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative",
+            "question"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        }
+      ]
+    },
+    {
+      "id": "scale-50",
+      "size": "large",
+      "project_size": 50,
+      "requirements": [
+        {
+          "id": "fl-water",
+          "title": "Irrigation schedule",
+          "description": "Growers shall schedule watering for each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pump",
+          "title": "Pump control",
+          "description": "Operators shall start and stop irrigation pumps remotely.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-meter",
+          "title": "Water meter",
+          "description": "Sensors shall record irrigation water volume by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-field",
+          "title": "Field registry",
+          "description": "Growers shall register fields with boundary coordinates.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-crop",
+          "title": "Crop plan",
+          "description": "Growers shall record the crop planted in each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "synthetic-allocation",
+          "title": "Water allocation approval",
+          "description": "Supervisors shall approve monthly irrigation water allocations for farm departments.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-pump-service",
+          "title": "Irrigation pump maintenance",
+          "description": "Mechanics shall inspect irrigation pumps for wear each month.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-drainage",
+          "title": "Field drainage survey",
+          "description": "Surveyors shall map standing water and drainage channels in each field.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-crop-forecast",
+          "title": "Crop yield forecast",
+          "description": "Analysts shall estimate seasonal crop yield from historical records.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "fl-seed",
+          "title": "Seed stock",
+          "description": "Storekeepers shall track quantities of seed by variety.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-soil",
+          "title": "Soil sample",
+          "description": "Technicians shall record soil test results by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-rain",
+          "title": "Rainfall log",
+          "description": "Sensors shall record daily rainfall at each farm.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-temp",
+          "title": "Air temperature log",
+          "description": "Sensors shall record hourly air temperature at each farm.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-frost",
+          "title": "Frost warning",
+          "description": "Growers shall receive an alert before forecast frost.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pest",
+          "title": "Pest sighting",
+          "description": "Workers shall report pest sightings by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-spray",
+          "title": "Spray plan",
+          "description": "Supervisors shall approve pesticide spray plans before application.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-chem",
+          "title": "Chemical inventory",
+          "description": "Storekeepers shall track pesticide container quantities and expiry dates.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-tractor",
+          "title": "Tractor assignment",
+          "description": "Managers shall assign tractors to field jobs.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-fuel",
+          "title": "Fuel log",
+          "description": "Drivers shall log fuel added to farm vehicles.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-service",
+          "title": "Machine service",
+          "description": "Mechanics shall record scheduled maintenance of farm machines.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-crew",
+          "title": "Worker roster",
+          "description": "Managers shall assign workers to daily farm shifts.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-hours",
+          "title": "Work hours",
+          "description": "Workers shall submit hours worked per shift.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-safety",
+          "title": "Safety incident",
+          "description": "Supervisors shall record workplace safety incidents.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-harvest",
+          "title": "Harvest record",
+          "description": "Workers shall record harvested crop weight by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-quality",
+          "title": "Produce grade",
+          "description": "Inspectors shall grade harvested produce by batch.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-batch",
+          "title": "Batch traceability",
+          "description": "Packers shall link produce batches to source fields.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pack",
+          "title": "Packing order",
+          "description": "Packers shall record cases packed for each customer order.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-cold",
+          "title": "Cold room temperature",
+          "description": "Sensors shall log cold room temperature every fifteen minutes.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-ship",
+          "title": "Shipment dispatch",
+          "description": "Dispatchers shall record produce shipments leaving the farm.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-recall",
+          "title": "Produce recall",
+          "description": "Quality staff shall identify and hold batches affected by a recall.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-sale",
+          "title": "Produce sale",
+          "description": "Sales staff shall invoice customers for produce orders.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pay",
+          "title": "Customer payment",
+          "description": "Finance staff shall record payments received against invoices.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-report",
+          "title": "Yield report",
+          "description": "Managers shall export monthly crop yield by field as CSV.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-access",
+          "title": "Staff access",
+          "description": "Administrators shall assign grower, worker, manager, and finance roles.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-photo",
+          "title": "Field photographs",
+          "description": "Workers shall attach photographs to field inspection notes.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-audit",
+          "title": "Change audit",
+          "description": "The system shall record who edited a farm record and when.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "ls-card",
+          "title": "Borrower card",
+          "description": "Residents shall register for a library card using proof of address.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-renew",
+          "title": "Loan renewal",
+          "description": "Borrowers shall extend a book loan before its due date.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-return",
+          "title": "Book return",
+          "description": "Borrowers shall return borrowed books at a staffed desk or return box.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-fine",
+          "title": "Overdue charge",
+          "description": "Borrowers shall pay a daily charge for overdue books.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-hold",
+          "title": "Book reservation",
+          "description": "Borrowers shall reserve a checked-out book and receive notice when it is ready.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-room",
+          "title": "Study room booking",
+          "description": "Members shall reserve an available study room time slot.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-event",
+          "title": "Reading event signup",
+          "description": "Visitors shall register for a reading event with limited seats.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-search",
+          "title": "Catalogue search",
+          "description": "Visitors shall search the book catalogue by title, author, or subject.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "rm-route",
+          "title": "Journey planner",
+          "description": "Passengers shall plan a train journey between stations.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-fare",
+          "title": "Fare quote",
+          "description": "Passengers shall view the fare for a selected journey.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-buy",
+          "title": "Ticket purchase",
+          "description": "Passengers shall buy a train ticket by payment card.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-refund",
+          "title": "Ticket refund",
+          "description": "Passengers shall request a refund for an unused ticket.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-gate",
+          "title": "Station gate validation",
+          "description": "A station gate shall validate the barcode on a ticket.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-delay",
+          "title": "Delay notice",
+          "description": "Passengers shall receive a push notification when their train is delayed.",
+          "source": "phase_iii_e_dev:rail-medium"
+        }
+      ],
+      "queries": [
+        {
+          "id": "scale-50-q01",
+          "message": "Let growers choose when each field gets irrigated.",
+          "expected_requirement_ids": [
+            "fl-water"
+          ],
+          "categories": [
+            "one_target",
+            "paraphrase"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-50-q02",
+          "message": "Allow operators to turn an irrigation pump off from their phone.",
+          "expected_requirement_ids": [
+            "fl-pump"
+          ],
+          "categories": [
+            "one_target",
+            "partial_modification"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-50-q03",
+          "message": "Track how much water every paddock consumes.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "low_overlap"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-50-q04",
+          "message": "Record what was planted and adjust its watering timetable.",
+          "expected_requirement_ids": [
+            "fl-crop",
+            "fl-water"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-50-q05",
+          "message": "Register the boundary of each field and its planted crop.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-50-q06",
+          "message": "Schedule field watering, start the pump remotely, and log the water volume used.",
+          "expected_requirement_ids": [
+            "fl-water",
+            "fl-pump",
+            "fl-meter"
+          ],
+          "categories": [
+            "three_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-50-q07",
+          "message": "Register field boundaries, note the crop planted, schedule watering, and record the volume consumed.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop",
+            "fl-water",
+            "fl-meter"
+          ],
+          "categories": [
+            "four_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-50-q08",
+          "message": "Add a cafeteria menu for farm staff.",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-50-q09",
+          "message": "Stop recording the irrigation water volume by field.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "negation"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-50-q10",
+          "message": "Could the farm publish a children's music playlist?",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative",
+            "question"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        }
+      ]
+    },
+    {
+      "id": "scale-75",
+      "size": "large",
+      "project_size": 75,
+      "requirements": [
+        {
+          "id": "fl-water",
+          "title": "Irrigation schedule",
+          "description": "Growers shall schedule watering for each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pump",
+          "title": "Pump control",
+          "description": "Operators shall start and stop irrigation pumps remotely.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-meter",
+          "title": "Water meter",
+          "description": "Sensors shall record irrigation water volume by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-field",
+          "title": "Field registry",
+          "description": "Growers shall register fields with boundary coordinates.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-crop",
+          "title": "Crop plan",
+          "description": "Growers shall record the crop planted in each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "synthetic-allocation",
+          "title": "Water allocation approval",
+          "description": "Supervisors shall approve monthly irrigation water allocations for farm departments.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-pump-service",
+          "title": "Irrigation pump maintenance",
+          "description": "Mechanics shall inspect irrigation pumps for wear each month.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-drainage",
+          "title": "Field drainage survey",
+          "description": "Surveyors shall map standing water and drainage channels in each field.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-crop-forecast",
+          "title": "Crop yield forecast",
+          "description": "Analysts shall estimate seasonal crop yield from historical records.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "fl-seed",
+          "title": "Seed stock",
+          "description": "Storekeepers shall track quantities of seed by variety.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-soil",
+          "title": "Soil sample",
+          "description": "Technicians shall record soil test results by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-rain",
+          "title": "Rainfall log",
+          "description": "Sensors shall record daily rainfall at each farm.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-temp",
+          "title": "Air temperature log",
+          "description": "Sensors shall record hourly air temperature at each farm.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-frost",
+          "title": "Frost warning",
+          "description": "Growers shall receive an alert before forecast frost.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pest",
+          "title": "Pest sighting",
+          "description": "Workers shall report pest sightings by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-spray",
+          "title": "Spray plan",
+          "description": "Supervisors shall approve pesticide spray plans before application.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-chem",
+          "title": "Chemical inventory",
+          "description": "Storekeepers shall track pesticide container quantities and expiry dates.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-tractor",
+          "title": "Tractor assignment",
+          "description": "Managers shall assign tractors to field jobs.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-fuel",
+          "title": "Fuel log",
+          "description": "Drivers shall log fuel added to farm vehicles.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-service",
+          "title": "Machine service",
+          "description": "Mechanics shall record scheduled maintenance of farm machines.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-crew",
+          "title": "Worker roster",
+          "description": "Managers shall assign workers to daily farm shifts.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-hours",
+          "title": "Work hours",
+          "description": "Workers shall submit hours worked per shift.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-safety",
+          "title": "Safety incident",
+          "description": "Supervisors shall record workplace safety incidents.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-harvest",
+          "title": "Harvest record",
+          "description": "Workers shall record harvested crop weight by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-quality",
+          "title": "Produce grade",
+          "description": "Inspectors shall grade harvested produce by batch.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-batch",
+          "title": "Batch traceability",
+          "description": "Packers shall link produce batches to source fields.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pack",
+          "title": "Packing order",
+          "description": "Packers shall record cases packed for each customer order.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-cold",
+          "title": "Cold room temperature",
+          "description": "Sensors shall log cold room temperature every fifteen minutes.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-ship",
+          "title": "Shipment dispatch",
+          "description": "Dispatchers shall record produce shipments leaving the farm.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-recall",
+          "title": "Produce recall",
+          "description": "Quality staff shall identify and hold batches affected by a recall.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-sale",
+          "title": "Produce sale",
+          "description": "Sales staff shall invoice customers for produce orders.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pay",
+          "title": "Customer payment",
+          "description": "Finance staff shall record payments received against invoices.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-report",
+          "title": "Yield report",
+          "description": "Managers shall export monthly crop yield by field as CSV.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-access",
+          "title": "Staff access",
+          "description": "Administrators shall assign grower, worker, manager, and finance roles.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-photo",
+          "title": "Field photographs",
+          "description": "Workers shall attach photographs to field inspection notes.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-audit",
+          "title": "Change audit",
+          "description": "The system shall record who edited a farm record and when.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "ls-card",
+          "title": "Borrower card",
+          "description": "Residents shall register for a library card using proof of address.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-renew",
+          "title": "Loan renewal",
+          "description": "Borrowers shall extend a book loan before its due date.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-return",
+          "title": "Book return",
+          "description": "Borrowers shall return borrowed books at a staffed desk or return box.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-fine",
+          "title": "Overdue charge",
+          "description": "Borrowers shall pay a daily charge for overdue books.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-hold",
+          "title": "Book reservation",
+          "description": "Borrowers shall reserve a checked-out book and receive notice when it is ready.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-room",
+          "title": "Study room booking",
+          "description": "Members shall reserve an available study room time slot.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-event",
+          "title": "Reading event signup",
+          "description": "Visitors shall register for a reading event with limited seats.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-search",
+          "title": "Catalogue search",
+          "description": "Visitors shall search the book catalogue by title, author, or subject.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "rm-route",
+          "title": "Journey planner",
+          "description": "Passengers shall plan a train journey between stations.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-fare",
+          "title": "Fare quote",
+          "description": "Passengers shall view the fare for a selected journey.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-buy",
+          "title": "Ticket purchase",
+          "description": "Passengers shall buy a train ticket by payment card.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-refund",
+          "title": "Ticket refund",
+          "description": "Passengers shall request a refund for an unused ticket.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-gate",
+          "title": "Station gate validation",
+          "description": "A station gate shall validate the barcode on a ticket.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-delay",
+          "title": "Delay notice",
+          "description": "Passengers shall receive a push notification when their train is delayed.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-platform",
+          "title": "Platform display",
+          "description": "Station screens shall show each train's departure platform.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-access",
+          "title": "Accessible assistance",
+          "description": "Passengers shall book boarding assistance for a wheelchair journey.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-bike",
+          "title": "Bicycle place",
+          "description": "Passengers shall reserve a bicycle space on a train.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-seat",
+          "title": "Seat reservation",
+          "description": "Passengers shall reserve an available numbered seat.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-crew",
+          "title": "Crew roster",
+          "description": "Dispatchers shall assign train crew to scheduled services.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-maint",
+          "title": "Vehicle maintenance",
+          "description": "Depot staff shall log scheduled maintenance of train vehicles.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-inc",
+          "title": "Service incident",
+          "description": "Controllers shall record service disruption incidents.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-lost",
+          "title": "Lost property",
+          "description": "Station staff shall register items found on trains.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-map",
+          "title": "Station map",
+          "description": "Visitors shall view a map of station entrances and exits.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-pass",
+          "title": "Season pass",
+          "description": "Commuters shall purchase a monthly travel pass.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "c-login",
+          "title": "Patient email login",
+          "description": "Patients shall sign in using their email address and password.",
+          "source": "retrieval_dev_v2:clinic-small"
+        },
+        {
+          "id": "c-reset",
+          "title": "Password recovery",
+          "description": "Patients shall reset a forgotten password through an emailed recovery link.",
+          "source": "retrieval_dev_v2:clinic-small"
+        },
+        {
+          "id": "c-book",
+          "title": "Appointment booking",
+          "description": "Patients shall book an available appointment with a clinician.",
+          "source": "retrieval_dev_v2:clinic-small"
+        },
+        {
+          "id": "c-cancel",
+          "title": "Appointment cancellation",
+          "description": "Patients shall cancel an appointment until 24 hours before its scheduled time.",
+          "source": "retrieval_dev_v2:clinic-small"
+        },
+        {
+          "id": "c-invoice",
+          "title": "Invoice card payment",
+          "description": "Patients shall pay an outstanding invoice online by card.",
+          "source": "retrieval_dev_v2:clinic-small"
+        },
+        {
+          "id": "c-report",
+          "title": "Clinic report export",
+          "description": "Administrators shall export monthly clinic reports as CSV files.",
+          "source": "retrieval_dev_v2:clinic-small"
+        },
+        {
+          "id": "c-notify",
+          "title": "Appointment notifications",
+          "description": "Patients shall receive appointment booking, change, and cancellation emails.",
+          "source": "retrieval_dev_v2:clinic-small"
+        },
+        {
+          "id": "c-prescription",
+          "title": "Prescription documents",
+          "description": "Patients shall download prescription PDF files from their visit history.",
+          "source": "retrieval_dev_v2:clinic-small"
+        },
+        {
+          "id": "e-auth",
+          "title": "Customer authentication",
+          "description": "Registered customers shall log in with email and password.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-guest",
+          "title": "Guest checkout",
+          "description": "Shoppers shall place an order without creating an account.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-search",
+          "title": "Product search",
+          "description": "Shoppers shall search products by name, category, and brand.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-filter",
+          "title": "Catalog filters",
+          "description": "Shoppers shall filter product listings by price, rating, availability, and category.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-cart",
+          "title": "Shopping cart",
+          "description": "Shoppers shall add, remove, and change quantities of products in a cart.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-pay",
+          "title": "Order payment",
+          "description": "Customers shall pay for an order by card or bank transfer.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-refund",
+          "title": "Refund processing",
+          "description": "Support agents shall issue full or partial refunds to the original payment method.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        }
+      ],
+      "queries": [
+        {
+          "id": "scale-75-q01",
+          "message": "Let growers choose when each field gets irrigated.",
+          "expected_requirement_ids": [
+            "fl-water"
+          ],
+          "categories": [
+            "one_target",
+            "paraphrase"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-75-q02",
+          "message": "Allow operators to turn an irrigation pump off from their phone.",
+          "expected_requirement_ids": [
+            "fl-pump"
+          ],
+          "categories": [
+            "one_target",
+            "partial_modification"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-75-q03",
+          "message": "Track how much water every paddock consumes.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "low_overlap"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-75-q04",
+          "message": "Record what was planted and adjust its watering timetable.",
+          "expected_requirement_ids": [
+            "fl-crop",
+            "fl-water"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-75-q05",
+          "message": "Register the boundary of each field and its planted crop.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-75-q06",
+          "message": "Schedule field watering, start the pump remotely, and log the water volume used.",
+          "expected_requirement_ids": [
+            "fl-water",
+            "fl-pump",
+            "fl-meter"
+          ],
+          "categories": [
+            "three_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-75-q07",
+          "message": "Register field boundaries, note the crop planted, schedule watering, and record the volume consumed.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop",
+            "fl-water",
+            "fl-meter"
+          ],
+          "categories": [
+            "four_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-75-q08",
+          "message": "Add a cafeteria menu for farm staff.",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-75-q09",
+          "message": "Stop recording the irrigation water volume by field.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "negation"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-75-q10",
+          "message": "Could the farm publish a children's music playlist?",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative",
+            "question"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        }
+      ]
+    },
+    {
+      "id": "scale-100",
+      "size": "large",
+      "project_size": 100,
+      "requirements": [
+        {
+          "id": "fl-water",
+          "title": "Irrigation schedule",
+          "description": "Growers shall schedule watering for each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pump",
+          "title": "Pump control",
+          "description": "Operators shall start and stop irrigation pumps remotely.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-meter",
+          "title": "Water meter",
+          "description": "Sensors shall record irrigation water volume by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-field",
+          "title": "Field registry",
+          "description": "Growers shall register fields with boundary coordinates.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-crop",
+          "title": "Crop plan",
+          "description": "Growers shall record the crop planted in each field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "synthetic-allocation",
+          "title": "Water allocation approval",
+          "description": "Supervisors shall approve monthly irrigation water allocations for farm departments.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-pump-service",
+          "title": "Irrigation pump maintenance",
+          "description": "Mechanics shall inspect irrigation pumps for wear each month.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-drainage",
+          "title": "Field drainage survey",
+          "description": "Surveyors shall map standing water and drainage channels in each field.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "synthetic-crop-forecast",
+          "title": "Crop yield forecast",
+          "description": "Analysts shall estimate seasonal crop yield from historical records.",
+          "source": "phase_iii_f:synthetic_hard_distractor"
+        },
+        {
+          "id": "fl-seed",
+          "title": "Seed stock",
+          "description": "Storekeepers shall track quantities of seed by variety.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-soil",
+          "title": "Soil sample",
+          "description": "Technicians shall record soil test results by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-rain",
+          "title": "Rainfall log",
+          "description": "Sensors shall record daily rainfall at each farm.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-temp",
+          "title": "Air temperature log",
+          "description": "Sensors shall record hourly air temperature at each farm.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-frost",
+          "title": "Frost warning",
+          "description": "Growers shall receive an alert before forecast frost.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pest",
+          "title": "Pest sighting",
+          "description": "Workers shall report pest sightings by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-spray",
+          "title": "Spray plan",
+          "description": "Supervisors shall approve pesticide spray plans before application.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-chem",
+          "title": "Chemical inventory",
+          "description": "Storekeepers shall track pesticide container quantities and expiry dates.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-tractor",
+          "title": "Tractor assignment",
+          "description": "Managers shall assign tractors to field jobs.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-fuel",
+          "title": "Fuel log",
+          "description": "Drivers shall log fuel added to farm vehicles.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-service",
+          "title": "Machine service",
+          "description": "Mechanics shall record scheduled maintenance of farm machines.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-crew",
+          "title": "Worker roster",
+          "description": "Managers shall assign workers to daily farm shifts.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-hours",
+          "title": "Work hours",
+          "description": "Workers shall submit hours worked per shift.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-safety",
+          "title": "Safety incident",
+          "description": "Supervisors shall record workplace safety incidents.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-harvest",
+          "title": "Harvest record",
+          "description": "Workers shall record harvested crop weight by field.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-quality",
+          "title": "Produce grade",
+          "description": "Inspectors shall grade harvested produce by batch.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-batch",
+          "title": "Batch traceability",
+          "description": "Packers shall link produce batches to source fields.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pack",
+          "title": "Packing order",
+          "description": "Packers shall record cases packed for each customer order.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-cold",
+          "title": "Cold room temperature",
+          "description": "Sensors shall log cold room temperature every fifteen minutes.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-ship",
+          "title": "Shipment dispatch",
+          "description": "Dispatchers shall record produce shipments leaving the farm.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-recall",
+          "title": "Produce recall",
+          "description": "Quality staff shall identify and hold batches affected by a recall.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-sale",
+          "title": "Produce sale",
+          "description": "Sales staff shall invoice customers for produce orders.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-pay",
+          "title": "Customer payment",
+          "description": "Finance staff shall record payments received against invoices.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-report",
+          "title": "Yield report",
+          "description": "Managers shall export monthly crop yield by field as CSV.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-access",
+          "title": "Staff access",
+          "description": "Administrators shall assign grower, worker, manager, and finance roles.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-photo",
+          "title": "Field photographs",
+          "description": "Workers shall attach photographs to field inspection notes.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "fl-audit",
+          "title": "Change audit",
+          "description": "The system shall record who edited a farm record and when.",
+          "source": "phase_iii_e_dev:farm-large"
+        },
+        {
+          "id": "ls-card",
+          "title": "Borrower card",
+          "description": "Residents shall register for a library card using proof of address.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-renew",
+          "title": "Loan renewal",
+          "description": "Borrowers shall extend a book loan before its due date.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-return",
+          "title": "Book return",
+          "description": "Borrowers shall return borrowed books at a staffed desk or return box.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-fine",
+          "title": "Overdue charge",
+          "description": "Borrowers shall pay a daily charge for overdue books.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-hold",
+          "title": "Book reservation",
+          "description": "Borrowers shall reserve a checked-out book and receive notice when it is ready.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-room",
+          "title": "Study room booking",
+          "description": "Members shall reserve an available study room time slot.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-event",
+          "title": "Reading event signup",
+          "description": "Visitors shall register for a reading event with limited seats.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "ls-search",
+          "title": "Catalogue search",
+          "description": "Visitors shall search the book catalogue by title, author, or subject.",
+          "source": "phase_iii_e_dev:library-small"
+        },
+        {
+          "id": "rm-route",
+          "title": "Journey planner",
+          "description": "Passengers shall plan a train journey between stations.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-fare",
+          "title": "Fare quote",
+          "description": "Passengers shall view the fare for a selected journey.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-buy",
+          "title": "Ticket purchase",
+          "description": "Passengers shall buy a train ticket by payment card.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-refund",
+          "title": "Ticket refund",
+          "description": "Passengers shall request a refund for an unused ticket.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-gate",
+          "title": "Station gate validation",
+          "description": "A station gate shall validate the barcode on a ticket.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-delay",
+          "title": "Delay notice",
+          "description": "Passengers shall receive a push notification when their train is delayed.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-platform",
+          "title": "Platform display",
+          "description": "Station screens shall show each train's departure platform.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-access",
+          "title": "Accessible assistance",
+          "description": "Passengers shall book boarding assistance for a wheelchair journey.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-bike",
+          "title": "Bicycle place",
+          "description": "Passengers shall reserve a bicycle space on a train.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-seat",
+          "title": "Seat reservation",
+          "description": "Passengers shall reserve an available numbered seat.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-crew",
+          "title": "Crew roster",
+          "description": "Dispatchers shall assign train crew to scheduled services.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-maint",
+          "title": "Vehicle maintenance",
+          "description": "Depot staff shall log scheduled maintenance of train vehicles.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-inc",
+          "title": "Service incident",
+          "description": "Controllers shall record service disruption incidents.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-lost",
+          "title": "Lost property",
+          "description": "Station staff shall register items found on trains.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-map",
+          "title": "Station map",
+          "description": "Visitors shall view a map of station entrances and exits.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "rm-pass",
+          "title": "Season pass",
+          "description": "Commuters shall purchase a monthly travel pass.",
+          "source": "phase_iii_e_dev:rail-medium"
+        },
+        {
+          "id": "c-login",
+          "title": "Patient email login",
+          "description": "Patients shall sign in using their email address and password.",
+          "source": "retrieval_dev_v2:clinic-small"
+        },
+        {
+          "id": "c-reset",
+          "title": "Password recovery",
+          "description": "Patients shall reset a forgotten password through an emailed recovery link.",
+          "source": "retrieval_dev_v2:clinic-small"
+        },
+        {
+          "id": "c-book",
+          "title": "Appointment booking",
+          "description": "Patients shall book an available appointment with a clinician.",
+          "source": "retrieval_dev_v2:clinic-small"
+        },
+        {
+          "id": "c-cancel",
+          "title": "Appointment cancellation",
+          "description": "Patients shall cancel an appointment until 24 hours before its scheduled time.",
+          "source": "retrieval_dev_v2:clinic-small"
+        },
+        {
+          "id": "c-invoice",
+          "title": "Invoice card payment",
+          "description": "Patients shall pay an outstanding invoice online by card.",
+          "source": "retrieval_dev_v2:clinic-small"
+        },
+        {
+          "id": "c-report",
+          "title": "Clinic report export",
+          "description": "Administrators shall export monthly clinic reports as CSV files.",
+          "source": "retrieval_dev_v2:clinic-small"
+        },
+        {
+          "id": "c-notify",
+          "title": "Appointment notifications",
+          "description": "Patients shall receive appointment booking, change, and cancellation emails.",
+          "source": "retrieval_dev_v2:clinic-small"
+        },
+        {
+          "id": "c-prescription",
+          "title": "Prescription documents",
+          "description": "Patients shall download prescription PDF files from their visit history.",
+          "source": "retrieval_dev_v2:clinic-small"
+        },
+        {
+          "id": "e-auth",
+          "title": "Customer authentication",
+          "description": "Registered customers shall log in with email and password.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-guest",
+          "title": "Guest checkout",
+          "description": "Shoppers shall place an order without creating an account.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-search",
+          "title": "Product search",
+          "description": "Shoppers shall search products by name, category, and brand.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-filter",
+          "title": "Catalog filters",
+          "description": "Shoppers shall filter product listings by price, rating, availability, and category.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-cart",
+          "title": "Shopping cart",
+          "description": "Shoppers shall add, remove, and change quantities of products in a cart.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-pay",
+          "title": "Order payment",
+          "description": "Customers shall pay for an order by card or bank transfer.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-refund",
+          "title": "Refund processing",
+          "description": "Support agents shall issue full or partial refunds to the original payment method.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-ship",
+          "title": "Shipment tracking",
+          "description": "Customers shall track shipped orders with a carrier tracking number.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-stock",
+          "title": "Inventory availability",
+          "description": "The storefront shall hide products that are out of stock.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-review",
+          "title": "Product reviews",
+          "description": "Verified purchasers shall rate and review delivered products.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-promo",
+          "title": "Promotion codes",
+          "description": "Customers shall apply one valid promotion code during checkout.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "e-email",
+          "title": "Order emails",
+          "description": "Customers shall receive email confirmations for orders, shipments, and refunds.",
+          "source": "retrieval_dev_v2:commerce-medium"
+        },
+        {
+          "id": "s-login",
+          "title": "Member login",
+          "description": "Workspace members shall authenticate using email and password.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-sso",
+          "title": "Enterprise SSO",
+          "description": "Enterprise workspaces shall authenticate members with SAML single sign-on.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-invite",
+          "title": "Member invitations",
+          "description": "Workspace owners shall invite new members by email.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-role",
+          "title": "Workspace roles",
+          "description": "Owners shall assign owner, administrator, editor, or viewer roles.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-project",
+          "title": "Project creation",
+          "description": "Members shall create projects within a workspace.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-archive",
+          "title": "Project archive",
+          "description": "Project administrators shall archive and restore projects.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-task",
+          "title": "Task management",
+          "description": "Members shall create, assign, complete, and reopen project tasks.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-comment",
+          "title": "Task comments",
+          "description": "Members shall discuss a task in a threaded comment stream.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-file",
+          "title": "File attachments",
+          "description": "Members shall attach files up to 25 MB to tasks.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-notify",
+          "title": "Email notifications",
+          "description": "Members shall receive email alerts for assignments, mentions, and due dates.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-digest",
+          "title": "Notification digest",
+          "description": "Members shall opt into a daily email digest of workspace activity.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-search",
+          "title": "Workspace search",
+          "description": "Members shall search projects, tasks, and comments by keyword.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-filter",
+          "title": "Task filters",
+          "description": "Members shall filter tasks by assignee, status, label, and due date.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-report",
+          "title": "Project reports",
+          "description": "Managers shall export project status reports as PDF files.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-dashboard",
+          "title": "Portfolio dashboard",
+          "description": "Managers shall view project health, deadlines, and workload charts.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-api",
+          "title": "Public API",
+          "description": "Integrations shall read projects and tasks through authenticated REST endpoints.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-hook",
+          "title": "Webhooks",
+          "description": "Workspace owners shall register webhooks for task and project events.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-audit",
+          "title": "Audit log",
+          "description": "Administrators shall review security and configuration events for 90 days.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-billing",
+          "title": "Subscription billing",
+          "description": "Owners shall view invoices and pay the workspace subscription by card.",
+          "source": "retrieval_dev_v2:saas-large"
+        },
+        {
+          "id": "s-retain",
+          "title": "Data retention",
+          "description": "Deleted workspace data shall be permanently erased after 30 days.",
+          "source": "retrieval_dev_v2:saas-large"
+        }
+      ],
+      "queries": [
+        {
+          "id": "scale-100-q01",
+          "message": "Let growers choose when each field gets irrigated.",
+          "expected_requirement_ids": [
+            "fl-water"
+          ],
+          "categories": [
+            "one_target",
+            "paraphrase"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-100-q02",
+          "message": "Allow operators to turn an irrigation pump off from their phone.",
+          "expected_requirement_ids": [
+            "fl-pump"
+          ],
+          "categories": [
+            "one_target",
+            "partial_modification"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-100-q03",
+          "message": "Track how much water every paddock consumes.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "low_overlap"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-100-q04",
+          "message": "Record what was planted and adjust its watering timetable.",
+          "expected_requirement_ids": [
+            "fl-crop",
+            "fl-water"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-100-q05",
+          "message": "Register the boundary of each field and its planted crop.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop"
+          ],
+          "categories": [
+            "two_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-100-q06",
+          "message": "Schedule field watering, start the pump remotely, and log the water volume used.",
+          "expected_requirement_ids": [
+            "fl-water",
+            "fl-pump",
+            "fl-meter"
+          ],
+          "categories": [
+            "three_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-100-q07",
+          "message": "Register field boundaries, note the crop planted, schedule watering, and record the volume consumed.",
+          "expected_requirement_ids": [
+            "fl-field",
+            "fl-crop",
+            "fl-water",
+            "fl-meter"
+          ],
+          "categories": [
+            "four_target",
+            "multi_intent"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-100-q08",
+          "message": "Add a cafeteria menu for farm staff.",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-100-q09",
+          "message": "Stop recording the irrigation water volume by field.",
+          "expected_requirement_ids": [
+            "fl-meter"
+          ],
+          "categories": [
+            "one_target",
+            "negation"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        },
+        {
+          "id": "scale-100-q10",
+          "message": "Could the farm publish a children's music playlist?",
+          "expected_requirement_ids": [],
+          "categories": [
+            "zero_target",
+            "hard_negative",
+            "question"
+          ],
+          "provenance": "SYNTHETIC",
+          "generation_method": "fixed_author_query_reused_across_nested_project_sizes",
+          "notes": "Development-only synthetic label; not independently reviewed."
+        }
+      ]
+    }
+  ]
+}
