@@ -1,0 +1,30 @@
+{
+  "role": "DEVELOPMENT_LABEL_FREEZE",
+  "dataset": "evaluation/phase_iii_g/batch_dev_v1.json",
+  "dataset_sha256": "1f8f4acbb78e0d2f777295411afda2f0113443404df83ec3b79aa47c29a952cd",
+  "case_count": 7,
+  "affected_pair_count": 10,
+  "zero_target_count": 1,
+  "review_status": "AUTHOR_LABELS_NOT_INDEPENDENTLY_REVIEWED",
+  "closed_overlap_aggregate_only": {
+    "evaluation/phase_iii_d/retrieval_independent_v1.json": {
+      "source_queries": 40,
+      "exact_pairs": 0,
+      "near_pairs_jaccard_ge_0_8": 0,
+      "max_token_jaccard": 0.25
+    },
+    "evaluation/phase_iii_e/retrieval_independent_v1.json": {
+      "source_queries": 30,
+      "exact_pairs": 0,
+      "near_pairs_jaccard_ge_0_8": 0,
+      "max_token_jaccard": 0.125
+    }
+  },
+  "predictions_at_freeze": 0,
+  "limitations": [
+    "Not an independent holdout",
+    "Raw-development overlap intentional for four positive cases",
+    "Original adapter-training overlap UNKNOWN",
+    "Closed cases not emitted or inspected"
+  ]
+}
