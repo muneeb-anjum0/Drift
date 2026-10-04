@@ -1,0 +1,20 @@
+{
+  "name": "drift-phase-iii-h-structured-diagnostic-selection",
+  "version": "1.0.0",
+  "role": "DEVELOPMENT_NOT_INDEPENDENT",
+  "selection_method": "Preselected from already-open raw-development pairs and frozen Phase III-G batch panel before Phase III-H predictions",
+  "raw_dev_source": "evaluation/datasets/drift_raw_dev_v1.json",
+  "raw_dev_source_sha256": "5265b80a265ff7b1090ec1a6a7d4879a9b6e7a7d0a64123071af7b343fad31eb",
+  "batch_source": "evaluation/phase_iii_g/batch_dev_v1.json",
+  "batch_source_sha256": "1f8f4acbb78e0d2f777295411afda2f0113443404df83ec3b79aa47c29a952cd",
+  "single_case_ids": [
+    "add_health_01", "add_hr_01", "mod_bank_01", "mod_booking_01",
+    "rem_shop_01", "rem_reporting_01", "con_health_01", "con_logistics_01",
+    "amb_health_01", "amb_reporting_01", "same_bank_01", "same_logistics_01"
+  ],
+  "single_repeat_ids": ["add_health_01", "amb_health_01", "same_bank_01"],
+  "batch_case_ids": ["g-add-sms", "g-mod-limit", "g-two-removals", "g-zero-cafe"],
+  "batch_sizes": [2, 3, 5],
+  "order_variants_if_earned": ["original", "reversed", "target_last"],
+  "notes": "No new semantic labels. Zero-target means unrelated to supplied baseline requirements; it is not a no-new-feature product label. Historical raw-dev and III-G labels were not independently reviewed."
+}

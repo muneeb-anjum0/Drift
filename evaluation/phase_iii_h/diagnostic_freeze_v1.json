@@ -1,0 +1,23 @@
+{
+  "role": "DEVELOPMENT_DIAGNOSTIC_FREEZE_NOT_INDEPENDENT",
+  "selection_sha256": "930bccdb9a687adb2bfad40756c1ffac722a326ce331e30a2ec10a0a398996c1",
+  "raw_dev_source_sha256": "5265b80a265ff7b1090ec1a6a7d4879a9b6e7a7d0a64123071af7b343fad31eb",
+  "batch_source_sha256": "1f8f4acbb78e0d2f777295411afda2f0113443404df83ec3b79aa47c29a952cd",
+  "single_cases": 12,
+  "single_repeats": 3,
+  "batch_cases": 4,
+  "class_distribution": {
+    "added": 2,
+    "ambiguous": 2,
+    "contradiction": 2,
+    "modified": 2,
+    "removed": 2,
+    "unchanged": 2
+  },
+  "predictions_at_freeze": 0,
+  "closed_iii_d_iii_e_used": false,
+  "limitations": [
+    "Development labels only",
+    "Original adapter-training overlap UNKNOWN"
+  ]
+}
