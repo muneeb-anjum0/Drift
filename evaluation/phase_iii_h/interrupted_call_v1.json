@@ -1,0 +1,11 @@
+{
+  "role": "RESOURCE_SAFETY_INCIDENT_NOT_SCORED",
+  "experiment": "H-A2",
+  "case_id": "g-add-sms",
+  "batch_size": 2,
+  "reason": "The first runner implementation hashed the multi-GiB GGUF with read_bytes, temporarily duplicating the model in Python memory. Host available RAM dipped below the 4 GiB floor and swap rose. The runner was interrupted during the first HTTP completion request; no raw output was recorded, and the call is excluded from all scored denominators.",
+  "resolution": "Changed the SHA-256 check to stream 1 MiB chunks; confirmed the llama slot idle and host available memory recovered to about 8.1 GiB before restarting the complete H-A2 series.",
+  "production_changed": false,
+  "model_changed": false,
+  "labels_changed": false
+}

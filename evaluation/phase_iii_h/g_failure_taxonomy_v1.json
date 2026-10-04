@@ -1,0 +1,279 @@
+{
+  "role": "HISTORICAL_OPEN_DEVELOPMENT_RECLASSIFICATION",
+  "sources": {
+    "evaluation/phase_iii_g/pilot_probe_v1.json": "34714090d1c6723996fa82b21bb19200e893683d42a2b597639349dfcd88bda4",
+    "evaluation/phase_iii_g/pilot_position_v1.json": "b6f37451ae60ff237532ca73e5e6cdd49896f0e43debe082e6753584ce00062a"
+  },
+  "total": 8,
+  "raw_json_valid": 8,
+  "strict_contract_valid": 2,
+  "primary_failure_counts": {
+    "VALID": 2,
+    "CONTRACT_ERROR": 2,
+    "MISSING_RESULT": 4
+  },
+  "all_generated_below_limit": true,
+  "entries": [
+    {
+      "case_id": "g-add-sms",
+      "experiment_id": "H-G-RECLASS",
+      "source": "evaluation/phase_iii_g/pilot_probe_v1.json",
+      "source_index": 0,
+      "batch_size": 1,
+      "position": "original",
+      "raw_sha256": "b953bca0556d640a937476481bf712c8cfe475df0e89edbc15a41910be08633f",
+      "prompt_tokens": 303,
+      "generated_tokens": 18,
+      "output_budget": 120,
+      "syntax_valid": true,
+      "primary_failure": "VALID",
+      "secondary": [],
+      "details": {
+        "returned_ids": [
+          "cl-email"
+        ]
+      },
+      "parser_result": "valid",
+      "repair_result": "NOT_ATTEMPTED",
+      "retry_result": "NOT_ATTEMPTED",
+      "notes": "Raw JSON is preserved in cited Phase III-G source; no Phase III-H model call."
+    },
+    {
+      "case_id": "g-add-sms",
+      "experiment_id": "H-G-RECLASS",
+      "source": "evaluation/phase_iii_g/pilot_probe_v1.json",
+      "source_index": 1,
+      "batch_size": 2,
+      "position": "original",
+      "raw_sha256": "f7cd884b4d0de1daf8d6a3dbd16440c0059bdc7ae7e3d8cc7a72aea171495c46",
+      "prompt_tokens": 319,
+      "generated_tokens": 31,
+      "output_budget": 120,
+      "syntax_valid": true,
+      "primary_failure": "VALID",
+      "secondary": [],
+      "details": {
+        "returned_ids": [
+          "cl-email",
+          "cl-book"
+        ]
+      },
+      "parser_result": "valid",
+      "repair_result": "NOT_ATTEMPTED",
+      "retry_result": "NOT_ATTEMPTED",
+      "notes": "Raw JSON is preserved in cited Phase III-G source; no Phase III-H model call."
+    },
+    {
+      "case_id": "g-add-sms",
+      "experiment_id": "H-G-RECLASS",
+      "source": "evaluation/phase_iii_g/pilot_probe_v1.json",
+      "source_index": 2,
+      "batch_size": 3,
+      "position": "original",
+      "raw_sha256": "76aba437d28ca6502ba35aa71edd1746224e14bb78b6d83518d0a481643babf1",
+      "prompt_tokens": 336,
+      "generated_tokens": 46,
+      "output_budget": 120,
+      "syntax_valid": true,
+      "primary_failure": "CONTRACT_ERROR",
+      "secondary": [],
+      "details": {
+        "missing_ids": [],
+        "extra_ids": [],
+        "duplicate_ids": [],
+        "returned_ids": [
+          "cl-email",
+          "cl-book",
+          "cl-pay"
+        ]
+      },
+      "parser_result": "unaffected item requires null class",
+      "repair_result": "NOT_ATTEMPTED",
+      "retry_result": "NOT_ATTEMPTED",
+      "notes": "Raw JSON is preserved in cited Phase III-G source; no Phase III-H model call."
+    },
+    {
+      "case_id": "g-add-sms",
+      "experiment_id": "H-G-RECLASS",
+      "source": "evaluation/phase_iii_g/pilot_probe_v1.json",
+      "source_index": 3,
+      "batch_size": 5,
+      "position": "original",
+      "raw_sha256": "b953bca0556d640a937476481bf712c8cfe475df0e89edbc15a41910be08633f",
+      "prompt_tokens": 372,
+      "generated_tokens": 18,
+      "output_budget": 120,
+      "syntax_valid": true,
+      "primary_failure": "MISSING_RESULT",
+      "secondary": [
+        "MISSING_REQUIREMENT_ID"
+      ],
+      "details": {
+        "missing_ids": [
+          "cl-book",
+          "cl-pay",
+          "cl-prescription",
+          "cl-report"
+        ],
+        "extra_ids": [],
+        "duplicate_ids": [],
+        "returned_ids": [
+          "cl-email"
+        ]
+      },
+      "parser_result": "missing or extra batch results",
+      "repair_result": "NOT_ATTEMPTED",
+      "retry_result": "NOT_ATTEMPTED",
+      "notes": "Raw JSON is preserved in cited Phase III-G source; no Phase III-H model call."
+    },
+    {
+      "case_id": "g-add-sms",
+      "experiment_id": "H-G-RECLASS",
+      "source": "evaluation/phase_iii_g/pilot_position_v1.json",
+      "source_index": 0,
+      "batch_size": 2,
+      "position": "last",
+      "raw_sha256": "c625fde66434edbb323ba98fad1d976dab19f5097093157a413fe10068fc6e34",
+      "prompt_tokens": 319,
+      "generated_tokens": 32,
+      "output_budget": 120,
+      "syntax_valid": true,
+      "primary_failure": "CONTRACT_ERROR",
+      "secondary": [],
+      "details": {
+        "missing_ids": [],
+        "extra_ids": [],
+        "duplicate_ids": [],
+        "returned_ids": [
+          "cl-book",
+          "cl-email"
+        ]
+      },
+      "parser_result": "unaffected item requires null class",
+      "repair_result": "NOT_ATTEMPTED",
+      "retry_result": "NOT_ATTEMPTED",
+      "notes": "Raw JSON is preserved in cited Phase III-G source; no Phase III-H model call."
+    },
+    {
+      "case_id": "g-add-sms",
+      "experiment_id": "H-G-RECLASS",
+      "source": "evaluation/phase_iii_g/pilot_position_v1.json",
+      "source_index": 1,
+      "batch_size": 3,
+      "position": "last",
+      "raw_sha256": "cc2d23b04f9db0f8f8a4b233163a17acf485b34f33867724798ed8506764ff5f",
+      "prompt_tokens": 336,
+      "generated_tokens": 18,
+      "output_budget": 120,
+      "syntax_valid": true,
+      "primary_failure": "MISSING_RESULT",
+      "secondary": [
+        "MISSING_REQUIREMENT_ID"
+      ],
+      "details": {
+        "missing_ids": [
+          "cl-book",
+          "cl-pay"
+        ],
+        "extra_ids": [],
+        "duplicate_ids": [],
+        "returned_ids": [
+          "cl-email"
+        ]
+      },
+      "parser_result": "missing or extra batch results",
+      "repair_result": "NOT_ATTEMPTED",
+      "retry_result": "NOT_ATTEMPTED",
+      "notes": "Raw JSON is preserved in cited Phase III-G source; no Phase III-H model call."
+    },
+    {
+      "case_id": "g-mod-limit",
+      "experiment_id": "H-G-RECLASS",
+      "source": "evaluation/phase_iii_g/pilot_position_v1.json",
+      "source_index": 2,
+      "batch_size": 2,
+      "position": "last",
+      "raw_sha256": "cdeafbc2f5c317e6778aa3e7c627d359dfa87d82818c9de1be4942d251a2e563",
+      "prompt_tokens": 334,
+      "generated_tokens": 19,
+      "output_budget": 120,
+      "syntax_valid": true,
+      "primary_failure": "MISSING_RESULT",
+      "secondary": [
+        "MISSING_REQUIREMENT_ID"
+      ],
+      "details": {
+        "missing_ids": [
+          "bk-statement"
+        ],
+        "extra_ids": [],
+        "duplicate_ids": [],
+        "returned_ids": [
+          "bk-approval"
+        ]
+      },
+      "parser_result": "missing or extra batch results",
+      "repair_result": "NOT_ATTEMPTED",
+      "retry_result": "NOT_ATTEMPTED",
+      "notes": "Raw JSON is preserved in cited Phase III-G source; no Phase III-H model call."
+    },
+    {
+      "case_id": "g-mod-limit",
+      "experiment_id": "H-G-RECLASS",
+      "source": "evaluation/phase_iii_g/pilot_position_v1.json",
+      "source_index": 3,
+      "batch_size": 3,
+      "position": "last",
+      "raw_sha256": "cdeafbc2f5c317e6778aa3e7c627d359dfa87d82818c9de1be4942d251a2e563",
+      "prompt_tokens": 355,
+      "generated_tokens": 19,
+      "output_budget": 120,
+      "syntax_valid": true,
+      "primary_failure": "MISSING_RESULT",
+      "secondary": [
+        "MISSING_REQUIREMENT_ID"
+      ],
+      "details": {
+        "missing_ids": [
+          "bk-card",
+          "bk-statement"
+        ],
+        "extra_ids": [],
+        "duplicate_ids": [],
+        "returned_ids": [
+          "bk-approval"
+        ]
+      },
+      "parser_result": "missing or extra batch results",
+      "repair_result": "NOT_ATTEMPTED",
+      "retry_result": "NOT_ATTEMPTED",
+      "notes": "Raw JSON is preserved in cited Phase III-G source; no Phase III-H model call."
+    }
+  ],
+  "root_causes": [
+    {
+      "symptom": "omitted candidate IDs/results",
+      "likely_layer": "unconstrained model/contract compliance",
+      "evidence": "four syntactically valid complete JSON objects omit required results at 18-19 tokens",
+      "fix_attempted": "NONE_AT_RECLASSIFICATION",
+      "result": "OPEN",
+      "confidence": "HIGH"
+    },
+    {
+      "symptom": "affected=false with label=unchanged",
+      "likely_layer": "contract-design ambiguity plus unconstrained compliance",
+      "evidence": "two syntactically valid outputs violate nullable-label rule, while unchanged is canonical in P1",
+      "fix_attempted": "NONE_AT_RECLASSIFICATION",
+      "result": "OPEN",
+      "confidence": "MODERATE"
+    },
+    {
+      "symptom": "parser rejection",
+      "likely_layer": "strict validator correctly enforcing G-B1",
+      "evidence": "new independent strict validation agrees with original 2/8; all eight raw outputs parse as JSON",
+      "fix_attempted": "NONE",
+      "result": "PARSER_DEFECT_NOT_OBSERVED",
+      "confidence": "HIGH"
+    }
+  ]
+}
