@@ -45,8 +45,8 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     data = json.loads(args.dataset.read_text())
-    if data.get("role") != "DEVELOPMENT_NOT_FINAL":
-        raise SystemExit("new corpus must be DEVELOPMENT_NOT_FINAL")
+    if data.get("role") not in {"DEVELOPMENT_NOT_FINAL", "REVIEW_DRAFT_NOT_FINAL_TEST"}:
+        raise SystemExit("corpus must be development or pre-review draft")
     project_ids = set()
     query_ids = set()
     for project in data["projects"]:
@@ -73,7 +73,9 @@ def main():
         "raw_historical_final": "evaluation/heldout/drift_raw_final_v1.json",
         "phase_iii_d_protected": "evaluation/phase_iii_d/retrieval_independent_v1.json",
     }
-    report = {"role": "DEVELOPMENT_LEAKAGE_AUDIT", "new_query_count": len(current), "sources": {}}
+    if data.get("role") == "REVIEW_DRAFT_NOT_FINAL_TEST":
+        corpus_paths["phase_iii_e_development"] = "evaluation/phase_iii_e/retrieval_dev_v1.json"
+    report = {"role": "PRE_REVIEW_LEAKAGE_AUDIT" if data.get("role") == "REVIEW_DRAFT_NOT_FINAL_TEST" else "DEVELOPMENT_LEAKAGE_AUDIT", "new_query_count": len(current), "sources": {}}
     extra = {
         "prompt_examples": [text for path in Path("evaluation/prompts").glob("*.json")
                             for text in strings(json.loads(path.read_text())) if len(text.split()) >= 4],
