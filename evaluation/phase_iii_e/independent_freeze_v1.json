@@ -1,0 +1,44 @@
+{
+  "name": "drift-phase-iii-e-independent-retrieval-freeze",
+  "version": "1.0.0",
+  "role": "PROTECTED_INDEPENDENT_EVALUATION_FREEZE",
+  "status": "FROZEN_BEFORE_ANY_R0_R5_R6_FINAL_PREDICTION",
+  "draft": {
+    "path": "evaluation/phase_iii_e/retrieval_independent_draft_v1.json",
+    "sha256": "2236806580071f3ad9ef9bd9e2e3d4f0eb22465d3dfcf9d0af07919605f0ed79"
+  },
+  "review": {
+    "reviewer": "independent-reviewer-gpt-5.6-sol",
+    "review_date": "2026-10-04",
+    "provided_attachment_sha256": "eb578dc18952f7eac76fed31234908a215b5fefe2f3dc93430c675e1dee85c9e",
+    "repository_record_path": "evaluation/phase_iii_e/retrieval_review_decisions_v1.json",
+    "repository_record_sha256": "a373b74c8b3beb25e430e0da5e4088dfb1c16497d3d1f012010903d0e9a65cc5",
+    "byte_difference": "repository record adds one final newline; JSON content is identical",
+    "decision_counts": {"CONFIRMED": 24, "REVISED": 6, "AMBIGUOUS": 0, "EXCLUDE": 0}
+  },
+  "dataset": {
+    "path": "evaluation/phase_iii_e/retrieval_independent_v1.json",
+    "sha256": "78a8975d35a3fccd931820752304b9d344415f3e841db18db7e549321ff4134c",
+    "trail_path": "evaluation/phase_iii_e/retrieval_review_trail_v1.json",
+    "trail_sha256": "78fd707f6a8841dcc5b4e68a5dcf873b62c64a45ecc345807c37abc834c17fff",
+    "query_count": 30,
+    "project_count": 3,
+    "requirement_count": 56,
+    "project_sizes": {"small": {"requirements": 8, "queries": 10}, "medium": {"requirements": 16, "queries": 10}, "large": {"requirements": 32, "queries": 10}},
+    "target_distribution": {"zero": 4, "one": 18, "two": 7, "three": 0, "four": 1},
+    "provenance": ["MODEL_GENERATED", "SYNTHETIC", "INDEPENDENT_REVIEWED"],
+    "categories_overlap_by_design": {"competing_requirements": 15, "hard_negative": 4, "hard_positive": 7, "multi_target": 12, "negation": 6, "partial_modification": 7, "question": 4, "three_plus_targets": 3}
+  },
+  "r6_identity": "R6-S1-t0.45",
+  "r6_development_freeze_commit": "f344adc",
+  "r6_source_sha256": "2ac6ddc62f1b796896352bf2812b9cb1ee55b9c7f6cb8ff260b5f4aac4a67228",
+  "decision_rule_path": "evaluation/phase_iii_e/r6_development_freeze_v1.json",
+  "contamination_audit_path": "evaluation/phase_iii_e/independent_draft_overlap_audit_v1.json",
+  "contamination_audit_summary": "zero exact and zero token-Jaccard >= 0.8 query pairs against prior development, historical finals, Phase III-D, repository tests, and prompt examples",
+  "limitations": [
+    "Automated lexical overlap does not rule out semantic or template duplication.",
+    "Original adapter-training overlap remains unknown.",
+    "The reviewer identity is supplied externally; its independence is not machine-provable.",
+    "One reviewed case has four material targets, more than the frozen top-three cap; the semantic label is not altered to fit the cap."
+  ]
+}

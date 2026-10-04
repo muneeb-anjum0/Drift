@@ -1,0 +1,189 @@
+{
+  "reviewer": "independent-reviewer-gpt-5.6-sol",
+  "review_date": "2026-10-04",
+  "draft_sha256": "2236806580071f3ad9ef9bd9e2e3d4f0eb22465d3dfcf9d0af07919605f0ed79",
+  "decisions": [
+    {
+      "case_id": "bs-q01",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["bs-unlock"],
+      "note": ""
+    },
+    {
+      "case_id": "bs-q02",
+      "status": "REVISED",
+      "reviewed_requirement_ids": ["bs-fee"],
+      "note": "The message changes when per-minute charging stops. Parking/end-of-ride timing is the trigger or existing input; it does not itself require a change to the ride start/end recording contract."
+    },
+    {
+      "case_id": "bs-q03",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["bs-map"],
+      "note": ""
+    },
+    {
+      "case_id": "bs-q04",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["bs-pass"],
+      "note": ""
+    },
+    {
+      "case_id": "bs-q05",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["bs-damage"],
+      "note": ""
+    },
+    {
+      "case_id": "bs-q06",
+      "status": "REVISED",
+      "reviewed_requirement_ids": ["bs-dock"],
+      "note": "The requested change permits ending/returning a bicycle beside the station when no dock is available. That materially changes the dock-return requirement. Ending the trip is contextual; the requirement to record ride start and end times is not itself changed."
+    },
+    {
+      "case_id": "bs-q07",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["bs-account"],
+      "note": ""
+    },
+    {
+      "case_id": "bs-q08",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": [],
+      "note": ""
+    },
+    {
+      "case_id": "bs-q09",
+      "status": "REVISED",
+      "reviewed_requirement_ids": ["bs-ride", "bs-fee"],
+      "note": "The message requests timing each outing and billing it when the bicycle is returned. This materially concerns ride timing and charging behavior. Bicycle return is used as the billing trigger; it does not change the requirement that bicycles be returned to an available station dock."
+    },
+    {
+      "case_id": "bs-q10",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["bs-map"],
+      "note": ""
+    },
+
+    {
+      "case_id": "mc-q01",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["mc-search"],
+      "note": ""
+    },
+    {
+      "case_id": "mc-q02",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["mc-loan", "mc-insure"],
+      "note": ""
+    },
+    {
+      "case_id": "mc-q03",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["mc-owner"],
+      "note": ""
+    },
+    {
+      "case_id": "mc-q04",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["mc-photo", "mc-repair"],
+      "note": ""
+    },
+    {
+      "case_id": "mc-q05",
+      "status": "REVISED",
+      "reviewed_requirement_ids": ["mc-audio"],
+      "note": "The requested behavior is to provide a spoken description associated with the exhibit card/object. This changes audio-description capability. The existing descriptive gallery label is the referent; its publication or textual content is not explicitly changed."
+    },
+    {
+      "case_id": "mc-q06",
+      "status": "REVISED",
+      "reviewed_requirement_ids": ["mc-store"],
+      "note": "Retaining the previous shelf location materially changes storage-location tracking by requiring location history. The baseline movement requirement concerns transfers between museum locations; a shelf-to-shelf move is not clearly a transfer between museum locations."
+    },
+    {
+      "case_id": "mc-q07",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["mc-access"],
+      "note": ""
+    },
+    {
+      "case_id": "mc-q08",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["mc-export"],
+      "note": ""
+    },
+    {
+      "case_id": "mc-q09",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": [],
+      "note": ""
+    },
+    {
+      "case_id": "mc-q10",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["mc-intake", "mc-photo", "mc-condition", "mc-store"],
+      "note": "All four requirements are materially invoked by the requested acquired-object workflow. The retrieval cap of three must not alter the semantic ground truth."
+    },
+
+    {
+      "case_id": "ur-q01",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["ur-ethics", "ur-recruit"],
+      "note": ""
+    },
+    {
+      "case_id": "ur-q02",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["ur-budget"],
+      "note": ""
+    },
+    {
+      "case_id": "ur-q03",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["ur-book", "ur-service"],
+      "note": ""
+    },
+    {
+      "case_id": "ur-q04",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["ur-storage"],
+      "note": ""
+    },
+    {
+      "case_id": "ur-q05",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["ur-safety", "ur-access"],
+      "note": ""
+    },
+    {
+      "case_id": "ur-q06",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["ur-report"],
+      "note": ""
+    },
+    {
+      "case_id": "ur-q07",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": ["ur-embargo"],
+      "note": ""
+    },
+    {
+      "case_id": "ur-q08",
+      "status": "REVISED",
+      "reviewed_requirement_ids": ["ur-report", "ur-close"],
+      "note": "Final funder reporting and project closure are materially affected. Generic spending reconciliation is part of the stated closure process, but it does not change the baseline expense-claim requirement, which concerns researchers submitting receipts for project expenses."
+    },
+    {
+      "case_id": "ur-q09",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": [],
+      "note": ""
+    },
+    {
+      "case_id": "ur-q10",
+      "status": "CONFIRMED",
+      "reviewed_requirement_ids": [],
+      "note": ""
+    }
+  ]
+}
