@@ -1,0 +1,22 @@
+{
+  "role": "DEVELOPMENT_ARCHITECTURE_EXPERIMENT_REGISTRY",
+  "predeclared_plan": "docs/phase_iii_f_study_plan.md",
+  "scaling_dataset_sha256": "c4446a726838c6dbefa655a1762ce920b3aec8ffd15aeef2c2b9b4790d9ae382",
+  "results": "evaluation/phase_iii_f/architecture_study_v1.json",
+  "open_development_results": "evaluation/phase_iii_f/open_development_ceiling_v1.json",
+  "experiments": [
+    {"id":"F-CEIL-1","hypothesis":"Cap three may truncate meaningful targets.","changed_variable":"threshold-free candidate budget 1/2/3/5/8/10/16/32/50/75/100","expected_effect":"Higher k raises recall and false exposures.","dataset":"scaling and two open development sets","metrics":"target recall, full-query reach, ranks, candidate calls, false exposures","decision_rule":"Cap is dominant only if modest k increase recovers most misses at tolerable cost.","decision":"CAP_MEANINGFUL_BUT_NOT_PRIMARY_HISTORICAL_SELECTION_BOTTLENECK"},
+    {"id":"F-SCALE-1","hypothesis":"Additional hard distractors reduce rank and raise false selection.","changed_variable":"nested N=5/8/10/16/20/32/50/75/100","expected_effect":"Rank falls and false exposure rises with N.","dataset":"frozen scaling development","metrics":"per-size target hits, Recall@k, zero-target exposure, MRR","decision_rule":"Only controlled same-domain change supports a strong scaling claim.","decision":"DEGRADATION_OBSERVED_BUT_N_ABOVE_36_OPTIMISTIC_CROSS_DOMAIN"},
+    {"id":"F-BM25-1","hypothesis":"BM25 improves rank without excess exposure.","changed_variable":"binary-tf BM25 ranking, k1=1.2 b=.75 IDF smooth threshold=.05 cap3","expected_effect":"Higher lexical rank at scale.","dataset":"frozen scaling and two open development sets","metrics":"rank recall, selected recall, false exposure","decision_rule":"Stable cross-size/corpus gain at acceptable exposure.","decision":"NOT_SUPPORTED"},
+    {"id":"F-SEM-1","hypothesis":"Small semantic encoder improves low-overlap rank.","changed_variable":"frozen R6-S1-t0.45 whole-query cosine versus frozen R5","expected_effect":"Improve low-overlap target ranks.","dataset":"frozen scaling and two open development sets","metrics":"Recall@k, selected recall, exposure, latency/RAM","decision_rule":"Substantial stable recall and safe exposure before R7.","decision":"NOT_SUPPORTED_AS_R7; historical independent R6 failure unchanged"},
+    {"id":"F-HYB-1","hypothesis":"Lexical and semantic evidence are complementary.","changed_variable":"existing coarse alpha=.5 blend at threshold=.35 cap3","expected_effect":"More stable top ranks without false-exposure regression.","dataset":"frozen scaling and two open development sets","metrics":"Recall@k, selected recall, false exposure","decision_rule":"Stable material low-cost gain in all open corpora.","decision":"NOT_SUPPORTED"},
+    {"id":"F-2STAGE-1","hypothesis":"BM25 admission before semantic reranking reduces cost.","changed_variable":"BM25 first-stage budget 5/10/20","expected_effect":"Lower semantic work while retaining recall.","dataset":"frozen scaling and two open development sets","metrics":"Recall@k, selected recall, false exposure, admitted count","decision_rule":"Meaningful cost reduction after accounting for baseline-vector caching and no recall loss.","decision":"NOT_SUPPORTED"},
+    {"id":"F-DECOMP-1","hypothesis":"Explicit clauses recover multi-intent targets.","changed_variable":"existing comma/semicolon/and split over frozen encoder","expected_effect":"More multi-target links with little extra exposure.","dataset":"frozen scaling and two open development sets","metrics":"multi-target recall, zero-target and total false exposure","decision_rule":"Improvement consistent across open corpora and exposure controlled.","decision":"NOT_SUPPORTED"},
+    {"id":"F-REPR-1","hypothesis":"Title and description carry different retrieval signal.","changed_variable":"BM25 title-only versus description-only versus title+description","expected_effect":"Discover a simpler robust representation.","dataset":"frozen scaling and two open development sets","metrics":"Recall@k, selected recall, exposure","decision_rule":"Stable gain under same score normalization/threshold.","decision":"NO_REPRESENTATION_CHANGE_SUPPORTED"}
+  ],
+  "architecture_decision": "NO ARCHITECTURE YET SUPPORTED",
+  "r7_status": "NOT_CREATED",
+  "new_independent_holdout_status": "NOT_AUTHORIZED",
+  "classifier_status": "NOT_EXECUTED",
+  "retraining_gate": "NOT YET JUSTIFIED"
+}

@@ -31,6 +31,17 @@ def messages(node):
             yield from messages(value)
 
 
+def strings(node):
+    if isinstance(node, str):
+        yield node
+    elif isinstance(node, dict):
+        for value in node.values():
+            yield from strings(value)
+    elif isinstance(node, list):
+        for value in node:
+            yield from strings(value)
+
+
 def words(value):
     return set(re.findall(r"[a-z0-9]+", value.lower()))
 
@@ -60,7 +71,7 @@ def main():
         right = [words(text) for text in messages(json.loads(path.read_bytes()))]
         results[name] = compare(left, right)
     prompt_text = [text for path in (ROOT / "evaluation/prompts").glob("*.json")
-                   for text in messages(json.loads(path.read_bytes()))]
+                   for text in strings(json.loads(path.read_bytes())) if len(text.split()) >= 4]
     results["prompt_examples"] = compare(left, [words(text) for text in prompt_text])
     test_text = [text for path in list((ROOT / "server-go").rglob("*_test.go")) + list((ROOT / "tools").rglob("test_*.py"))
                  for text in re.findall(r'"([^"\n]{20,})"', path.read_text())]
