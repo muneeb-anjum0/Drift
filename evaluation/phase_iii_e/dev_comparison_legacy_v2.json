@@ -1,0 +1,2456 @@
+{
+  "role": "DEVELOPMENT_COMPARISON",
+  "dataset_sha256": "a000bc087bf3d1455f98600a76648a078315e8d7a4377e1c32f8ed0185971ae9",
+  "candidates": {
+    "R0": {
+      "metrics": {
+        "queries": 60,
+        "positive_queries": 54,
+        "expected_links": 74,
+        "selected_hits": 48,
+        "micro_recall": 0.6486486486486487,
+        "all_target_reach": [
+          34,
+          54
+        ],
+        "at_least_one_reach": [
+          39,
+          54
+        ],
+        "recall_at_1": [
+          40,
+          74
+        ],
+        "recall_at_3": [
+          56,
+          74
+        ],
+        "recall_at_k": [
+          56,
+          74
+        ],
+        "precision_at_1": 0.6666666666666666,
+        "precision_at_3": 0.3111111111111111,
+        "precision_at_k": 0.3111111111111111,
+        "mrr": 0.8207090748757415,
+        "false_exposures": 32,
+        "hard_negative_exposed": 0,
+        "mean_selected": 1.3333333333333333,
+        "mean_candidates": 13.333333333333334
+      },
+      "by_size": {
+        "large": {
+          "queries": 20,
+          "positive_queries": 18,
+          "expected_links": 24,
+          "selected_hits": 15,
+          "micro_recall": 0.625,
+          "all_target_reach": [
+            10,
+            18
+          ],
+          "at_least_one_reach": [
+            11,
+            18
+          ],
+          "recall_at_1": [
+            13,
+            24
+          ],
+          "recall_at_3": [
+            17,
+            24
+          ],
+          "recall_at_k": [
+            17,
+            24
+          ],
+          "precision_at_1": 0.65,
+          "precision_at_3": 0.2833333333333333,
+          "precision_at_k": 0.2833333333333333,
+          "mrr": 0.7671536796536796,
+          "false_exposures": 15,
+          "hard_negative_exposed": 0,
+          "mean_selected": 1.5,
+          "mean_candidates": 20.0
+        },
+        "medium": {
+          "queries": 20,
+          "positive_queries": 18,
+          "expected_links": 25,
+          "selected_hits": 15,
+          "micro_recall": 0.6,
+          "all_target_reach": [
+            11,
+            18
+          ],
+          "at_least_one_reach": [
+            13,
+            18
+          ],
+          "recall_at_1": [
+            14,
+            25
+          ],
+          "recall_at_3": [
+            20,
+            25
+          ],
+          "recall_at_k": [
+            20,
+            25
+          ],
+          "precision_at_1": 0.7,
+          "precision_at_3": 0.3333333333333333,
+          "precision_at_k": 0.3333333333333333,
+          "mrr": 0.8537037037037037,
+          "false_exposures": 8,
+          "hard_negative_exposed": 0,
+          "mean_selected": 1.15,
+          "mean_candidates": 12.0
+        },
+        "small": {
+          "queries": 20,
+          "positive_queries": 18,
+          "expected_links": 25,
+          "selected_hits": 18,
+          "micro_recall": 0.72,
+          "all_target_reach": [
+            13,
+            18
+          ],
+          "at_least_one_reach": [
+            15,
+            18
+          ],
+          "recall_at_1": [
+            13,
+            25
+          ],
+          "recall_at_3": [
+            19,
+            25
+          ],
+          "recall_at_k": [
+            19,
+            25
+          ],
+          "precision_at_1": 0.65,
+          "precision_at_3": 0.31666666666666665,
+          "precision_at_k": 0.31666666666666665,
+          "mrr": 0.8412698412698413,
+          "false_exposures": 9,
+          "hard_negative_exposed": 0,
+          "mean_selected": 1.35,
+          "mean_candidates": 8.0
+        }
+      },
+      "by_category": {
+        "legacy_unclassified": {
+          "queries": 60,
+          "positive_queries": 54,
+          "expected_links": 74,
+          "selected_hits": 48,
+          "micro_recall": 0.6486486486486487,
+          "all_target_reach": [
+            34,
+            54
+          ],
+          "at_least_one_reach": [
+            39,
+            54
+          ],
+          "recall_at_1": [
+            40,
+            74
+          ],
+          "recall_at_3": [
+            56,
+            74
+          ],
+          "recall_at_k": [
+            56,
+            74
+          ],
+          "precision_at_1": 0.6666666666666666,
+          "precision_at_3": 0.3111111111111111,
+          "precision_at_k": 0.3111111111111111,
+          "mrr": 0.8207090748757415,
+          "false_exposures": 32,
+          "hard_negative_exposed": 0,
+          "mean_selected": 1.3333333333333333,
+          "mean_candidates": 13.333333333333334
+        }
+      },
+      "error_ledger": [
+        {
+          "case_id": "cq-01",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-login"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-02",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-notify"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-07",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-reset"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-08",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-login"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-09",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-notify"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-11",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "c-notify"
+          ],
+          "false_ids": [
+            "c-prescription"
+          ],
+          "missed_stages": {
+            "c-notify": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "cq-13",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "c-book",
+            "c-notify"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "c-book": "BELOW_THRESHOLD",
+            "c-notify": "FAILED_SPECIFIC_MATCH_GATE"
+          }
+        },
+        {
+          "case_id": "cq-14",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "c-invoice"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "c-invoice": "FAILED_SPECIFIC_MATCH_GATE"
+          }
+        },
+        {
+          "case_id": "cq-15",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "c-book",
+            "c-invoice"
+          ],
+          "false_ids": [
+            "c-login"
+          ],
+          "missed_stages": {
+            "c-book": "BELOW_THRESHOLD",
+            "c-invoice": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "cq-19",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "c-book"
+          ],
+          "false_ids": [
+            "c-notify"
+          ],
+          "missed_stages": {
+            "c-book": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "cq-20",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-prescription"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "eq-02",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-stock"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "e-stock": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "eq-04",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-review"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "e-review": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "eq-05",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-email",
+            "e-ship"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "e-email": "BELOW_THRESHOLD",
+            "e-ship": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "eq-06",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-auth",
+            "e-guest"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "e-guest": "BELOW_THRESHOLD",
+            "e-auth": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "eq-07",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "e-review"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "eq-10",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-filter"
+          ],
+          "false_ids": [
+            "e-review",
+            "e-stock"
+          ],
+          "missed_stages": {
+            "e-filter": "FAILED_SPECIFIC_MATCH_GATE"
+          }
+        },
+        {
+          "case_id": "eq-13",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-stock"
+          ],
+          "false_ids": [
+            "e-filter"
+          ],
+          "missed_stages": {
+            "e-stock": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "eq-14",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "e-filter",
+            "e-search"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "eq-17",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "e-guest"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "eq-18",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-auth",
+            "e-cart"
+          ],
+          "false_ids": [
+            "e-email"
+          ],
+          "missed_stages": {
+            "e-cart": "BELOW_THRESHOLD",
+            "e-auth": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-01",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-file"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "s-file": "FAILED_SPECIFIC_MATCH_GATE"
+          }
+        },
+        {
+          "case_id": "sq-02",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "s-digest",
+            "s-login"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "sq-04",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-api"
+          ],
+          "false_ids": [
+            "s-archive",
+            "s-dashboard",
+            "s-task"
+          ],
+          "missed_stages": {
+            "s-api": "TOP_K_EXCLUDED"
+          }
+        },
+        {
+          "case_id": "sq-05",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-hook"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "s-hook": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-07",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-file",
+            "s-search"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "s-file": "FAILED_SPECIFIC_MATCH_GATE",
+            "s-search": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-09",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-sso"
+          ],
+          "false_ids": [
+            "s-invite",
+            "s-login"
+          ],
+          "missed_stages": {
+            "s-sso": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-10",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-role"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "s-role": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-11",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-archive"
+          ],
+          "false_ids": [
+            "s-digest",
+            "s-project",
+            "s-search"
+          ],
+          "missed_stages": {
+            "s-archive": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-12",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "s-filter",
+            "s-task"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "sq-13",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "s-filter"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "sq-16",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-retain"
+          ],
+          "false_ids": [
+            "s-archive",
+            "s-search"
+          ],
+          "missed_stages": {
+            "s-retain": "BELOW_THRESHOLD"
+          }
+        }
+      ]
+    },
+    "R5": {
+      "metrics": {
+        "queries": 60,
+        "positive_queries": 54,
+        "expected_links": 74,
+        "selected_hits": 59,
+        "micro_recall": 0.7972972972972973,
+        "all_target_reach": [
+          42,
+          54
+        ],
+        "at_least_one_reach": [
+          47,
+          54
+        ],
+        "recall_at_1": [
+          44,
+          74
+        ],
+        "recall_at_3": [
+          62,
+          74
+        ],
+        "recall_at_k": [
+          62,
+          74
+        ],
+        "precision_at_1": 0.7333333333333333,
+        "precision_at_3": 0.34444444444444444,
+        "precision_at_k": 0.34444444444444444,
+        "mrr": 0.8718187162631608,
+        "false_exposures": 37,
+        "hard_negative_exposed": 0,
+        "mean_selected": 1.6,
+        "mean_candidates": 13.333333333333334
+      },
+      "by_size": {
+        "large": {
+          "queries": 20,
+          "positive_queries": 18,
+          "expected_links": 24,
+          "selected_hits": 19,
+          "micro_recall": 0.7916666666666666,
+          "all_target_reach": [
+            13,
+            18
+          ],
+          "at_least_one_reach": [
+            14,
+            18
+          ],
+          "recall_at_1": [
+            14,
+            24
+          ],
+          "recall_at_3": [
+            19,
+            24
+          ],
+          "recall_at_k": [
+            19,
+            24
+          ],
+          "precision_at_1": 0.7,
+          "precision_at_3": 0.31666666666666665,
+          "precision_at_k": 0.31666666666666665,
+          "mrr": 0.8112233445566779,
+          "false_exposures": 15,
+          "hard_negative_exposed": 0,
+          "mean_selected": 1.7,
+          "mean_candidates": 20.0
+        },
+        "medium": {
+          "queries": 20,
+          "positive_queries": 18,
+          "expected_links": 25,
+          "selected_hits": 23,
+          "micro_recall": 0.92,
+          "all_target_reach": [
+            16,
+            18
+          ],
+          "at_least_one_reach": [
+            18,
+            18
+          ],
+          "recall_at_1": [
+            17,
+            25
+          ],
+          "recall_at_3": [
+            23,
+            25
+          ],
+          "recall_at_k": [
+            23,
+            25
+          ],
+          "precision_at_1": 0.85,
+          "precision_at_3": 0.38333333333333336,
+          "precision_at_k": 0.38333333333333336,
+          "mrr": 0.9722222222222222,
+          "false_exposures": 12,
+          "hard_negative_exposed": 0,
+          "mean_selected": 1.75,
+          "mean_candidates": 12.0
+        },
+        "small": {
+          "queries": 20,
+          "positive_queries": 18,
+          "expected_links": 25,
+          "selected_hits": 17,
+          "micro_recall": 0.68,
+          "all_target_reach": [
+            13,
+            18
+          ],
+          "at_least_one_reach": [
+            15,
+            18
+          ],
+          "recall_at_1": [
+            13,
+            25
+          ],
+          "recall_at_3": [
+            20,
+            25
+          ],
+          "recall_at_k": [
+            20,
+            25
+          ],
+          "precision_at_1": 0.65,
+          "precision_at_3": 0.3333333333333333,
+          "precision_at_k": 0.3333333333333333,
+          "mrr": 0.832010582010582,
+          "false_exposures": 10,
+          "hard_negative_exposed": 0,
+          "mean_selected": 1.35,
+          "mean_candidates": 8.0
+        }
+      },
+      "by_category": {
+        "legacy_unclassified": {
+          "queries": 60,
+          "positive_queries": 54,
+          "expected_links": 74,
+          "selected_hits": 59,
+          "micro_recall": 0.7972972972972973,
+          "all_target_reach": [
+            42,
+            54
+          ],
+          "at_least_one_reach": [
+            47,
+            54
+          ],
+          "recall_at_1": [
+            44,
+            74
+          ],
+          "recall_at_3": [
+            62,
+            74
+          ],
+          "recall_at_k": [
+            62,
+            74
+          ],
+          "precision_at_1": 0.7333333333333333,
+          "precision_at_3": 0.34444444444444444,
+          "precision_at_k": 0.34444444444444444,
+          "mrr": 0.8718187162631608,
+          "false_exposures": 37,
+          "hard_negative_exposed": 0,
+          "mean_selected": 1.6,
+          "mean_candidates": 13.333333333333334
+        }
+      },
+      "error_ledger": [
+        {
+          "case_id": "cq-01",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-login"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-02",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-notify"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-07",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-reset"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-08",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-login"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-09",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-notify"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-11",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "c-notify"
+          ],
+          "false_ids": [
+            "c-prescription"
+          ],
+          "missed_stages": {
+            "c-notify": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "cq-13",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "c-book",
+            "c-notify"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "c-book": "BELOW_THRESHOLD",
+            "c-notify": "FAILED_SPECIFIC_MATCH_GATE"
+          }
+        },
+        {
+          "case_id": "cq-14",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "c-invoice"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "c-invoice": "FAILED_SPECIFIC_MATCH_GATE"
+          }
+        },
+        {
+          "case_id": "cq-15",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "c-book",
+            "c-invoice",
+            "c-notify"
+          ],
+          "false_ids": [
+            "c-login",
+            "c-reset"
+          ],
+          "missed_stages": {
+            "c-book": "BELOW_THRESHOLD",
+            "c-notify": "TOP_K_EXCLUDED",
+            "c-invoice": "FAILED_SPECIFIC_MATCH_GATE"
+          }
+        },
+        {
+          "case_id": "cq-19",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "c-book"
+          ],
+          "false_ids": [
+            "c-notify"
+          ],
+          "missed_stages": {
+            "c-book": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "cq-20",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-prescription"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "eq-01",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "e-guest"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "eq-04",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "e-filter"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "eq-05",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "e-auth"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "eq-06",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "e-cart"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "eq-07",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "e-review"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "eq-10",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-filter"
+          ],
+          "false_ids": [
+            "e-review",
+            "e-stock"
+          ],
+          "missed_stages": {
+            "e-filter": "FAILED_SPECIFIC_MATCH_GATE"
+          }
+        },
+        {
+          "case_id": "eq-13",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "e-filter"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "eq-14",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "e-filter",
+            "e-search"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "eq-17",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "e-guest"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "eq-18",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-auth"
+          ],
+          "false_ids": [
+            "e-email"
+          ],
+          "missed_stages": {
+            "e-auth": "TOP_K_EXCLUDED"
+          }
+        },
+        {
+          "case_id": "sq-02",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "s-digest",
+            "s-login"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "sq-04",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-api"
+          ],
+          "false_ids": [
+            "s-archive",
+            "s-dashboard",
+            "s-task"
+          ],
+          "missed_stages": {
+            "s-api": "TOP_K_EXCLUDED"
+          }
+        },
+        {
+          "case_id": "sq-09",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-sso"
+          ],
+          "false_ids": [
+            "s-invite",
+            "s-login"
+          ],
+          "missed_stages": {
+            "s-sso": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-10",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-role"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "s-role": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-11",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-archive"
+          ],
+          "false_ids": [
+            "s-digest",
+            "s-project",
+            "s-search"
+          ],
+          "missed_stages": {
+            "s-archive": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-12",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "s-file",
+            "s-task"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "sq-13",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "s-filter"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "sq-16",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-retain"
+          ],
+          "false_ids": [
+            "s-archive",
+            "s-search"
+          ],
+          "missed_stages": {
+            "s-retain": "BELOW_THRESHOLD"
+          }
+        }
+      ]
+    },
+    "R6-S1-t0.45": {
+      "metrics": {
+        "queries": 60,
+        "positive_queries": 54,
+        "expected_links": 74,
+        "selected_hits": 61,
+        "micro_recall": 0.8243243243243243,
+        "all_target_reach": [
+          42,
+          54
+        ],
+        "at_least_one_reach": [
+          49,
+          54
+        ],
+        "recall_at_1": [
+          51,
+          74
+        ],
+        "recall_at_3": [
+          69,
+          74
+        ],
+        "recall_at_k": [
+          69,
+          74
+        ],
+        "precision_at_1": 0.85,
+        "precision_at_3": 0.38333333333333336,
+        "precision_at_k": 0.38333333333333336,
+        "mrr": 0.9645061728395062,
+        "false_exposures": 19,
+        "hard_negative_exposed": 2,
+        "mean_selected": 1.3333333333333333,
+        "mean_candidates": 13.333333333333334
+      },
+      "by_size": {
+        "large": {
+          "queries": 20,
+          "positive_queries": 18,
+          "expected_links": 24,
+          "selected_hits": 20,
+          "micro_recall": 0.8333333333333334,
+          "all_target_reach": [
+            14,
+            18
+          ],
+          "at_least_one_reach": [
+            17,
+            18
+          ],
+          "recall_at_1": [
+            16,
+            24
+          ],
+          "recall_at_3": [
+            22,
+            24
+          ],
+          "recall_at_k": [
+            22,
+            24
+          ],
+          "precision_at_1": 0.8,
+          "precision_at_3": 0.36666666666666664,
+          "precision_at_k": 0.36666666666666664,
+          "mrr": 0.9212962962962963,
+          "false_exposures": 5,
+          "hard_negative_exposed": 1,
+          "mean_selected": 1.25,
+          "mean_candidates": 20.0
+        },
+        "medium": {
+          "queries": 20,
+          "positive_queries": 18,
+          "expected_links": 25,
+          "selected_hits": 19,
+          "micro_recall": 0.76,
+          "all_target_reach": [
+            13,
+            18
+          ],
+          "at_least_one_reach": [
+            16,
+            18
+          ],
+          "recall_at_1": [
+            17,
+            25
+          ],
+          "recall_at_3": [
+            23,
+            25
+          ],
+          "recall_at_k": [
+            23,
+            25
+          ],
+          "precision_at_1": 0.85,
+          "precision_at_3": 0.38333333333333336,
+          "precision_at_k": 0.38333333333333336,
+          "mrr": 0.9722222222222222,
+          "false_exposures": 2,
+          "hard_negative_exposed": 0,
+          "mean_selected": 1.05,
+          "mean_candidates": 12.0
+        },
+        "small": {
+          "queries": 20,
+          "positive_queries": 18,
+          "expected_links": 25,
+          "selected_hits": 22,
+          "micro_recall": 0.88,
+          "all_target_reach": [
+            15,
+            18
+          ],
+          "at_least_one_reach": [
+            16,
+            18
+          ],
+          "recall_at_1": [
+            18,
+            25
+          ],
+          "recall_at_3": [
+            24,
+            25
+          ],
+          "recall_at_k": [
+            24,
+            25
+          ],
+          "precision_at_1": 0.9,
+          "precision_at_3": 0.4,
+          "precision_at_k": 0.4,
+          "mrr": 1.0,
+          "false_exposures": 12,
+          "hard_negative_exposed": 1,
+          "mean_selected": 1.7,
+          "mean_candidates": 8.0
+        }
+      },
+      "by_category": {
+        "legacy_unclassified": {
+          "queries": 60,
+          "positive_queries": 54,
+          "expected_links": 74,
+          "selected_hits": 61,
+          "micro_recall": 0.8243243243243243,
+          "all_target_reach": [
+            42,
+            54
+          ],
+          "at_least_one_reach": [
+            49,
+            54
+          ],
+          "recall_at_1": [
+            51,
+            74
+          ],
+          "recall_at_3": [
+            69,
+            74
+          ],
+          "recall_at_k": [
+            69,
+            74
+          ],
+          "precision_at_1": 0.85,
+          "precision_at_3": 0.38333333333333336,
+          "precision_at_k": 0.38333333333333336,
+          "mrr": 0.9645061728395062,
+          "false_exposures": 19,
+          "hard_negative_exposed": 2,
+          "mean_selected": 1.3333333333333333,
+          "mean_candidates": 13.333333333333334
+        }
+      },
+      "error_ledger": [
+        {
+          "case_id": "cq-01",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-login"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-02",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-notify"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-04",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "c-notify"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "c-notify": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "cq-05",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-book"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-07",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-reset"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-08",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-cancel"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-10",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-notify"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-11",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-book",
+            "c-login"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-12",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-book",
+            "c-notify"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-14",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-book"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-15",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "c-book"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "c-book": "TOP_K_EXCLUDED"
+          }
+        },
+        {
+          "case_id": "cq-17",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-book"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-19",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "c-book"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "c-book": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "eq-04",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-review"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "e-review": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "eq-05",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-email"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "e-email": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "eq-06",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-auth"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "e-auth": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "eq-10",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-filter",
+            "e-search"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "e-search": "BELOW_THRESHOLD",
+            "e-filter": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "eq-17",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "e-guest"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "eq-18",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-auth"
+          ],
+          "false_ids": [
+            "e-guest"
+          ],
+          "missed_stages": {
+            "e-auth": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-02",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "s-digest"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "sq-05",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-hook"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "s-hook": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-07",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-file"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "s-file": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-10",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-role"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "s-role": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-11",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "s-project",
+            "s-retain"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "sq-12",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "s-task"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "sq-18",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-file"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "s-file": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-19",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "s-filter"
+          ],
+          "missed_stages": {}
+        }
+      ]
+    },
+    "R6-Q2-t0.45": {
+      "metrics": {
+        "queries": 60,
+        "positive_queries": 54,
+        "expected_links": 74,
+        "selected_hits": 60,
+        "micro_recall": 0.8108108108108109,
+        "all_target_reach": [
+          42,
+          54
+        ],
+        "at_least_one_reach": [
+          49,
+          54
+        ],
+        "recall_at_1": [
+          51,
+          74
+        ],
+        "recall_at_3": [
+          67,
+          74
+        ],
+        "recall_at_k": [
+          67,
+          74
+        ],
+        "precision_at_1": 0.85,
+        "precision_at_3": 0.37222222222222223,
+        "precision_at_k": 0.37222222222222223,
+        "mrr": 0.9625220458553791,
+        "false_exposures": 23,
+        "hard_negative_exposed": 2,
+        "mean_selected": 1.3833333333333333,
+        "mean_candidates": 13.333333333333334
+      },
+      "by_size": {
+        "large": {
+          "queries": 20,
+          "positive_queries": 18,
+          "expected_links": 24,
+          "selected_hits": 20,
+          "micro_recall": 0.8333333333333334,
+          "all_target_reach": [
+            14,
+            18
+          ],
+          "at_least_one_reach": [
+            17,
+            18
+          ],
+          "recall_at_1": [
+            16,
+            24
+          ],
+          "recall_at_3": [
+            21,
+            24
+          ],
+          "recall_at_k": [
+            21,
+            24
+          ],
+          "precision_at_1": 0.8,
+          "precision_at_3": 0.35,
+          "precision_at_k": 0.35,
+          "mrr": 0.9153439153439152,
+          "false_exposures": 8,
+          "hard_negative_exposed": 1,
+          "mean_selected": 1.4,
+          "mean_candidates": 20.0
+        },
+        "medium": {
+          "queries": 20,
+          "positive_queries": 18,
+          "expected_links": 25,
+          "selected_hits": 19,
+          "micro_recall": 0.76,
+          "all_target_reach": [
+            13,
+            18
+          ],
+          "at_least_one_reach": [
+            16,
+            18
+          ],
+          "recall_at_1": [
+            17,
+            25
+          ],
+          "recall_at_3": [
+            23,
+            25
+          ],
+          "recall_at_k": [
+            23,
+            25
+          ],
+          "precision_at_1": 0.85,
+          "precision_at_3": 0.38333333333333336,
+          "precision_at_k": 0.38333333333333336,
+          "mrr": 0.9722222222222222,
+          "false_exposures": 2,
+          "hard_negative_exposed": 0,
+          "mean_selected": 1.05,
+          "mean_candidates": 12.0
+        },
+        "small": {
+          "queries": 20,
+          "positive_queries": 18,
+          "expected_links": 25,
+          "selected_hits": 21,
+          "micro_recall": 0.84,
+          "all_target_reach": [
+            15,
+            18
+          ],
+          "at_least_one_reach": [
+            16,
+            18
+          ],
+          "recall_at_1": [
+            18,
+            25
+          ],
+          "recall_at_3": [
+            23,
+            25
+          ],
+          "recall_at_k": [
+            23,
+            25
+          ],
+          "precision_at_1": 0.9,
+          "precision_at_3": 0.38333333333333336,
+          "precision_at_k": 0.38333333333333336,
+          "mrr": 1.0,
+          "false_exposures": 13,
+          "hard_negative_exposed": 1,
+          "mean_selected": 1.7,
+          "mean_candidates": 8.0
+        }
+      },
+      "by_category": {
+        "legacy_unclassified": {
+          "queries": 60,
+          "positive_queries": 54,
+          "expected_links": 74,
+          "selected_hits": 60,
+          "micro_recall": 0.8108108108108109,
+          "all_target_reach": [
+            42,
+            54
+          ],
+          "at_least_one_reach": [
+            49,
+            54
+          ],
+          "recall_at_1": [
+            51,
+            74
+          ],
+          "recall_at_3": [
+            67,
+            74
+          ],
+          "recall_at_k": [
+            67,
+            74
+          ],
+          "precision_at_1": 0.85,
+          "precision_at_3": 0.37222222222222223,
+          "precision_at_k": 0.37222222222222223,
+          "mrr": 0.9625220458553791,
+          "false_exposures": 23,
+          "hard_negative_exposed": 2,
+          "mean_selected": 1.3833333333333333,
+          "mean_candidates": 13.333333333333334
+        }
+      },
+      "error_ledger": [
+        {
+          "case_id": "cq-01",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-login"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-02",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-notify"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-04",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "c-notify"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "c-notify": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "cq-05",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-book"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-07",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-reset"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-08",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-login"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-10",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-notify"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-11",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-book",
+            "c-login"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-12",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-book",
+            "c-notify"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-14",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-book"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-15",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "c-book",
+            "c-invoice"
+          ],
+          "false_ids": [
+            "c-login"
+          ],
+          "missed_stages": {
+            "c-invoice": "TOP_K_EXCLUDED",
+            "c-book": "TOP_K_EXCLUDED"
+          }
+        },
+        {
+          "case_id": "cq-17",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "c-book"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "cq-19",
+          "project_id": "clinic-small",
+          "project_size": "small",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "c-book"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "c-book": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "eq-04",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-review"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "e-review": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "eq-05",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-email"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "e-email": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "eq-06",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-auth"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "e-auth": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "eq-10",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-filter",
+            "e-search"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "e-filter": "BELOW_THRESHOLD",
+            "e-search": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "eq-17",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "e-guest"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "eq-18",
+          "project_id": "commerce-medium",
+          "project_size": "medium",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "e-auth"
+          ],
+          "false_ids": [
+            "e-guest"
+          ],
+          "missed_stages": {
+            "e-auth": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-02",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "s-digest"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "sq-04",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "s-task"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "sq-05",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-hook"
+          ],
+          "false_ids": [
+            "s-filter",
+            "s-task"
+          ],
+          "missed_stages": {
+            "s-hook": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-07",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-file"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "s-file": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-10",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-role"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "s-role": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-11",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "s-project",
+            "s-retain"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "sq-12",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "s-task"
+          ],
+          "missed_stages": {}
+        },
+        {
+          "case_id": "sq-18",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [
+            "s-file"
+          ],
+          "false_ids": [],
+          "missed_stages": {
+            "s-file": "BELOW_THRESHOLD"
+          }
+        },
+        {
+          "case_id": "sq-19",
+          "project_id": "saas-large",
+          "project_size": "large",
+          "categories": [
+            "legacy_unclassified"
+          ],
+          "missed_ids": [],
+          "false_ids": [
+            "s-filter"
+          ],
+          "missed_stages": {}
+        }
+      ]
+    }
+  }
+}

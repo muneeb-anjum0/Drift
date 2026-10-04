@@ -1,0 +1,68 @@
+{
+  "name": "drift-r6-s1-development-freeze",
+  "version": "1.0.0",
+  "status": "FROZEN_RESEARCH_CANDIDATE_NOT_PROMOTED",
+  "identity": "R6-S1-t0.45",
+  "source": {
+    "path": "tools/verification/phase3e_semantic_dev.py",
+    "sha256": "2ac6ddc62f1b796896352bf2812b9cb1ee55b9c7f6cb8ff260b5f4aac4a67228"
+  },
+  "model": {
+    "repository": "sentence-transformers/all-MiniLM-L6-v2",
+    "revision": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+    "weights_sha256": "53aa51172d142c89d9012cce15ae4d6cc0ca6895895114379cacb4fab128d9db",
+    "license": "Apache-2.0",
+    "dimension": 384,
+    "pooling": "attention-mask mean",
+    "normalization": "L2",
+    "device": "CPU_ONLY"
+  },
+  "configuration": {
+    "query_representation": "whole client message",
+    "requirement_representation": "title + period + space + description",
+    "similarity": "cosine",
+    "threshold": 0.45,
+    "threshold_comparison": "greater_than_or_equal",
+    "max_selected": 3,
+    "tie_breaking": "stable baseline requirement order",
+    "zero_target_allowed": true,
+    "specific_match_gate": false,
+    "classification_rules": false
+  },
+  "dependencies_observed": {
+    "python": "3.14.7",
+    "torch": "2.14.0+cu126 (CPU forced; no CUDA device used)",
+    "transformers": "4.57.6",
+    "tokenizers": "0.22.2",
+    "huggingface_hub": "0.36.2",
+    "safetensors": "0.8.0"
+  },
+  "development_data": [
+    {"path":"evaluation/datasets/retrieval_dev_v2.json","sha256":"a000bc087bf3d1455f98600a76648a078315e8d7a4377e1c32f8ed0185971ae9","query_count":60},
+    {"path":"evaluation/phase_iii_e/retrieval_dev_v1.json","sha256":"fed3b46b97f1a557daf17169fed7aba30d241541df3d9d41eba2e5709f4c34fa","query_count":30}
+  ],
+  "development_results": {
+    "new_corpus": {"r0_hits":28,"r5_hits":30,"r6_hits":30,"expected_links":40,"r0_false_exposures":9,"r5_false_exposures":12,"r6_false_exposures":7},
+    "legacy_corpus": {"r0_hits":48,"r5_hits":59,"r6_hits":61,"expected_links":74,"r0_false_exposures":32,"r5_false_exposures":37,"r6_false_exposures":19}
+  },
+  "existing_retrieval_gates_unchanged": {"overall_micro_recall_minimum":0.90,"per_project_size_micro_recall_minimum":0.85},
+  "independent_decision_rule_predeclared": {
+    "supported_if_all": [
+      "valid independent human/model review frozen before any final predictions",
+      "R6 overall micro recall >= 0.90",
+      "R6 micro recall >= 0.85 in every represented project size",
+      "R6 recovers at least one more target link than R5",
+      "R6 has no more false exposures than R5",
+      "R6 exposes no more zero-target hard-negative queries than R5"
+    ],
+    "not_supported_if": "A valid reviewed blind run is completed but at least one supported condition fails.",
+    "inconclusive_if": "Review, freeze, baseline identity, exact input equality, or blind execution is invalid or unavailable."
+  },
+  "limitations": [
+    "Candidate is an offline research evaluator, not integrated into the Go production service.",
+    "Development labels are synthetic and single-author, not independent truth.",
+    "The new development corpus remains below the unchanged recall gates.",
+    "Original adapter-training overlap is unknown.",
+    "Embedding weights are cached outside Git and are not a repository artifact."
+  ]
+}
