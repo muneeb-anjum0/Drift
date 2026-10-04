@@ -1,0 +1,22 @@
+{
+  "phase": "III-G",
+  "date": "2026-10-04",
+  "role": "DEVELOPMENT_ONLY_PIPELINE_ARCHITECTURE_STUDY",
+  "panel_sha256": "1f8f4acbb78e0d2f777295411afda2f0113443404df83ec3b79aa47c29a952cd",
+  "baseline": "R5 + P1 + PP1 unchanged",
+  "experiments": [
+    {"id":"G-A1","status":"COMPLETE","method":"unchanged Go R5 + sequential P1 component on frozen development panel","result":"R5 9/10 target links; P1 8/9 reached target labels; 2 false candidate drift labels; P1-stage complete 3/6 positive messages","decision":"DIAGNOSTIC_BASELINE_ONLY"},
+    {"id":"G-M1","status":"COMPLETE","method":"threshold-free R5 top-k and predeclared adaptive margin on open III-F rank traces","result":"top-5 128/135 target links but 322 false exposures and 450 would-be singleton calls versus R5 selected 102/135, 86, 188","decision":"NO_QUALIFIED_BROAD_PIPELINE"},
+    {"id":"G-B1","status":"COMPLETE","method":"research-only strict-ID batch prompt, size 1/2/3/5, eight diagnostic CPU calls","result":"2/8 exact contract valid; only 1/8 contract-valid and correct; omissions and schema conflicts despite context fit","decision":"REJECT_STOP_RULE"},
+    {"id":"G-C1","status":"MODEL_FREE_COMPLETE","method":"actual llama tokenizer on short whole synthetic baselines","result":"N=16+ exceeds 568-token prompt policy; N<=10 prompt-feasible only","decision":"NO_WHOLE_BASELINE_CANDIDATE"},
+    {"id":"G-D1","status":"NOT_EXECUTED","reason":"no validated section hierarchy in requirement snapshots"},
+    {"id":"G-E1","status":"NOT_EXECUTED","reason":"batch affectedness/ID contract failed"},
+    {"id":"G-H1","status":"MODEL_FREE_COMPLETE","method":"top-5 if rank-3/4 margin <=0.05 else top-3","result":"115/135 links, 253 false exposures, 368 would-be calls","decision":"REJECT"},
+    {"id":"G-I1","status":"NOT_EXECUTED","reason":"batch and section-batch prerequisites failed"}
+  ],
+  "independent_holdout": "NOT_EARNED_NOT_CREATED",
+  "generalisation_decision": "NO PIPELINE ARCHITECTURE YET SUPPORTED",
+  "retraining_decision": "RETRAINING NOT YET JUSTIFIED",
+  "report": "docs/phase_iii_g_final_report.md",
+  "machine_analysis": "evaluation/phase_iii_g/pipeline_development_analysis_v1.json"
+}
