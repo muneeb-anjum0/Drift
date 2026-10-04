@@ -1,0 +1,10 @@
+{
+  "name":"drift-raw-final","version":"1.0.0","role":"FINAL_TEST",
+  "dataset_file":"drift_raw_final_v1.json","sha256":"5da735ac677e2824d80f5d22a68bb738d46b3c5aa4c9617f8cf3c88e0cb21253",
+  "frozen_at":"2026-10-01","case_count":24,
+  "class_distribution":{"added":4,"modified":4,"removed":4,"contradiction":4,"ambiguous":4,"unchanged":4},
+  "domain_count":8,
+  "creation_methodology":"Prospective human-authored synthetic cases created and frozen before Phase III-B code or prompt experiments.",
+  "access_policy":"Do not run, inspect per-case results, relabel, or tune against this dataset until individual development experiments and the combined candidate are frozen.",
+  "limitations":["One engineering author; no independent annotator agreement.","Held out from Phase III-B optimization, but independence from unrecovered historical adapter training cannot be proven.","Synthetic distribution is not a production traffic estimate."]
+}

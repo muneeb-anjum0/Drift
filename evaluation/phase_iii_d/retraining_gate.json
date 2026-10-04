@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "retrieval_dataset_sha256": "ee21e6d6bd2c36324c80e7020bd87d7c2094068d762d943ab7afe581e065e51b",
+  "retrieval_decision": "R5 GENERALISATION NOT SUPPORTED",
+  "v3_decision": "V3 INCONCLUSIVE",
+  "v3_execution": "NOT_RUN_R5_PREREQUISITE_FAILED",
+  "retrieval_vs_model_separation": {
+    "expected_links": 42,
+    "delivered_to_model_by_R5": 25,
+    "not_delivered_to_model_by_R5": 17,
+    "new_independent_model_predictions": 0,
+    "true_model_failures_on_new_cases": "UNMEASURED",
+    "historical_oracle_evidence": "Earlier P1/raw experiments are development or closed-final evidence, not new Phase III-D model measurements."
+  },
+  "training_readiness": {
+    "acceptable_retrieval_delivery": false,
+    "recurring_semantic_errors_after_correct_retrieval_on_new_cases": "UNMEASURED",
+    "reviewed_label_ontology": "PARTIAL; retrieval target links reviewed, new six-class end-to-end labels absent",
+    "clean_sufficient_training_data": false,
+    "defensible_train_dev_test_separation": false,
+    "original_adapter_training_overlap": "UNKNOWN",
+    "new_independent_measurement_path": "RETRIEVAL_ONLY"
+  },
+  "decision": "RETRAINING NOT YET JUSTIFIED",
+  "reason": "Independent retrieval misses 17/42 expected links and R5 fails its frozen generalisation gate. No Phase III-D model predictions or reviewed end-to-end labels isolate recurring semantic errors after correct delivery; the original training corpus and split remain unavailable.",
+  "training_authorized": false
+}

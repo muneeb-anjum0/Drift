@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import json
+import os
 import shutil
 import tempfile
 from pathlib import Path
@@ -57,6 +59,24 @@ def validate_merged(output_dir: Path) -> None:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="Merge the DriftLedger LoRA into the Qwen2.5 base model.")
+    parser.add_argument(
+        "--device",
+        choices=["cpu"],
+        default="cpu",
+        help="Merge device. Drift's reproducible local build currently supports CPU only.",
+    )
+    parser.add_argument(
+        "--acknowledge-high-memory",
+        action="store_true",
+        help="Acknowledge that the legacy PyTorch merge can exceed 15 GiB RAM.",
+    )
+    args = parser.parse_args()
+    if not args.acknowledge_high_memory:
+        raise SystemExit(
+            "Legacy PyTorch merge disabled by default: it caused a verified host OOM on 15 GiB RAM. "
+            "Use `python tools/model/build_q4km_model.py` for the streaming GGUF workflow."
+        )
     root = project_root()
     base_dir = base_model_dir(root)
     adapter_ok, adapter_root, adapter_missing = validate_adapter(root / "models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA")
@@ -73,27 +93,38 @@ def main() -> None:
     print(f"Base: {base_dir}", flush=True)
     print(f"Adapter: {adapter_root}", flush=True)
     print(f"Output: {output_dir}", flush=True)
-    output_dir.mkdir(parents=True, exist_ok=True)
+    print(f"Merge device: {args.device}", flush=True)
+    output_dir.parent.mkdir(parents=True, exist_ok=True)
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise SystemExit(f"Refusing to overwrite non-empty merged model directory: {output_dir}")
 
     dtype = torch.float16
-    if not torch.cuda.is_available():
-        print("CUDA is not available. CPU merge will use float16 to reduce RAM, but may still exceed 16GB.", flush=True)
+    print("CPU merge will use float16 to reduce RAM, but may still exceed 16GB.", flush=True)
 
     base_model = AutoModelForCausalLM.from_pretrained(
         str(base_dir),
         torch_dtype=dtype,
-        device_map="auto" if torch.cuda.is_available() else None,
+        device_map={"": "cpu"},
         trust_remote_code=True,
         local_files_only=True,
         low_cpu_mem_usage=True,
     )
     model = PeftModel.from_pretrained(base_model, str(adapter_root), local_files_only=True)
     merged = model.merge_and_unload()
-    merged.save_pretrained(str(output_dir), safe_serialization=True)
-
-    tokenizer = AutoTokenizer.from_pretrained(str(tokenizer_source(adapter_root)), trust_remote_code=True, local_files_only=True)
-    tokenizer.save_pretrained(str(output_dir))
-    validate_merged(output_dir)
+    temporary_output = Path(tempfile.mkdtemp(prefix=f"{output_dir.name}.tmp-", dir=output_dir.parent))
+    try:
+        merged.save_pretrained(str(temporary_output), safe_serialization=True, max_shard_size="4GB")
+        tokenizer = AutoTokenizer.from_pretrained(
+            str(tokenizer_source(adapter_root)), trust_remote_code=True, local_files_only=True
+        )
+        tokenizer.save_pretrained(str(temporary_output))
+        validate_merged(temporary_output)
+        if output_dir.exists():
+            output_dir.rmdir()
+        os.replace(temporary_output, output_dir)
+    except Exception:
+        shutil.rmtree(temporary_output, ignore_errors=True)
+        raise
     print("Merged model saved successfully.", flush=True)
 
 

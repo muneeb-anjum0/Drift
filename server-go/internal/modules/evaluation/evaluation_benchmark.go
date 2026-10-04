@@ -247,6 +247,7 @@ func (s Service) inferenceHealth(ctx context.Context) (map[string]any, error) {
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Set("X-Drift-Inference-Key", s.cfg.DriftInferenceAPIKey)
 	client := &http.Client{Timeout: s.cfg.DriftInferenceTimeout}
 	resp, err := client.Do(req)
 	if err != nil {

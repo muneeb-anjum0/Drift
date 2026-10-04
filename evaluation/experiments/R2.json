@@ -1,0 +1,12 @@
+{
+  "id":"R2","status":"COMPLETE","created_at":"2026-10-01",
+  "hypothesis":"General domain vocabulary gaps prevent semantically correct requirements from matching. Adding only evidence-backed synonym and API-domain normalization will recover lexical misses without changing scoring, gates, threshold, or top-k.",
+  "baseline":"R1","primary_variable":"retrieval vocabulary normalization maps",
+  "held_constant":["dataset","threshold 0.25","top-k 3","score weights","specific-match gate","model","prompt","postprocessing"],
+  "dataset":"drift-retrieval-dev@1.0.0","sample_count":24,
+  "acceptance":"Increase all-expected reach by at least two queries over R1, with average model calls below 1.5 and false-candidate exposure no more than 14.",
+  "planned_files":["server-go/internal/modules/drift/drift_service.go"],
+  "result":{"all_expected_reached":"24/24","model_input_recall":1.0,"recall_at_1":0.875,"recall_at_3":0.9791666667,"mrr":0.9791666667,"average_model_calls":1.5833333333,"false_candidate_exposure":10},
+  "decision":"INCONCLUSIVE",
+  "interpretation":"Vocabulary gaps were causal and recall improved materially with no increase in false-exposure count. The predeclared average-call gate below 1.5 was missed, so R2 is retained only as an input to a separate filtering experiment."
+}

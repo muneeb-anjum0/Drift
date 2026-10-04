@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "cpu-concurrency-v1",
+  "generated_at": "2026-09-30T19:03:38.816458+00:00",
+  "artifact_sha256": "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
+  "dataset_sha256": "5265b80a265ff7b1090ec1a6a7d4879a9b6e7a7d0a64123071af7b343fad31eb",
+  "case_id": "add_health_01",
+  "configuration": {
+    "cpu_only": true,
+    "llama_parallel_slots": 1,
+    "temperature": 0,
+    "top_p": 1,
+    "n_predict": 120,
+    "requested_levels": [
+      1,
+      2,
+      4
+    ]
+  },
+  "initial": {
+    "host_mem_available_bytes": 6235799552,
+    "host_swap_used_bytes": 109404160,
+    "llama_container_memory": "3.584GiB / 7GiB"
+  },
+  "levels": [
+    {
+      "concurrency": 1,
+      "request_count": 1,
+      "success_count": 1,
+      "failure_count": 0,
+      "wall_time_ms": 7364.95,
+      "throughput_requests_per_second": 0.13577824696705343,
+      "mean_latency_ms": 7354.63,
+      "max_latency_ms": 7354.63,
+      "before": {
+        "host_mem_available_bytes": 6206046208,
+        "host_swap_used_bytes": 109404160,
+        "llama_container_memory": "3.584GiB / 7GiB"
+      },
+      "after": {
+        "host_mem_available_bytes": 5921337344,
+        "host_swap_used_bytes": 109404160,
+        "llama_container_memory": "3.584GiB / 7GiB"
+      },
+      "requests": [
+        {
+          "request_id": 0,
+          "latency_ms": 7354.63,
+          "label": "added",
+          "error": null
+        }
+      ]
+    },
+    {
+      "concurrency": 2,
+      "request_count": 2,
+      "success_count": 2,
+      "failure_count": 0,
+      "wall_time_ms": 13892.16,
+      "throughput_requests_per_second": 0.14396609310575173,
+      "mean_latency_ms": 10477.875,
+      "max_latency_ms": 13891.41,
+      "before": {
+        "host_mem_available_bytes": 5798858752,
+        "host_swap_used_bytes": 109404160,
+        "llama_container_memory": "3.584GiB / 7GiB"
+      },
+      "after": {
+        "host_mem_available_bytes": 6820933632,
+        "host_swap_used_bytes": 109404160,
+        "llama_container_memory": "3.584GiB / 7GiB"
+      },
+      "requests": [
+        {
+          "request_id": 0,
+          "latency_ms": 7064.34,
+          "label": "added",
+          "error": null
+        },
+        {
+          "request_id": 1,
+          "latency_ms": 13891.41,
+          "label": "added",
+          "error": null
+        }
+      ]
+    },
+    {
+      "concurrency": 4,
+      "request_count": 4,
+      "success_count": 4,
+      "failure_count": 0,
+      "wall_time_ms": 30327.81,
+      "throughput_requests_per_second": 0.13189214783395173,
+      "mean_latency_ms": 18576.4725,
+      "max_latency_ms": 30326.18,
+      "before": {
+        "host_mem_available_bytes": 6826782720,
+        "host_swap_used_bytes": 109404160,
+        "llama_container_memory": "3.584GiB / 7GiB"
+      },
+      "after": {
+        "host_mem_available_bytes": 6282989568,
+        "host_swap_used_bytes": 109404160,
+        "llama_container_memory": "3.584GiB / 7GiB"
+      },
+      "requests": [
+        {
+          "request_id": 0,
+          "latency_ms": 6432.81,
+          "label": "added",
+          "error": null
+        },
+        {
+          "request_id": 1,
+          "latency_ms": 14732.73,
+          "label": "added",
+          "error": null
+        },
+        {
+          "request_id": 2,
+          "latency_ms": 22814.17,
+          "label": "added",
+          "error": null
+        },
+        {
+          "request_id": 3,
+          "latency_ms": 30326.18,
+          "label": "added",
+          "error": null
+        }
+      ]
+    }
+  ],
+  "stop_reason": null,
+  "interpretation": "With one llama slot, client concurrency measures queueing and bounded throughput rather than parallel generation."
+}

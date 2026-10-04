@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "phase": "III-D",
+  "parent_branch": "phase-3/retrieval-dataset-v1",
+  "parent_commit": "1a3b1d4f4262472505b1e100684112f8c9226b31",
+  "v0_evidence_commit": "66bb5fe7a0c98c20a40b3dd19113a641f5b71b7f",
+  "v0_artifact_tag_target": "5421d1f383796b1ec0e271586711e637a9ed0347",
+  "rejected_v1_commit": "6b13d4856141dc6a05dd214e69b2f71ca7ca9294",
+  "r0": {"identity": "Phase III-C R0, V0 retrieval", "threshold": 0.25, "max_selected": 3, "specific_gate": true, "score_weights": {"direct": 0.55, "title": 0.25, "domain": 0.35}, "multi_term_bonus": 0.12, "normalization": "original V0 plural normalization only", "aliases": "V0 synonym map"},
+  "r5": {"identity": "Phase III-C R5 after PP1 isolation fix", "selection_commit": "14b25ac0d54a85c5c1002fc975d426309ab21e9b", "isolation_commit": "01cb6fc958646e388d6cee2d5be55dbcce0b7042", "source_sha256": "04565fc32884031355c796a752c0b1691ff0dc4eb8c894f76d7ecb6e813b89ec", "threshold": 0.25, "max_selected": 3, "specific_gate": true, "normalization": "V0 plural plus conservative -ing/-ed verb suffixes", "aliases": "V0 plus 13 Phase III-C business aliases"},
+  "p1": {"identity": "Phase III-B P1 prompt", "manifest_sha256": "902ac43037c998afc4b6550995036bbc720bcae5dbbafc4504b2b9898abed339", "unchanged_from_v1": true},
+  "pp1": {"identity": "Phase III-B PP1 postprocessing", "source_sha256": "0c8bf5cf8fad54d2f9285a4392c2a4fa96d3fc758d3331a0fb0020c834b643e7", "unchanged_from_v1": true},
+  "model": {"artifact_sha256": "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9", "bytes": 4683074112, "rehashed_in_phase_iii_d": true, "gpu_layers": 0, "device": "none", "threads": 6, "parallel_slots": 1, "context_size": 768, "max_output_tokens": 120, "temperature": 0, "top_p": 1},
+  "closed_datasets": [
+    {"id": "drift-raw-final@1.0.0", "sha256": "5da735ac677e2824d80f5d22a68bb738d46b3c5aa4c9617f8cf3c88e0cb21253"},
+    {"id": "drift-retrieval-final@1.0.0", "sha256": "3f2b2e7aa03d2d07f0b549f88a1d1fc55dc9cd04e4b728df1830bd3a00e95902"}
+  ],
+  "running_container_state": "Five healthy pre-R5 containers; backend image was built before Phase III-C. Source checkout does not prove the running backend is R5.",
+  "evaluation_status": "NOT_STARTED"
+}

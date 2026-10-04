@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "experiment_id": "R0",
+  "dataset": "drift-retrieval-dev@1.0.0",
+  "report": "reports/R0_retrieval_dev_v1.json",
+  "summary": {
+    "queries": 24,
+    "queries_with_all_expected_reaching_model": 16,
+    "queries_with_a_miss": 8,
+    "expected_requirements": 28,
+    "expected_requirements_reaching_model": 17,
+    "missed_expected_requirements": 11,
+    "false_exposures": 10
+  },
+  "failures": [
+    {"query_id":"eq-02","requirement_id":"e-stock","stage":"threshold","rank":5,"score":0.06875,"category":"lexical_paraphrase_gap","evidence":"Only hide overlaps; unavailable/back-order is not linked to out-of-stock/inventory."},
+    {"query_id":"eq-04","requirement_id":"e-review","stage":"threshold","rank":2,"score":0.07857142857142857,"category":"morphology_and_paraphrase_gap","evidence":"Only delivered overlaps; rating/rate and purchase/purchaser do not normalize together."},
+    {"query_id":"eq-05","requirement_id":"e-ship","stage":"threshold","rank":1,"score":0.19375,"category":"lexical_paraphrase_gap","evidence":"Tracking overlaps, but parcel/leaves warehouse is not linked to shipment/shipped."},
+    {"query_id":"eq-05","requirement_id":"e-email","stage":"threshold","rank":6,"score":0.061111111111111116,"category":"lexical_paraphrase_gap","evidence":"Text buyer is not linked to order notification/email; conjunction is the sole overlap."},
+    {"query_id":"eq-06","requirement_id":"e-auth","stage":"threshold","rank":2,"score":0,"category":"semantic_paraphrase_gap","evidence":"Register/every buyer has no lexical bridge to registered customer authentication."},
+    {"query_id":"eq-06","requirement_id":"e-guest","stage":"threshold","rank":3,"score":0,"category":"semantic_paraphrase_gap","evidence":"Anonymous purchasing has no lexical bridge to guest checkout."},
+    {"query_id":"sq-01","requirement_id":"s-file","stage":"specific_match_gate","rank":1,"score":0.45999999999999996,"category":"gate_false_negative","evidence":"Document domain plus task match scores highly, but one direct term and no title overlap fail the gate."},
+    {"query_id":"sq-04","requirement_id":"s-api","stage":"top_k","rank":4,"score":0.395,"category":"requirement_competition","evidence":"Correct API requirement is eligible but three broad project/task distractors rank above it."},
+    {"query_id":"sq-05","requirement_id":"s-hook","stage":"threshold","rank":7,"score":0.06875,"category":"semantic_paraphrase_gap","evidence":"Signed callback/customer URL is not linked to webhook; only task overlaps."},
+    {"query_id":"sq-07","requirement_id":"s-file","stage":"specific_match_gate","rank":1,"score":0.45999999999999996,"category":"gate_false_negative","evidence":"Uploaded document maps to document domain but file/attachment wording does not directly match."},
+    {"query_id":"sq-07","requirement_id":"s-search","stage":"threshold","rank":6,"score":0.06875,"category":"morphology_and_paraphrase_gap","evidence":"Searching does not normalize to search; only task overlaps."}
+  ],
+  "dominant_findings": [
+    "Eight of eleven missed targets fail the threshold, two fail the specific-match gate, and one is excluded by top-k competition.",
+    "The dominant root cause is representation/normalization coverage, not numeric threshold choice alone.",
+    "Blindly lowering threshold would increase false exposure and would not fix zero-score paraphrases or the specific-match gate."
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "drift-phase-iii-d-retrieval-blueprint@1.0.0",
+  "parent_commit": "1a3b1d4f4262472505b1e100684112f8c9226b31",
+  "branch": "phase-3/generalisation-eval-v1",
+  "purpose": "Blind independent retrieval comparison of frozen R0 and R5",
+  "planned_projects": [
+    {"domain": "municipal permits", "requirements": 10, "queries": 10},
+    {"domain": "cold-chain distribution", "requirements": 10, "queries": 10},
+    {"domain": "building maintenance", "requirements": 10, "queries": 10},
+    {"domain": "event operations", "requirements": 10, "queries": 10}
+  ],
+  "target_count_plan": {"zero": 8, "one": 20, "two": 10, "three_or_more": 2},
+  "category_plan": {
+    "hard_negative": 8,
+    "low_overlap_positive": 8,
+    "competing_requirements": 6,
+    "multi_target": 12,
+    "negation_or_removal": 4,
+    "question_or_hypothetical": 4,
+    "informal_or_implicit": 4,
+    "long_message": 4
+  },
+  "category_counts_overlap": true,
+  "baseline_policy": "New synthetic project baselines, not the clinic/commerce/SaaS baselines used for R5 development.",
+  "label_policy": "Every independently affected frozen baseline requirement is a target. Zero targets mean no material baseline relationship. Ambiguous targets are flagged for adjudication and excluded from strong claims until resolved.",
+  "provenance_policy": "Record MODEL_GENERATED and SYNTHETIC accurately for agent-authored drafts. No claim of human-written examples or independent human labels until reviewer evidence exists.",
+  "review_policy": "Human reviewer adjudicates each expected target set without R0/R5 predictions. Retain original proposal and reviewer decision. Freeze dataset bytes and hash only after review.",
+  "contamination_policy": "Audit exact and normalized duplicate messages, requirement text, and pairs against all development, historical, and closed-final corpora; manually review nearest semantic overlaps. Original LoRA training overlap remains UNKNOWN.",
+  "evaluation_policy": "No R0/R5 run until labels, contamination decisions, hash, and gate are frozen. Use exact same bytes and production scorer on both configurations. Preserve both reports and per-case ledger; never edit labels after results.",
+  "end_to_end_plan": "If R5 generalisation is supported, define and review a separate protected 24-case six-label end-to-end set before V3 execution. A reviewer must approve pair labels and expected affected requirement IDs before model output is observed."
+}

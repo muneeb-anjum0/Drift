@@ -1,0 +1,667 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "oracle-retrieval-v0",
+  "status": "complete",
+  "started_at": "2026-09-30T19:29:14.294238+00:00",
+  "finished_at": "2026-09-30T19:34:46.068510+00:00",
+  "evidence_status": "DEVELOPMENT_NOT_PROVEN_HELD_OUT",
+  "warnings": [
+    "Recovered training data is unknown, so independence from adapter training cannot be proven.",
+    "This evaluates raw model output and contract normalization, not retrieval or final Drift behavior."
+  ],
+  "baseline_commit": "5421d1f383796b1ec0e271586711e637a9ed0347",
+  "artifact_sha256": "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
+  "dataset": {
+    "name": "drift-retrieval-oracle-dev",
+    "version": "1.0.0",
+    "sha256": "d766e91dc31283360837f505ee1d6bbcf0e0d30bab54f3d795761a3fe43209a7",
+    "case_count": 28,
+    "class_distribution": {
+      "added": 13,
+      "contradiction": 2,
+      "modified": 10,
+      "removed": 2,
+      "unchanged": 1
+    }
+  },
+  "runtime": {
+    "engine": "llama.cpp",
+    "url": "http://127.0.0.1:8080",
+    "cpu_only": true,
+    "parallel_slots": 1,
+    "temperature": 0,
+    "top_p": 1,
+    "n_predict": 120,
+    "context_size": 768,
+    "prompt_sha256": "7d74f28945492bf1a7ad9909709e0eb2fceabceda22ac969167fdf6c3d72336b"
+  },
+  "metrics": {
+    "case_count": 28,
+    "parsed_count": 28,
+    "correct_count": 19,
+    "accuracy": 0.6785714285714286,
+    "semantic_accuracy_among_parsed": 0.6785714285714286,
+    "macro_precision": 0.5674019607843137,
+    "macro_recall": 0.4897435897435897,
+    "macro_f1": 0.5,
+    "weighted_f1": 0.6666666666666667,
+    "per_class": {
+      "added": {
+        "precision": 0.875,
+        "recall": 0.5384615384615384,
+        "f1": 0.6666666666666667,
+        "support": 13
+      },
+      "modified": {
+        "precision": 0.5294117647058824,
+        "recall": 0.9,
+        "f1": 0.6666666666666667,
+        "support": 10
+      },
+      "removed": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 2
+      },
+      "contradiction": {
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.6666666666666666,
+        "support": 2
+      },
+      "ambiguous": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "unchanged": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 1
+      }
+    },
+    "confusion_matrix": {
+      "added": {
+        "added": 7,
+        "modified": 6,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "modified": {
+        "added": 1,
+        "modified": 9,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "removed": {
+        "added": 0,
+        "modified": 0,
+        "removed": 2,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "contradiction": {
+        "added": 0,
+        "modified": 1,
+        "removed": 0,
+        "contradiction": 1,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "ambiguous": {
+        "added": 0,
+        "modified": 0,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "unchanged": {
+        "added": 0,
+        "modified": 1,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 0
+      }
+    }
+  },
+  "format_metrics": {
+    "raw_json_valid_rate": 0.39285714285714285,
+    "contract_parse_rate": 1.0,
+    "runtime_error_count": 0
+  },
+  "calibration": {
+    "ece_10_bin": 0.18821428571428575,
+    "correctness_brier": 0.236575,
+    "bins": [
+      {
+        "lower": 0.8,
+        "upper": 0.9,
+        "count": 24,
+        "average_confidence": 0.84125,
+        "accuracy": 0.625
+      },
+      {
+        "lower": 0.9,
+        "upper": 1.0,
+        "count": 4,
+        "average_confidence": 0.98,
+        "accuracy": 1
+      }
+    ],
+    "warning": "Model confidence is self-reported and is not a calibrated class probability."
+  },
+  "latency": {
+    "count": 28,
+    "mean_ms": 11840.651071428572,
+    "p50_ms": 11923.62,
+    "p90_ms": 14231.47,
+    "p95_ms": 14246.03,
+    "max_ms": 14346.07,
+    "mean_predicted_tokens_per_second": 5.192853328895257
+  },
+  "uncertainty": {
+    "method": "deterministic nonparametric bootstrap percentile interval",
+    "iterations": 2000,
+    "accuracy_95_percentile_interval": [
+      0.5,
+      0.8571428571428571
+    ],
+    "macro_f1_95_percentile_interval": [
+      0.22266139657444003,
+      0.5942028985507246
+    ]
+  },
+  "full_report": {
+    "path_at_evaluation": "/tmp/drift-phase3b/oracle_retrieval_v0.json",
+    "sha256": "30ae07b47e9c3f23c08bdcd53992f01986ee6e3e8745b5ef0e8151ac3e7057a4",
+    "retention": "Local evidence artifact; contains every prompt, raw output, normalized prediction, and timing."
+  },
+  "case_results": [
+    {
+      "case_id": "oracle_cq-01_c-reset",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "added",
+      "actual_label": "modified",
+      "confidence": 0.8,
+      "correct": false,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 14231.47,
+      "raw_output_sha256": "eb04599472b4ce7bb0124d1f8d9073d44284274bc9f54a88e2fce55d548ed395",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_cq-02_c-cancel",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.98,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 9668.69,
+      "raw_output_sha256": "0846c8c785a33e35ca08166cd3b8bea602436bf18fb0050711655254175bcc14",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_cq-03_c-invoice",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "removed",
+      "actual_label": "removed",
+      "confidence": 0.98,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 10188.69,
+      "raw_output_sha256": "2014c1b72e20b7c0e6aa9acf4fd0d5fdade33d406e3af93a1317a6a8e9fd12da",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_cq-04_c-notify",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "added",
+      "actual_label": "modified",
+      "confidence": 0.8,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11923.62,
+      "raw_output_sha256": "bf11c47eee8a256f3688fe8c2cc2e1f3a2a6beb83bb2a1eac4b604bea6d54b5a",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_cq-05_c-report",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.84,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 11980.31,
+      "raw_output_sha256": "bd4950af1212c9ccbbe7443bbf9e8171cf1035b80091e54176f9a3ce401bb8f6",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_cq-06_c-prescription",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.87,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 10867.46,
+      "raw_output_sha256": "84a4e186fc395e24cb4d41125cddb6ab411679e31cef962513fd5da3c0049684",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_cq-07_c-login",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.84,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 10399.75,
+      "raw_output_sha256": "b0fa7c15a8beee17b51ce37bbcd0bd05fd0e54051dff005a9c9f37063150c605",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_cq-08_c-book",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "added",
+      "actual_label": "added",
+      "confidence": 0.8,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 13410.35,
+      "raw_output_sha256": "8cddd8a64dcc11a59586d8d0cf56b8e32968f519b7b6f5cbf874772b5c0f3e8f",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_cq-08_c-notify",
+      "domain": "clinic-small",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "added",
+      "actual_label": "modified",
+      "confidence": 0.84,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 11183.03,
+      "raw_output_sha256": "b840fea0467fc0129f5f6f655dee53044d55af4593bd3381bec56229416c6d64",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_eq-01_e-promo",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.84,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 13315.82,
+      "raw_output_sha256": "7895a400e8aa25aed95fd35d9660c9c7527ec52f6e7fa6d8b16a3158bd39e863",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_eq-02_e-stock",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "contradiction",
+      "actual_label": "modified",
+      "confidence": 0.8,
+      "correct": false,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 10467.23,
+      "raw_output_sha256": "cb9417562d03ec2cf5cc775c4f9ee045f3b3e0b349eb139764cfa9708f37b5a9",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_eq-03_e-pay",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "added",
+      "actual_label": "added",
+      "confidence": 0.87,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 12545.94,
+      "raw_output_sha256": "489ba630e29ec5517e320a2ace48d30c50dffd327ca0805d80fd0b954f4a4988",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_eq-04_e-review",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "contradiction",
+      "actual_label": "contradiction",
+      "confidence": 0.84,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 12465.61,
+      "raw_output_sha256": "61aa13c4530efe9f5d9056bec7677ac8d3c974ba2d7853f61b7a61d9a428b051",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_eq-05_e-ship",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "added",
+      "actual_label": "added",
+      "confidence": 0.8,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 14222.94,
+      "raw_output_sha256": "8b76aa434d2e15205324fcfdfc91b380971514d1906104f115bcd71e3ba87473",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_eq-05_e-email",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "added",
+      "actual_label": "added",
+      "confidence": 0.87,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 12398.1,
+      "raw_output_sha256": "6c69239a3a2133e3686195ac6c9f331826bc478bd8bc7ddeff082c8f54c4d530",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_eq-06_e-guest",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "removed",
+      "actual_label": "removed",
+      "confidence": 0.98,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 9588.17,
+      "raw_output_sha256": "7c9be45356ef1b5059c44d20e96f6d9005a71d0685bbe0ac9d8ef1f45511d4c2",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_eq-06_e-auth",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "added",
+      "actual_label": "modified",
+      "confidence": 0.87,
+      "correct": false,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 9741.82,
+      "raw_output_sha256": "98f4c1315e58a97d09f2c2a30e3f7e1f567f44eae3158d1afce883e07a4be88a",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_eq-07_e-search",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "added",
+      "actual_label": "modified",
+      "confidence": 0.87,
+      "correct": false,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 10958.48,
+      "raw_output_sha256": "c2162c91b2fd785339564919d7c5b96919b8108ffd1285eaced6efe7824542b0",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_eq-08_e-refund",
+      "domain": "commerce-medium",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.84,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 14246.03,
+      "raw_output_sha256": "57c7d5fc75afcafe8d2536deb6273af1ab0cdb3107a8ffa24d106fce823fce59",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_sq-01_s-file",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.98,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 12586.8,
+      "raw_output_sha256": "9cd1d636db9efdf7252fe6a6d07bf04d8afa7a152ea63c8e78389a568b23346a",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_sq-02_s-notify",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "added",
+      "actual_label": "modified",
+      "confidence": 0.84,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 10129.91,
+      "raw_output_sha256": "cd4e87e635715108634978ed8337282d1e5255cb3a659e36140b677ea148afb5",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_sq-03_s-audit",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.87,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 11182.34,
+      "raw_output_sha256": "308aa87554b700e8b22c66784e4430f4cefd909ea93a02d4210f7de877920325",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_sq-04_s-api",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "added",
+      "actual_label": "added",
+      "confidence": 0.87,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 12960.16,
+      "raw_output_sha256": "1889c61f888a04d294e5446e4f093018e21f0a1394fbd5c0d4cf924abf0b4799",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_sq-05_s-hook",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "unchanged",
+      "actual_label": "modified",
+      "confidence": 0.84,
+      "correct": false,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 14346.07,
+      "raw_output_sha256": "a09e1dca67781b1eaf95f7702d65e5d2c97dabf12c6f84dc071d80f2858b2991",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_sq-06_s-dashboard",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "modified",
+      "actual_label": "added",
+      "confidence": 0.84,
+      "correct": false,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 12455.9,
+      "raw_output_sha256": "98f23922638554c18d25ec1e628fc4cb598695573eda6e7fb08601f0e7d87f1e",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_sq-07_s-search",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "added",
+      "actual_label": "added",
+      "confidence": 0.87,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 12035.16,
+      "raw_output_sha256": "69453551b92b4d8093efa68098ff425d4193f1fc92924be053c68dceb255906a",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_sq-07_s-file",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "added",
+      "actual_label": "added",
+      "confidence": 0.8,
+      "correct": true,
+      "raw_json_valid": false,
+      "parse_success": true,
+      "latency_ms": 11376.68,
+      "raw_output_sha256": "bf3b24725e8206e8e6f2b059a09e6a9b8c34a7ee2e7434d4aec07a8edc8dd9e8",
+      "runtime_error": null
+    },
+    {
+      "case_id": "oracle_sq-08_s-retain",
+      "domain": "saas-large",
+      "difficulty": "diagnostic",
+      "tags": [
+        "oracle-retrieval"
+      ],
+      "expected_label": "modified",
+      "actual_label": "modified",
+      "confidence": 0.87,
+      "correct": true,
+      "raw_json_valid": true,
+      "parse_success": true,
+      "latency_ms": 10661.7,
+      "raw_output_sha256": "e119b87bb2684ab82bce43ab19d2698cda185423996c099477a9607fba735086",
+      "runtime_error": null
+    }
+  ]
+}

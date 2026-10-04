@@ -1,0 +1,17 @@
+{
+  "name": "drift-retrieval-dev",
+  "version": "1.0.0",
+  "dataset_file": "retrieval_dev_v1.json",
+  "sha256": "09f30bc801bcd8a4514f51c063ba58102238d365646949b61b6a45ffa90bd89c",
+  "created_at": "2026-09-30",
+  "creation_methodology": "Human-authored prospective project baselines with explicit relevant requirement IDs, paraphrases, multiple relevant requirements, and similar distractors.",
+  "status": "DEVELOPMENT",
+  "project_count": 3,
+  "query_count": 24,
+  "project_requirement_counts": {"small":8,"medium":12,"large":20},
+  "known_limitations": [
+    "Synthetic projects do not cover every production vocabulary or project structure.",
+    "Relevance annotations were authored by one engineering agent rather than multiple independent reviewers.",
+    "The corpus is for development diagnosis and must not become a future sealed final test."
+  ]
+}

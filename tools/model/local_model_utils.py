@@ -10,6 +10,8 @@ MODEL_DIR_RELATIVE = Path("models/base/Qwen2.5-7B-Instruct")
 ADAPTER_ZIP_RELATIVE = Path("models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA.zip")
 ADAPTER_DIR_RELATIVE = Path("models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA")
 MERGED_MODEL_RELATIVE = Path("models/merged/DriftLedger-Qwen2.5-7B-Merged")
+BASE_GGUF_F16_RELATIVE = Path("models/gguf/Qwen2.5-7B-Instruct-F16.gguf")
+LORA_GGUF_F16_RELATIVE = Path("models/gguf/DriftLedger-v5-LoRA-F16.gguf")
 GGUF_F16_RELATIVE = Path("models/gguf/DriftLedger-Qwen2.5-7B-F16.gguf")
 GGUF_Q4KM_RELATIVE = Path("models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf")
 LLAMA_CPP_RELATIVE = Path("tools/model/vendor/llama.cpp")
@@ -59,6 +61,14 @@ def adapter_zip(root: Path | None = None) -> Path:
 
 def merged_model_dir(root: Path | None = None) -> Path:
     return (root or project_root()) / MERGED_MODEL_RELATIVE
+
+
+def base_gguf_f16_path(root: Path | None = None) -> Path:
+    return (root or project_root()) / BASE_GGUF_F16_RELATIVE
+
+
+def lora_gguf_f16_path(root: Path | None = None) -> Path:
+    return (root or project_root()) / LORA_GGUF_F16_RELATIVE
 
 
 def gguf_f16_path(root: Path | None = None) -> Path:

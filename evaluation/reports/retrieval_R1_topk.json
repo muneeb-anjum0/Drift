@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "V0-retrieval-topk-diagnostic",
+  "source_report": "evaluation/reports/retrieval_R1.json",
+  "dataset": {
+    "name": "drift-retrieval-dev",
+    "sha256": "09f30bc801bcd8a4514f51c063ba58102238d365646949b61b6a45ffa90bd89c",
+    "version": "1.0.0"
+  },
+  "note": "Uses unchanged V0 rankings/relevance decisions; only the number of eligible requirements admitted is varied.",
+  "levels": [
+    {
+      "k": 1,
+      "query_count": 24,
+      "model_input_recall": 0.6041666666666666,
+      "selected_precision": 0.625,
+      "all_expected_reached_count": 14,
+      "all_expected_reached_rate": 0.5833333333333334,
+      "at_least_one_reached_count": 15,
+      "at_least_one_reached_rate": 0.625,
+      "average_model_calls": 0.7083333333333334,
+      "false_candidate_exposure_count": 2
+    },
+    {
+      "k": 2,
+      "query_count": 24,
+      "model_input_recall": 0.6875,
+      "selected_precision": 0.5208333333333334,
+      "all_expected_reached_count": 16,
+      "all_expected_reached_rate": 0.6666666666666666,
+      "at_least_one_reached_count": 17,
+      "at_least_one_reached_rate": 0.7083333333333334,
+      "average_model_calls": 1.0833333333333333,
+      "false_candidate_exposure_count": 9
+    },
+    {
+      "k": 3,
+      "query_count": 24,
+      "model_input_recall": 0.7083333333333334,
+      "selected_precision": 0.5208333333333334,
+      "all_expected_reached_count": 17,
+      "all_expected_reached_rate": 0.7083333333333334,
+      "at_least_one_reached_count": 17,
+      "at_least_one_reached_rate": 0.7083333333333334,
+      "average_model_calls": 1.1666666666666667,
+      "false_candidate_exposure_count": 10
+    },
+    {
+      "k": 5,
+      "query_count": 24,
+      "model_input_recall": 0.7083333333333334,
+      "selected_precision": 0.5083333333333333,
+      "all_expected_reached_count": 17,
+      "all_expected_reached_rate": 0.7083333333333334,
+      "at_least_one_reached_count": 17,
+      "at_least_one_reached_rate": 0.7083333333333334,
+      "average_model_calls": 1.2916666666666667,
+      "false_candidate_exposure_count": 13
+    }
+  ]
+}

@@ -21,10 +21,21 @@ def find_quantizer(build_dir: Path) -> Path | None:
     return None
 
 
+def validate_gguf(path: Path) -> None:
+    if not path.is_file() or path.stat().st_size <= 4:
+        raise RuntimeError(f"GGUF output is missing or empty: {path}")
+    with path.open("rb") as handle:
+        if handle.read(4) != b"GGUF":
+            raise RuntimeError(f"GGUF output has an invalid header: {path}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Quantize DriftLedger F16 GGUF to Q4_K_M.")
     parser.add_argument("--force", action="store_true", help="Overwrite the existing Q4_K_M output.")
+    parser.add_argument("--threads", type=int, default=4, help="CPU quantization threads (default: 4).")
     args = parser.parse_args()
+    if args.threads < 1:
+        parser.error("--threads must be at least 1")
 
     root = project_root()
     f16 = gguf_f16_path(root)
@@ -37,15 +48,17 @@ def main() -> None:
     print(f"Quantization type: {QUANTIZATION_TYPE}", flush=True)
 
     if not f16.exists():
-        raise SystemExit(f"F16 GGUF not found: {f16}. Run `python tools/model/convert_merged_to_gguf.py` first.")
+        raise SystemExit(f"F16 GGUF not found: {f16}. Run `python tools/model/merge_gguf_lora.py` first.")
     if q4.exists() and q4.stat().st_size > 0 and not args.force:
+        validate_gguf(q4)
         print(f"Q4_K_M GGUF already exists: {q4}", flush=True)
         print(f"Q4_K_M file size: {file_size_gb(q4)} GB", flush=True)
         return
     q4.parent.mkdir(parents=True, exist_ok=True)
-    temporary_q4.unlink(missing_ok=True)
+    if temporary_q4.exists():
+        raise SystemExit(f"Refusing to overwrite possible partial output: {temporary_q4}")
     if quantizer:
-        cmd = [str(quantizer), str(f16), str(temporary_q4), QUANTIZATION_TYPE]
+        cmd = [str(quantizer), str(f16), str(temporary_q4), QUANTIZATION_TYPE, str(args.threads)]
     else:
         if not shutil.which("docker"):
             raise SystemExit(
@@ -66,14 +79,14 @@ def main() -> None:
         ]
 
     print("+ " + " ".join(cmd), flush=True)
+    environment = os.environ.copy()
+    environment["CUDA_VISIBLE_DEVICES"] = ""
     try:
-        subprocess.run(cmd, cwd=root, check=True)
+        subprocess.run(cmd, cwd=root, env=environment, check=True)
     except Exception:
         temporary_q4.unlink(missing_ok=True)
         raise
-    if not temporary_q4.exists() or temporary_q4.stat().st_size == 0:
-        temporary_q4.unlink(missing_ok=True)
-        raise SystemExit(f"Q4_K_M quantization failed; output missing or empty: {temporary_q4}")
+    validate_gguf(temporary_q4)
     os.replace(temporary_q4, q4)
     print(f"Q4_K_M GGUF created: {q4}", flush=True)
     print(f"Q4_K_M file size: {file_size_gb(q4)} GB", flush=True)

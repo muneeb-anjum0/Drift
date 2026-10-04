@@ -1,0 +1,697 @@
+{
+  "name": "drift-retrieval-dev",
+  "version": "2.0.0",
+  "threshold": 0.25,
+  "max_selected": 3,
+  "methodology": "Prospective synthetic baselines with original v1 cases plus additions frozen before Phase III-C retrieval experiments; includes hard positives, hard negatives, requirement competition, and multi-target queries.",
+  "projects": [
+    {
+      "id": "clinic-small",
+      "size": "small",
+      "requirements": [
+        {
+          "id": "c-login",
+          "title": "Patient email login",
+          "description": "Patients shall sign in using their email address and password."
+        },
+        {
+          "id": "c-reset",
+          "title": "Password recovery",
+          "description": "Patients shall reset a forgotten password through an emailed recovery link."
+        },
+        {
+          "id": "c-book",
+          "title": "Appointment booking",
+          "description": "Patients shall book an available appointment with a clinician."
+        },
+        {
+          "id": "c-cancel",
+          "title": "Appointment cancellation",
+          "description": "Patients shall cancel an appointment until 24 hours before its scheduled time."
+        },
+        {
+          "id": "c-invoice",
+          "title": "Invoice card payment",
+          "description": "Patients shall pay an outstanding invoice online by card."
+        },
+        {
+          "id": "c-report",
+          "title": "Clinic report export",
+          "description": "Administrators shall export monthly clinic reports as CSV files."
+        },
+        {
+          "id": "c-notify",
+          "title": "Appointment notifications",
+          "description": "Patients shall receive appointment booking, change, and cancellation emails."
+        },
+        {
+          "id": "c-prescription",
+          "title": "Prescription documents",
+          "description": "Patients shall download prescription PDF files from their visit history."
+        }
+      ],
+      "queries": [
+        {
+          "id": "cq-01",
+          "message": "Let patients recover forgotten passwords with an SMS one-time code too.",
+          "expected_requirement_ids": [
+            "c-reset"
+          ]
+        },
+        {
+          "id": "cq-02",
+          "message": "Change the appointment cancellation cutoff from 24 hours to 2 hours.",
+          "expected_requirement_ids": [
+            "c-cancel"
+          ]
+        },
+        {
+          "id": "cq-03",
+          "message": "Drop card payments for invoices in the first release.",
+          "expected_requirement_ids": [
+            "c-invoice"
+          ]
+        },
+        {
+          "id": "cq-04",
+          "message": "Send booking updates through WhatsApp as well as email.",
+          "expected_requirement_ids": [
+            "c-notify"
+          ]
+        },
+        {
+          "id": "cq-05",
+          "message": "Replace the monthly CSV with an interactive clinic analytics dashboard.",
+          "expected_requirement_ids": [
+            "c-report"
+          ]
+        },
+        {
+          "id": "cq-06",
+          "message": "Move the prescription download link into the medical visit timeline.",
+          "expected_requirement_ids": [
+            "c-prescription"
+          ]
+        },
+        {
+          "id": "cq-07",
+          "message": "Use magic links rather than passwords when a patient signs in.",
+          "expected_requirement_ids": [
+            "c-login"
+          ]
+        },
+        {
+          "id": "cq-08",
+          "message": "When an appointment is booked, email the patient and let them add it to their calendar.",
+          "expected_requirement_ids": [
+            "c-book",
+            "c-notify"
+          ]
+        },
+        {
+          "id": "cq-09",
+          "message": "A locked-out patient should receive a fresh recovery link.",
+          "expected_requirement_ids": [
+            "c-reset"
+          ],
+          "category": "hard_positive"
+        },
+        {
+          "id": "cq-10",
+          "message": "Accept debit cards when a patient settles an outstanding balance.",
+          "expected_requirement_ids": [
+            "c-invoice"
+          ],
+          "category": "paraphrase"
+        },
+        {
+          "id": "cq-11",
+          "message": "Remind patients by text message on the morning of their visit.",
+          "expected_requirement_ids": [
+            "c-notify"
+          ],
+          "category": "channel_change"
+        },
+        {
+          "id": "cq-12",
+          "message": "Let a patient print medication instructions from the visit record.",
+          "expected_requirement_ids": [
+            "c-prescription"
+          ],
+          "category": "hard_positive"
+        },
+        {
+          "id": "cq-13",
+          "message": "Confirm a newly reserved consultation by email.",
+          "expected_requirement_ids": [
+            "c-book",
+            "c-notify"
+          ],
+          "category": "multi_requirement"
+        },
+        {
+          "id": "cq-14",
+          "message": "Include paid invoice totals in the monthly clinic export.",
+          "expected_requirement_ids": [
+            "c-invoice",
+            "c-report"
+          ],
+          "category": "multi_requirement"
+        },
+        {
+          "id": "cq-15",
+          "message": "After reserving a visit, email the patient and make the prescription and bill downloadable.",
+          "expected_requirement_ids": [
+            "c-book",
+            "c-notify",
+            "c-prescription",
+            "c-invoice"
+          ],
+          "category": "three_plus_targets"
+        },
+        {
+          "id": "cq-16",
+          "message": "Use patient credentials for sign-in but send a recovery code when they are forgotten.",
+          "expected_requirement_ids": [
+            "c-login",
+            "c-reset"
+          ],
+          "category": "requirement_competition"
+        },
+        {
+          "id": "cq-17",
+          "message": "Let clinicians conduct video consultations.",
+          "expected_requirement_ids": [],
+          "category": "hard_negative"
+        },
+        {
+          "id": "cq-18",
+          "message": "Offer a dark visual theme for the patient portal.",
+          "expected_requirement_ids": [],
+          "category": "hard_negative"
+        },
+        {
+          "id": "cq-19",
+          "message": "Change the booking window so visits can be reserved six months ahead.",
+          "expected_requirement_ids": [
+            "c-book"
+          ],
+          "category": "numeric_policy_change"
+        },
+        {
+          "id": "cq-20",
+          "message": "Only clinic managers may download the monthly spreadsheet.",
+          "expected_requirement_ids": [
+            "c-report"
+          ],
+          "category": "access_constraint"
+        }
+      ]
+    },
+    {
+      "id": "commerce-medium",
+      "size": "medium",
+      "requirements": [
+        {
+          "id": "e-auth",
+          "title": "Customer authentication",
+          "description": "Registered customers shall log in with email and password."
+        },
+        {
+          "id": "e-guest",
+          "title": "Guest checkout",
+          "description": "Shoppers shall place an order without creating an account."
+        },
+        {
+          "id": "e-search",
+          "title": "Product search",
+          "description": "Shoppers shall search products by name, category, and brand."
+        },
+        {
+          "id": "e-filter",
+          "title": "Catalog filters",
+          "description": "Shoppers shall filter product listings by price, rating, availability, and category."
+        },
+        {
+          "id": "e-cart",
+          "title": "Shopping cart",
+          "description": "Shoppers shall add, remove, and change quantities of products in a cart."
+        },
+        {
+          "id": "e-pay",
+          "title": "Order payment",
+          "description": "Customers shall pay for an order by card or bank transfer."
+        },
+        {
+          "id": "e-refund",
+          "title": "Refund processing",
+          "description": "Support agents shall issue full or partial refunds to the original payment method."
+        },
+        {
+          "id": "e-ship",
+          "title": "Shipment tracking",
+          "description": "Customers shall track shipped orders with a carrier tracking number."
+        },
+        {
+          "id": "e-stock",
+          "title": "Inventory availability",
+          "description": "The storefront shall hide products that are out of stock."
+        },
+        {
+          "id": "e-review",
+          "title": "Product reviews",
+          "description": "Verified purchasers shall rate and review delivered products."
+        },
+        {
+          "id": "e-promo",
+          "title": "Promotion codes",
+          "description": "Customers shall apply one valid promotion code during checkout."
+        },
+        {
+          "id": "e-email",
+          "title": "Order emails",
+          "description": "Customers shall receive email confirmations for orders, shipments, and refunds."
+        }
+      ],
+      "queries": [
+        {
+          "id": "eq-01",
+          "message": "Allow buyers to stack two discount coupons on one checkout.",
+          "expected_requirement_ids": [
+            "e-promo"
+          ]
+        },
+        {
+          "id": "eq-02",
+          "message": "Do not hide unavailable items; show them with a back-order date.",
+          "expected_requirement_ids": [
+            "e-stock"
+          ]
+        },
+        {
+          "id": "eq-03",
+          "message": "Add PayPal alongside card and bank transfer at payment.",
+          "expected_requirement_ids": [
+            "e-pay"
+          ]
+        },
+        {
+          "id": "eq-04",
+          "message": "Let anyone leave a star rating before their purchase is delivered.",
+          "expected_requirement_ids": [
+            "e-review"
+          ]
+        },
+        {
+          "id": "eq-05",
+          "message": "Text the buyer when the parcel leaves the warehouse and include its tracking link.",
+          "expected_requirement_ids": [
+            "e-ship",
+            "e-email"
+          ]
+        },
+        {
+          "id": "eq-06",
+          "message": "Remove anonymous purchasing so every buyer must register.",
+          "expected_requirement_ids": [
+            "e-guest",
+            "e-auth"
+          ]
+        },
+        {
+          "id": "eq-07",
+          "message": "Search should understand SKU identifiers in addition to product names.",
+          "expected_requirement_ids": [
+            "e-search"
+          ]
+        },
+        {
+          "id": "eq-08",
+          "message": "A support agent needs to return money as store credit instead of to the original tender.",
+          "expected_requirement_ids": [
+            "e-refund"
+          ]
+        },
+        {
+          "id": "eq-09",
+          "message": "Permit checkout without opening a profile.",
+          "expected_requirement_ids": [
+            "e-guest"
+          ],
+          "category": "hard_positive"
+        },
+        {
+          "id": "eq-10",
+          "message": "Find red shoes by SKU, then narrow the results to in-stock products under fifty dollars.",
+          "expected_requirement_ids": [
+            "e-search",
+            "e-filter"
+          ],
+          "category": "requirement_competition"
+        },
+        {
+          "id": "eq-11",
+          "message": "Keep basket contents when a shopper changes item quantities.",
+          "expected_requirement_ids": [
+            "e-cart"
+          ],
+          "category": "paraphrase"
+        },
+        {
+          "id": "eq-12",
+          "message": "Return a card payment in full when support approves the return.",
+          "expected_requirement_ids": [
+            "e-pay",
+            "e-refund"
+          ],
+          "category": "multi_requirement"
+        },
+        {
+          "id": "eq-13",
+          "message": "Display sold-out catalog items and their expected restock date.",
+          "expected_requirement_ids": [
+            "e-stock"
+          ],
+          "category": "hard_positive"
+        },
+        {
+          "id": "eq-14",
+          "message": "A verified buyer may edit their product rating after delivery.",
+          "expected_requirement_ids": [
+            "e-review"
+          ],
+          "category": "morphology"
+        },
+        {
+          "id": "eq-15",
+          "message": "Apply a voucher only when its promotion is still valid.",
+          "expected_requirement_ids": [
+            "e-promo"
+          ],
+          "category": "paraphrase"
+        },
+        {
+          "id": "eq-16",
+          "message": "Email the tracking number as soon as an order ships.",
+          "expected_requirement_ids": [
+            "e-ship",
+            "e-email"
+          ],
+          "category": "multi_requirement"
+        },
+        {
+          "id": "eq-17",
+          "message": "Registered shoppers should authenticate with a password before viewing their account.",
+          "expected_requirement_ids": [
+            "e-auth"
+          ],
+          "category": "hard_positive"
+        },
+        {
+          "id": "eq-18",
+          "message": "A signed-in buyer should add items to a basket and pay for the order.",
+          "expected_requirement_ids": [
+            "e-auth",
+            "e-cart",
+            "e-pay"
+          ],
+          "category": "three_plus_targets"
+        },
+        {
+          "id": "eq-19",
+          "message": "Allow shoppers to save a wishlist for later.",
+          "expected_requirement_ids": [],
+          "category": "hard_negative"
+        },
+        {
+          "id": "eq-20",
+          "message": "Give warehouse workers a packing productivity dashboard.",
+          "expected_requirement_ids": [],
+          "category": "hard_negative"
+        }
+      ]
+    },
+    {
+      "id": "saas-large",
+      "size": "large",
+      "requirements": [
+        {
+          "id": "s-login",
+          "title": "Member login",
+          "description": "Workspace members shall authenticate using email and password."
+        },
+        {
+          "id": "s-sso",
+          "title": "Enterprise SSO",
+          "description": "Enterprise workspaces shall authenticate members with SAML single sign-on."
+        },
+        {
+          "id": "s-invite",
+          "title": "Member invitations",
+          "description": "Workspace owners shall invite new members by email."
+        },
+        {
+          "id": "s-role",
+          "title": "Workspace roles",
+          "description": "Owners shall assign owner, administrator, editor, or viewer roles."
+        },
+        {
+          "id": "s-project",
+          "title": "Project creation",
+          "description": "Members shall create projects within a workspace."
+        },
+        {
+          "id": "s-archive",
+          "title": "Project archive",
+          "description": "Project administrators shall archive and restore projects."
+        },
+        {
+          "id": "s-task",
+          "title": "Task management",
+          "description": "Members shall create, assign, complete, and reopen project tasks."
+        },
+        {
+          "id": "s-comment",
+          "title": "Task comments",
+          "description": "Members shall discuss a task in a threaded comment stream."
+        },
+        {
+          "id": "s-file",
+          "title": "File attachments",
+          "description": "Members shall attach files up to 25 MB to tasks."
+        },
+        {
+          "id": "s-notify",
+          "title": "Email notifications",
+          "description": "Members shall receive email alerts for assignments, mentions, and due dates."
+        },
+        {
+          "id": "s-digest",
+          "title": "Notification digest",
+          "description": "Members shall opt into a daily email digest of workspace activity."
+        },
+        {
+          "id": "s-search",
+          "title": "Workspace search",
+          "description": "Members shall search projects, tasks, and comments by keyword."
+        },
+        {
+          "id": "s-filter",
+          "title": "Task filters",
+          "description": "Members shall filter tasks by assignee, status, label, and due date."
+        },
+        {
+          "id": "s-report",
+          "title": "Project reports",
+          "description": "Managers shall export project status reports as PDF files."
+        },
+        {
+          "id": "s-dashboard",
+          "title": "Portfolio dashboard",
+          "description": "Managers shall view project health, deadlines, and workload charts."
+        },
+        {
+          "id": "s-api",
+          "title": "Public API",
+          "description": "Integrations shall read projects and tasks through authenticated REST endpoints."
+        },
+        {
+          "id": "s-hook",
+          "title": "Webhooks",
+          "description": "Workspace owners shall register webhooks for task and project events."
+        },
+        {
+          "id": "s-audit",
+          "title": "Audit log",
+          "description": "Administrators shall review security and configuration events for 90 days."
+        },
+        {
+          "id": "s-billing",
+          "title": "Subscription billing",
+          "description": "Owners shall view invoices and pay the workspace subscription by card."
+        },
+        {
+          "id": "s-retain",
+          "title": "Data retention",
+          "description": "Deleted workspace data shall be permanently erased after 30 days."
+        }
+      ],
+      "queries": [
+        {
+          "id": "sq-01",
+          "message": "Increase the maximum document attached to a task from 25 MB to 100 MB.",
+          "expected_requirement_ids": [
+            "s-file"
+          ]
+        },
+        {
+          "id": "sq-02",
+          "message": "Post assignment and deadline alerts into Slack, not only email.",
+          "expected_requirement_ids": [
+            "s-notify"
+          ]
+        },
+        {
+          "id": "sq-03",
+          "message": "Allow security history to be searched for a full year rather than ninety days.",
+          "expected_requirement_ids": [
+            "s-audit"
+          ]
+        },
+        {
+          "id": "sq-04",
+          "message": "Add GraphQL access to projects and tasks alongside the existing REST interface.",
+          "expected_requirement_ids": [
+            "s-api"
+          ]
+        },
+        {
+          "id": "sq-05",
+          "message": "When a task changes, send a signed callback to a customer URL.",
+          "expected_requirement_ids": [
+            "s-hook"
+          ]
+        },
+        {
+          "id": "sq-06",
+          "message": "Show workload grouped by department on the cross-project overview.",
+          "expected_requirement_ids": [
+            "s-dashboard"
+          ]
+        },
+        {
+          "id": "sq-07",
+          "message": "Support searching inside uploaded documents as well as task text.",
+          "expected_requirement_ids": [
+            "s-search",
+            "s-file"
+          ]
+        },
+        {
+          "id": "sq-08",
+          "message": "Purge a closed workspace immediately instead of retaining deleted data for thirty days.",
+          "expected_requirement_ids": [
+            "s-retain"
+          ]
+        },
+        {
+          "id": "sq-09",
+          "message": "Company members must use the corporate identity provider instead of local credentials.",
+          "expected_requirement_ids": [
+            "s-sso"
+          ],
+          "category": "hard_positive"
+        },
+        {
+          "id": "sq-10",
+          "message": "Invite a colleague as a read-only member.",
+          "expected_requirement_ids": [
+            "s-invite",
+            "s-role"
+          ],
+          "category": "multi_requirement"
+        },
+        {
+          "id": "sq-11",
+          "message": "Bring a closed project back into the active workspace.",
+          "expected_requirement_ids": [
+            "s-archive"
+          ],
+          "category": "hard_positive"
+        },
+        {
+          "id": "sq-12",
+          "message": "Let members reply to one another in a discussion attached to a task.",
+          "expected_requirement_ids": [
+            "s-comment"
+          ],
+          "category": "paraphrase"
+        },
+        {
+          "id": "sq-13",
+          "message": "Bundle assignment alerts and due-date reminders into one daily message.",
+          "expected_requirement_ids": [
+            "s-notify",
+            "s-digest"
+          ],
+          "category": "requirement_competition"
+        },
+        {
+          "id": "sq-14",
+          "message": "Put PDF status exports next to portfolio health charts.",
+          "expected_requirement_ids": [
+            "s-report",
+            "s-dashboard"
+          ],
+          "category": "multi_requirement"
+        },
+        {
+          "id": "sq-15",
+          "message": "Let the owner download an invoice before paying the plan renewal.",
+          "expected_requirement_ids": [
+            "s-billing"
+          ],
+          "category": "hard_positive"
+        },
+        {
+          "id": "sq-16",
+          "message": "Erase a terminated tenant and its projects without waiting thirty days.",
+          "expected_requirement_ids": [
+            "s-retain"
+          ],
+          "category": "paraphrase"
+        },
+        {
+          "id": "sq-17",
+          "message": "Administrators need twelve months of searchable security events.",
+          "expected_requirement_ids": [
+            "s-audit"
+          ],
+          "category": "numeric_policy_change"
+        },
+        {
+          "id": "sq-18",
+          "message": "Create a task, discuss it, and attach the supporting brief.",
+          "expected_requirement_ids": [
+            "s-task",
+            "s-comment",
+            "s-file"
+          ],
+          "category": "three_plus_targets"
+        },
+        {
+          "id": "sq-19",
+          "message": "Track billable time spent on each task.",
+          "expected_requirement_ids": [],
+          "category": "hard_negative"
+        },
+        {
+          "id": "sq-20",
+          "message": "Start a video call with everyone in the workspace.",
+          "expected_requirement_ids": [],
+          "category": "hard_negative"
+        }
+      ]
+    }
+  ]
+}

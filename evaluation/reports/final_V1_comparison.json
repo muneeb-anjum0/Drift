@@ -1,0 +1,28 @@
+{
+  "schema_version":1,
+  "evaluation_id":"phase-III-B-final-V0-vs-V1",
+  "candidate":"V1-candidate",
+  "decision":"REJECT_INTEGRATED_CANDIDATE",
+  "decision_reason":"The candidate improved raw classification and preserved postprocessing behavior, but failed the predeclared final retrieval non-regression gate.",
+  "heldout_policy":{"raw_dataset_sha256":"5da735ac677e2824d80f5d22a68bb738d46b3c5aa4c9617f8cf3c88e0cb21253","retrieval_dataset_sha256":"3f2b2e7aa03d2d07f0b549f88a1d1fc55dc9cd04e4b728df1830bd3a00e95902","candidate_frozen_before_inspection":true,"tuning_after_inspection":false,"execution_count_per_frozen_system":1},
+  "raw_classification":{
+    "V0":{"correct":"17/24","accuracy":0.7083333333,"macro_f1":0.6914529915,"contract_parse_rate":1.0,"strict_json_rate":0.7083333333,"p95_latency_ms":13619.44,"report":"evaluation/reports/final_raw_V0.summary.json","report_sha256":"70678b34454ce104714304f947b8b78424f8ebc3f7a42ba0a3596ed59abacabc"},
+    "V1":{"correct":"19/24","accuracy":0.7916666667,"macro_f1":0.7863756614,"contract_parse_rate":1.0,"strict_json_rate":1.0,"p95_latency_ms":13598.24,"report":"evaluation/reports/final_raw_V1.summary.json","report_sha256":"c05cca0dd0c0622cb62bfbeee325cdff15293fa7c041b35b12e4d50d26b02d8f"},
+    "delta":{"correct_cases":2,"accuracy":0.0833333334,"macro_f1":0.0949226699,"p95_latency_ms":-21.2},
+    "V1_fixes":["final_rem_insurance_01","final_rem_energy_01","final_con_agriculture_01","final_amb_insurance_01"],
+    "V1_regressions":["final_mod_manufacturing_01","final_same_agriculture_01"],
+    "other_changed_error":["final_amb_energy_01: unchanged to contradiction; expected ambiguous"]
+  },
+  "retrieval":{
+    "V0":{"all_expected_reached":"5/12","all_expected_reached_rate":0.4166666667,"model_input_recall":0.4583333333,"recall_at_1":0.4583333333,"recall_at_3":0.9583333333,"mrr":0.6944444444,"average_model_calls":0.75,"false_candidate_exposure":2,"report":"evaluation/reports/final_retrieval_V0.json","report_sha256":"0b6c3e082c79aa26c0d02580bb3721cf28edad73745af19e3467fb91de1e6d00"},
+    "V1":{"all_expected_reached":"4/12","all_expected_reached_rate":0.3333333333,"model_input_recall":0.375,"recall_at_1":0.5416666667,"recall_at_3":0.9166666667,"mrr":0.7361111111,"average_model_calls":0.5833333333,"false_candidate_exposure":2,"report":"evaluation/reports/final_retrieval_V1.json","report_sha256":"17e4a7e9cca7159252bf393115914684c53a946d343b73b0de8ae2eaf9ca75cd"},
+    "regression":"R1 failed to select both expected requirements for ifq-05; V0 selected them."
+  },
+  "postprocessing":{
+    "V0":{"changed_labels":0,"introduced_errors":0,"net_correct_case_contribution":0,"report":"evaluation/reports/final_postprocess_V0.json","report_sha256":"71f342f796d5935fd483c417f115a6e539caa71481cb4d367c391d687a34ffba"},
+    "V1":{"changed_labels":0,"introduced_errors":0,"net_correct_case_contribution":0,"report":"evaluation/reports/final_postprocess_V1.json","report_sha256":"57142bde5483aa33acfa5a0b92d975afa53e8f8f5c330e83047000da12b37fdc"}
+  },
+  "gate_results":{"raw_accuracy_no_regression":true,"raw_macro_f1_regression_not_over_0_02":true,"contract_parse_rate_100_percent":true,"retrieval_all_expected_reach_no_regression":false,"V1_postprocessor_introduces_no_label_changes":true,"overall":false},
+  "limitations":["The final sets are prospective heldout from Phase III-B decisions but cannot be proven independent of unrecovered original adapter training data.","Both final sets are synthetic and single-author.","Raw accuracy intervals overlap because the final raw sample has only 24 cases.","The baseline retrieval report retains its historical evaluator ID because it was executed from exact baseline commit 66bb5fe; dataset hash and report path identify the final run."],
+  "next_action":"Do not promote or retune V1 against these final cases. Preserve the accepted prompt and postprocessing evidence, design a new retrieval hypothesis using development data, and freeze a new independent final set before any future candidate decision."
+}

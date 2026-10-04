@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "phase": "III-D",
+  "branch": "phase-3/generalisation-eval-v1",
+  "frozen_review_commit": "198de5b53645b091a8079067d9c2b82d6dbc1aac",
+  "review_counts": {"CONFIRMED": 35, "REVISED": 5, "AMBIGUOUS": 0, "EXCLUDE": 0},
+  "reviewer_identity": "independent-reviewer-gpt-5.6-sol",
+  "reviewer_identity_source": "USER_SUPPLIED_NOT_INDEPENDENTLY_VERIFIED",
+  "dataset_sha256": "ee21e6d6bd2c36324c80e7020bd87d7c2094068d762d943ab7afe581e065e51b",
+  "review_trail_sha256": "3eba565326ca20f85359f7fac3ec31f538676903c42387f30ac32f1ad5b198df",
+  "reports": {
+    "R0_sha256": "34a0cccd68c7a81c5d370bbabad5356650cbfa11f500e9a69c88b2c316fe548b",
+    "R5_sha256": "a91d42ac42aac48c15ed8b276f63858a661686d18f63d5d1f4eea8f99723fec6",
+    "comparison_sha256": "b12d5dd39e5e90ee8bbeb9979fc7ea9463a0551025eddaea1343cf87e375d8bb",
+    "analysis_sha256": "78312f4767ad68e24a010e000b428e47553ca25dd83d1b2a7a07b3031f1e4d25"
+  },
+  "retrieval_decision": "R5 GENERALISATION NOT SUPPORTED",
+  "retrieval_reason": "No gain in expected hits or all-target reach; one additional false exposure.",
+  "v3_decision": "V3 INCONCLUSIVE",
+  "v3_execution": "NOT_RUN_R5_PREREQUISITE_FAILED",
+  "retraining_decision": "RETRAINING NOT YET JUSTIFIED",
+  "r5_promoted": false,
+  "model_executed": false,
+  "gpu_used": false,
+  "training_run": false
+}

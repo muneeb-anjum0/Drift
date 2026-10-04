@@ -35,10 +35,14 @@ def main() -> int:
 
         compose = read("docker-compose.yml")
         require(Q4_CONTAINER_PATH in compose, "docker-compose.yml does not default to Q4_K_M")
+        require("--n-gpu-layers" in compose and "DRIFT_LLAMA_GPU_LAYERS:-0" in compose, "llama GPU layers are not pinned to zero")
+        require("--device" in compose and "- none" in compose, "llama device offloading is not explicitly disabled")
+        require("--parallel" in compose and "DRIFT_LLAMA_PARALLEL:-1" in compose, "llama concurrency is not pinned to one")
 
         env_example = read(".env.example")
         require(Q4_CONTAINER_PATH in env_example, ".env.example does not point Docker model path at Q4_K_M")
         require(Q4_HOST_PATH in env_example, ".env.example does not expose Q4_K_M host path")
+        require("DRIFT_LLAMA_PARALLEL=1" in env_example, ".env.example does not pin llama concurrency to one")
 
         inference = read("services/inference/app.py") + read("services/inference/config.py")
         require("model_label" in inference and "quantization_label" in inference, "inference health lacks model metadata")

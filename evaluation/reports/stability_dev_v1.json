@@ -1,0 +1,265 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "raw-stability-dev-v1",
+  "generated_at": "2026-09-30T19:01:37.836846+00:00",
+  "artifact_sha256": "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
+  "dataset": {
+    "name": "drift-raw-dev",
+    "version": "1.0.0",
+    "sha256": "5265b80a265ff7b1090ec1a6a7d4879a9b6e7a7d0a64123071af7b343fad31eb"
+  },
+  "configuration": {
+    "temperature": 0,
+    "top_p": 1,
+    "n_predict": 120,
+    "repeats": 3,
+    "case_count": 6
+  },
+  "metrics": {
+    "attempt_count": 18,
+    "label_stable_cases": 6,
+    "exact_output_stable_cases": 6,
+    "parse_successes": 18,
+    "mean_latency_ms": 10264.39
+  },
+  "results": [
+    {
+      "case_id": "add_health_01",
+      "expected_label": "added",
+      "attempts": [
+        {
+          "repeat": 1,
+          "label": "added",
+          "confidence": 0.87,
+          "raw_output_sha256": "c8c5cc50c06c489854d57a88edf181ee6e1d886b976ae67e161082ad2ba89424",
+          "raw_json_valid": false,
+          "parse_error": null,
+          "latency_ms": 9876.53
+        },
+        {
+          "repeat": 2,
+          "label": "added",
+          "confidence": 0.87,
+          "raw_output_sha256": "c8c5cc50c06c489854d57a88edf181ee6e1d886b976ae67e161082ad2ba89424",
+          "raw_json_valid": false,
+          "parse_error": null,
+          "latency_ms": 7288.1
+        },
+        {
+          "repeat": 3,
+          "label": "added",
+          "confidence": 0.87,
+          "raw_output_sha256": "c8c5cc50c06c489854d57a88edf181ee6e1d886b976ae67e161082ad2ba89424",
+          "raw_json_valid": false,
+          "parse_error": null,
+          "latency_ms": 8098.24
+        }
+      ],
+      "label_stable": true,
+      "raw_output_exact_match": true,
+      "confidence_range": [
+        0.87,
+        0.87
+      ]
+    },
+    {
+      "case_id": "add_security_01",
+      "expected_label": "added",
+      "attempts": [
+        {
+          "repeat": 1,
+          "label": "modified",
+          "confidence": 0.84,
+          "raw_output_sha256": "5037075052db9ead8b0c8a279d05f056aa4cb21bd5d1884faaf55c3392c980cc",
+          "raw_json_valid": true,
+          "parse_error": null,
+          "latency_ms": 13835.52
+        },
+        {
+          "repeat": 2,
+          "label": "modified",
+          "confidence": 0.84,
+          "raw_output_sha256": "5037075052db9ead8b0c8a279d05f056aa4cb21bd5d1884faaf55c3392c980cc",
+          "raw_json_valid": true,
+          "parse_error": null,
+          "latency_ms": 13185.11
+        },
+        {
+          "repeat": 3,
+          "label": "modified",
+          "confidence": 0.84,
+          "raw_output_sha256": "5037075052db9ead8b0c8a279d05f056aa4cb21bd5d1884faaf55c3392c980cc",
+          "raw_json_valid": true,
+          "parse_error": null,
+          "latency_ms": 14194.47
+        }
+      ],
+      "label_stable": true,
+      "raw_output_exact_match": true,
+      "confidence_range": [
+        0.84,
+        0.84
+      ]
+    },
+    {
+      "case_id": "rem_logistics_01",
+      "expected_label": "removed",
+      "attempts": [
+        {
+          "repeat": 1,
+          "label": "unchanged",
+          "confidence": 0.95,
+          "raw_output_sha256": "6900ec0311648ff98cf8fc7e171ddc3b0addf6bf1f60ae70cf77febd3ff77c90",
+          "raw_json_valid": true,
+          "parse_error": null,
+          "latency_ms": 9758.42
+        },
+        {
+          "repeat": 2,
+          "label": "unchanged",
+          "confidence": 0.95,
+          "raw_output_sha256": "6900ec0311648ff98cf8fc7e171ddc3b0addf6bf1f60ae70cf77febd3ff77c90",
+          "raw_json_valid": true,
+          "parse_error": null,
+          "latency_ms": 9465.44
+        },
+        {
+          "repeat": 3,
+          "label": "unchanged",
+          "confidence": 0.95,
+          "raw_output_sha256": "6900ec0311648ff98cf8fc7e171ddc3b0addf6bf1f60ae70cf77febd3ff77c90",
+          "raw_json_valid": true,
+          "parse_error": null,
+          "latency_ms": 9699.46
+        }
+      ],
+      "label_stable": true,
+      "raw_output_exact_match": true,
+      "confidence_range": [
+        0.95,
+        0.95
+      ]
+    },
+    {
+      "case_id": "con_inventory_01",
+      "expected_label": "contradiction",
+      "attempts": [
+        {
+          "repeat": 1,
+          "label": "modified",
+          "confidence": 0.87,
+          "raw_output_sha256": "d687d3a9fd1fa3928d809a84e88d7ae217ac97c8da37e2022a53d63d842cc6f5",
+          "raw_json_valid": false,
+          "parse_error": null,
+          "latency_ms": 8331.63
+        },
+        {
+          "repeat": 2,
+          "label": "modified",
+          "confidence": 0.87,
+          "raw_output_sha256": "d687d3a9fd1fa3928d809a84e88d7ae217ac97c8da37e2022a53d63d842cc6f5",
+          "raw_json_valid": false,
+          "parse_error": null,
+          "latency_ms": 8431.08
+        },
+        {
+          "repeat": 3,
+          "label": "modified",
+          "confidence": 0.87,
+          "raw_output_sha256": "d687d3a9fd1fa3928d809a84e88d7ae217ac97c8da37e2022a53d63d842cc6f5",
+          "raw_json_valid": false,
+          "parse_error": null,
+          "latency_ms": 8327.92
+        }
+      ],
+      "label_stable": true,
+      "raw_output_exact_match": true,
+      "confidence_range": [
+        0.87,
+        0.87
+      ]
+    },
+    {
+      "case_id": "amb_saas_01",
+      "expected_label": "ambiguous",
+      "attempts": [
+        {
+          "repeat": 1,
+          "label": "modified",
+          "confidence": 0.84,
+          "raw_output_sha256": "8d2e4c3cc19a9bdb0bd20fa0eb08bfdaf17ca4ff8d36b41dd8ee3085856521f8",
+          "raw_json_valid": false,
+          "parse_error": null,
+          "latency_ms": 12984.26
+        },
+        {
+          "repeat": 2,
+          "label": "modified",
+          "confidence": 0.84,
+          "raw_output_sha256": "8d2e4c3cc19a9bdb0bd20fa0eb08bfdaf17ca4ff8d36b41dd8ee3085856521f8",
+          "raw_json_valid": false,
+          "parse_error": null,
+          "latency_ms": 12959.27
+        },
+        {
+          "repeat": 3,
+          "label": "modified",
+          "confidence": 0.84,
+          "raw_output_sha256": "8d2e4c3cc19a9bdb0bd20fa0eb08bfdaf17ca4ff8d36b41dd8ee3085856521f8",
+          "raw_json_valid": false,
+          "parse_error": null,
+          "latency_ms": 12231.43
+        }
+      ],
+      "label_stable": true,
+      "raw_output_exact_match": true,
+      "confidence_range": [
+        0.84,
+        0.84
+      ]
+    },
+    {
+      "case_id": "same_gov_01",
+      "expected_label": "unchanged",
+      "attempts": [
+        {
+          "repeat": 1,
+          "label": "contradiction",
+          "confidence": 0.8,
+          "raw_output_sha256": "067ad72b9a11b070a8d369ba4561d62599237c017683fb643311e5afc8078273",
+          "raw_json_valid": false,
+          "parse_error": null,
+          "latency_ms": 8448.35
+        },
+        {
+          "repeat": 2,
+          "label": "contradiction",
+          "confidence": 0.8,
+          "raw_output_sha256": "067ad72b9a11b070a8d369ba4561d62599237c017683fb643311e5afc8078273",
+          "raw_json_valid": false,
+          "parse_error": null,
+          "latency_ms": 8682.31
+        },
+        {
+          "repeat": 3,
+          "label": "contradiction",
+          "confidence": 0.8,
+          "raw_output_sha256": "067ad72b9a11b070a8d369ba4561d62599237c017683fb643311e5afc8078273",
+          "raw_json_valid": false,
+          "parse_error": null,
+          "latency_ms": 8961.48
+        }
+      ],
+      "label_stable": true,
+      "raw_output_exact_match": true,
+      "confidence_range": [
+        0.8,
+        0.8
+      ]
+    }
+  ],
+  "limitations": [
+    "Six representative cases and three repeats each are sufficient to detect obvious instability, not rare nondeterminism.",
+    "llama.cpp was already warm; load-time variation is not included."
+  ]
+}

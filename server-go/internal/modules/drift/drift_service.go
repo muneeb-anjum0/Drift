@@ -93,7 +93,7 @@ func (s Service) analyzeRequirements(ctx context.Context, snapshot []requirement
 		if text == "" {
 			continue
 		}
-		relevance := scoreRequirementRelevance(req, inputText, threshold)
+		relevance := ScoreRequirementRelevance(req, inputText, threshold)
 		results = append(results, requirementPrediction{
 			requirement: req,
 			text:        text,
@@ -111,9 +111,7 @@ func (s Service) analyzeRequirements(ctx context.Context, snapshot []requirement
 		return nil, "", nil, utils.ErrNotFound
 	}
 
-	sort.SliceStable(results, func(i, j int) bool {
-		return results[i].result.Relevance.Score > results[j].result.Relevance.Score
-	})
+	rankRequirementPredictions(results)
 
 	selected := make([]requirementPrediction, 0, len(results))
 	for index := range results {
@@ -198,6 +196,12 @@ func (s Service) analyzeRequirements(ctx context.Context, snapshot []requirement
 		return changes, strings.Join(parts, " "), requirementResults, nil
 	}
 	return changes, selected[0].prediction.Reasoning, requirementResults, nil
+}
+
+func rankRequirementPredictions(results []requirementPrediction) {
+	sort.SliceStable(results, func(i, j int) bool {
+		return results[i].result.Relevance.Score > results[j].result.Relevance.Score
+	})
 }
 
 func normalizePredictionForRelevantRequirement(prediction ModelPrediction, relevance RelevanceResult, requirementText, inputText string) ModelPrediction {
@@ -302,6 +306,19 @@ var requirementSynonyms = map[string][]string{
 	"invoices":      {"invoice"},
 	"billing":       {"invoice", "payment"},
 	"usage":         {"report"},
+	"unavailable":   {"stock"},
+	"restock":       {"stock", "inventory"},
+	"rate":          {"rating", "review"},
+	"parcel":        {"shipment"},
+	"buyer":         {"customer", "shopper"},
+	"anonymou":      {"guest"},
+	"register":      {"account", "authentication"},
+	"callback":      {"webhook"},
+	"document":      {"file"},
+	"upload":        {"file", "attachment"},
+	"voucher":       {"promotion", "coupon"},
+	"basket":        {"cart"},
+	"discussion":    {"comment"},
 }
 
 var domainKeywords = map[string][]string{
@@ -315,7 +332,16 @@ var domainKeywords = map[string][]string{
 	"products_content": {"product", "listing", "blog", "post", "homepage", "content", "image"},
 }
 
-func scoreRequirementRelevance(req requirement.RequirementSnapshot, inputText string, threshold float64) RelevanceResult {
+// ScoreRequirementRelevance applies the deterministic production retrieval scorer.
+// It is exported so evaluation tooling can measure retrieval independently of inference.
+func ScoreRequirementRelevance(req requirement.RequirementSnapshot, inputText string, threshold float64) RelevanceResult {
+	return TraceRequirementRelevance(req, inputText, threshold).Result
+}
+
+// TraceRequirementRelevance returns the exact scorer result and its
+// intermediate values. Evaluation tooling uses this instead of duplicating
+// production retrieval logic.
+func TraceRequirementRelevance(req requirement.RequirementSnapshot, inputText string, threshold float64) RelevanceTrace {
 	titleTokens := requirementTokens(req.Title)
 	baselineTokens := requirementTokens(req.Title + " " + req.Description)
 	inputTokens := requirementTokens(inputText)
@@ -332,8 +358,10 @@ func scoreRequirementRelevance(req requirement.RequirementSnapshot, inputText st
 		domainScore = float64(len(matchedDomains)) / float64(min(len(inputDomains), len(baselineDomains)))
 	}
 	score := directScore*0.55 + titleScore*0.25 + domainScore*0.35
+	bonus := 0.0
 	if len(matchedTerms) >= 2 && score < 0.45 {
-		score += 0.12
+		bonus = 0.12
+		score += bonus
 	}
 	if score > 1 {
 		score = 1
@@ -345,12 +373,27 @@ func scoreRequirementRelevance(req requirement.RequirementSnapshot, inputText st
 	if relevant {
 		reason = "Relevant domain or requirement terms matched the client message"
 	}
-	return RelevanceResult{
-		Score:          score,
-		MatchedTerms:   sortedKeys(matchedTerms),
-		MatchedDomains: sortedKeys(matchedDomains),
-		IsRelevant:     relevant,
-		Reason:         reason,
+	return RelevanceTrace{
+		Result: RelevanceResult{
+			Score:          score,
+			MatchedTerms:   sortedKeys(matchedTerms),
+			MatchedDomains: sortedKeys(matchedDomains),
+			IsRelevant:     relevant,
+			Reason:         reason,
+		},
+		InputTokens:        sortedKeys(inputTokens),
+		TitleTokens:        sortedKeys(titleTokens),
+		BaselineTokens:     sortedKeys(baselineTokens),
+		MatchedTitleTerms:  sortedKeys(matchedTitleTerms),
+		InputDomains:       sortedKeys(inputDomains),
+		BaselineDomains:    sortedKeys(baselineDomains),
+		DirectScore:        directScore,
+		TitleScore:         titleScore,
+		DomainScore:        domainScore,
+		MultiTermBonus:     bonus,
+		Threshold:          threshold,
+		PassedThreshold:    score >= threshold,
+		PassedSpecificGate: hasSpecificMatch,
 	}
 }
 
@@ -363,7 +406,7 @@ func requirementTokens(text string) map[string]struct{} {
 	}, strings.ToLower(text))
 	tokens := map[string]struct{}{}
 	for _, token := range strings.Fields(cleaned) {
-		token = normalizeRequirementToken(token)
+		token = normalizeRetrievalToken(token)
 		if len(token) <= 2 {
 			continue
 		}
@@ -388,11 +431,32 @@ func normalizeRequirementToken(token string) string {
 	return token
 }
 
+func normalizeRetrievalToken(token string) string {
+	token = normalizeRequirementToken(token)
+	if strings.HasSuffix(token, "ing") && len(token) > 5 {
+		return normalizeRequirementVerbStem(strings.TrimSuffix(token, "ing"))
+	}
+	if strings.HasSuffix(token, "ed") && len(token) > 4 {
+		return normalizeRequirementVerbStem(strings.TrimSuffix(token, "ed"))
+	}
+	return token
+}
+
+func normalizeRequirementVerbStem(stem string) string {
+	if len(stem) >= 2 && stem[len(stem)-1] == stem[len(stem)-2] && strings.ContainsRune("bdgmnprt", rune(stem[len(stem)-1])) {
+		return stem[:len(stem)-1]
+	}
+	if strings.HasSuffix(stem, "at") || strings.HasSuffix(stem, "iz") || strings.HasSuffix(stem, "us") {
+		return stem + "e"
+	}
+	return stem
+}
+
 func matchedDomainSet(tokens map[string]struct{}) map[string]struct{} {
 	out := map[string]struct{}{}
 	for domain, keywords := range domainKeywords {
 		for _, keyword := range keywords {
-			normalized := normalizeRequirementToken(keyword)
+			normalized := normalizeRetrievalToken(keyword)
 			if _, ok := tokens[normalized]; ok {
 				out[domain] = struct{}{}
 				break

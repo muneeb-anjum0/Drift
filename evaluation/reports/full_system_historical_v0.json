@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "full-system-historical-v0",
+  "generated_at": "2026-09-30T18:57:38.422998Z",
+  "evidence_status": "CONTAMINATED_REGRESSION_ONLY",
+  "artifact_sha256": "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
+  "full_local_report": {"path":"/tmp/drift-phase3-reports/full-system/q4_quality_20260930_185738.json","sha256":"415c6862df59833b720cf4171d046fc99c70b96a9a9d5423435b89738cfceb4d"},
+  "pipeline": ["baseline snapshot","retrieval","raw model","contract normalization","postprocessing","scoring","aggregation"],
+  "warnings": [
+    "Cases recur in repository code, tests, and canonical postprocessing rules.",
+    "This is full-system regression evidence and must not be compared as if independent from the raw development corpus.",
+    "Per-case latency includes one to three sequential model calls selected by retrieval."
+  ],
+  "metrics": {"case_count":8,"pass_count":8,"pass_rate":1.0,"average_latency_ms":30902.5},
+  "cases": [
+    {"case_id":"same_prescription_pdf","expected_label":"modified","actual_label":"modified","score":15,"latency_ms":23125,"passed":true},
+    {"case_id":"sms_otp","expected_label":"added","actual_label":"added","score":33,"latency_ms":11533,"passed":true},
+    {"case_id":"card_payment_removal","expected_label":"removed","actual_label":"removed","score":55,"latency_ms":34958,"passed":true},
+    {"case_id":"family_portal","expected_label":"added","actual_label":"added","score":56,"latency_ms":42563,"passed":true},
+    {"case_id":"appointment_cancel_window","expected_label":"modified","actual_label":"modified","score":33,"latency_ms":33340,"passed":true},
+    {"case_id":"appointment_cancel_contradiction","expected_label":"contradiction","actual_label":"contradiction","score":85,"latency_ms":33929,"passed":true},
+    {"case_id":"vague_dashboard","expected_label":"ambiguous","actual_label":"ambiguous","score":40,"latency_ms":30367,"passed":true},
+    {"case_id":"clinic_analytics","expected_label":"modified","actual_label":"modified","score":52,"latency_ms":37405,"passed":true}
+  ]
+}
