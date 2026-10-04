@@ -1,0 +1,117 @@
+{
+  "name":"drift-phase-iii-e-independent-retrieval-review-draft",
+  "version":"1.0.0-draft",
+  "role":"REVIEW_DRAFT_NOT_FINAL_TEST",
+  "label_status":"PROPOSED_PENDING_INDEPENDENT_REVIEW",
+  "author_provenance":["MODEL_GENERATED","SYNTHETIC"],
+  "r6_development_freeze_commit":"f344adc",
+  "projects":[
+    {
+      "id":"bicycle-share","size":"small",
+      "requirements":[
+        {"id":"bs-account","title":"Rider account","description":"Riders shall register an account with a mobile number."},
+        {"id":"bs-unlock","title":"Bicycle unlock","description":"Riders shall unlock an available bicycle by scanning its QR code."},
+        {"id":"bs-ride","title":"Ride timer","description":"The system shall record the start and end time of each ride."},
+        {"id":"bs-fee","title":"Trip charge","description":"Riders shall pay a per-minute charge for a completed ride."},
+        {"id":"bs-dock","title":"Dock return","description":"Riders shall return bicycles to an available station dock."},
+        {"id":"bs-damage","title":"Damage report","description":"Riders shall report a damaged bicycle through the app."},
+        {"id":"bs-map","title":"Station map","description":"Riders shall view nearby stations and available bicycles on a map."},
+        {"id":"bs-pass","title":"Day pass","description":"Riders shall purchase a day pass for unlimited short rides."}
+      ],
+      "queries":[
+        {"id":"bs-q01","message":"Can I open a bike by pointing my phone camera at its square code?","expected_requirement_ids":["bs-unlock"],"categories":["hard_positive","low_overlap","question","informal"],"provenance":"MODEL_GENERATED"},
+        {"id":"bs-q02","message":"Stop charging by the minute after someone has parked the cycle.","expected_requirement_ids":["bs-fee","bs-ride"],"categories":["multi_target","negation","competing_requirements"],"provenance":"MODEL_GENERATED","review_note":"Decide whether the ride-end timestamp is materially changed or only used as existing input."},
+        {"id":"bs-q03","message":"Show me where I can pick up a bicycle, and how many are waiting there.","expected_requirement_ids":["bs-map"],"categories":["paraphrase","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"bs-q04","message":"Let visitors buy a 24-hour riding ticket using a payment card.","expected_requirement_ids":["bs-pass"],"categories":["hard_positive","partial_modification"],"provenance":"MODEL_GENERATED"},
+        {"id":"bs-q05","message":"A broken brake should be easy to flag from the app.","expected_requirement_ids":["bs-damage"],"categories":["hard_positive","informal"],"provenance":"MODEL_GENERATED"},
+        {"id":"bs-q06","message":"If no empty stand is left, allow the rider to end the trip beside the station.","expected_requirement_ids":["bs-dock","bs-ride"],"categories":["multi_target","conditional","competing_requirements"],"provenance":"MODEL_GENERATED","review_note":"Decide whether changing the trip-end condition materially affects the timer."},
+        {"id":"bs-q07","message":"Use an email address instead of a mobile number to create a rider profile.","expected_requirement_ids":["bs-account"],"categories":["partial_modification","negation"],"provenance":"MODEL_GENERATED"},
+        {"id":"bs-q08","message":"The bicycle company should sponsor a weekend road race.","expected_requirement_ids":[],"categories":["hard_negative","irrelevant_overlap"],"provenance":"MODEL_GENERATED"},
+        {"id":"bs-q09","message":"Could the app time each outing and bill it when the bike is returned?","expected_requirement_ids":["bs-ride","bs-fee","bs-dock"],"categories":["multi_target","question","three_plus_targets"],"provenance":"MODEL_GENERATED","review_note":"Decide whether dock return is changed or merely referenced as an existing trigger."},
+        {"id":"bs-q10","message":"Maybe use the station map to show nearby drinking fountains too.","expected_requirement_ids":["bs-map"],"categories":["hypothetical","partial_modification","competing_requirements"],"provenance":"MODEL_GENERATED"}
+      ]
+    },
+    {
+      "id":"museum-collections","size":"medium",
+      "requirements":[
+        {"id":"mc-intake","title":"Object intake","description":"Registrars shall create an intake record for each acquired object."},
+        {"id":"mc-owner","title":"Ownership history","description":"Curators shall record the ownership history of an object."},
+        {"id":"mc-photo","title":"Object photographs","description":"Photographers shall attach images to an object record."},
+        {"id":"mc-condition","title":"Condition assessment","description":"Conservators shall record an object's condition before display or loan."},
+        {"id":"mc-repair","title":"Conservation treatment","description":"Conservators shall log treatment work performed on an object."},
+        {"id":"mc-store","title":"Storage location","description":"Staff shall track each object's storage room and shelf."},
+        {"id":"mc-move","title":"Object movement","description":"Staff shall record transfers of objects between museum locations."},
+        {"id":"mc-exhibit","title":"Exhibition assignment","description":"Curators shall assign objects to scheduled exhibitions."},
+        {"id":"mc-label","title":"Gallery label","description":"Curators shall publish a descriptive label for each displayed object."},
+        {"id":"mc-loan","title":"External loan","description":"Managers shall approve loans of objects to other institutions."},
+        {"id":"mc-insure","title":"Insurance value","description":"Finance staff shall record the insured value of loaned objects."},
+        {"id":"mc-audio","title":"Audio guide","description":"Visitors shall play an audio description for selected gallery objects."},
+        {"id":"mc-search","title":"Public collection search","description":"Visitors shall search published object records by creator or era."},
+        {"id":"mc-access","title":"Staff permissions","description":"Administrators shall grant registrar, curator, conservator, and finance roles."},
+        {"id":"mc-audit","title":"Record audit","description":"The system shall record who changed an object record and when."},
+        {"id":"mc-export","title":"Collection export","description":"Registrars shall export monthly acquisition records as CSV."}
+      ],
+      "queries":[
+        {"id":"mc-q01","message":"Let visitors find pieces from the Bronze Age even if they do not know the artist.","expected_requirement_ids":["mc-search"],"categories":["hard_positive","low_overlap","informal"],"provenance":"MODEL_GENERATED"},
+        {"id":"mc-q02","message":"Before an artifact leaves for a partner museum, require management approval and record its insurance amount.","expected_requirement_ids":["mc-loan","mc-insure"],"categories":["multi_target","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"mc-q03","message":"We should stop showing the previous owners of an object to curators.","expected_requirement_ids":["mc-owner"],"categories":["negation","removal"],"provenance":"MODEL_GENERATED"},
+        {"id":"mc-q04","message":"Take a picture of a cracked vase and log the repair after conservation.","expected_requirement_ids":["mc-photo","mc-repair"],"categories":["multi_target","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"mc-q05","message":"Could the exhibit card include a spoken description?","expected_requirement_ids":["mc-label","mc-audio"],"categories":["multi_target","question","competing_requirements"],"provenance":"MODEL_GENERATED","review_note":"Decide whether gallery label content is materially changed or only used as a referent for audio."},
+        {"id":"mc-q06","message":"When an item moves from one shelf to another, retain where it used to be.","expected_requirement_ids":["mc-store","mc-move"],"categories":["multi_target","implicit","competing_requirements"],"provenance":"MODEL_GENERATED","review_note":"Decide whether an intra-room shelf change is in scope of object movement."},
+        {"id":"mc-q07","message":"A curator must not approve their own access to finance records.","expected_requirement_ids":["mc-access"],"categories":["negation","partial_modification"],"provenance":"MODEL_GENERATED"},
+        {"id":"mc-q08","message":"Send the monthly acquisitions file as a spreadsheet rather than CSV.","expected_requirement_ids":["mc-export"],"categories":["partial_modification","paraphrase"],"provenance":"MODEL_GENERATED"},
+        {"id":"mc-q09","message":"The museum's café should use reusable cups with paintings on them.","expected_requirement_ids":[],"categories":["hard_negative","irrelevant_overlap"],"provenance":"MODEL_GENERATED"},
+        {"id":"mc-q10","message":"If an object is newly acquired, photograph it, assess its condition, and place it in storage.","expected_requirement_ids":["mc-intake","mc-photo","mc-condition","mc-store"],"categories":["multi_target","three_plus_targets","conditional","long_message"],"provenance":"MODEL_GENERATED","review_note":"Four targets exceed the frozen cap of three; reviewer must adjudicate semantic targets independently of cap."}
+      ]
+    },
+    {
+      "id":"university-research","size":"large",
+      "requirements":[
+        {"id":"ur-profile","title":"Researcher profile","description":"Researchers shall maintain a profile of affiliation and contact details."},
+        {"id":"ur-project","title":"Project registration","description":"Principal investigators shall register a research project and its objectives."},
+        {"id":"ur-team","title":"Team membership","description":"Investigators shall assign researchers to a project team."},
+        {"id":"ur-proposal","title":"Funding proposal","description":"Investigators shall submit a funding proposal for a research project."},
+        {"id":"ur-review","title":"Proposal peer review","description":"Reviewers shall score funding proposals against published criteria."},
+        {"id":"ur-award","title":"Award approval","description":"The grants office shall approve funding awards after review."},
+        {"id":"ur-budget","title":"Project budget","description":"Investigators shall allocate an approved award across budget categories."},
+        {"id":"ur-expense","title":"Expense claim","description":"Researchers shall submit receipts for project expenses."},
+        {"id":"ur-purchase","title":"Equipment purchase","description":"Procurement staff shall approve research equipment purchases."},
+        {"id":"ur-inventory","title":"Equipment inventory","description":"Lab managers shall track university-owned research equipment."},
+        {"id":"ur-book","title":"Equipment booking","description":"Researchers shall reserve an available laboratory instrument time slot."},
+        {"id":"ur-service","title":"Instrument servicing","description":"Technicians shall log maintenance of laboratory instruments."},
+        {"id":"ur-safety","title":"Lab safety training","description":"Researchers shall complete required lab safety training before access."},
+        {"id":"ur-access","title":"Lab access","description":"Lab managers shall approve researchers' access to restricted laboratories."},
+        {"id":"ur-sample","title":"Sample registry","description":"Researchers shall register collected research samples and their identifiers."},
+        {"id":"ur-storage","title":"Sample storage","description":"Technicians shall record sample freezer and shelf locations."},
+        {"id":"ur-consent","title":"Participant consent","description":"Researchers shall store signed consent records for human participants."},
+        {"id":"ur-ethics","title":"Ethics approval","description":"The ethics board shall approve human-subjects study protocols before recruitment."},
+        {"id":"ur-recruit","title":"Participant recruitment","description":"Researchers shall record recruitment of participants into approved studies."},
+        {"id":"ur-visit","title":"Study visit","description":"Coordinators shall schedule participant study visits."},
+        {"id":"ur-survey","title":"Survey response","description":"Participants shall submit study survey responses online."},
+        {"id":"ur-data","title":"Research dataset","description":"Researchers shall upload project datasets to a controlled repository."},
+        {"id":"ur-share","title":"Data sharing","description":"Project owners shall approve external access to controlled datasets."},
+        {"id":"ur-retain","title":"Data retention","description":"The repository shall delete project data after the retention period ends."},
+        {"id":"ur-analysis","title":"Analysis notebook","description":"Researchers shall attach analysis notebooks to a project."},
+        {"id":"ur-paper","title":"Publication record","description":"Researchers shall record published papers arising from a project."},
+        {"id":"ur-embargo","title":"Publication embargo","description":"The repository shall delay public release of a paper until its embargo ends."},
+        {"id":"ur-report","title":"Funder report","description":"Investigators shall submit quarterly progress reports to funders."},
+        {"id":"ur-close","title":"Project closure","description":"The grants office shall close a project after final reporting and reconciliation."},
+        {"id":"ur-audit","title":"Change log","description":"The system shall record who changed a research record and when."},
+        {"id":"ur-role","title":"Research permissions","description":"Administrators shall grant investigator, reviewer, finance, and lab-manager roles."},
+        {"id":"ur-export","title":"Portfolio export","description":"The grants office shall export project and award summaries as CSV."}
+      ],
+      "queries":[
+        {"id":"ur-q01","message":"Do not invite volunteers into the trial before the ethics committee signs off.","expected_requirement_ids":["ur-ethics","ur-recruit"],"categories":["hard_positive","multi_target","negation","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"ur-q02","message":"Let the PI move money between travel and equipment lines after an award.","expected_requirement_ids":["ur-budget"],"categories":["hard_positive","partial_modification","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"ur-q03","message":"Can a student book the microscope for tomorrow and see whether it is due for maintenance?","expected_requirement_ids":["ur-book","ur-service"],"categories":["multi_target","question","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"ur-q04","message":"The lab manager should know which freezer holds specimen S-104.","expected_requirement_ids":["ur-storage"],"categories":["hard_positive","low_overlap","domain_terminology"],"provenance":"MODEL_GENERATED"},
+        {"id":"ur-q05","message":"Require a safety course before granting entry to the restricted lab.","expected_requirement_ids":["ur-safety","ur-access"],"categories":["multi_target","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"ur-q06","message":"The funder wants progress updates twice a year, not every quarter.","expected_requirement_ids":["ur-report"],"categories":["partial_modification","negation"],"provenance":"MODEL_GENERATED"},
+        {"id":"ur-q07","message":"Publish the study paper immediately rather than waiting for its release date.","expected_requirement_ids":["ur-embargo"],"categories":["removal","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"ur-q08","message":"When the project ends, reconcile spending, file the final funder update, and close the award.","expected_requirement_ids":["ur-expense","ur-report","ur-close"],"categories":["multi_target","three_plus_targets","long_message","competing_requirements"],"provenance":"MODEL_GENERATED","review_note":"Decide whether generic spending reconciliation materially changes expense claims."},
+        {"id":"ur-q09","message":"The university football team wants a new jersey sponsor.","expected_requirement_ids":[],"categories":["hard_negative","irrelevant_overlap"],"provenance":"MODEL_GENERATED"},
+        {"id":"ur-q10","message":"Maybe use a chat room for researchers to discuss their papers.","expected_requirement_ids":[],"categories":["hard_negative","hypothetical","competing_requirements"],"provenance":"MODEL_GENERATED"}
+      ]
+    }
+  ]
+}

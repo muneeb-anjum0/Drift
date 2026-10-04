@@ -57,6 +57,12 @@ R0 and R5 each delivered 25/42 reviewed expected requirement links and fully rea
 
 The predeclared V3 end-to-end prerequisite was therefore false. No Phase III-D model inference, oracle ablation, P1/PP1 independent effect, or model latency was measured. These missing measurements are not model failures. Retraining remains **NOT YET JUSTIFIED** because retrieval omitted 17/42 expected links, and new semantic model errors after correct delivery have not been isolated with reviewed end-to-end labels. No weights, prompt, postprocessor, or model configuration changed.
 
+## Phase III-E retrieval-only evidence
+
+The reviewed Phase III-E set spans three new projects with 8, 16, and 32 requirements. The frozen R6-S1 small CPU sentence encoder recovered 22/36 reviewed target links, versus 20/36 for both R0 and R5, but failed the unchanged retrieval acceptance gates: 61.1% overall, 90% small, 50% medium, and 50% large. Its two-link gain over R5 does not establish generalisation. The [Phase III-E report](phase_iii_e_final_report.md) records the independent review, frozen identities, false exposures, categories, and uncertainty. R6 remains an offline research candidate; the Go production retriever, P1, PP1, Q4_K_M artifact, and CPU configuration were not changed or promoted.
+
+Because the R6 prerequisite failed, Phase III-E did not invoke this 7B model or measure oracle retrieval, raw classification, PP1, V3, or end-to-end quality. No new model-quality or retraining claim follows from a retrieval-only test. Retraining remains **NOT YET JUSTIFIED**.
+
 Retraining is **NOT YET JUSTIFIED**. Deterministic retrieval remains below gate, the model improved materially from prompting alone, training provenance is missing, and there is no clean training corpus or independent future test.
 
 ## Supported and unsupported use

@@ -1,0 +1,355 @@
+{
+  "reviewer": "independent-reviewer-gpt-5.6-sol",
+  "review_date": "2026-10-04",
+  "draft_sha256": "2236806580071f3ad9ef9bd9e2e3d4f0eb22465d3dfcf9d0af07919605f0ed79",
+  "review_sha256": "a373b74c8b3beb25e430e0da5e4088dfb1c16497d3d1f012010903d0e9a65cc5",
+  "dataset_sha256": "78a8975d35a3fccd931820752304b9d344415f3e841db18db7e549321ff4134c",
+  "decision_counts": {
+    "CONFIRMED": 24,
+    "REVISED": 6
+  },
+  "included_query_count": 30,
+  "cases": [
+    {
+      "case_id": "bs-q01",
+      "proposed_requirement_ids": [
+        "bs-unlock"
+      ],
+      "reviewed_requirement_ids": [
+        "bs-unlock"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "bs-q02",
+      "proposed_requirement_ids": [
+        "bs-fee",
+        "bs-ride"
+      ],
+      "reviewed_requirement_ids": [
+        "bs-fee"
+      ],
+      "status": "REVISED",
+      "note": "The message changes when per-minute charging stops. Parking/end-of-ride timing is the trigger or existing input; it does not itself require a change to the ride start/end recording contract."
+    },
+    {
+      "case_id": "bs-q03",
+      "proposed_requirement_ids": [
+        "bs-map"
+      ],
+      "reviewed_requirement_ids": [
+        "bs-map"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "bs-q04",
+      "proposed_requirement_ids": [
+        "bs-pass"
+      ],
+      "reviewed_requirement_ids": [
+        "bs-pass"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "bs-q05",
+      "proposed_requirement_ids": [
+        "bs-damage"
+      ],
+      "reviewed_requirement_ids": [
+        "bs-damage"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "bs-q06",
+      "proposed_requirement_ids": [
+        "bs-dock",
+        "bs-ride"
+      ],
+      "reviewed_requirement_ids": [
+        "bs-dock"
+      ],
+      "status": "REVISED",
+      "note": "The requested change permits ending/returning a bicycle beside the station when no dock is available. That materially changes the dock-return requirement. Ending the trip is contextual; the requirement to record ride start and end times is not itself changed."
+    },
+    {
+      "case_id": "bs-q07",
+      "proposed_requirement_ids": [
+        "bs-account"
+      ],
+      "reviewed_requirement_ids": [
+        "bs-account"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "bs-q08",
+      "proposed_requirement_ids": [],
+      "reviewed_requirement_ids": [],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "bs-q09",
+      "proposed_requirement_ids": [
+        "bs-ride",
+        "bs-fee",
+        "bs-dock"
+      ],
+      "reviewed_requirement_ids": [
+        "bs-ride",
+        "bs-fee"
+      ],
+      "status": "REVISED",
+      "note": "The message requests timing each outing and billing it when the bicycle is returned. This materially concerns ride timing and charging behavior. Bicycle return is used as the billing trigger; it does not change the requirement that bicycles be returned to an available station dock."
+    },
+    {
+      "case_id": "bs-q10",
+      "proposed_requirement_ids": [
+        "bs-map"
+      ],
+      "reviewed_requirement_ids": [
+        "bs-map"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "mc-q01",
+      "proposed_requirement_ids": [
+        "mc-search"
+      ],
+      "reviewed_requirement_ids": [
+        "mc-search"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "mc-q02",
+      "proposed_requirement_ids": [
+        "mc-loan",
+        "mc-insure"
+      ],
+      "reviewed_requirement_ids": [
+        "mc-loan",
+        "mc-insure"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "mc-q03",
+      "proposed_requirement_ids": [
+        "mc-owner"
+      ],
+      "reviewed_requirement_ids": [
+        "mc-owner"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "mc-q04",
+      "proposed_requirement_ids": [
+        "mc-photo",
+        "mc-repair"
+      ],
+      "reviewed_requirement_ids": [
+        "mc-photo",
+        "mc-repair"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "mc-q05",
+      "proposed_requirement_ids": [
+        "mc-label",
+        "mc-audio"
+      ],
+      "reviewed_requirement_ids": [
+        "mc-audio"
+      ],
+      "status": "REVISED",
+      "note": "The requested behavior is to provide a spoken description associated with the exhibit card/object. This changes audio-description capability. The existing descriptive gallery label is the referent; its publication or textual content is not explicitly changed."
+    },
+    {
+      "case_id": "mc-q06",
+      "proposed_requirement_ids": [
+        "mc-store",
+        "mc-move"
+      ],
+      "reviewed_requirement_ids": [
+        "mc-store"
+      ],
+      "status": "REVISED",
+      "note": "Retaining the previous shelf location materially changes storage-location tracking by requiring location history. The baseline movement requirement concerns transfers between museum locations; a shelf-to-shelf move is not clearly a transfer between museum locations."
+    },
+    {
+      "case_id": "mc-q07",
+      "proposed_requirement_ids": [
+        "mc-access"
+      ],
+      "reviewed_requirement_ids": [
+        "mc-access"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "mc-q08",
+      "proposed_requirement_ids": [
+        "mc-export"
+      ],
+      "reviewed_requirement_ids": [
+        "mc-export"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "mc-q09",
+      "proposed_requirement_ids": [],
+      "reviewed_requirement_ids": [],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "mc-q10",
+      "proposed_requirement_ids": [
+        "mc-intake",
+        "mc-photo",
+        "mc-condition",
+        "mc-store"
+      ],
+      "reviewed_requirement_ids": [
+        "mc-intake",
+        "mc-photo",
+        "mc-condition",
+        "mc-store"
+      ],
+      "status": "CONFIRMED",
+      "note": "All four requirements are materially invoked by the requested acquired-object workflow. The retrieval cap of three must not alter the semantic ground truth."
+    },
+    {
+      "case_id": "ur-q01",
+      "proposed_requirement_ids": [
+        "ur-ethics",
+        "ur-recruit"
+      ],
+      "reviewed_requirement_ids": [
+        "ur-ethics",
+        "ur-recruit"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "ur-q02",
+      "proposed_requirement_ids": [
+        "ur-budget"
+      ],
+      "reviewed_requirement_ids": [
+        "ur-budget"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "ur-q03",
+      "proposed_requirement_ids": [
+        "ur-book",
+        "ur-service"
+      ],
+      "reviewed_requirement_ids": [
+        "ur-book",
+        "ur-service"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "ur-q04",
+      "proposed_requirement_ids": [
+        "ur-storage"
+      ],
+      "reviewed_requirement_ids": [
+        "ur-storage"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "ur-q05",
+      "proposed_requirement_ids": [
+        "ur-safety",
+        "ur-access"
+      ],
+      "reviewed_requirement_ids": [
+        "ur-safety",
+        "ur-access"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "ur-q06",
+      "proposed_requirement_ids": [
+        "ur-report"
+      ],
+      "reviewed_requirement_ids": [
+        "ur-report"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "ur-q07",
+      "proposed_requirement_ids": [
+        "ur-embargo"
+      ],
+      "reviewed_requirement_ids": [
+        "ur-embargo"
+      ],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "ur-q08",
+      "proposed_requirement_ids": [
+        "ur-expense",
+        "ur-report",
+        "ur-close"
+      ],
+      "reviewed_requirement_ids": [
+        "ur-report",
+        "ur-close"
+      ],
+      "status": "REVISED",
+      "note": "Final funder reporting and project closure are materially affected. Generic spending reconciliation is part of the stated closure process, but it does not change the baseline expense-claim requirement, which concerns researchers submitting receipts for project expenses."
+    },
+    {
+      "case_id": "ur-q09",
+      "proposed_requirement_ids": [],
+      "reviewed_requirement_ids": [],
+      "status": "CONFIRMED",
+      "note": ""
+    },
+    {
+      "case_id": "ur-q10",
+      "proposed_requirement_ids": [],
+      "reviewed_requirement_ids": [],
+      "status": "CONFIRMED",
+      "note": ""
+    }
+  ],
+  "warning": "Structure is validated; reviewer independence and adapter-training overlap cannot be machine-proven."
+}

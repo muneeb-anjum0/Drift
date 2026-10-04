@@ -1,0 +1,117 @@
+{
+  "name": "drift-phase-iii-e-retrieval-development",
+  "version": "1.0.0",
+  "role": "DEVELOPMENT_NOT_FINAL",
+  "provenance": ["MODEL_GENERATED", "SYNTHETIC"],
+  "threshold": 0.25,
+  "max_selected": 3,
+  "projects": [
+    {
+      "id": "library-small", "size": "small",
+      "requirements": [
+        {"id":"ls-card","title":"Borrower card","description":"Residents shall register for a library card using proof of address."},
+        {"id":"ls-renew","title":"Loan renewal","description":"Borrowers shall extend a book loan before its due date."},
+        {"id":"ls-return","title":"Book return","description":"Borrowers shall return borrowed books at a staffed desk or return box."},
+        {"id":"ls-fine","title":"Overdue charge","description":"Borrowers shall pay a daily charge for overdue books."},
+        {"id":"ls-hold","title":"Book reservation","description":"Borrowers shall reserve a checked-out book and receive notice when it is ready."},
+        {"id":"ls-room","title":"Study room booking","description":"Members shall reserve an available study room time slot."},
+        {"id":"ls-event","title":"Reading event signup","description":"Visitors shall register for a reading event with limited seats."},
+        {"id":"ls-search","title":"Catalogue search","description":"Visitors shall search the book catalogue by title, author, or subject."}
+      ],
+      "queries": [
+        {"id":"ls-q01","message":"Can locals get a borrowing pass with a utility bill?","expected_requirement_ids":["ls-card"],"categories":["hard_positive","low_overlap","informal","question"],"provenance":"MODEL_GENERATED"},
+        {"id":"ls-q02","message":"Let readers keep a novel another week before it is due.","expected_requirement_ids":["ls-renew"],"categories":["hard_positive","paraphrase","partial_modification"],"provenance":"MODEL_GENERATED"},
+        {"id":"ls-q03","message":"Stop charging people for late books.","expected_requirement_ids":["ls-fine"],"categories":["negation","removal"],"provenance":"MODEL_GENERATED"},
+        {"id":"ls-q04","message":"If someone books a study room, can they also reserve a checked-out novel?","expected_requirement_ids":["ls-room","ls-hold"],"categories":["multi_target","competing_requirements","conditional","question"],"provenance":"MODEL_GENERATED"},
+        {"id":"ls-q05","message":"A returned book should become available to the next person on its wait list.","expected_requirement_ids":["ls-return","ls-hold"],"categories":["multi_target","implicit","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"ls-q06","message":"Search the catalogue by a writer's name.","expected_requirement_ids":["ls-search"],"categories":["high_overlap","paraphrase"],"provenance":"MODEL_GENERATED"},
+        {"id":"ls-q07","message":"The book club wants a new coffee machine next month.","expected_requirement_ids":[],"categories":["hard_negative","irrelevant_overlap","future_tense"],"provenance":"MODEL_GENERATED"},
+        {"id":"ls-q08","message":"Maybe the reading event could have a livestream one day.","expected_requirement_ids":["ls-event"],"categories":["hypothetical","partial_modification"],"provenance":"MODEL_GENERATED","label_note":"Changes the delivery mode of the existing event, not a separate streaming baseline."},
+        {"id":"ls-q09","message":"Extend my library book and tell me when the one I queued for arrives.","expected_requirement_ids":["ls-renew","ls-hold"],"categories":["multi_target","informal"],"provenance":"MODEL_GENERATED"},
+        {"id":"ls-q10","message":"The reading event should let visitors choose seats, and members should still be able to book a study room.","expected_requirement_ids":["ls-event","ls-room"],"categories":["multi_target","long_message","competing_requirements"],"provenance":"MODEL_GENERATED"}
+      ]
+    },
+    {
+      "id":"rail-medium", "size":"medium",
+      "requirements":[
+        {"id":"rm-route","title":"Journey planner","description":"Passengers shall plan a train journey between stations."},
+        {"id":"rm-fare","title":"Fare quote","description":"Passengers shall view the fare for a selected journey."},
+        {"id":"rm-buy","title":"Ticket purchase","description":"Passengers shall buy a train ticket by payment card."},
+        {"id":"rm-refund","title":"Ticket refund","description":"Passengers shall request a refund for an unused ticket."},
+        {"id":"rm-gate","title":"Station gate validation","description":"A station gate shall validate the barcode on a ticket."},
+        {"id":"rm-delay","title":"Delay notice","description":"Passengers shall receive a push notification when their train is delayed."},
+        {"id":"rm-platform","title":"Platform display","description":"Station screens shall show each train's departure platform."},
+        {"id":"rm-access","title":"Accessible assistance","description":"Passengers shall book boarding assistance for a wheelchair journey."},
+        {"id":"rm-bike","title":"Bicycle place","description":"Passengers shall reserve a bicycle space on a train."},
+        {"id":"rm-seat","title":"Seat reservation","description":"Passengers shall reserve an available numbered seat."},
+        {"id":"rm-crew","title":"Crew roster","description":"Dispatchers shall assign train crew to scheduled services."},
+        {"id":"rm-maint","title":"Vehicle maintenance","description":"Depot staff shall log scheduled maintenance of train vehicles."},
+        {"id":"rm-inc","title":"Service incident","description":"Controllers shall record service disruption incidents."},
+        {"id":"rm-lost","title":"Lost property","description":"Station staff shall register items found on trains."},
+        {"id":"rm-map","title":"Station map","description":"Visitors shall view a map of station entrances and exits."},
+        {"id":"rm-pass","title":"Season pass","description":"Commuters shall purchase a monthly travel pass."}
+      ],
+      "queries":[
+        {"id":"rm-q01","message":"How much would it cost to get from North to South?","expected_requirement_ids":["rm-fare"],"categories":["hard_positive","low_overlap","question"],"provenance":"MODEL_GENERATED"},
+        {"id":"rm-q02","message":"Return my money for an untravelled journey.","expected_requirement_ids":["rm-refund"],"categories":["hard_positive","paraphrase"],"provenance":"MODEL_GENERATED"},
+        {"id":"rm-q03","message":"Tell riders on their phones if the service is late.","expected_requirement_ids":["rm-delay"],"categories":["hard_positive","informal"],"provenance":"MODEL_GENERATED"},
+        {"id":"rm-q04","message":"Show which track the train departs from, and alert riders when it is running late.","expected_requirement_ids":["rm-platform","rm-delay"],"categories":["multi_target","competing_requirements","paraphrase"],"provenance":"MODEL_GENERATED"},
+        {"id":"rm-q05","message":"Reserve both a numbered chair and a place for my cycle.","expected_requirement_ids":["rm-seat","rm-bike"],"categories":["multi_target","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"rm-q06","message":"Don't let the gate accept a copied barcode.","expected_requirement_ids":["rm-gate"],"categories":["negation","partial_modification"],"provenance":"MODEL_GENERATED"},
+        {"id":"rm-q07","message":"A platform worker found a laptop on the train; record it.","expected_requirement_ids":["rm-lost"],"categories":["hard_positive","irrelevant_overlap"],"provenance":"MODEL_GENERATED"},
+        {"id":"rm-q08","message":"We need a platform for publishing train history articles.","expected_requirement_ids":[],"categories":["hard_negative","irrelevant_overlap"],"provenance":"MODEL_GENERATED"},
+        {"id":"rm-q09","message":"Could dispatch assign a replacement conductor to a delayed service and log the disruption?","expected_requirement_ids":["rm-crew","rm-inc"],"categories":["multi_target","question","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"rm-q10","message":"Next year commuters may buy a monthly pass with a card and plan their trip before travelling.","expected_requirement_ids":["rm-pass","rm-buy","rm-route"],"categories":["multi_target","future_tense","long_message"],"provenance":"MODEL_GENERATED","label_note":"Card purchase materially touches the generic payment-card ticket purchase requirement."}
+      ]
+    },
+    {
+      "id":"farm-large", "size":"large",
+      "requirements":[
+        {"id":"fl-field","title":"Field registry","description":"Growers shall register fields with boundary coordinates."},
+        {"id":"fl-crop","title":"Crop plan","description":"Growers shall record the crop planted in each field."},
+        {"id":"fl-seed","title":"Seed stock","description":"Storekeepers shall track quantities of seed by variety."},
+        {"id":"fl-soil","title":"Soil sample","description":"Technicians shall record soil test results by field."},
+        {"id":"fl-water","title":"Irrigation schedule","description":"Growers shall schedule watering for each field."},
+        {"id":"fl-pump","title":"Pump control","description":"Operators shall start and stop irrigation pumps remotely."},
+        {"id":"fl-meter","title":"Water meter","description":"Sensors shall record irrigation water volume by field."},
+        {"id":"fl-rain","title":"Rainfall log","description":"Sensors shall record daily rainfall at each farm."},
+        {"id":"fl-temp","title":"Air temperature log","description":"Sensors shall record hourly air temperature at each farm."},
+        {"id":"fl-frost","title":"Frost warning","description":"Growers shall receive an alert before forecast frost."},
+        {"id":"fl-pest","title":"Pest sighting","description":"Workers shall report pest sightings by field."},
+        {"id":"fl-spray","title":"Spray plan","description":"Supervisors shall approve pesticide spray plans before application."},
+        {"id":"fl-chem","title":"Chemical inventory","description":"Storekeepers shall track pesticide container quantities and expiry dates."},
+        {"id":"fl-tractor","title":"Tractor assignment","description":"Managers shall assign tractors to field jobs."},
+        {"id":"fl-fuel","title":"Fuel log","description":"Drivers shall log fuel added to farm vehicles."},
+        {"id":"fl-service","title":"Machine service","description":"Mechanics shall record scheduled maintenance of farm machines."},
+        {"id":"fl-crew","title":"Worker roster","description":"Managers shall assign workers to daily farm shifts."},
+        {"id":"fl-hours","title":"Work hours","description":"Workers shall submit hours worked per shift."},
+        {"id":"fl-safety","title":"Safety incident","description":"Supervisors shall record workplace safety incidents."},
+        {"id":"fl-harvest","title":"Harvest record","description":"Workers shall record harvested crop weight by field."},
+        {"id":"fl-quality","title":"Produce grade","description":"Inspectors shall grade harvested produce by batch."},
+        {"id":"fl-batch","title":"Batch traceability","description":"Packers shall link produce batches to source fields."},
+        {"id":"fl-pack","title":"Packing order","description":"Packers shall record cases packed for each customer order."},
+        {"id":"fl-cold","title":"Cold room temperature","description":"Sensors shall log cold room temperature every fifteen minutes."},
+        {"id":"fl-ship","title":"Shipment dispatch","description":"Dispatchers shall record produce shipments leaving the farm."},
+        {"id":"fl-recall","title":"Produce recall","description":"Quality staff shall identify and hold batches affected by a recall."},
+        {"id":"fl-sale","title":"Produce sale","description":"Sales staff shall invoice customers for produce orders."},
+        {"id":"fl-pay","title":"Customer payment","description":"Finance staff shall record payments received against invoices."},
+        {"id":"fl-report","title":"Yield report","description":"Managers shall export monthly crop yield by field as CSV."},
+        {"id":"fl-access","title":"Staff access","description":"Administrators shall assign grower, worker, manager, and finance roles."},
+        {"id":"fl-photo","title":"Field photographs","description":"Workers shall attach photographs to field inspection notes."},
+        {"id":"fl-audit","title":"Change audit","description":"The system shall record who edited a farm record and when."}
+      ],
+      "queries":[
+        {"id":"fl-q01","message":"Warn us before a freeze ruins the orchard.","expected_requirement_ids":["fl-frost"],"categories":["hard_positive","low_overlap","informal"],"provenance":"MODEL_GENERATED"},
+        {"id":"fl-q02","message":"Keep track of how much water each paddock consumed.","expected_requirement_ids":["fl-meter"],"categories":["hard_positive","paraphrase","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"fl-q03","message":"Record the field's soil acidity after each lab test.","expected_requirement_ids":["fl-soil"],"categories":["high_overlap","domain_terminology"],"provenance":"MODEL_GENERATED"},
+        {"id":"fl-q04","message":"When the pests appear, file a sighting and get approval before spraying.","expected_requirement_ids":["fl-pest","fl-spray"],"categories":["multi_target","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"fl-q05","message":"Stop letting drivers add fuel records after their shift ends.","expected_requirement_ids":["fl-fuel"],"categories":["negation","partial_modification"],"provenance":"MODEL_GENERATED"},
+        {"id":"fl-q06","message":"The monthly CSV should show yield and which parcel supplied each batch.","expected_requirement_ids":["fl-report","fl-batch"],"categories":["multi_target","hard_positive","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"fl-q07","message":"If produce is recalled, hold the affected lots and tell dispatch not to send them.","expected_requirement_ids":["fl-recall","fl-ship"],"categories":["multi_target","conditional","competing_requirements"],"provenance":"MODEL_GENERATED"},
+        {"id":"fl-q08","message":"Our tractors need new paint to match the website.","expected_requirement_ids":[],"categories":["hard_negative","irrelevant_overlap"],"provenance":"MODEL_GENERATED"},
+        {"id":"fl-q09","message":"Could finance see invoices and register customer remittances?","expected_requirement_ids":["fl-sale","fl-pay","fl-access"],"categories":["multi_target","question","competing_requirements"],"provenance":"MODEL_GENERATED","label_note":"Finance access is explicit in the request."},
+        {"id":"fl-q10","message":"Next season the farm might replace its cafeteria menu.","expected_requirement_ids":[],"categories":["hard_negative","hypothetical","future_tense"],"provenance":"MODEL_GENERATED"}
+      ]
+    }
+  ]
+}
