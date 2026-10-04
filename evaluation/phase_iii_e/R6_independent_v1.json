@@ -1,0 +1,6221 @@
+{
+  "identity": "R6-S1-t0.45",
+  "role": "BLIND_FINAL_RETRIEVAL_ONLY",
+  "dataset_sha256": "78a8975d35a3fccd931820752304b9d344415f3e841db18db7e549321ff4134c",
+  "review_trail_sha256": "78fd707f6a8841dcc5b4e68a5dcf873b62c64a45ecc345807c37abc834c17fff",
+  "source_sha256": "2ac6ddc62f1b796896352bf2812b9cb1ee55b9c7f6cb8ff260b5f4aac4a67228",
+  "embedding_weights_sha256": "53aa51172d142c89d9012cce15ae4d6cc0ca6895895114379cacb4fab128d9db",
+  "configuration": {
+    "query_representation": "whole client message",
+    "requirement_representation": "title + period + space + description",
+    "similarity": "cosine",
+    "threshold": 0.45,
+    "threshold_comparison": "greater_than_or_equal",
+    "max_selected": 3,
+    "tie_breaking": "stable baseline requirement order",
+    "zero_target_allowed": true,
+    "specific_match_gate": false,
+    "classification_rules": false
+  },
+  "metrics": {
+    "queries": 30,
+    "positive_queries": 26,
+    "expected_links": 36,
+    "selected_hits": 22,
+    "micro_recall": 0.6111111111111112,
+    "all_target_reach": [
+      17,
+      26
+    ],
+    "at_least_one_reach": [
+      19,
+      26
+    ],
+    "recall_at_1": [
+      22,
+      36
+    ],
+    "recall_at_3": [
+      30,
+      36
+    ],
+    "recall_at_k": [
+      30,
+      36
+    ],
+    "precision_at_1": 0.7333333333333333,
+    "precision_at_3": 0.3333333333333333,
+    "precision_at_k": 0.3333333333333333,
+    "mrr": 0.9102564102564104,
+    "false_exposures": 17,
+    "hard_negative_exposed": 1,
+    "mean_selected": 1.3,
+    "mean_candidates": 18.666666666666668
+  },
+  "by_size": {
+    "small": {
+      "queries": 10,
+      "positive_queries": 9,
+      "expected_links": 10,
+      "selected_hits": 9,
+      "micro_recall": 0.9,
+      "all_target_reach": [
+        8,
+        9
+      ],
+      "at_least_one_reach": [
+        8,
+        9
+      ],
+      "recall_at_1": [
+        8,
+        10
+      ],
+      "recall_at_3": [
+        10,
+        10
+      ],
+      "recall_at_k": [
+        10,
+        10
+      ],
+      "precision_at_1": 0.8,
+      "precision_at_3": 0.3333333333333333,
+      "precision_at_k": 0.3333333333333333,
+      "mrr": 0.9444444444444444,
+      "false_exposures": 6,
+      "hard_negative_exposed": 1,
+      "mean_selected": 1.5,
+      "mean_candidates": 8.0
+    },
+    "medium": {
+      "queries": 10,
+      "positive_queries": 9,
+      "expected_links": 14,
+      "selected_hits": 7,
+      "micro_recall": 0.5,
+      "all_target_reach": [
+        5,
+        9
+      ],
+      "at_least_one_reach": [
+        6,
+        9
+      ],
+      "recall_at_1": [
+        7,
+        14
+      ],
+      "recall_at_3": [
+        10,
+        14
+      ],
+      "recall_at_k": [
+        10,
+        14
+      ],
+      "precision_at_1": 0.7,
+      "precision_at_3": 0.3333333333333333,
+      "precision_at_k": 0.3333333333333333,
+      "mrr": 0.8703703703703703,
+      "false_exposures": 7,
+      "hard_negative_exposed": 0,
+      "mean_selected": 1.4,
+      "mean_candidates": 16.0
+    },
+    "large": {
+      "queries": 10,
+      "positive_queries": 8,
+      "expected_links": 12,
+      "selected_hits": 6,
+      "micro_recall": 0.5,
+      "all_target_reach": [
+        4,
+        8
+      ],
+      "at_least_one_reach": [
+        5,
+        8
+      ],
+      "recall_at_1": [
+        7,
+        12
+      ],
+      "recall_at_3": [
+        10,
+        12
+      ],
+      "recall_at_k": [
+        10,
+        12
+      ],
+      "precision_at_1": 0.7,
+      "precision_at_3": 0.3333333333333333,
+      "precision_at_k": 0.3333333333333333,
+      "mrr": 0.9166666666666666,
+      "false_exposures": 4,
+      "hard_negative_exposed": 0,
+      "mean_selected": 1.0,
+      "mean_candidates": 32.0
+    }
+  },
+  "by_category": {
+    "competing_requirements": {
+      "queries": 15,
+      "positive_queries": 14,
+      "expected_links": 20,
+      "selected_hits": 10,
+      "micro_recall": 0.5,
+      "all_target_reach": [
+        8,
+        14
+      ],
+      "at_least_one_reach": [
+        9,
+        14
+      ],
+      "recall_at_1": [
+        12,
+        20
+      ],
+      "recall_at_3": [
+        16,
+        20
+      ],
+      "recall_at_k": [
+        16,
+        20
+      ],
+      "precision_at_1": 0.8,
+      "precision_at_3": 0.35555555555555557,
+      "precision_at_k": 0.35555555555555557,
+      "mrr": 0.9047619047619048,
+      "false_exposures": 10,
+      "hard_negative_exposed": 0,
+      "mean_selected": 1.3333333333333333,
+      "mean_candidates": 21.333333333333332
+    },
+    "conditional": {
+      "queries": 2,
+      "positive_queries": 2,
+      "expected_links": 5,
+      "selected_hits": 3,
+      "micro_recall": 0.6,
+      "all_target_reach": [
+        1,
+        2
+      ],
+      "at_least_one_reach": [
+        2,
+        2
+      ],
+      "recall_at_1": [
+        2,
+        5
+      ],
+      "recall_at_3": [
+        3,
+        5
+      ],
+      "recall_at_k": [
+        3,
+        5
+      ],
+      "precision_at_1": 1.0,
+      "precision_at_3": 0.5,
+      "precision_at_k": 0.5,
+      "mrr": 1.0,
+      "false_exposures": 2,
+      "hard_negative_exposed": 0,
+      "mean_selected": 2.5,
+      "mean_candidates": 12.0
+    },
+    "domain_terminology": {
+      "queries": 1,
+      "positive_queries": 1,
+      "expected_links": 1,
+      "selected_hits": 1,
+      "micro_recall": 1.0,
+      "all_target_reach": [
+        1,
+        1
+      ],
+      "at_least_one_reach": [
+        1,
+        1
+      ],
+      "recall_at_1": [
+        1,
+        1
+      ],
+      "recall_at_3": [
+        1,
+        1
+      ],
+      "recall_at_k": [
+        1,
+        1
+      ],
+      "precision_at_1": 1.0,
+      "precision_at_3": 0.3333333333333333,
+      "precision_at_k": 0.3333333333333333,
+      "mrr": 1.0,
+      "false_exposures": 0,
+      "hard_negative_exposed": 0,
+      "mean_selected": 1.0,
+      "mean_candidates": 32.0
+    },
+    "hard_negative": {
+      "queries": 4,
+      "positive_queries": 0,
+      "expected_links": 0,
+      "selected_hits": 0,
+      "micro_recall": null,
+      "all_target_reach": [
+        0,
+        0
+      ],
+      "at_least_one_reach": [
+        0,
+        0
+      ],
+      "recall_at_1": [
+        0,
+        0
+      ],
+      "recall_at_3": [
+        0,
+        0
+      ],
+      "recall_at_k": [
+        0,
+        0
+      ],
+      "precision_at_1": 0.0,
+      "precision_at_3": 0.0,
+      "precision_at_k": 0.0,
+      "mrr": null,
+      "false_exposures": 1,
+      "hard_negative_exposed": 1,
+      "mean_selected": 0.25,
+      "mean_candidates": 22.0
+    },
+    "hard_positive": {
+      "queries": 7,
+      "positive_queries": 7,
+      "expected_links": 8,
+      "selected_hits": 3,
+      "micro_recall": 0.375,
+      "all_target_reach": [
+        3,
+        7
+      ],
+      "at_least_one_reach": [
+        3,
+        7
+      ],
+      "recall_at_1": [
+        6,
+        8
+      ],
+      "recall_at_3": [
+        7,
+        8
+      ],
+      "recall_at_k": [
+        7,
+        8
+      ],
+      "precision_at_1": 0.8571428571428571,
+      "precision_at_3": 0.3333333333333333,
+      "precision_at_k": 0.3333333333333333,
+      "mrr": 0.9047619047619048,
+      "false_exposures": 1,
+      "hard_negative_exposed": 0,
+      "mean_selected": 0.5714285714285714,
+      "mean_candidates": 19.428571428571427
+    },
+    "hypothetical": {
+      "queries": 2,
+      "positive_queries": 1,
+      "expected_links": 1,
+      "selected_hits": 1,
+      "micro_recall": 1.0,
+      "all_target_reach": [
+        1,
+        1
+      ],
+      "at_least_one_reach": [
+        1,
+        1
+      ],
+      "recall_at_1": [
+        1,
+        1
+      ],
+      "recall_at_3": [
+        1,
+        1
+      ],
+      "recall_at_k": [
+        1,
+        1
+      ],
+      "precision_at_1": 0.5,
+      "precision_at_3": 0.16666666666666666,
+      "precision_at_k": 0.16666666666666666,
+      "mrr": 1.0,
+      "false_exposures": 0,
+      "hard_negative_exposed": 0,
+      "mean_selected": 0.5,
+      "mean_candidates": 20.0
+    },
+    "implicit": {
+      "queries": 1,
+      "positive_queries": 1,
+      "expected_links": 1,
+      "selected_hits": 1,
+      "micro_recall": 1.0,
+      "all_target_reach": [
+        1,
+        1
+      ],
+      "at_least_one_reach": [
+        1,
+        1
+      ],
+      "recall_at_1": [
+        1,
+        1
+      ],
+      "recall_at_3": [
+        1,
+        1
+      ],
+      "recall_at_k": [
+        1,
+        1
+      ],
+      "precision_at_1": 1.0,
+      "precision_at_3": 0.3333333333333333,
+      "precision_at_k": 0.3333333333333333,
+      "mrr": 1.0,
+      "false_exposures": 0,
+      "hard_negative_exposed": 0,
+      "mean_selected": 1.0,
+      "mean_candidates": 16.0
+    },
+    "informal": {
+      "queries": 3,
+      "positive_queries": 3,
+      "expected_links": 3,
+      "selected_hits": 1,
+      "micro_recall": 0.3333333333333333,
+      "all_target_reach": [
+        1,
+        3
+      ],
+      "at_least_one_reach": [
+        1,
+        3
+      ],
+      "recall_at_1": [
+        3,
+        3
+      ],
+      "recall_at_3": [
+        3,
+        3
+      ],
+      "recall_at_k": [
+        3,
+        3
+      ],
+      "precision_at_1": 1.0,
+      "precision_at_3": 0.3333333333333333,
+      "precision_at_k": 0.3333333333333333,
+      "mrr": 1.0,
+      "false_exposures": 0,
+      "hard_negative_exposed": 0,
+      "mean_selected": 0.3333333333333333,
+      "mean_candidates": 10.666666666666666
+    },
+    "irrelevant_overlap": {
+      "queries": 3,
+      "positive_queries": 0,
+      "expected_links": 0,
+      "selected_hits": 0,
+      "micro_recall": null,
+      "all_target_reach": [
+        0,
+        0
+      ],
+      "at_least_one_reach": [
+        0,
+        0
+      ],
+      "recall_at_1": [
+        0,
+        0
+      ],
+      "recall_at_3": [
+        0,
+        0
+      ],
+      "recall_at_k": [
+        0,
+        0
+      ],
+      "precision_at_1": 0.0,
+      "precision_at_3": 0.0,
+      "precision_at_k": 0.0,
+      "mrr": null,
+      "false_exposures": 1,
+      "hard_negative_exposed": 1,
+      "mean_selected": 0.3333333333333333,
+      "mean_candidates": 18.666666666666668
+    },
+    "long_message": {
+      "queries": 2,
+      "positive_queries": 2,
+      "expected_links": 6,
+      "selected_hits": 3,
+      "micro_recall": 0.5,
+      "all_target_reach": [
+        0,
+        2
+      ],
+      "at_least_one_reach": [
+        2,
+        2
+      ],
+      "recall_at_1": [
+        2,
+        6
+      ],
+      "recall_at_3": [
+        3,
+        6
+      ],
+      "recall_at_k": [
+        3,
+        6
+      ],
+      "precision_at_1": 1.0,
+      "precision_at_3": 0.5,
+      "precision_at_k": 0.5,
+      "mrr": 1.0,
+      "false_exposures": 3,
+      "hard_negative_exposed": 0,
+      "mean_selected": 3.0,
+      "mean_candidates": 24.0
+    },
+    "low_overlap": {
+      "queries": 3,
+      "positive_queries": 3,
+      "expected_links": 3,
+      "selected_hits": 1,
+      "micro_recall": 0.3333333333333333,
+      "all_target_reach": [
+        1,
+        3
+      ],
+      "at_least_one_reach": [
+        1,
+        3
+      ],
+      "recall_at_1": [
+        3,
+        3
+      ],
+      "recall_at_3": [
+        3,
+        3
+      ],
+      "recall_at_k": [
+        3,
+        3
+      ],
+      "precision_at_1": 1.0,
+      "precision_at_3": 0.3333333333333333,
+      "precision_at_k": 0.3333333333333333,
+      "mrr": 1.0,
+      "false_exposures": 0,
+      "hard_negative_exposed": 0,
+      "mean_selected": 0.3333333333333333,
+      "mean_candidates": 18.666666666666668
+    },
+    "multi_target": {
+      "queries": 12,
+      "positive_queries": 12,
+      "expected_links": 22,
+      "selected_hits": 11,
+      "micro_recall": 0.5,
+      "all_target_reach": [
+        6,
+        12
+      ],
+      "at_least_one_reach": [
+        8,
+        12
+      ],
+      "recall_at_1": [
+        10,
+        22
+      ],
+      "recall_at_3": [
+        16,
+        22
+      ],
+      "recall_at_k": [
+        16,
+        22
+      ],
+      "precision_at_1": 0.8333333333333334,
+      "precision_at_3": 0.4444444444444444,
+      "precision_at_k": 0.4444444444444444,
+      "mrr": 0.9027777777777778,
+      "false_exposures": 9,
+      "hard_negative_exposed": 0,
+      "mean_selected": 1.6666666666666667,
+      "mean_candidates": 19.333333333333332
+    },
+    "negation": {
+      "queries": 6,
+      "positive_queries": 6,
+      "expected_links": 7,
+      "selected_hits": 5,
+      "micro_recall": 0.7142857142857143,
+      "all_target_reach": [
+        5,
+        6
+      ],
+      "at_least_one_reach": [
+        5,
+        6
+      ],
+      "recall_at_1": [
+        5,
+        7
+      ],
+      "recall_at_3": [
+        6,
+        7
+      ],
+      "recall_at_k": [
+        6,
+        7
+      ],
+      "precision_at_1": 0.8333333333333334,
+      "precision_at_3": 0.3333333333333333,
+      "precision_at_k": 0.3333333333333333,
+      "mrr": 0.9166666666666666,
+      "false_exposures": 3,
+      "hard_negative_exposed": 0,
+      "mean_selected": 1.3333333333333333,
+      "mean_candidates": 18.666666666666668
+    },
+    "paraphrase": {
+      "queries": 2,
+      "positive_queries": 2,
+      "expected_links": 2,
+      "selected_hits": 2,
+      "micro_recall": 1.0,
+      "all_target_reach": [
+        2,
+        2
+      ],
+      "at_least_one_reach": [
+        2,
+        2
+      ],
+      "recall_at_1": [
+        2,
+        2
+      ],
+      "recall_at_3": [
+        2,
+        2
+      ],
+      "recall_at_k": [
+        2,
+        2
+      ],
+      "precision_at_1": 1.0,
+      "precision_at_3": 0.3333333333333333,
+      "precision_at_k": 0.3333333333333333,
+      "mrr": 1.0,
+      "false_exposures": 2,
+      "hard_negative_exposed": 0,
+      "mean_selected": 2.0,
+      "mean_candidates": 12.0
+    },
+    "partial_modification": {
+      "queries": 7,
+      "positive_queries": 7,
+      "expected_links": 7,
+      "selected_hits": 6,
+      "micro_recall": 0.8571428571428571,
+      "all_target_reach": [
+        6,
+        7
+      ],
+      "at_least_one_reach": [
+        6,
+        7
+      ],
+      "recall_at_1": [
+        5,
+        7
+      ],
+      "recall_at_3": [
+        7,
+        7
+      ],
+      "recall_at_k": [
+        7,
+        7
+      ],
+      "precision_at_1": 0.7142857142857143,
+      "precision_at_3": 0.3333333333333333,
+      "precision_at_k": 0.3333333333333333,
+      "mrr": 0.8333333333333333,
+      "false_exposures": 2,
+      "hard_negative_exposed": 0,
+      "mean_selected": 1.1428571428571428,
+      "mean_candidates": 17.142857142857142
+    },
+    "question": {
+      "queries": 4,
+      "positive_queries": 4,
+      "expected_links": 6,
+      "selected_hits": 3,
+      "micro_recall": 0.5,
+      "all_target_reach": [
+        2,
+        4
+      ],
+      "at_least_one_reach": [
+        2,
+        4
+      ],
+      "recall_at_1": [
+        3,
+        6
+      ],
+      "recall_at_3": [
+        6,
+        6
+      ],
+      "recall_at_k": [
+        6,
+        6
+      ],
+      "precision_at_1": 0.75,
+      "precision_at_3": 0.5,
+      "precision_at_k": 0.5,
+      "mrr": 0.875,
+      "false_exposures": 2,
+      "hard_negative_exposed": 0,
+      "mean_selected": 1.25,
+      "mean_candidates": 16.0
+    },
+    "removal": {
+      "queries": 2,
+      "positive_queries": 2,
+      "expected_links": 2,
+      "selected_hits": 2,
+      "micro_recall": 1.0,
+      "all_target_reach": [
+        2,
+        2
+      ],
+      "at_least_one_reach": [
+        2,
+        2
+      ],
+      "recall_at_1": [
+        2,
+        2
+      ],
+      "recall_at_3": [
+        2,
+        2
+      ],
+      "recall_at_k": [
+        2,
+        2
+      ],
+      "precision_at_1": 1.0,
+      "precision_at_3": 0.3333333333333333,
+      "precision_at_k": 0.3333333333333333,
+      "mrr": 1.0,
+      "false_exposures": 3,
+      "hard_negative_exposed": 0,
+      "mean_selected": 2.5,
+      "mean_candidates": 24.0
+    },
+    "three_plus_targets": {
+      "queries": 3,
+      "positive_queries": 3,
+      "expected_links": 8,
+      "selected_hits": 5,
+      "micro_recall": 0.625,
+      "all_target_reach": [
+        1,
+        3
+      ],
+      "at_least_one_reach": [
+        3,
+        3
+      ],
+      "recall_at_1": [
+        2,
+        8
+      ],
+      "recall_at_3": [
+        5,
+        8
+      ],
+      "recall_at_k": [
+        5,
+        8
+      ],
+      "precision_at_1": 0.6666666666666666,
+      "precision_at_3": 0.5555555555555556,
+      "precision_at_k": 0.5555555555555556,
+      "mrr": 0.8333333333333334,
+      "false_exposures": 4,
+      "hard_negative_exposed": 0,
+      "mean_selected": 3.0,
+      "mean_candidates": 18.666666666666668
+    }
+  },
+  "embedding_count": 86,
+  "embedding_batch_seconds_including_load": 5.036940707999747,
+  "scoring_us_total_excluding_embedding": 12760.685,
+  "scoring_us_max_excluding_embedding": 788.395,
+  "results": [
+    {
+      "query_id": "bs-q01",
+      "project_id": "bicycle-share",
+      "project_size": "small",
+      "categories": [
+        "hard_positive",
+        "low_overlap",
+        "question",
+        "informal"
+      ],
+      "message": "Can I open a bike by pointing my phone camera at its square code?",
+      "expected_ids": [
+        "bs-unlock"
+      ],
+      "expected_count": 1,
+      "candidate_count": 8,
+      "ranked": [
+        {
+          "id": "bs-unlock",
+          "score": 0.44572251889907144,
+          "rank": 1,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-damage",
+          "score": 0.3100028880450066,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-map",
+          "score": 0.3011564219095775,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-account",
+          "score": 0.25656056020339996,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-ride",
+          "score": 0.22107129663107167,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-dock",
+          "score": 0.20160946071730795,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-fee",
+          "score": 0.14441965142388966,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-pass",
+          "score": 0.12515492795132116,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [],
+      "missed_ids": [
+        "bs-unlock"
+      ],
+      "missed_stages": {
+        "bs-unlock": "BELOW_THRESHOLD"
+      },
+      "false_ids": [],
+      "hits": 0,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "bs-q02",
+      "project_id": "bicycle-share",
+      "project_size": "small",
+      "categories": [
+        "multi_target",
+        "negation",
+        "competing_requirements"
+      ],
+      "message": "Stop charging by the minute after someone has parked the cycle.",
+      "expected_ids": [
+        "bs-fee"
+      ],
+      "expected_count": 1,
+      "candidate_count": 8,
+      "ranked": [
+        {
+          "id": "bs-fee",
+          "score": 0.48522497571497364,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "bs-ride",
+          "score": 0.3928269474182082,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-dock",
+          "score": 0.3165444507747262,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-account",
+          "score": 0.2786882185545111,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-map",
+          "score": 0.27801695472071103,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-damage",
+          "score": 0.2756504210292484,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-pass",
+          "score": 0.27248248357896926,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-unlock",
+          "score": 0.20454589330547274,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "bs-fee"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [],
+      "hits": 1,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "bs-q03",
+      "project_id": "bicycle-share",
+      "project_size": "small",
+      "categories": [
+        "paraphrase",
+        "competing_requirements"
+      ],
+      "message": "Show me where I can pick up a bicycle, and how many are waiting there.",
+      "expected_ids": [
+        "bs-map"
+      ],
+      "expected_count": 1,
+      "candidate_count": 8,
+      "ranked": [
+        {
+          "id": "bs-map",
+          "score": 0.583375302940339,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "bs-dock",
+          "score": 0.4963655950306146,
+          "rank": 2,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "bs-unlock",
+          "score": 0.46542293576503396,
+          "rank": 3,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "bs-damage",
+          "score": 0.39266613865616057,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-ride",
+          "score": 0.3805774068021352,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-fee",
+          "score": 0.3777300440098909,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-pass",
+          "score": 0.3763315252390845,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-account",
+          "score": 0.3534976055539522,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "bs-map",
+        "bs-dock",
+        "bs-unlock"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [
+        "bs-dock",
+        "bs-unlock"
+      ],
+      "hits": 1,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "bs-q04",
+      "project_id": "bicycle-share",
+      "project_size": "small",
+      "categories": [
+        "hard_positive",
+        "partial_modification"
+      ],
+      "message": "Let visitors buy a 24-hour riding ticket using a payment card.",
+      "expected_ids": [
+        "bs-pass"
+      ],
+      "expected_count": 1,
+      "candidate_count": 8,
+      "ranked": [
+        {
+          "id": "bs-pass",
+          "score": 0.5521481081531143,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "bs-fee",
+          "score": 0.5351533761859103,
+          "rank": 2,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "bs-account",
+          "score": 0.3602617812606649,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-ride",
+          "score": 0.3568456214081439,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-map",
+          "score": 0.2935611119498352,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-unlock",
+          "score": 0.2909567890829292,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-dock",
+          "score": 0.22437113154526567,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-damage",
+          "score": 0.2087325472785254,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "bs-pass",
+        "bs-fee"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [
+        "bs-fee"
+      ],
+      "hits": 1,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "bs-q05",
+      "project_id": "bicycle-share",
+      "project_size": "small",
+      "categories": [
+        "hard_positive",
+        "informal"
+      ],
+      "message": "A broken brake should be easy to flag from the app.",
+      "expected_ids": [
+        "bs-damage"
+      ],
+      "expected_count": 1,
+      "candidate_count": 8,
+      "ranked": [
+        {
+          "id": "bs-damage",
+          "score": 0.47341000745056083,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "bs-unlock",
+          "score": 0.23285642922569413,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-ride",
+          "score": 0.2245808783913482,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-account",
+          "score": 0.20903370921325795,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-map",
+          "score": 0.1435546058129477,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-dock",
+          "score": 0.14158055355718863,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-fee",
+          "score": 0.11278668137991257,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-pass",
+          "score": 0.09669172254312614,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "bs-damage"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [],
+      "hits": 1,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "bs-q06",
+      "project_id": "bicycle-share",
+      "project_size": "small",
+      "categories": [
+        "multi_target",
+        "conditional",
+        "competing_requirements"
+      ],
+      "message": "If no empty stand is left, allow the rider to end the trip beside the station.",
+      "expected_ids": [
+        "bs-dock"
+      ],
+      "expected_count": 1,
+      "candidate_count": 8,
+      "ranked": [
+        {
+          "id": "bs-dock",
+          "score": 0.4775017351598579,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "bs-fee",
+          "score": 0.452306305656953,
+          "rank": 2,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "bs-map",
+          "score": 0.43272594464889585,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-ride",
+          "score": 0.4241943327299336,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-account",
+          "score": 0.38950245628435093,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-pass",
+          "score": 0.3595335727966088,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-damage",
+          "score": 0.265271942827119,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-unlock",
+          "score": 0.2641098253985672,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "bs-dock",
+        "bs-fee"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [
+        "bs-fee"
+      ],
+      "hits": 1,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "bs-q07",
+      "project_id": "bicycle-share",
+      "project_size": "small",
+      "categories": [
+        "partial_modification",
+        "negation"
+      ],
+      "message": "Use an email address instead of a mobile number to create a rider profile.",
+      "expected_ids": [
+        "bs-account"
+      ],
+      "expected_count": 1,
+      "candidate_count": 8,
+      "ranked": [
+        {
+          "id": "bs-account",
+          "score": 0.7486945064483022,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "bs-damage",
+          "score": 0.393600777093447,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-map",
+          "score": 0.3275730756473464,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-unlock",
+          "score": 0.30190341350117966,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-pass",
+          "score": 0.29769947920111756,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-ride",
+          "score": 0.2770894507490712,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-fee",
+          "score": 0.2539466660633281,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-dock",
+          "score": 0.25035106949039665,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "bs-account"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [],
+      "hits": 1,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "bs-q08",
+      "project_id": "bicycle-share",
+      "project_size": "small",
+      "categories": [
+        "hard_negative",
+        "irrelevant_overlap"
+      ],
+      "message": "The bicycle company should sponsor a weekend road race.",
+      "expected_ids": [],
+      "expected_count": 0,
+      "candidate_count": 8,
+      "ranked": [
+        {
+          "id": "bs-map",
+          "score": 0.4615451033978861,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "bs-pass",
+          "score": 0.44149783924723307,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-dock",
+          "score": 0.42408778113765044,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-fee",
+          "score": 0.4194693193957602,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-unlock",
+          "score": 0.383835057290235,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-damage",
+          "score": 0.36220332728322013,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-account",
+          "score": 0.3363995117795648,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-ride",
+          "score": 0.2981211650613034,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "bs-map"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [
+        "bs-map"
+      ],
+      "hits": 0,
+      "hits_at_1": 0,
+      "hits_at_3": 0,
+      "hits_at_k": 0,
+      "reciprocal_rank": 0
+    },
+    {
+      "query_id": "bs-q09",
+      "project_id": "bicycle-share",
+      "project_size": "small",
+      "categories": [
+        "multi_target",
+        "question",
+        "three_plus_targets"
+      ],
+      "message": "Could the app time each outing and bill it when the bike is returned?",
+      "expected_ids": [
+        "bs-fee",
+        "bs-ride"
+      ],
+      "expected_count": 2,
+      "candidate_count": 8,
+      "ranked": [
+        {
+          "id": "bs-damage",
+          "score": 0.4924682076383603,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "bs-fee",
+          "score": 0.4865028944440239,
+          "rank": 2,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "bs-ride",
+          "score": 0.4769866641088944,
+          "rank": 3,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "bs-pass",
+          "score": 0.42678112211272734,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-dock",
+          "score": 0.39784557448064733,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-account",
+          "score": 0.3969422096302476,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-unlock",
+          "score": 0.3772531859041371,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-map",
+          "score": 0.3488091469028361,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "bs-damage",
+        "bs-fee",
+        "bs-ride"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [
+        "bs-damage"
+      ],
+      "hits": 2,
+      "hits_at_1": 0,
+      "hits_at_3": 2,
+      "hits_at_k": 2,
+      "reciprocal_rank": 0.5
+    },
+    {
+      "query_id": "bs-q10",
+      "project_id": "bicycle-share",
+      "project_size": "small",
+      "categories": [
+        "hypothetical",
+        "partial_modification",
+        "competing_requirements"
+      ],
+      "message": "Maybe use the station map to show nearby drinking fountains too.",
+      "expected_ids": [
+        "bs-map"
+      ],
+      "expected_count": 1,
+      "candidate_count": 8,
+      "ranked": [
+        {
+          "id": "bs-map",
+          "score": 0.4976910553472394,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "bs-dock",
+          "score": 0.26404643550767903,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-pass",
+          "score": 0.2577988017054236,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-ride",
+          "score": 0.21509347023913541,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-account",
+          "score": 0.2131533093651573,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-fee",
+          "score": 0.15558400553318916,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-unlock",
+          "score": 0.13074974108414222,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "bs-damage",
+          "score": 0.1171187604924231,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "bs-map"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [],
+      "hits": 1,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "mc-q01",
+      "project_id": "museum-collections",
+      "project_size": "medium",
+      "categories": [
+        "hard_positive",
+        "low_overlap",
+        "informal"
+      ],
+      "message": "Let visitors find pieces from the Bronze Age even if they do not know the artist.",
+      "expected_ids": [
+        "mc-search"
+      ],
+      "expected_count": 1,
+      "candidate_count": 16,
+      "ranked": [
+        {
+          "id": "mc-search",
+          "score": 0.4371774199586446,
+          "rank": 1,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-exhibit",
+          "score": 0.3478142310932708,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-move",
+          "score": 0.327607212411498,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-owner",
+          "score": 0.30487162858591693,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-label",
+          "score": 0.2958768541942766,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audio",
+          "score": 0.28588987397114113,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-photo",
+          "score": 0.23689278497129662,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-access",
+          "score": 0.2333879970146572,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-store",
+          "score": 0.227447628215954,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-condition",
+          "score": 0.1366943091303893,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audit",
+          "score": 0.11630095072631387,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-repair",
+          "score": 0.10217124240954469,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-intake",
+          "score": 0.06798430543328562,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-export",
+          "score": 0.06290319404937819,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-insure",
+          "score": 0.053029107384673355,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-loan",
+          "score": -0.014821815522832052,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [],
+      "missed_ids": [
+        "mc-search"
+      ],
+      "missed_stages": {
+        "mc-search": "BELOW_THRESHOLD"
+      },
+      "false_ids": [],
+      "hits": 0,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "mc-q02",
+      "project_id": "museum-collections",
+      "project_size": "medium",
+      "categories": [
+        "multi_target",
+        "competing_requirements"
+      ],
+      "message": "Before an artifact leaves for a partner museum, require management approval and record its insurance amount.",
+      "expected_ids": [
+        "mc-insure",
+        "mc-loan"
+      ],
+      "expected_count": 2,
+      "candidate_count": 16,
+      "ranked": [
+        {
+          "id": "mc-owner",
+          "score": 0.5402104859574005,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "mc-move",
+          "score": 0.4815912793625597,
+          "rank": 2,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "mc-insure",
+          "score": 0.41944216968470643,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-access",
+          "score": 0.41746527836698044,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-exhibit",
+          "score": 0.39980484213419365,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-condition",
+          "score": 0.364715141494185,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audit",
+          "score": 0.35734688236278395,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-label",
+          "score": 0.3559711233425305,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-store",
+          "score": 0.3243715755767098,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-repair",
+          "score": 0.32096886294986493,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-loan",
+          "score": 0.31533862503088217,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-search",
+          "score": 0.3139852475868151,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-photo",
+          "score": 0.29876941247617794,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-export",
+          "score": 0.29050513608733375,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-intake",
+          "score": 0.2691373019071434,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audio",
+          "score": 0.2098162716640786,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "mc-owner",
+        "mc-move"
+      ],
+      "missed_ids": [
+        "mc-insure",
+        "mc-loan"
+      ],
+      "missed_stages": {
+        "mc-loan": "BELOW_THRESHOLD",
+        "mc-insure": "BELOW_THRESHOLD"
+      },
+      "false_ids": [
+        "mc-move",
+        "mc-owner"
+      ],
+      "hits": 0,
+      "hits_at_1": 0,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 0.3333333333333333
+    },
+    {
+      "query_id": "mc-q03",
+      "project_id": "museum-collections",
+      "project_size": "medium",
+      "categories": [
+        "negation",
+        "removal"
+      ],
+      "message": "We should stop showing the previous owners of an object to curators.",
+      "expected_ids": [
+        "mc-owner"
+      ],
+      "expected_count": 1,
+      "candidate_count": 16,
+      "ranked": [
+        {
+          "id": "mc-owner",
+          "score": 0.6624757927781787,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "mc-exhibit",
+          "score": 0.5536229490901874,
+          "rank": 2,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "mc-move",
+          "score": 0.47480671420556214,
+          "rank": 3,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "mc-label",
+          "score": 0.47299071333515325,
+          "rank": 4,
+          "passed_threshold": true,
+          "selected": false,
+          "decision": "TOP_K_EXCLUDED"
+        },
+        {
+          "id": "mc-access",
+          "score": 0.47224092218032726,
+          "rank": 5,
+          "passed_threshold": true,
+          "selected": false,
+          "decision": "TOP_K_EXCLUDED"
+        },
+        {
+          "id": "mc-search",
+          "score": 0.38634034515830806,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-store",
+          "score": 0.37007126316196937,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-photo",
+          "score": 0.3663124800569048,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-repair",
+          "score": 0.34458082645858884,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audio",
+          "score": 0.2442193547446534,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-intake",
+          "score": 0.23970330540325485,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audit",
+          "score": 0.2294568958368049,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-condition",
+          "score": 0.18756128301108874,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-export",
+          "score": 0.14849881826565026,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-loan",
+          "score": 0.14602276504763345,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-insure",
+          "score": 0.1159807590572713,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "mc-owner",
+        "mc-exhibit",
+        "mc-move"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [
+        "mc-exhibit",
+        "mc-move"
+      ],
+      "hits": 1,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "mc-q04",
+      "project_id": "museum-collections",
+      "project_size": "medium",
+      "categories": [
+        "multi_target",
+        "competing_requirements"
+      ],
+      "message": "Take a picture of a cracked vase and log the repair after conservation.",
+      "expected_ids": [
+        "mc-photo",
+        "mc-repair"
+      ],
+      "expected_count": 2,
+      "candidate_count": 16,
+      "ranked": [
+        {
+          "id": "mc-repair",
+          "score": 0.39555748665663304,
+          "rank": 1,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-owner",
+          "score": 0.3588420823250059,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audit",
+          "score": 0.3044890380086167,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-photo",
+          "score": 0.2752902782483888,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-move",
+          "score": 0.2683206344359643,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-label",
+          "score": 0.22718005813447004,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-store",
+          "score": 0.20807123260815832,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-exhibit",
+          "score": 0.20630268545788366,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-search",
+          "score": 0.2048115948746303,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-insure",
+          "score": 0.1688697143635032,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-condition",
+          "score": 0.16823451368036563,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-access",
+          "score": 0.13377178452240782,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audio",
+          "score": 0.10972023299996728,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-intake",
+          "score": 0.1023618755904961,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-export",
+          "score": 0.09075086583576177,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-loan",
+          "score": 0.00022696896006063998,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [],
+      "missed_ids": [
+        "mc-photo",
+        "mc-repair"
+      ],
+      "missed_stages": {
+        "mc-photo": "BELOW_THRESHOLD",
+        "mc-repair": "BELOW_THRESHOLD"
+      },
+      "false_ids": [],
+      "hits": 0,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "mc-q05",
+      "project_id": "museum-collections",
+      "project_size": "medium",
+      "categories": [
+        "multi_target",
+        "question",
+        "competing_requirements"
+      ],
+      "message": "Could the exhibit card include a spoken description?",
+      "expected_ids": [
+        "mc-audio"
+      ],
+      "expected_count": 1,
+      "candidate_count": 16,
+      "ranked": [
+        {
+          "id": "mc-audio",
+          "score": 0.46962173580723293,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "mc-exhibit",
+          "score": 0.4583177776755927,
+          "rank": 2,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "mc-label",
+          "score": 0.42290349489904666,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-move",
+          "score": 0.3395007491538978,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-owner",
+          "score": 0.32041107493233373,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-condition",
+          "score": 0.2855432472557406,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-store",
+          "score": 0.24698493155636247,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-access",
+          "score": 0.21819684456654728,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-intake",
+          "score": 0.21309132624598062,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-search",
+          "score": 0.20690826332162388,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-photo",
+          "score": 0.20372068901768772,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-insure",
+          "score": 0.1770648649445515,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audit",
+          "score": 0.1754722769561919,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-repair",
+          "score": 0.08536684159529087,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-export",
+          "score": 0.07297473594705184,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-loan",
+          "score": 0.06221245267037434,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "mc-audio",
+        "mc-exhibit"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [
+        "mc-exhibit"
+      ],
+      "hits": 1,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "mc-q06",
+      "project_id": "museum-collections",
+      "project_size": "medium",
+      "categories": [
+        "multi_target",
+        "implicit",
+        "competing_requirements"
+      ],
+      "message": "When an item moves from one shelf to another, retain where it used to be.",
+      "expected_ids": [
+        "mc-store"
+      ],
+      "expected_count": 1,
+      "candidate_count": 16,
+      "ranked": [
+        {
+          "id": "mc-store",
+          "score": 0.5752560950261533,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "mc-move",
+          "score": 0.3879406118373947,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-owner",
+          "score": 0.3050421006757944,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-exhibit",
+          "score": 0.29298081294230166,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audit",
+          "score": 0.28276370642084986,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-search",
+          "score": 0.22626126357478377,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-label",
+          "score": 0.2205722339977607,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-photo",
+          "score": 0.20523393220871144,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-intake",
+          "score": 0.15164186810857927,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-repair",
+          "score": 0.1264116178217342,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-export",
+          "score": 0.12163211865144036,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-insure",
+          "score": 0.11590173856760305,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audio",
+          "score": 0.10602331155961471,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-condition",
+          "score": 0.0872863272787379,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-access",
+          "score": 0.04976773913171817,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-loan",
+          "score": 0.03626662250046447,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "mc-store"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [],
+      "hits": 1,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "mc-q07",
+      "project_id": "museum-collections",
+      "project_size": "medium",
+      "categories": [
+        "negation",
+        "partial_modification"
+      ],
+      "message": "A curator must not approve their own access to finance records.",
+      "expected_ids": [
+        "mc-access"
+      ],
+      "expected_count": 1,
+      "candidate_count": 16,
+      "ranked": [
+        {
+          "id": "mc-owner",
+          "score": 0.4857487944244608,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "mc-access",
+          "score": 0.48467701734322094,
+          "rank": 2,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "mc-search",
+          "score": 0.3528921256858792,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-loan",
+          "score": 0.3475123149021492,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-export",
+          "score": 0.2809203385249969,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-exhibit",
+          "score": 0.2692769604692158,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-intake",
+          "score": 0.2659630495094683,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-move",
+          "score": 0.2551163814289953,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audit",
+          "score": 0.24739968458111497,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-condition",
+          "score": 0.24648312509274167,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-label",
+          "score": 0.2238320844602928,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-insure",
+          "score": 0.21322866796934684,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-store",
+          "score": 0.2115131054380532,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-photo",
+          "score": 0.2017178301929171,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-repair",
+          "score": 0.18083398738684364,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audio",
+          "score": 0.12124356431880204,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "mc-owner",
+        "mc-access"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [
+        "mc-owner"
+      ],
+      "hits": 1,
+      "hits_at_1": 0,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 0.5
+    },
+    {
+      "query_id": "mc-q08",
+      "project_id": "museum-collections",
+      "project_size": "medium",
+      "categories": [
+        "partial_modification",
+        "paraphrase"
+      ],
+      "message": "Send the monthly acquisitions file as a spreadsheet rather than CSV.",
+      "expected_ids": [
+        "mc-export"
+      ],
+      "expected_count": 1,
+      "candidate_count": 16,
+      "ranked": [
+        {
+          "id": "mc-export",
+          "score": 0.6738096870005342,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "mc-insure",
+          "score": 0.2242200193264295,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-intake",
+          "score": 0.2221692478229173,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audit",
+          "score": 0.17850751081961364,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-loan",
+          "score": 0.16451308323375236,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-move",
+          "score": 0.15248666690302146,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-search",
+          "score": 0.14819001962140574,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-owner",
+          "score": 0.14281945917398287,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-exhibit",
+          "score": 0.09856437553365617,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-access",
+          "score": 0.09436143495345645,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-store",
+          "score": 0.08064787507754116,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-condition",
+          "score": 0.06041041899834621,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-photo",
+          "score": 0.059832290940046516,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-repair",
+          "score": 0.048601046406344904,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-label",
+          "score": 0.027738059182401558,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audio",
+          "score": -0.0008708219852967257,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "mc-export"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [],
+      "hits": 1,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "mc-q09",
+      "project_id": "museum-collections",
+      "project_size": "medium",
+      "categories": [
+        "hard_negative",
+        "irrelevant_overlap"
+      ],
+      "message": "The museum's caf\u00e9 should use reusable cups with paintings on them.",
+      "expected_ids": [],
+      "expected_count": 0,
+      "candidate_count": 16,
+      "ranked": [
+        {
+          "id": "mc-label",
+          "score": 0.4240362528917032,
+          "rank": 1,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-exhibit",
+          "score": 0.38792273099935093,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-move",
+          "score": 0.3859731278647572,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-photo",
+          "score": 0.3182110235242509,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-owner",
+          "score": 0.2731559378070476,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-search",
+          "score": 0.23725989953307797,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-store",
+          "score": 0.23324920364786933,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audio",
+          "score": 0.22059566316691684,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-access",
+          "score": 0.20029393206979426,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-repair",
+          "score": 0.14886605287529667,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-intake",
+          "score": 0.13136314494783397,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audit",
+          "score": 0.12089680597045233,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-condition",
+          "score": 0.09403806394152021,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-export",
+          "score": 0.08004126887366723,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-loan",
+          "score": 0.06887657151434724,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-insure",
+          "score": 0.04391800965937109,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [],
+      "hits": 0,
+      "hits_at_1": 0,
+      "hits_at_3": 0,
+      "hits_at_k": 0,
+      "reciprocal_rank": 0
+    },
+    {
+      "query_id": "mc-q10",
+      "project_id": "museum-collections",
+      "project_size": "medium",
+      "categories": [
+        "multi_target",
+        "three_plus_targets",
+        "conditional",
+        "long_message"
+      ],
+      "message": "If an object is newly acquired, photograph it, assess its condition, and place it in storage.",
+      "expected_ids": [
+        "mc-condition",
+        "mc-intake",
+        "mc-photo",
+        "mc-store"
+      ],
+      "expected_count": 4,
+      "candidate_count": 16,
+      "ranked": [
+        {
+          "id": "mc-store",
+          "score": 0.5738141130738369,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "mc-photo",
+          "score": 0.5617145954823524,
+          "rank": 2,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "mc-move",
+          "score": 0.5187366024762189,
+          "rank": 3,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "mc-owner",
+          "score": 0.5072961871637361,
+          "rank": 4,
+          "passed_threshold": true,
+          "selected": false,
+          "decision": "TOP_K_EXCLUDED"
+        },
+        {
+          "id": "mc-condition",
+          "score": 0.4535499923035963,
+          "rank": 5,
+          "passed_threshold": true,
+          "selected": false,
+          "decision": "TOP_K_EXCLUDED"
+        },
+        {
+          "id": "mc-exhibit",
+          "score": 0.44662180914196425,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audit",
+          "score": 0.42800641233623293,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-search",
+          "score": 0.4084085502878099,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-label",
+          "score": 0.3854921400225117,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-intake",
+          "score": 0.37217519577032443,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-repair",
+          "score": 0.33275314793876354,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-insure",
+          "score": 0.3267861778056009,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-export",
+          "score": 0.22547596452051266,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-audio",
+          "score": 0.22019075436633057,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-access",
+          "score": 0.2029880471587234,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "mc-loan",
+          "score": 0.15274263693582552,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "mc-store",
+        "mc-photo",
+        "mc-move"
+      ],
+      "missed_ids": [
+        "mc-condition",
+        "mc-intake"
+      ],
+      "missed_stages": {
+        "mc-condition": "TOP_K_EXCLUDED",
+        "mc-intake": "BELOW_THRESHOLD"
+      },
+      "false_ids": [
+        "mc-move"
+      ],
+      "hits": 2,
+      "hits_at_1": 1,
+      "hits_at_3": 2,
+      "hits_at_k": 2,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "ur-q01",
+      "project_id": "university-research",
+      "project_size": "large",
+      "categories": [
+        "hard_positive",
+        "multi_target",
+        "negation",
+        "competing_requirements"
+      ],
+      "message": "Do not invite volunteers into the trial before the ethics committee signs off.",
+      "expected_ids": [
+        "ur-ethics",
+        "ur-recruit"
+      ],
+      "expected_count": 2,
+      "candidate_count": 32,
+      "ranked": [
+        {
+          "id": "ur-ethics",
+          "score": 0.4238040676042549,
+          "rank": 1,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-consent",
+          "score": 0.262221004650968,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-role",
+          "score": 0.2065781894630649,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-team",
+          "score": 0.18103591469110902,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-access",
+          "score": 0.18083961626320458,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-budget",
+          "score": 0.17852844243267557,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-safety",
+          "score": 0.1567241665354259,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-recruit",
+          "score": 0.15480806823158108,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-visit",
+          "score": 0.1471688692804332,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-book",
+          "score": 0.1459944425641931,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-proposal",
+          "score": 0.14424368157897258,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-expense",
+          "score": 0.12459903895565982,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-review",
+          "score": 0.12300022048880235,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-share",
+          "score": 0.12257684380722633,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-close",
+          "score": 0.11581618023580326,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-sample",
+          "score": 0.11034067709361864,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-project",
+          "score": 0.10439473507831551,
+          "rank": 17,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-retain",
+          "score": 0.1043703448917061,
+          "rank": 18,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-award",
+          "score": 0.07728365602060056,
+          "rank": 19,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-embargo",
+          "score": 0.0757165699625215,
+          "rank": 20,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-data",
+          "score": 0.07045607105005758,
+          "rank": 21,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-audit",
+          "score": 0.06942999389003675,
+          "rank": 22,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-storage",
+          "score": 0.0682520304950527,
+          "rank": 23,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-export",
+          "score": 0.06458110070385593,
+          "rank": 24,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-report",
+          "score": 0.056254730893079676,
+          "rank": 25,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-survey",
+          "score": 0.03153457456020205,
+          "rank": 26,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-paper",
+          "score": 0.020399403106343538,
+          "rank": 27,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-analysis",
+          "score": 0.01900972852284086,
+          "rank": 28,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-profile",
+          "score": 0.009186422200966925,
+          "rank": 29,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-purchase",
+          "score": 0.007029928130789793,
+          "rank": 30,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-inventory",
+          "score": -0.03755435549279866,
+          "rank": 31,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-service",
+          "score": -0.045121508848023635,
+          "rank": 32,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [],
+      "missed_ids": [
+        "ur-ethics",
+        "ur-recruit"
+      ],
+      "missed_stages": {
+        "ur-recruit": "BELOW_THRESHOLD",
+        "ur-ethics": "BELOW_THRESHOLD"
+      },
+      "false_ids": [],
+      "hits": 0,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "ur-q02",
+      "project_id": "university-research",
+      "project_size": "large",
+      "categories": [
+        "hard_positive",
+        "partial_modification",
+        "competing_requirements"
+      ],
+      "message": "Let the PI move money between travel and equipment lines after an award.",
+      "expected_ids": [
+        "ur-budget"
+      ],
+      "expected_count": 1,
+      "candidate_count": 32,
+      "ranked": [
+        {
+          "id": "ur-purchase",
+          "score": 0.4010586938534508,
+          "rank": 1,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-award",
+          "score": 0.3490775729959368,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-budget",
+          "score": 0.34502395939537683,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-close",
+          "score": 0.30414393802528944,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-book",
+          "score": 0.29257775093977395,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-inventory",
+          "score": 0.2890819159162645,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-expense",
+          "score": 0.2626828968683024,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-export",
+          "score": 0.2617369451451277,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-service",
+          "score": 0.20953569096830632,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-report",
+          "score": 0.1795955418011437,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-review",
+          "score": 0.17861544786573433,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-access",
+          "score": 0.15544960790091764,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-share",
+          "score": 0.15404118190552782,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-retain",
+          "score": 0.13944016980800172,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-role",
+          "score": 0.1335783077543782,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-proposal",
+          "score": 0.1330708687273885,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-safety",
+          "score": 0.12206000817945147,
+          "rank": 17,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-team",
+          "score": 0.10387486400922638,
+          "rank": 18,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-ethics",
+          "score": 0.10070275847911918,
+          "rank": 19,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-embargo",
+          "score": 0.0969783742401023,
+          "rank": 20,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-audit",
+          "score": 0.0866434644827724,
+          "rank": 21,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-project",
+          "score": 0.07225824360597718,
+          "rank": 22,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-visit",
+          "score": 0.06962338807922065,
+          "rank": 23,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-analysis",
+          "score": 0.0663013802825268,
+          "rank": 24,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-paper",
+          "score": 0.06323980627328071,
+          "rank": 25,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-storage",
+          "score": 0.04298615469538155,
+          "rank": 26,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-data",
+          "score": 0.01883168745561677,
+          "rank": 27,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-recruit",
+          "score": 0.01318094535300966,
+          "rank": 28,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-profile",
+          "score": 0.012053587836558237,
+          "rank": 29,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-consent",
+          "score": 0.008882306316578954,
+          "rank": 30,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-survey",
+          "score": -0.03694397909320264,
+          "rank": 31,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-sample",
+          "score": -0.10345618293430182,
+          "rank": 32,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [],
+      "missed_ids": [
+        "ur-budget"
+      ],
+      "missed_stages": {
+        "ur-budget": "BELOW_THRESHOLD"
+      },
+      "false_ids": [],
+      "hits": 0,
+      "hits_at_1": 0,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 0.3333333333333333
+    },
+    {
+      "query_id": "ur-q03",
+      "project_id": "university-research",
+      "project_size": "large",
+      "categories": [
+        "multi_target",
+        "question",
+        "competing_requirements"
+      ],
+      "message": "Can a student book the microscope for tomorrow and see whether it is due for maintenance?",
+      "expected_ids": [
+        "ur-book",
+        "ur-service"
+      ],
+      "expected_count": 2,
+      "candidate_count": 32,
+      "ranked": [
+        {
+          "id": "ur-service",
+          "score": 0.4469804570571827,
+          "rank": 1,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-inventory",
+          "score": 0.40438737081494897,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-book",
+          "score": 0.3833391716102771,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-storage",
+          "score": 0.3481486315587875,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-safety",
+          "score": 0.3417786204659918,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-analysis",
+          "score": 0.3280148544925268,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-report",
+          "score": 0.3268601430960795,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-expense",
+          "score": 0.31714447573503485,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-purchase",
+          "score": 0.3113367625493351,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-visit",
+          "score": 0.27834120357827385,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-access",
+          "score": 0.27772475192966006,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-project",
+          "score": 0.275679809187806,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-close",
+          "score": 0.2699267796554059,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-retain",
+          "score": 0.26002950695809796,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-paper",
+          "score": 0.25327165589276146,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-audit",
+          "score": 0.2209365563133297,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-embargo",
+          "score": 0.2152884881176759,
+          "rank": 17,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-role",
+          "score": 0.20547721691988918,
+          "rank": 18,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-budget",
+          "score": 0.19838032762411137,
+          "rank": 19,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-consent",
+          "score": 0.19522382635464217,
+          "rank": 20,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-share",
+          "score": 0.19120867887416873,
+          "rank": 21,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-data",
+          "score": 0.19055712468112182,
+          "rank": 22,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-team",
+          "score": 0.1869145123974255,
+          "rank": 23,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-proposal",
+          "score": 0.17211319181124352,
+          "rank": 24,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-survey",
+          "score": 0.16822704691383694,
+          "rank": 25,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-profile",
+          "score": 0.16036646016353048,
+          "rank": 26,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-sample",
+          "score": 0.14136587369412207,
+          "rank": 27,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-recruit",
+          "score": 0.1403930186283894,
+          "rank": 28,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-export",
+          "score": 0.12482120687305952,
+          "rank": 29,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-ethics",
+          "score": 0.11376462671899266,
+          "rank": 30,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-review",
+          "score": 0.11174205493778691,
+          "rank": 31,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-award",
+          "score": 0.027614169704037458,
+          "rank": 32,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [],
+      "missed_ids": [
+        "ur-book",
+        "ur-service"
+      ],
+      "missed_stages": {
+        "ur-book": "BELOW_THRESHOLD",
+        "ur-service": "BELOW_THRESHOLD"
+      },
+      "false_ids": [],
+      "hits": 0,
+      "hits_at_1": 1,
+      "hits_at_3": 2,
+      "hits_at_k": 2,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "ur-q04",
+      "project_id": "university-research",
+      "project_size": "large",
+      "categories": [
+        "hard_positive",
+        "low_overlap",
+        "domain_terminology"
+      ],
+      "message": "The lab manager should know which freezer holds specimen S-104.",
+      "expected_ids": [
+        "ur-storage"
+      ],
+      "expected_count": 1,
+      "candidate_count": 32,
+      "ranked": [
+        {
+          "id": "ur-storage",
+          "score": 0.601408039355198,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "ur-inventory",
+          "score": 0.43385649094379125,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-book",
+          "score": 0.34476620174521483,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-safety",
+          "score": 0.33198448103624256,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-access",
+          "score": 0.30220033724434375,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-sample",
+          "score": 0.2961314458910072,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-service",
+          "score": 0.2697842097738571,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-purchase",
+          "score": 0.25419657562223935,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-team",
+          "score": 0.25380655995865636,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-role",
+          "score": 0.24736438037345052,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-audit",
+          "score": 0.2452652902138985,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-consent",
+          "score": 0.22655258963155023,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-paper",
+          "score": 0.22216509169630344,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-proposal",
+          "score": 0.21359557749826388,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-analysis",
+          "score": 0.19287996949555986,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-profile",
+          "score": 0.1869186595454343,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-project",
+          "score": 0.18640573034584743,
+          "rank": 17,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-report",
+          "score": 0.1854522810995893,
+          "rank": 18,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-data",
+          "score": 0.1747206483800887,
+          "rank": 19,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-budget",
+          "score": 0.17460273988893743,
+          "rank": 20,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-retain",
+          "score": 0.16458249882189185,
+          "rank": 21,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-ethics",
+          "score": 0.15973849455573189,
+          "rank": 22,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-recruit",
+          "score": 0.14515414148694686,
+          "rank": 23,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-expense",
+          "score": 0.14062996385443066,
+          "rank": 24,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-embargo",
+          "score": 0.12605786718281972,
+          "rank": 25,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-visit",
+          "score": 0.09287261272965917,
+          "rank": 26,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-close",
+          "score": 0.08122792515718723,
+          "rank": 27,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-share",
+          "score": 0.07454032041056148,
+          "rank": 28,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-survey",
+          "score": 0.07278692828703248,
+          "rank": 29,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-review",
+          "score": 0.06134547927951381,
+          "rank": 30,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-export",
+          "score": 0.0575285215813247,
+          "rank": 31,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-award",
+          "score": -0.016505829140390078,
+          "rank": 32,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "ur-storage"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [],
+      "hits": 1,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "ur-q05",
+      "project_id": "university-research",
+      "project_size": "large",
+      "categories": [
+        "multi_target",
+        "competing_requirements"
+      ],
+      "message": "Require a safety course before granting entry to the restricted lab.",
+      "expected_ids": [
+        "ur-access",
+        "ur-safety"
+      ],
+      "expected_count": 2,
+      "candidate_count": 32,
+      "ranked": [
+        {
+          "id": "ur-safety",
+          "score": 0.7198163104391139,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "ur-access",
+          "score": 0.6881684598483601,
+          "rank": 2,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "ur-role",
+          "score": 0.5396968329327025,
+          "rank": 3,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "ur-book",
+          "score": 0.44414923568830933,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-inventory",
+          "score": 0.42164884951489046,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-ethics",
+          "score": 0.3630196095208155,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-purchase",
+          "score": 0.3568002050024802,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-share",
+          "score": 0.2999681901375954,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-visit",
+          "score": 0.287997420390024,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-proposal",
+          "score": 0.2723799192384849,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-service",
+          "score": 0.2674683060515901,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-consent",
+          "score": 0.266094900493751,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-budget",
+          "score": 0.2628622493199716,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-team",
+          "score": 0.2484092362444792,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-project",
+          "score": 0.22793608093707907,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-storage",
+          "score": 0.22401161584954665,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-award",
+          "score": 0.21033520657171598,
+          "rank": 17,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-recruit",
+          "score": 0.19675767008452927,
+          "rank": 18,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-review",
+          "score": 0.19041970383637677,
+          "rank": 19,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-export",
+          "score": 0.18980273226307773,
+          "rank": 20,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-sample",
+          "score": 0.18726360770229847,
+          "rank": 21,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-report",
+          "score": 0.17766151841789504,
+          "rank": 22,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-analysis",
+          "score": 0.1768234662117913,
+          "rank": 23,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-close",
+          "score": 0.16546133821786443,
+          "rank": 24,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-expense",
+          "score": 0.15977622586661966,
+          "rank": 25,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-data",
+          "score": 0.14162484359689137,
+          "rank": 26,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-audit",
+          "score": 0.1267872388716091,
+          "rank": 27,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-profile",
+          "score": 0.11835482631645004,
+          "rank": 28,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-retain",
+          "score": 0.11632577413235984,
+          "rank": 29,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-survey",
+          "score": 0.10550262441423831,
+          "rank": 30,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-paper",
+          "score": 0.10224702766400123,
+          "rank": 31,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-embargo",
+          "score": 0.07806617716177616,
+          "rank": 32,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "ur-safety",
+        "ur-access",
+        "ur-role"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [
+        "ur-role"
+      ],
+      "hits": 2,
+      "hits_at_1": 1,
+      "hits_at_3": 2,
+      "hits_at_k": 2,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "ur-q06",
+      "project_id": "university-research",
+      "project_size": "large",
+      "categories": [
+        "partial_modification",
+        "negation"
+      ],
+      "message": "The funder wants progress updates twice a year, not every quarter.",
+      "expected_ids": [
+        "ur-report"
+      ],
+      "expected_count": 1,
+      "candidate_count": 32,
+      "ranked": [
+        {
+          "id": "ur-report",
+          "score": 0.5164185008120603,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "ur-retain",
+          "score": 0.301466117778816,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-close",
+          "score": 0.2322298315889977,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-expense",
+          "score": 0.230874824061258,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-award",
+          "score": 0.22799805434919507,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-budget",
+          "score": 0.22544770153886806,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-audit",
+          "score": 0.203858009192178,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-proposal",
+          "score": 0.1912130762149561,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-review",
+          "score": 0.19120915149909917,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-embargo",
+          "score": 0.18467318108561023,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-book",
+          "score": 0.18333523776346938,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-export",
+          "score": 0.17111813046374624,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-purchase",
+          "score": 0.16264375095514075,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-visit",
+          "score": 0.15616433354916875,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-inventory",
+          "score": 0.1484150319135966,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-paper",
+          "score": 0.13617915192678393,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-data",
+          "score": 0.11134637374197791,
+          "rank": 17,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-team",
+          "score": 0.1077601285394426,
+          "rank": 18,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-profile",
+          "score": 0.10750109205416511,
+          "rank": 19,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-service",
+          "score": 0.10456120089785713,
+          "rank": 20,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-share",
+          "score": 0.09984581862992016,
+          "rank": 21,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-role",
+          "score": 0.08521864609077183,
+          "rank": 22,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-storage",
+          "score": 0.07922004830670303,
+          "rank": 23,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-access",
+          "score": 0.07256480221815646,
+          "rank": 24,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-analysis",
+          "score": 0.07228760916939062,
+          "rank": 25,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-project",
+          "score": 0.07072744189577125,
+          "rank": 26,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-recruit",
+          "score": 0.0694120544735254,
+          "rank": 27,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-safety",
+          "score": 0.06357091790738699,
+          "rank": 28,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-ethics",
+          "score": 0.021307757111783673,
+          "rank": 29,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-sample",
+          "score": 0.01844739632046586,
+          "rank": 30,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-consent",
+          "score": 0.015941959789230874,
+          "rank": 31,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-survey",
+          "score": 0.011136624521609342,
+          "rank": 32,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "ur-report"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [],
+      "hits": 1,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "ur-q07",
+      "project_id": "university-research",
+      "project_size": "large",
+      "categories": [
+        "removal",
+        "competing_requirements"
+      ],
+      "message": "Publish the study paper immediately rather than waiting for its release date.",
+      "expected_ids": [
+        "ur-embargo"
+      ],
+      "expected_count": 1,
+      "candidate_count": 32,
+      "ranked": [
+        {
+          "id": "ur-embargo",
+          "score": 0.5773424753514198,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "ur-paper",
+          "score": 0.4750415789592177,
+          "rank": 2,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "ur-report",
+          "score": 0.3960097663437841,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-analysis",
+          "score": 0.3668293522548096,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-book",
+          "score": 0.36371058187937966,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-proposal",
+          "score": 0.3530527468289484,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-profile",
+          "score": 0.32967396529388976,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-visit",
+          "score": 0.3143944420366141,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-audit",
+          "score": 0.30226325243211905,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-safety",
+          "score": 0.29556288746719067,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-review",
+          "score": 0.29025541569446284,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-data",
+          "score": 0.29023639140519575,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-project",
+          "score": 0.28724198724267525,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-sample",
+          "score": 0.27582762110355497,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-recruit",
+          "score": 0.2749589857750171,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-retain",
+          "score": 0.27325980844671877,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-consent",
+          "score": 0.27240850309337794,
+          "rank": 17,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-survey",
+          "score": 0.2640740363687961,
+          "rank": 18,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-expense",
+          "score": 0.2601474053516972,
+          "rank": 19,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-team",
+          "score": 0.2551244733873559,
+          "rank": 20,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-access",
+          "score": 0.22375978935723276,
+          "rank": 21,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-role",
+          "score": 0.2165440182113981,
+          "rank": 22,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-purchase",
+          "score": 0.21650873419343256,
+          "rank": 23,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-close",
+          "score": 0.21113071148186796,
+          "rank": 24,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-ethics",
+          "score": 0.2035788182806695,
+          "rank": 25,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-storage",
+          "score": 0.18963980848763684,
+          "rank": 26,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-export",
+          "score": 0.18730404899490707,
+          "rank": 27,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-budget",
+          "score": 0.1822279023889281,
+          "rank": 28,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-share",
+          "score": 0.17698834005022748,
+          "rank": 29,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-inventory",
+          "score": 0.15177484382277237,
+          "rank": 30,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-award",
+          "score": 0.13943770305913858,
+          "rank": 31,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-service",
+          "score": 0.12157609417267222,
+          "rank": 32,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "ur-embargo",
+        "ur-paper"
+      ],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [
+        "ur-paper"
+      ],
+      "hits": 1,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "ur-q08",
+      "project_id": "university-research",
+      "project_size": "large",
+      "categories": [
+        "multi_target",
+        "three_plus_targets",
+        "long_message",
+        "competing_requirements"
+      ],
+      "message": "When the project ends, reconcile spending, file the final funder update, and close the award.",
+      "expected_ids": [
+        "ur-close",
+        "ur-report"
+      ],
+      "expected_count": 2,
+      "candidate_count": 32,
+      "ranked": [
+        {
+          "id": "ur-close",
+          "score": 0.7167418532671889,
+          "rank": 1,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "ur-budget",
+          "score": 0.5247690988984421,
+          "rank": 2,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "ur-award",
+          "score": 0.4897231194966885,
+          "rank": 3,
+          "passed_threshold": true,
+          "selected": true,
+          "decision": "SELECTED"
+        },
+        {
+          "id": "ur-retain",
+          "score": 0.44829545554448735,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-expense",
+          "score": 0.44458103847258523,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-report",
+          "score": 0.42777089898960463,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-export",
+          "score": 0.36193582307606376,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-review",
+          "score": 0.3527788635216312,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-proposal",
+          "score": 0.3431252857570281,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-project",
+          "score": 0.25860772877713156,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-embargo",
+          "score": 0.23901585785788024,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-audit",
+          "score": 0.23549877541525635,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-purchase",
+          "score": 0.23420655315401392,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-share",
+          "score": 0.2214247370232343,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-data",
+          "score": 0.2144207457500065,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-paper",
+          "score": 0.2094551662370135,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-team",
+          "score": 0.208761358227708,
+          "rank": 17,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-visit",
+          "score": 0.15354995624058224,
+          "rank": 18,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-analysis",
+          "score": 0.15313435459445687,
+          "rank": 19,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-role",
+          "score": 0.14568199317617395,
+          "rank": 20,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-book",
+          "score": 0.13916463745081592,
+          "rank": 21,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-profile",
+          "score": 0.1278343499565161,
+          "rank": 22,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-inventory",
+          "score": 0.09741659406427633,
+          "rank": 23,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-service",
+          "score": 0.08262910930276747,
+          "rank": 24,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-access",
+          "score": 0.07993847136384302,
+          "rank": 25,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-ethics",
+          "score": 0.0708519578824105,
+          "rank": 26,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-consent",
+          "score": 0.061917079142196484,
+          "rank": 27,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-safety",
+          "score": 0.0455946745004471,
+          "rank": 28,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-recruit",
+          "score": 0.04040556206523295,
+          "rank": 29,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-survey",
+          "score": 0.020713950550293608,
+          "rank": 30,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-sample",
+          "score": -0.03528796204748668,
+          "rank": 31,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-storage",
+          "score": -0.044022019908590636,
+          "rank": 32,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [
+        "ur-close",
+        "ur-budget",
+        "ur-award"
+      ],
+      "missed_ids": [
+        "ur-report"
+      ],
+      "missed_stages": {
+        "ur-report": "BELOW_THRESHOLD"
+      },
+      "false_ids": [
+        "ur-award",
+        "ur-budget"
+      ],
+      "hits": 1,
+      "hits_at_1": 1,
+      "hits_at_3": 1,
+      "hits_at_k": 1,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "query_id": "ur-q09",
+      "project_id": "university-research",
+      "project_size": "large",
+      "categories": [
+        "hard_negative",
+        "irrelevant_overlap"
+      ],
+      "message": "The university football team wants a new jersey sponsor.",
+      "expected_ids": [],
+      "expected_count": 0,
+      "candidate_count": 32,
+      "ranked": [
+        {
+          "id": "ur-team",
+          "score": 0.2697501818460759,
+          "rank": 1,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-proposal",
+          "score": 0.26410709379095576,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-award",
+          "score": 0.21815201313132979,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-expense",
+          "score": 0.21721899437724013,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-budget",
+          "score": 0.17921073162915982,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-review",
+          "score": 0.17811147448991418,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-project",
+          "score": 0.17450421164806482,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-recruit",
+          "score": 0.16662044140176577,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-export",
+          "score": 0.16264816448734018,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-purchase",
+          "score": 0.15668096835014503,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-profile",
+          "score": 0.14120734072520857,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-inventory",
+          "score": 0.13874217081537682,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-visit",
+          "score": 0.13585774562852973,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-ethics",
+          "score": 0.12798152880470706,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-book",
+          "score": 0.12669577468530122,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-access",
+          "score": 0.12308618197829399,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-close",
+          "score": 0.10066072731597449,
+          "rank": 17,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-safety",
+          "score": 0.09917595317216296,
+          "rank": 18,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-role",
+          "score": 0.09415866740149736,
+          "rank": 19,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-data",
+          "score": 0.09089722256566406,
+          "rank": 20,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-consent",
+          "score": 0.08661551323062033,
+          "rank": 21,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-sample",
+          "score": 0.08541331455131705,
+          "rank": 22,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-report",
+          "score": 0.0816024173860113,
+          "rank": 23,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-embargo",
+          "score": 0.07523880775374699,
+          "rank": 24,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-survey",
+          "score": 0.0661219203967669,
+          "rank": 25,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-paper",
+          "score": 0.040001664108957294,
+          "rank": 26,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-retain",
+          "score": 0.01965656041014215,
+          "rank": 27,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-service",
+          "score": 0.01566339881172511,
+          "rank": 28,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-storage",
+          "score": 0.003328832207276461,
+          "rank": 29,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-share",
+          "score": -0.0005145066930984145,
+          "rank": 30,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-analysis",
+          "score": -0.0016651710535299964,
+          "rank": 31,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-audit",
+          "score": -0.009704579670939503,
+          "rank": 32,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [],
+      "hits": 0,
+      "hits_at_1": 0,
+      "hits_at_3": 0,
+      "hits_at_k": 0,
+      "reciprocal_rank": 0
+    },
+    {
+      "query_id": "ur-q10",
+      "project_id": "university-research",
+      "project_size": "large",
+      "categories": [
+        "hard_negative",
+        "hypothetical",
+        "competing_requirements"
+      ],
+      "message": "Maybe use a chat room for researchers to discuss their papers.",
+      "expected_ids": [],
+      "expected_count": 0,
+      "candidate_count": 32,
+      "ranked": [
+        {
+          "id": "ur-analysis",
+          "score": 0.43883945029231963,
+          "rank": 1,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-paper",
+          "score": 0.43737527246607694,
+          "rank": 2,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-profile",
+          "score": 0.41067880626812436,
+          "rank": 3,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-recruit",
+          "score": 0.3404641173427152,
+          "rank": 4,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-embargo",
+          "score": 0.3331764418284463,
+          "rank": 5,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-team",
+          "score": 0.32097570405089765,
+          "rank": 6,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-survey",
+          "score": 0.3010707184217085,
+          "rank": 7,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-data",
+          "score": 0.288763512909144,
+          "rank": 8,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-sample",
+          "score": 0.260982668233896,
+          "rank": 9,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-proposal",
+          "score": 0.25931469726890166,
+          "rank": 10,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-consent",
+          "score": 0.2531566332065444,
+          "rank": 11,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-project",
+          "score": 0.24036176267502565,
+          "rank": 12,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-audit",
+          "score": 0.23814363313570167,
+          "rank": 13,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-visit",
+          "score": 0.23678549536075275,
+          "rank": 14,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-expense",
+          "score": 0.23481810124469243,
+          "rank": 15,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-book",
+          "score": 0.23413763154755302,
+          "rank": 16,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-role",
+          "score": 0.22003937063337703,
+          "rank": 17,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-access",
+          "score": 0.21005198876728476,
+          "rank": 18,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-report",
+          "score": 0.18759114900539464,
+          "rank": 19,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-share",
+          "score": 0.1739261036614162,
+          "rank": 20,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-safety",
+          "score": 0.16683534901408814,
+          "rank": 21,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-review",
+          "score": 0.1586960127724995,
+          "rank": 22,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-purchase",
+          "score": 0.1564443566945828,
+          "rank": 23,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-inventory",
+          "score": 0.1423899480715831,
+          "rank": 24,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-export",
+          "score": 0.1393245900965324,
+          "rank": 25,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-storage",
+          "score": 0.1379741132814261,
+          "rank": 26,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-ethics",
+          "score": 0.13454638847704642,
+          "rank": 27,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-close",
+          "score": 0.10268476948233707,
+          "rank": 28,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-service",
+          "score": 0.08680562758174358,
+          "rank": 29,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-retain",
+          "score": 0.07649916215255739,
+          "rank": 30,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-budget",
+          "score": 0.07265641285627962,
+          "rank": 31,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        },
+        {
+          "id": "ur-award",
+          "score": 0.01397792698322958,
+          "rank": 32,
+          "passed_threshold": false,
+          "selected": false,
+          "decision": "BELOW_THRESHOLD"
+        }
+      ],
+      "selected_ids": [],
+      "missed_ids": [],
+      "missed_stages": {},
+      "false_ids": [],
+      "hits": 0,
+      "hits_at_1": 0,
+      "hits_at_3": 0,
+      "hits_at_k": 0,
+      "reciprocal_rank": 0
+    }
+  ],
+  "limitations": [
+    "Retrieval only; no 7B classifier inference.",
+    "Batch embedding time includes model load and is not a per-request production latency measurement."
+  ]
+}
