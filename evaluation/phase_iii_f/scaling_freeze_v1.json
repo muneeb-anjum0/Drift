@@ -1,0 +1,17 @@
+{
+  "name": "phase-iii-f-scaling-development-freeze",
+  "role": "DEVELOPMENT_NOT_FINAL",
+  "dataset": "evaluation/phase_iii_f/scaling_dev_v1.json",
+  "dataset_sha256": "c4446a726838c6dbefa655a1762ce920b3aec8ffd15aeef2c2b9b4790d9ae382",
+  "project_sizes": [5, 8, 10, 16, 20, 32, 50, 75, 100],
+  "queries_per_size": 10,
+  "provenance": ["DERIVED", "SYNTHETIC"],
+  "closed_datasets": [
+    {"path": "evaluation/phase_iii_d/retrieval_independent_v1.json", "sha256": "ee21e6d6bd2c36324c80e7020bd87d7c2094068d762d943ab7afe581e065e51b"},
+    {"path": "evaluation/phase_iii_e/retrieval_independent_v1.json", "sha256": "78a8975d35a3fccd931820752304b9d344415f3e841db18db7e549321ff4134c"}
+  ],
+  "contamination_report": "evaluation/phase_iii_f/contamination_v2.json",
+  "contamination_report_note": "v1 undercounted prompt examples; v2 corrects that aggregate-only audit without changing the frozen dataset bytes.",
+  "prediction_status": "NO_PREDICTIONS_AT_FREEZE",
+  "limitations": "Fixed synthetic queries; open-development requirement reuse; mostly cross-domain additions beyond N=36; no independent semantic review."
+}

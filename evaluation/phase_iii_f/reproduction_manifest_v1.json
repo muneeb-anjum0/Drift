@@ -1,0 +1,26 @@
+{
+  "role": "PHASE_III_F_DEVELOPMENT_REPRODUCTION_MANIFEST",
+  "starting_main_sha": "e13d54920f72b3d37ed88b90090e20968e64ea5f",
+  "freeze_commit": "8790ad0",
+  "dataset_sha256": "c4446a726838c6dbefa655a1762ce920b3aec8ffd15aeef2c2b9b4790d9ae382",
+  "sources_sha256": {
+    "tools/verification/phase3f_scaling_dev.py": "8c02910b0c1f2d79c137ac5d35a5e7be7e932ea416ee850327cc7f6d088eed31",
+    "tools/verification/phase3f_contamination.py": "4086da566493ac158d310b129f8679603a6ab74360786427dd2cbb07b37fdff8",
+    "tools/verification/phase3f_analyze.py": "84e331f243466404d6ac0ac73f436ad9fceb8e12f73c7d9281798bd779215737",
+    "tools/verification/phase3f_compact.py": "9b9314edc207cdd8ccd5fde760d4dda83c51103478f6cf893b6521caa06879a4",
+    "tools/verification/phase3f_open_ceiling.py": "509f1f72f0cce07c92e88190a9a7221545da5463c2d79374f1e412be55433617",
+    "tools/verification/phase3f_resource_probe.py": "d6bf394fefd0ed27de02c9b37819c9482222d5d24db71234383404ec5af690c2",
+    "tools/verification/phase3e_bm25_dev.py": "4f7ae6175469b58ef63cd363d9d0ec12589e57fec3e8cae9a3fad713feeaac71",
+    "tools/verification/phase3e_hybrid_dev.py": "dfb84bfc77ebfdd1c2f60b56e3dbf2511d29c56a39e10133f0a18d356ddad895",
+    "tools/verification/phase3e_semantic_dev.py": "2ac6ddc62f1b796896352bf2812b9cb1ee55b9c7f6cb8ff260b5f4aac4a67228"
+  },
+  "outputs_sha256": {
+    "evaluation/phase_iii_f/rank_traces_v1.json": "899c7ba7696485b56489d762ccabb0560983ed890b52874ddf9a57f91c038770",
+    "evaluation/phase_iii_f/architecture_study_v1.json": "61fb946f3dd0f8a4e991281bc3c1876e6a9bb38b98d5f9f870dbf55832551f7d",
+    "evaluation/phase_iii_f/open_development_ceiling_v1.json": "05fb12d9cf956d60a74744c8010096d362556846dbc1c433724f682a5a5d426b"
+  },
+  "cpu_only": true,
+  "classifier_calls": 0,
+  "gpu_calls": 0,
+  "note": "Verbose raw traces were not committed; their SHA256 values are embedded in the compact rank trace, and the report documents regeneration."
+}

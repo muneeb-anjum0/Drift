@@ -1,0 +1,21 @@
+{
+  "role": "DEVELOPMENT_CPU_RESOURCE_PROBE",
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "revision": "c9745ed1d9f207416be6d2e6f8de32d1f16199bf",
+  "device": "cpu",
+  "threads": 2,
+  "requirements": 100,
+  "queries": 10,
+  "dimension": 384,
+  "model_load_after_import_seconds": 0.14660978500000965,
+  "requirement_index_seconds": 0.3694886600001155,
+  "warm_query_batch_seconds": 0.03733245000012175,
+  "warm_query_sequential_with_similarity_seconds": 0.09569779599996764,
+  "warm_query_sequential_mean_seconds": 0.009569779599996765,
+  "index_vector_bytes_float32": 153600,
+  "peak_process_maxrss_kib": 808224,
+  "artifact_note": "Pinned weights already cached outside Git; approximately 88 MiB on this host.",
+  "startup_note": "Python/torch/transformers import and OS disk-cache cold-start are excluded; this is not a true cold process startup measurement.",
+  "cache_invalidation": "Rebuild requirement vectors when authorized project, baseline version, requirement text, encoder revision or pooling/normalization changes.",
+  "failure_policy": "Research fails explicitly if pinned artifact is missing/corrupt; no silent algorithm fallback."
+}
