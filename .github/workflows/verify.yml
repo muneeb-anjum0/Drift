@@ -38,6 +38,7 @@ jobs:
       - run: cd server-go && go build -o /tmp/driftledger-api-verify ./cmd/api
       - run: python -m pytest services/inference/test_app.py
       - run: python -m pytest tools/verification/test_phase3g_batch_research.py
+      - run: python -m pytest tools/verification/test_phase3h_contracts.py
       - run: ruff check services/inference tools
       - run: npm audit --audit-level=high
       - run: pip-audit --requirement services/inference/requirements.txt

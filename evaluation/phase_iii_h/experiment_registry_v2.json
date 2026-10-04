@@ -1,0 +1,396 @@
+[
+  {
+    "experiment": "A2",
+    "variant": "g_original",
+    "contract": "g_array_v1",
+    "constrained": false,
+    "size": 2,
+    "order": "original",
+    "source": "evaluation/phase_iii_h/a2_g_original_size2_v1.json",
+    "calls": 4,
+    "raw_valid": 3,
+    "raw_valid_rate": 0.75,
+    "semantic_match_valid_outputs": 2,
+    "semantic_scored": 3,
+    "primary_failures": {
+      "VALID": 3,
+      "MISSING_RESULT": 1
+    },
+    "prompt_tokens_min_max": [
+      319,
+      334
+    ],
+    "output_tokens_min_max": [
+      19,
+      32
+    ],
+    "latency_seconds_total": 29.894,
+    "latency_seconds_median": 7.446,
+    "mem_available_kib_min": 8200736
+  },
+  {
+    "experiment": "B1",
+    "variant": "g_compact",
+    "contract": "g_array_v1",
+    "constrained": false,
+    "size": 2,
+    "order": "original",
+    "source": "evaluation/phase_iii_h/b1_g_compact_size2_v1.json",
+    "calls": 4,
+    "raw_valid": 4,
+    "raw_valid_rate": 1.0,
+    "semantic_match_valid_outputs": 2,
+    "semantic_scored": 4,
+    "primary_failures": {
+      "VALID": 4
+    },
+    "prompt_tokens_min_max": [
+      296,
+      311
+    ],
+    "output_tokens_min_max": [
+      31,
+      33
+    ],
+    "latency_seconds_total": 47.71,
+    "latency_seconds_median": 9.666,
+    "mem_available_kib_min": 8512400
+  },
+  {
+    "experiment": "C1",
+    "variant": "g_original",
+    "contract": "g_array_v1",
+    "constrained": true,
+    "size": 2,
+    "order": "original",
+    "source": "evaluation/phase_iii_h/c1_g_schema_size2_v1.json",
+    "calls": 4,
+    "raw_valid": 3,
+    "raw_valid_rate": 0.75,
+    "semantic_match_valid_outputs": 2,
+    "semantic_scored": 3,
+    "primary_failures": {
+      "VALID": 3,
+      "CONTRACT_ERROR": 1
+    },
+    "prompt_tokens_min_max": [
+      319,
+      334
+    ],
+    "output_tokens_min_max": [
+      31,
+      35
+    ],
+    "latency_seconds_total": 35.885,
+    "latency_seconds_median": 9.265,
+    "mem_available_kib_min": 8267276
+  },
+  {
+    "experiment": "C1",
+    "variant": "g_original",
+    "contract": "g_array_v1",
+    "constrained": true,
+    "size": 3,
+    "order": "original",
+    "source": "evaluation/phase_iii_h/c1_g_schema_size3_v1.json",
+    "calls": 4,
+    "raw_valid": 0,
+    "raw_valid_rate": 0.0,
+    "semantic_match_valid_outputs": 0,
+    "semantic_scored": 0,
+    "primary_failures": {
+      "CONTRACT_ERROR": 4
+    },
+    "prompt_tokens_min_max": [
+      336,
+      355
+    ],
+    "output_tokens_min_max": [
+      46,
+      49
+    ],
+    "latency_seconds_total": 48.58,
+    "latency_seconds_median": 12.483,
+    "mem_available_kib_min": 8482292
+  },
+  {
+    "experiment": "D1",
+    "variant": "h_map",
+    "contract": "h_map_v1",
+    "constrained": false,
+    "size": 2,
+    "order": "original",
+    "source": "evaluation/phase_iii_h/d1_map_plain_size2_v1.json",
+    "calls": 4,
+    "raw_valid": 4,
+    "raw_valid_rate": 1.0,
+    "semantic_match_valid_outputs": 1,
+    "semantic_scored": 4,
+    "primary_failures": {
+      "VALID": 4
+    },
+    "prompt_tokens_min_max": [
+      279,
+      294
+    ],
+    "output_tokens_min_max": [
+      14,
+      17
+    ],
+    "latency_seconds_total": 26.593,
+    "latency_seconds_median": 6.816,
+    "mem_available_kib_min": 8256472
+  },
+  {
+    "experiment": "D2",
+    "variant": "h_map",
+    "contract": "h_map_v1",
+    "constrained": true,
+    "size": 2,
+    "order": "reversed",
+    "source": "evaluation/phase_iii_h/d2_map_schema_size2_reversed_v1.json",
+    "calls": 4,
+    "raw_valid": 4,
+    "raw_valid_rate": 1.0,
+    "semantic_match_valid_outputs": 0,
+    "semantic_scored": 4,
+    "primary_failures": {
+      "VALID": 4
+    },
+    "prompt_tokens_min_max": [
+      279,
+      294
+    ],
+    "output_tokens_min_max": [
+      15,
+      17
+    ],
+    "latency_seconds_total": 22.46,
+    "latency_seconds_median": 5.619,
+    "mem_available_kib_min": 8445868
+  },
+  {
+    "experiment": "D2",
+    "variant": "h_map",
+    "contract": "h_map_v1",
+    "constrained": true,
+    "size": 2,
+    "order": "original",
+    "source": "evaluation/phase_iii_h/d2_map_schema_size2_v1.json",
+    "calls": 4,
+    "raw_valid": 4,
+    "raw_valid_rate": 1.0,
+    "semantic_match_valid_outputs": 1,
+    "semantic_scored": 4,
+    "primary_failures": {
+      "VALID": 4
+    },
+    "prompt_tokens_min_max": [
+      279,
+      294
+    ],
+    "output_tokens_min_max": [
+      14,
+      17
+    ],
+    "latency_seconds_total": 22.033,
+    "latency_seconds_median": 5.787,
+    "mem_available_kib_min": 8372316
+  },
+  {
+    "experiment": "D2",
+    "variant": "h_map",
+    "contract": "h_map_v1",
+    "constrained": true,
+    "size": 3,
+    "order": "reversed",
+    "source": "evaluation/phase_iii_h/d2_map_schema_size3_reversed_v1.json",
+    "calls": 4,
+    "raw_valid": 4,
+    "raw_valid_rate": 1.0,
+    "semantic_match_valid_outputs": 0,
+    "semantic_scored": 4,
+    "primary_failures": {
+      "VALID": 4
+    },
+    "prompt_tokens_min_max": [
+      296,
+      315
+    ],
+    "output_tokens_min_max": [
+      20,
+      24
+    ],
+    "latency_seconds_total": 30.377,
+    "latency_seconds_median": 7.691,
+    "mem_available_kib_min": 8243112
+  },
+  {
+    "experiment": "D2",
+    "variant": "h_map",
+    "contract": "h_map_v1",
+    "constrained": true,
+    "size": 3,
+    "order": "original",
+    "source": "evaluation/phase_iii_h/d2_map_schema_size3_v1.json",
+    "calls": 4,
+    "raw_valid": 4,
+    "raw_valid_rate": 1.0,
+    "semantic_match_valid_outputs": 0,
+    "semantic_scored": 4,
+    "primary_failures": {
+      "VALID": 4
+    },
+    "prompt_tokens_min_max": [
+      296,
+      315
+    ],
+    "output_tokens_min_max": [
+      20,
+      23
+    ],
+    "latency_seconds_total": 30.371,
+    "latency_seconds_median": 7.601,
+    "mem_available_kib_min": 8012276
+  },
+  {
+    "experiment": "D2",
+    "variant": "h_map",
+    "contract": "h_map_v1",
+    "constrained": true,
+    "size": 5,
+    "order": "reversed",
+    "source": "evaluation/phase_iii_h/d2_map_schema_size5_reversed_v1.json",
+    "calls": 4,
+    "raw_valid": 4,
+    "raw_valid_rate": 1.0,
+    "semantic_match_valid_outputs": 0,
+    "semantic_scored": 4,
+    "primary_failures": {
+      "VALID": 4
+    },
+    "prompt_tokens_min_max": [
+      332,
+      351
+    ],
+    "output_tokens_min_max": [
+      31,
+      36
+    ],
+    "latency_seconds_total": 46.163,
+    "latency_seconds_median": 11.55,
+    "mem_available_kib_min": 8407248
+  },
+  {
+    "experiment": "D2",
+    "variant": "h_map",
+    "contract": "h_map_v1",
+    "constrained": true,
+    "size": 5,
+    "order": "original",
+    "source": "evaluation/phase_iii_h/d2_map_schema_size5_v1.json",
+    "calls": 4,
+    "raw_valid": 4,
+    "raw_valid_rate": 1.0,
+    "semantic_match_valid_outputs": 0,
+    "semantic_scored": 4,
+    "primary_failures": {
+      "VALID": 4
+    },
+    "prompt_tokens_min_max": [
+      332,
+      351
+    ],
+    "output_tokens_min_max": [
+      31,
+      36
+    ],
+    "latency_seconds_total": 45.901,
+    "latency_seconds_median": 11.413,
+    "mem_available_kib_min": 8318612
+  },
+  {
+    "experiment": "A1",
+    "variant": "p1",
+    "contract": "p1_single_v1",
+    "constrained": false,
+    "size": null,
+    "order": "original",
+    "source": "evaluation/phase_iii_h/a1_single_raw_v1.json",
+    "calls": 15,
+    "raw_valid": 15,
+    "raw_valid_rate": 1.0,
+    "semantic_match_valid_outputs": 13,
+    "semantic_scored": 15,
+    "primary_failures": {
+      "VALID": 15
+    },
+    "prompt_tokens_min_max": [
+      278,
+      316
+    ],
+    "output_tokens_min_max": [
+      37,
+      67
+    ],
+    "latency_seconds_total": 182.193,
+    "latency_seconds_median": 11.552,
+    "mem_available_kib_min": 7867876
+  },
+  {
+    "experiment": "C0",
+    "variant": "p1",
+    "contract": "p1_single_v1",
+    "constrained": true,
+    "size": null,
+    "order": "original",
+    "source": "evaluation/phase_iii_h/c0_single_schema_raw_v1.json",
+    "calls": 6,
+    "raw_valid": 6,
+    "raw_valid_rate": 1.0,
+    "semantic_match_valid_outputs": 5,
+    "semantic_scored": 6,
+    "primary_failures": {
+      "VALID": 6
+    },
+    "prompt_tokens_min_max": [
+      278,
+      293
+    ],
+    "output_tokens_min_max": [
+      37,
+      67
+    ],
+    "latency_seconds_total": 66.4,
+    "latency_seconds_median": 10.633,
+    "mem_available_kib_min": 8282176
+  },
+  {
+    "experiment": "I1",
+    "variant": "p1",
+    "contract": "p1_single_v1",
+    "constrained": false,
+    "size": null,
+    "order": "original",
+    "source": "evaluation/phase_iii_h/i1_single_comparators_raw_v1.json",
+    "calls": 2,
+    "raw_valid": 2,
+    "raw_valid_rate": 1.0,
+    "semantic_match_valid_outputs": 2,
+    "semantic_scored": 2,
+    "primary_failures": {
+      "VALID": 2
+    },
+    "prompt_tokens_min_max": [
+      289,
+      293
+    ],
+    "output_tokens_min_max": [
+      34,
+      39
+    ],
+    "latency_seconds_total": 16.482,
+    "latency_seconds_median": 8.241,
+    "mem_available_kib_min": 8409892
+  }
+]

@@ -1,0 +1,147 @@
+[
+  {
+    "experiment": "A2",
+    "case_id": "g-mod-limit",
+    "size": 2,
+    "order": "original",
+    "raw_source": "evaluation/phase_iii_h/a2_g_original_size2_v1.json",
+    "primary": "MISSING_RESULT",
+    "secondary": [
+      "MISSING_REQUIREMENT_ID"
+    ],
+    "details": {
+      "missing_ids": [
+        "bk-statement"
+      ],
+      "extra_ids": [],
+      "duplicate_ids": [],
+      "returned_ids": [
+        "bk-approval"
+      ]
+    },
+    "prompt_tokens": 334,
+    "output_tokens": 19,
+    "latency_seconds": 5.903,
+    "repair": "NOT_ATTEMPTED",
+    "retry": "NOT_ATTEMPTED"
+  },
+  {
+    "experiment": "C1",
+    "case_id": "g-mod-limit",
+    "size": 2,
+    "order": "original",
+    "raw_source": "evaluation/phase_iii_h/c1_g_schema_size2_v1.json",
+    "primary": "CONTRACT_ERROR",
+    "secondary": [],
+    "details": {
+      "missing_ids": [],
+      "extra_ids": [],
+      "duplicate_ids": [],
+      "returned_ids": [
+        "bk-approval",
+        "bk-statement"
+      ]
+    },
+    "prompt_tokens": 334,
+    "output_tokens": 35,
+    "latency_seconds": 9.548,
+    "repair": "NOT_ATTEMPTED",
+    "retry": "NOT_ATTEMPTED"
+  },
+  {
+    "experiment": "C1",
+    "case_id": "g-add-sms",
+    "size": 3,
+    "order": "original",
+    "raw_source": "evaluation/phase_iii_h/c1_g_schema_size3_v1.json",
+    "primary": "CONTRACT_ERROR",
+    "secondary": [],
+    "details": {
+      "missing_ids": [],
+      "extra_ids": [],
+      "duplicate_ids": [],
+      "returned_ids": [
+        "cl-email",
+        "cl-book",
+        "cl-pay"
+      ]
+    },
+    "prompt_tokens": 336,
+    "output_tokens": 46,
+    "latency_seconds": 10.538,
+    "repair": "NOT_ATTEMPTED",
+    "retry": "NOT_ATTEMPTED"
+  },
+  {
+    "experiment": "C1",
+    "case_id": "g-mod-limit",
+    "size": 3,
+    "order": "original",
+    "raw_source": "evaluation/phase_iii_h/c1_g_schema_size3_v1.json",
+    "primary": "CONTRACT_ERROR",
+    "secondary": [],
+    "details": {
+      "missing_ids": [],
+      "extra_ids": [],
+      "duplicate_ids": [],
+      "returned_ids": [
+        "bk-approval",
+        "bk-statement",
+        "bk-card"
+      ]
+    },
+    "prompt_tokens": 355,
+    "output_tokens": 49,
+    "latency_seconds": 12.114,
+    "repair": "NOT_ATTEMPTED",
+    "retry": "NOT_ATTEMPTED"
+  },
+  {
+    "experiment": "C1",
+    "case_id": "g-two-removals",
+    "size": 3,
+    "order": "original",
+    "raw_source": "evaluation/phase_iii_h/c1_g_schema_size3_v1.json",
+    "primary": "CONTRACT_ERROR",
+    "secondary": [],
+    "details": {
+      "missing_ids": [],
+      "extra_ids": [],
+      "duplicate_ids": [],
+      "returned_ids": [
+        "co-guest",
+        "co-pay",
+        "co-cart"
+      ]
+    },
+    "prompt_tokens": 350,
+    "output_tokens": 47,
+    "latency_seconds": 13.076,
+    "repair": "NOT_ATTEMPTED",
+    "retry": "NOT_ATTEMPTED"
+  },
+  {
+    "experiment": "C1",
+    "case_id": "g-zero-cafe",
+    "size": 3,
+    "order": "original",
+    "raw_source": "evaluation/phase_iii_h/c1_g_schema_size3_v1.json",
+    "primary": "CONTRACT_ERROR",
+    "secondary": [],
+    "details": {
+      "missing_ids": [],
+      "extra_ids": [],
+      "duplicate_ids": [],
+      "returned_ids": [
+        "fm-crop",
+        "fm-field",
+        "fm-water"
+      ]
+    },
+    "prompt_tokens": 339,
+    "output_tokens": 48,
+    "latency_seconds": 12.852,
+    "repair": "NOT_ATTEMPTED",
+    "retry": "NOT_ATTEMPTED"
+  }
+]
