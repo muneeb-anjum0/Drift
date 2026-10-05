@@ -1,0 +1,397 @@
+{
+  "role": "PHASE_III_I_5_RAW_VS_FROZEN_GO_PP1",
+  "dataset_sha256": "54b56f0b2068e9c26f8a315bbd925649b9bcf25c2d4bc248cb5258419b73ec5b",
+  "primary_result": "RAW",
+  "raw": {
+    "role": "PHASE_III_I_5_RAW_ORACLE_SCORE",
+    "dataset_sha256": "54b56f0b2068e9c26f8a315bbd925649b9bcf25c2d4bc248cb5258419b73ec5b",
+    "total_cases": 215,
+    "valid_cases": 215,
+    "invalid_cases": 0,
+    "invalid_categories": {},
+    "correct_cases": 161,
+    "accuracy": 0.7488372093023256,
+    "macro_precision": 0.8627960752960754,
+    "macro_recall": 0.745193727219697,
+    "macro_f1": 0.758944589670497,
+    "per_class": {
+      "added": {
+        "support": 38,
+        "correct": 26,
+        "false_positive": 2,
+        "false_negative_including_invalid": 12,
+        "precision": 0.9285714285714286,
+        "recall": 0.6842105263157895,
+        "f1": 0.7878787878787878
+      },
+      "modified": {
+        "support": 46,
+        "correct": 44,
+        "false_positive": 46,
+        "false_negative_including_invalid": 2,
+        "precision": 0.4888888888888889,
+        "recall": 0.9565217391304348,
+        "f1": 0.6470588235294117
+      },
+      "removed": {
+        "support": 43,
+        "correct": 25,
+        "false_positive": 0,
+        "false_negative_including_invalid": 18,
+        "precision": 1.0,
+        "recall": 0.5813953488372093,
+        "f1": 0.7352941176470588
+      },
+      "contradiction": {
+        "support": 28,
+        "correct": 10,
+        "false_positive": 1,
+        "false_negative_including_invalid": 18,
+        "precision": 0.9090909090909091,
+        "recall": 0.35714285714285715,
+        "f1": 0.5128205128205129
+      },
+      "ambiguous": {
+        "support": 23,
+        "correct": 23,
+        "false_positive": 1,
+        "false_negative_including_invalid": 0,
+        "precision": 0.9583333333333334,
+        "recall": 1.0,
+        "f1": 0.9787234042553191
+      },
+      "unchanged": {
+        "support": 37,
+        "correct": 33,
+        "false_positive": 4,
+        "false_negative_including_invalid": 4,
+        "precision": 0.8918918918918919,
+        "recall": 0.8918918918918919,
+        "f1": 0.8918918918918919
+      }
+    },
+    "confusion_matrix": {
+      "added": {
+        "added": 26,
+        "modified": 11,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 1
+      },
+      "modified": {
+        "added": 0,
+        "modified": 44,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 2
+      },
+      "removed": {
+        "added": 0,
+        "modified": 16,
+        "removed": 25,
+        "contradiction": 1,
+        "ambiguous": 0,
+        "unchanged": 1
+      },
+      "contradiction": {
+        "added": 2,
+        "modified": 15,
+        "removed": 0,
+        "contradiction": 10,
+        "ambiguous": 1,
+        "unchanged": 0
+      },
+      "ambiguous": {
+        "added": 0,
+        "modified": 0,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 23,
+        "unchanged": 0
+      },
+      "unchanged": {
+        "added": 0,
+        "modified": 4,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 33
+      }
+    },
+    "prediction_distribution": {
+      "added": 28,
+      "modified": 90,
+      "removed": 25,
+      "contradiction": 11,
+      "ambiguous": 24,
+      "unchanged": 37
+    },
+    "confusion_pairs_ranked": [
+      {
+        "truth": "removed",
+        "predicted": "modified",
+        "count": 16
+      },
+      {
+        "truth": "contradiction",
+        "predicted": "modified",
+        "count": 15
+      },
+      {
+        "truth": "added",
+        "predicted": "modified",
+        "count": 11
+      },
+      {
+        "truth": "unchanged",
+        "predicted": "modified",
+        "count": 4
+      },
+      {
+        "truth": "contradiction",
+        "predicted": "added",
+        "count": 2
+      },
+      {
+        "truth": "modified",
+        "predicted": "unchanged",
+        "count": 2
+      },
+      {
+        "truth": "added",
+        "predicted": "unchanged",
+        "count": 1
+      },
+      {
+        "truth": "contradiction",
+        "predicted": "ambiguous",
+        "count": 1
+      },
+      {
+        "truth": "removed",
+        "predicted": "contradiction",
+        "count": 1
+      },
+      {
+        "truth": "removed",
+        "predicted": "unchanged",
+        "count": 1
+      }
+    ],
+    "critical_errors": {
+      "actual_drift_predicted_unchanged": 4,
+      "unchanged_predicted_drift": 4,
+      "contradiction_missed": 18,
+      "contradiction_overpredicted": 1,
+      "ambiguous_overpredicted": 1,
+      "added_or_removed_predicted_modified": 27
+    },
+    "confidence_calibration": "NOT_MEASURED",
+    "all_recorded_cases": 216,
+    "unscored_ontology_gap_cases": 1,
+    "all_recorded_structural_valid": 216,
+    "all_recorded_structural_invalid": 0,
+    "all_recorded_invalid_categories": {}
+  },
+  "raw_plus_pp1": {
+    "role": "PHASE_III_I_5_RAW_ORACLE_SCORE",
+    "dataset_sha256": "54b56f0b2068e9c26f8a315bbd925649b9bcf25c2d4bc248cb5258419b73ec5b",
+    "total_cases": 215,
+    "valid_cases": 215,
+    "invalid_cases": 0,
+    "invalid_categories": {},
+    "correct_cases": 161,
+    "accuracy": 0.7488372093023256,
+    "macro_precision": 0.8627960752960754,
+    "macro_recall": 0.745193727219697,
+    "macro_f1": 0.758944589670497,
+    "per_class": {
+      "added": {
+        "support": 38,
+        "correct": 26,
+        "false_positive": 2,
+        "false_negative_including_invalid": 12,
+        "precision": 0.9285714285714286,
+        "recall": 0.6842105263157895,
+        "f1": 0.7878787878787878
+      },
+      "modified": {
+        "support": 46,
+        "correct": 44,
+        "false_positive": 46,
+        "false_negative_including_invalid": 2,
+        "precision": 0.4888888888888889,
+        "recall": 0.9565217391304348,
+        "f1": 0.6470588235294117
+      },
+      "removed": {
+        "support": 43,
+        "correct": 25,
+        "false_positive": 0,
+        "false_negative_including_invalid": 18,
+        "precision": 1.0,
+        "recall": 0.5813953488372093,
+        "f1": 0.7352941176470588
+      },
+      "contradiction": {
+        "support": 28,
+        "correct": 10,
+        "false_positive": 1,
+        "false_negative_including_invalid": 18,
+        "precision": 0.9090909090909091,
+        "recall": 0.35714285714285715,
+        "f1": 0.5128205128205129
+      },
+      "ambiguous": {
+        "support": 23,
+        "correct": 23,
+        "false_positive": 1,
+        "false_negative_including_invalid": 0,
+        "precision": 0.9583333333333334,
+        "recall": 1.0,
+        "f1": 0.9787234042553191
+      },
+      "unchanged": {
+        "support": 37,
+        "correct": 33,
+        "false_positive": 4,
+        "false_negative_including_invalid": 4,
+        "precision": 0.8918918918918919,
+        "recall": 0.8918918918918919,
+        "f1": 0.8918918918918919
+      }
+    },
+    "confusion_matrix": {
+      "added": {
+        "added": 26,
+        "modified": 11,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 1
+      },
+      "modified": {
+        "added": 0,
+        "modified": 44,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 2
+      },
+      "removed": {
+        "added": 0,
+        "modified": 16,
+        "removed": 25,
+        "contradiction": 1,
+        "ambiguous": 0,
+        "unchanged": 1
+      },
+      "contradiction": {
+        "added": 2,
+        "modified": 15,
+        "removed": 0,
+        "contradiction": 10,
+        "ambiguous": 1,
+        "unchanged": 0
+      },
+      "ambiguous": {
+        "added": 0,
+        "modified": 0,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 23,
+        "unchanged": 0
+      },
+      "unchanged": {
+        "added": 0,
+        "modified": 4,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 33
+      }
+    },
+    "prediction_distribution": {
+      "added": 28,
+      "modified": 90,
+      "removed": 25,
+      "contradiction": 11,
+      "ambiguous": 24,
+      "unchanged": 37
+    },
+    "confusion_pairs_ranked": [
+      {
+        "truth": "removed",
+        "predicted": "modified",
+        "count": 16
+      },
+      {
+        "truth": "contradiction",
+        "predicted": "modified",
+        "count": 15
+      },
+      {
+        "truth": "added",
+        "predicted": "modified",
+        "count": 11
+      },
+      {
+        "truth": "unchanged",
+        "predicted": "modified",
+        "count": 4
+      },
+      {
+        "truth": "contradiction",
+        "predicted": "added",
+        "count": 2
+      },
+      {
+        "truth": "modified",
+        "predicted": "unchanged",
+        "count": 2
+      },
+      {
+        "truth": "added",
+        "predicted": "unchanged",
+        "count": 1
+      },
+      {
+        "truth": "contradiction",
+        "predicted": "ambiguous",
+        "count": 1
+      },
+      {
+        "truth": "removed",
+        "predicted": "contradiction",
+        "count": 1
+      },
+      {
+        "truth": "removed",
+        "predicted": "unchanged",
+        "count": 1
+      }
+    ],
+    "critical_errors": {
+      "actual_drift_predicted_unchanged": 4,
+      "unchanged_predicted_drift": 4,
+      "contradiction_missed": 18,
+      "contradiction_overpredicted": 1,
+      "ambiguous_overpredicted": 1,
+      "added_or_removed_predicted_modified": 27
+    },
+    "confidence_calibration": "NOT_MEASURED",
+    "all_recorded_cases": 216,
+    "unscored_ontology_gap_cases": 1,
+    "all_recorded_structural_valid": 216,
+    "all_recorded_structural_invalid": 0,
+    "all_recorded_invalid_categories": {}
+  },
+  "effect_counts": {
+    "FIXED": 0,
+    "WORSENED": 0,
+    "NEUTRAL": 215
+  },
+  "changed_label_case_ids": []
+}
