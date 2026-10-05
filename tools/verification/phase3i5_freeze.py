@@ -73,6 +73,10 @@ def validate_review(draft_path, review_path):
         raise ValueError("reviewer identity and provenance required")
     if review["reviewer"].strip().lower() in {"codex", "assistant", "ai", "pending"}:
         raise ValueError("AI or placeholder cannot be represented as human reviewer")
+    if review.get("author_exposure_assessment") != "ACCEPTABLE_WITH_LIMITATION":
+        raise ValueError("independent reviewer must explicitly accept the disclosed author-exposure limitation before freeze")
+    if not nonempty(review.get("author_exposure_reason")):
+        raise ValueError("author-exposure assessment requires a reason")
     try:
         date.fromisoformat(review["review_date"])
     except (KeyError, TypeError, ValueError) as error:
@@ -118,6 +122,8 @@ def validate_review(draft_path, review_path):
         "review_record_sha256": digest(review_path),
         "reviewer": review["reviewer"].strip(),
         "review_provenance": review["review_provenance"].strip(),
+        "author_exposure_assessment": review["author_exposure_assessment"],
+        "author_exposure_reason": review["author_exposure_reason"].strip(),
         "review_date": review["review_date"],
         "review_decision_counts": dict(sorted(counts.items())),
         "cases": reviewed,

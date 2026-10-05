@@ -3,6 +3,8 @@
   "draft_sha256": "5477c3a1444aec75b7054ee35e68bb97cdc9ed1369341b1d22f9a617c43704fe",
   "reviewer": null,
   "review_provenance": null,
+  "author_exposure_assessment": null,
+  "author_exposure_reason": "",
   "review_date": null,
   "decisions": [
     {

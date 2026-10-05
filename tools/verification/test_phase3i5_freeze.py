@@ -30,6 +30,8 @@ def fixtures(tmp_path):
         "draft_sha256": hashlib.sha256(draft_path.read_bytes()).hexdigest(),
         "reviewer": "Unit Test Reviewer",
         "review_provenance": "TEST_FIXTURE_ONLY",
+        "author_exposure_assessment": "ACCEPTABLE_WITH_LIMITATION",
+        "author_exposure_reason": "Synthetic fixture only; no closed-content exposure.",
         "review_date": "2026-10-05",
         "decisions": [{"case_id": case["id"], "decision": "CONFIRMED",
                        "reviewed_label": "unchanged", "review_note": ""} for case in cases],
@@ -83,4 +85,14 @@ def test_revised_label_must_change(tmp_path):
     data["decisions"][0]["review_note"] = "No actual change"
     review.write_text(json.dumps(data))
     with pytest.raises(ValueError, match="different canonical"):
+        validate_review(draft, review)
+
+
+def test_material_author_exposure_blocks_freeze(tmp_path):
+    draft, review = fixtures(tmp_path)
+    data = json.loads(review.read_text())
+    data["author_exposure_assessment"] = "MATERIAL_COMPROMISE"
+    data["author_exposure_reason"] = "Closed material may have shaped cases."
+    review.write_text(json.dumps(data))
+    with pytest.raises(ValueError, match="author-exposure limitation"):
         validate_review(draft, review)
