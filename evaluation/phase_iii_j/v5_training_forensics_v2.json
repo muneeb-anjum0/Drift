@@ -1,0 +1,285 @@
+{
+  "archive_role": "USER_SUPPLIED_UNTRACKED_READ_ONLY",
+  "closed_eval_overlap_aggregate_only": {
+    "phase_iii_d": {
+      "exact_normalized_query_message_overlap": 0,
+      "queries": 40,
+      "sha256": "ee21e6d6bd2c36324c80e7020bd87d7c2094068d762d943ab7afe581e065e51b"
+    },
+    "phase_iii_e": {
+      "exact_normalized_query_message_overlap": 0,
+      "queries": 30,
+      "sha256": "78a8975d35a3fccd931820752304b9d344415f3e841db18db7e549321ff4134c"
+    },
+    "phase_iii_i": {
+      "cases": 90,
+      "exact_normalized_message_overlap": 0,
+      "exact_normalized_pair_overlap": 0,
+      "sha256": "d0fae87de5a9413e3ffd61104e3ca4478c742399f9d49fb36be12231478a12b5"
+    },
+    "phase_iii_i_5": {
+      "cases": 216,
+      "exact_normalized_message_overlap": 0,
+      "exact_normalized_pair_overlap": 0,
+      "sha256": "54b56f0b2068e9c26f8a315bbd925649b9bcf25c2d4bc248cb5258419b73ec5b"
+    }
+  },
+  "cross_split": {
+    "csv": {
+      "test": {
+        "exact_normalized_message_overlap": 388,
+        "exact_normalized_pair_overlap": 0,
+        "lexical_near_screen": {
+          "candidate_comparisons": 414409,
+          "limitation": "Rare-token candidate screen; misses possible, not semantic paraphrase proof.",
+          "target_rows_with_same_baseline_and_message_token_jaccard_ge_0_8": 1
+        },
+        "metadata_family_proxy_keys_shared_with_train": 624,
+        "numeric_masked_pair_skeleton_overlap": 0,
+        "target_rows_in_shared_metadata_family_proxy": 731
+      },
+      "validation": {
+        "exact_normalized_message_overlap": 368,
+        "exact_normalized_pair_overlap": 0,
+        "lexical_near_screen": {
+          "candidate_comparisons": 407140,
+          "limitation": "Rare-token candidate screen; misses possible, not semantic paraphrase proof.",
+          "target_rows_with_same_baseline_and_message_token_jaccard_ge_0_8": 2
+        },
+        "metadata_family_proxy_keys_shared_with_train": 639,
+        "numeric_masked_pair_skeleton_overlap": 0,
+        "target_rows_in_shared_metadata_family_proxy": 738
+      }
+    },
+    "sft": {
+      "test": {
+        "exact_normalized_message_overlap": 388,
+        "exact_normalized_pair_overlap": 0,
+        "lexical_near_screen": {
+          "candidate_comparisons": 455942,
+          "limitation": "Rare-token candidate screen; misses possible, not semantic paraphrase proof.",
+          "target_rows_with_same_baseline_and_message_token_jaccard_ge_0_8": 1
+        },
+        "numeric_masked_pair_skeleton_overlap": 0
+      },
+      "validation": {
+        "exact_normalized_message_overlap": 368,
+        "exact_normalized_pair_overlap": 0,
+        "lexical_near_screen": {
+          "candidate_comparisons": 447794,
+          "limitation": "Rare-token candidate screen; misses possible, not semantic paraphrase proof.",
+          "target_rows_with_same_baseline_and_message_token_jaccard_ge_0_8": 2
+        },
+        "numeric_masked_pair_skeleton_overlap": 0
+      }
+    }
+  },
+  "csv": {
+    "test": {
+      "annotation_status": {
+        "simulated_final_robust_label": 974
+      },
+      "exact_raw_pair_duplicate_excess": 0,
+      "invalid_labels": 0,
+      "labels": {
+        "added": 211,
+        "ambiguous": 156,
+        "contradiction": 110,
+        "modified": 251,
+        "removed": 104,
+        "unchanged": 142
+      },
+      "metadata_family_proxy_count": 853,
+      "normalized_pair_duplicate_excess": 0,
+      "normalized_pairs_with_conflicting_labels": 0,
+      "normalized_unique_baselines": 868,
+      "normalized_unique_messages": 877,
+      "numeric_masked_pair_skeleton_duplicate_excess": 0,
+      "pairing_method": {
+        "simulated_backlog_change": 132,
+        "simulated_client_feedback": 139,
+        "simulated_counterexample_pair": 162,
+        "simulated_issue_thread": 143,
+        "simulated_long_thread": 149,
+        "simulated_review_comment": 132,
+        "simulated_support_escalation": 117
+      },
+      "rows": 974,
+      "sha256": "7b6c12cb3409eba7a0e4f296bce3c6de5d0e91895128a220e4051a7e73429f67",
+      "source_dataset": {
+        "ambiguous_edge_simulation_v5": 7,
+        "contradiction_security_simulation_v5": 20,
+        "domain_transfer_simulation_v5": 101,
+        "long_thread_simulation_v5": 92,
+        "multi_intent_simulation_v5": 82,
+        "noisy_ticket_simulation_v5": 60,
+        "normal_simulation_v5": 433,
+        "shortcut_trap_shortcut_trap_simulation_v5": 162,
+        "unchanged_hard_negative_simulation_v5": 17
+      },
+      "source_license": {
+        "simulated final robustness dataset; not public real-world data": 974
+      }
+    },
+    "train": {
+      "annotation_status": {
+        "simulated_final_robust_label": 7757
+      },
+      "exact_raw_pair_duplicate_excess": 2,
+      "invalid_labels": 0,
+      "labels": {
+        "added": 1683,
+        "ambiguous": 1240,
+        "contradiction": 873,
+        "modified": 2001,
+        "removed": 832,
+        "unchanged": 1128
+      },
+      "metadata_family_proxy_count": 3610,
+      "normalized_pair_duplicate_excess": 2,
+      "normalized_pairs_with_conflicting_labels": 0,
+      "normalized_unique_baselines": 4321,
+      "normalized_unique_messages": 5163,
+      "numeric_masked_pair_skeleton_duplicate_excess": 2,
+      "pairing_method": {
+        "simulated_backlog_change": 1063,
+        "simulated_client_feedback": 1021,
+        "simulated_counterexample_pair": 1308,
+        "simulated_issue_thread": 1081,
+        "simulated_long_thread": 1107,
+        "simulated_review_comment": 1099,
+        "simulated_support_escalation": 1078
+      },
+      "rows": 7757,
+      "sha256": "d30a5a77b423a3308bd2d528f7000e845ef17a1d6ccd4f183b195f7f48d67ab8",
+      "source_dataset": {
+        "ambiguous_edge_simulation_v5": 90,
+        "contradiction_security_simulation_v5": 147,
+        "domain_transfer_simulation_v5": 731,
+        "long_thread_simulation_v5": 762,
+        "multi_intent_simulation_v5": 634,
+        "noisy_ticket_simulation_v5": 485,
+        "normal_simulation_v5": 3517,
+        "shortcut_trap_shortcut_trap_simulation_v5": 1308,
+        "unchanged_hard_negative_simulation_v5": 83
+      },
+      "source_license": {
+        "simulated final robustness dataset; not public real-world data": 7757
+      }
+    },
+    "validation": {
+      "annotation_status": {
+        "simulated_final_robust_label": 969
+      },
+      "exact_raw_pair_duplicate_excess": 0,
+      "invalid_labels": 0,
+      "labels": {
+        "added": 210,
+        "ambiguous": 155,
+        "contradiction": 109,
+        "modified": 250,
+        "removed": 104,
+        "unchanged": 141
+      },
+      "metadata_family_proxy_count": 861,
+      "normalized_pair_duplicate_excess": 0,
+      "normalized_pairs_with_conflicting_labels": 0,
+      "normalized_unique_baselines": 857,
+      "normalized_unique_messages": 877,
+      "numeric_masked_pair_skeleton_duplicate_excess": 0,
+      "pairing_method": {
+        "simulated_backlog_change": 126,
+        "simulated_client_feedback": 134,
+        "simulated_counterexample_pair": 154,
+        "simulated_issue_thread": 143,
+        "simulated_long_thread": 133,
+        "simulated_review_comment": 147,
+        "simulated_support_escalation": 132
+      },
+      "rows": 969,
+      "sha256": "ed4cf9444c58c2d805d08f69f0f302fdecabac9485612022b31c9c28a35d8729",
+      "source_dataset": {
+        "ambiguous_edge_simulation_v5": 12,
+        "contradiction_security_simulation_v5": 14,
+        "domain_transfer_simulation_v5": 104,
+        "long_thread_simulation_v5": 111,
+        "multi_intent_simulation_v5": 64,
+        "noisy_ticket_simulation_v5": 60,
+        "normal_simulation_v5": 440,
+        "shortcut_trap_shortcut_trap_simulation_v5": 154,
+        "unchanged_hard_negative_simulation_v5": 10
+      },
+      "source_license": {
+        "simulated final robustness dataset; not public real-world data": 969
+      }
+    }
+  },
+  "limitations": [
+    "No source or protected case text is emitted.",
+    "Exact and lexical screens do not certify semantic independence or recover family IDs.",
+    "Numeric-masked skeletons are a template proxy, not a semantic-family definition.",
+    "Archive-to-historical-adapter training-byte identity remains unproven.",
+    "No historical training row is approved for automatic reuse by this audit."
+  ],
+  "role": "PHASE_III_J_PRETRAINING_AGGREGATE_FORENSICS",
+  "sft": {
+    "test": {
+      "exact_raw_pair_duplicate_excess": 0,
+      "invalid_labels": 0,
+      "labels": {
+        "added": 211,
+        "ambiguous": 156,
+        "contradiction": 110,
+        "modified": 251,
+        "removed": 104,
+        "unchanged": 142
+      },
+      "normalized_pair_duplicate_excess": 0,
+      "normalized_pairs_with_conflicting_labels": 0,
+      "normalized_unique_baselines": 868,
+      "normalized_unique_messages": 877,
+      "numeric_masked_pair_skeleton_duplicate_excess": 0,
+      "rows": 974,
+      "sha256": "c3d4f05ca355827a815d01005943603109d00f4c81737f4c7f797f3bfba7343c"
+    },
+    "train": {
+      "exact_raw_pair_duplicate_excess": 0,
+      "invalid_labels": 0,
+      "labels": {
+        "added": 1732,
+        "ambiguous": 1290,
+        "contradiction": 917,
+        "modified": 2061,
+        "removed": 877,
+        "unchanged": 1450
+      },
+      "normalized_pair_duplicate_excess": 0,
+      "normalized_pairs_with_conflicting_labels": 0,
+      "normalized_unique_baselines": 4829,
+      "normalized_unique_messages": 5735,
+      "numeric_masked_pair_skeleton_duplicate_excess": 0,
+      "rows": 8327,
+      "sha256": "ab80546e9ac74f4f11c6a15cf2f5626ef8ed4f189a574999601d06264caee435"
+    },
+    "validation": {
+      "exact_raw_pair_duplicate_excess": 0,
+      "invalid_labels": 0,
+      "labels": {
+        "added": 210,
+        "ambiguous": 155,
+        "contradiction": 109,
+        "modified": 250,
+        "removed": 104,
+        "unchanged": 141
+      },
+      "normalized_pair_duplicate_excess": 0,
+      "normalized_pairs_with_conflicting_labels": 0,
+      "normalized_unique_baselines": 857,
+      "normalized_unique_messages": 877,
+      "numeric_masked_pair_skeleton_duplicate_excess": 0,
+      "rows": 969,
+      "sha256": "f60a3f5dd9091cc48ac383ee2c0dc8a27a1aa04dd5d8f7b7fa9134b39048edc5"
+    }
+  },
+  "sft_train_pairs_absent_from_csv_train": 572
+}
