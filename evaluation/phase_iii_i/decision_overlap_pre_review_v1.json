@@ -1,0 +1,40 @@
+{
+  "decision_cases": 90,
+  "interpretation": "Exact pair overlap is strong contamination evidence; same baseline, message or template alone are risks, not proof. Archive-to-adapter exact-byte identity is unproven.",
+  "role": "PRE_PREDICTION_CONTAMINATION_SCREEN",
+  "scope": "User-supplied V5 archive train/validation/test; other unavailable sources remain unknown",
+  "sources": {
+    "csv_train": {
+      "exact_normalized_pair_case_ids": [],
+      "numeric_mask_message_template_case_ids": [],
+      "rows_unique_pairs": 7755,
+      "same_baseline_case_ids": [],
+      "same_baseline_near_message_jaccard_ge_0_8_case_ids": [],
+      "same_message_case_ids": []
+    },
+    "sft_test": {
+      "exact_normalized_pair_case_ids": [],
+      "numeric_mask_message_template_case_ids": [],
+      "rows_unique_pairs": 974,
+      "same_baseline_case_ids": [],
+      "same_baseline_near_message_jaccard_ge_0_8_case_ids": [],
+      "same_message_case_ids": []
+    },
+    "sft_train": {
+      "exact_normalized_pair_case_ids": [],
+      "numeric_mask_message_template_case_ids": [],
+      "rows_unique_pairs": 8327,
+      "same_baseline_case_ids": [],
+      "same_baseline_near_message_jaccard_ge_0_8_case_ids": [],
+      "same_message_case_ids": []
+    },
+    "sft_validation": {
+      "exact_normalized_pair_case_ids": [],
+      "numeric_mask_message_template_case_ids": [],
+      "rows_unique_pairs": 969,
+      "same_baseline_case_ids": [],
+      "same_baseline_near_message_jaccard_ge_0_8_case_ids": [],
+      "same_message_case_ids": []
+    }
+  }
+}

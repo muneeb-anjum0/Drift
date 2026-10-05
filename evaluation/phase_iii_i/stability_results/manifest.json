@@ -1,0 +1,48 @@
+{
+  "checks": {
+    "hashes": {
+      "dataset": "d0fae87de5a9413e3ffd61104e3ca4478c742399f9d49fb36be12231478a12b5",
+      "review": "5f757fe76797530aadd2237c50a4a98cc0c67840d1d43e8c9a27d7e587612f90",
+      "model": "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
+      "p1": "902ac43037c998afc4b6550995036bbc720bcae5dbbafc4504b2b9898abed339",
+      "pp1": "0c8bf5cf8fad54d2f9285a4392c2a4fa96d3fc758d3331a0fb0020c834b643e7"
+    },
+    "runtime": {
+      "build_info": "b11151-bd4f514db",
+      "model_ftype": "Q4_K - Medium",
+      "n_ctx": 768,
+      "total_slots": 1,
+      "command": [
+        "--model",
+        "/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8080",
+        "--ctx-size",
+        "768",
+        "--n-gpu-layers",
+        "0",
+        "--device",
+        "none",
+        "--threads",
+        "6",
+        "--parallel",
+        "1"
+      ],
+      "device_requests": null,
+      "image": "ghcr.io/ggml-org/llama.cpp:server-b11151"
+    },
+    "request_settings": {
+      "temperature": 0,
+      "top_p": 1,
+      "n_predict": 120,
+      "stop": [
+        "<|im_end|>",
+        "<|im_start|>"
+      ]
+    }
+  },
+  "selection_sha256": "b741867a9dfa11f9a048ca9d5915ba32db4d24d020eb661a49ae0c1d09f456c5",
+  "primary_metrics_sha256": "8ffd803020861e5d40646e382c0d989246584f2d5b2a98e215aacb3ba30c1d31"
+}

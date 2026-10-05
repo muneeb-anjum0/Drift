@@ -1,0 +1,16 @@
+{
+  "role": "PREDECLARED_BOUNDED_STABILITY_SUBSET",
+  "dataset_sha256": "d0fae87de5a9413e3ffd61104e3ca4478c742399f9d49fb36be12231478a12b5",
+  "selection_method": "For each reviewed class, sort cases by SHA256(draft_sha256 + case_id) ascending and take the first two. Independent of model predictions.",
+  "selection_timing": "Committed during the primary run, before full primary scoring or error analysis.",
+  "repeats_per_case": 1,
+  "not_part_of_primary_score": true,
+  "case_ids_by_class": {
+    "added": ["i-add-13", "i-add-05"],
+    "ambiguous": ["i-amb-04", "i-amb-08"],
+    "contradiction": ["i-con-14", "i-con-02"],
+    "modified": ["i-mod-01", "i-mod-10"],
+    "removed": ["i-rem-09", "i-rem-01"],
+    "unchanged": ["i-unc-11", "i-unc-03"]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "role": "PHASE_III_I_BOUNDED_REPEAT_STABILITY",
+  "selection_file": "stability_selection_v1.json",
+  "selection_sha256": "b741867a9dfa11f9a048ca9d5915ba32db4d24d020eb661a49ae0c1d09f456c5",
+  "primary_cases": 90,
+  "selected_cases": 12,
+  "repeat_calls_per_selected_case": 1,
+  "matching_primary_labels": 12,
+  "changed_label_case_ids": [],
+  "selected_errors_stable": ["i-rem-01", "i-unc-11"],
+  "interpretation": "All 12 preselected repeat labels matched primary labels. This supports stability only for this bounded subset; unselected errors were not repeated and the primary score was not majority-voted."
+}

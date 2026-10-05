@@ -1,0 +1,570 @@
+{
+  "archive_role": "USER_SUPPLIED_UNTRACKED_READ_ONLY",
+  "archive_root": "/home/muneebanjum/Documents/GitHub/Drift/archive/drift-dataset-kaggle-v5-cumulative",
+  "csv": {
+    "train": {
+      "rows": 7757,
+      "labels": {
+        "added": 1683,
+        "ambiguous": 1240,
+        "contradiction": 873,
+        "modified": 2001,
+        "removed": 832,
+        "unchanged": 1128
+      },
+      "invalid_class_rows": 0,
+      "source_dataset": {
+        "ambiguous_edge_simulation_v5": 90,
+        "contradiction_security_simulation_v5": 147,
+        "domain_transfer_simulation_v5": 731,
+        "long_thread_simulation_v5": 762,
+        "multi_intent_simulation_v5": 634,
+        "noisy_ticket_simulation_v5": 485,
+        "normal_simulation_v5": 3517,
+        "shortcut_trap_shortcut_trap_simulation_v5": 1308,
+        "unchanged_hard_negative_simulation_v5": 83
+      },
+      "scenario_mode": {
+        "ambiguous_edge": 90,
+        "contradiction_security": 147,
+        "domain_transfer": 731,
+        "long_thread": 762,
+        "multi_intent": 634,
+        "noisy_ticket": 485,
+        "normal": 3517,
+        "shortcut_trap": 1308,
+        "unchanged_hard_negative": 83
+      },
+      "duplicate_ids": 0,
+      "exact_duplicate_pair_excess": 2,
+      "normalized_unique_baselines": 4321,
+      "normalized_unique_messages": 5163,
+      "reused_baseline_rows": 3436,
+      "reused_message_rows": 2594,
+      "numeric_mask_template_duplicate_excess": 2594,
+      "frequent_first_two_token_prefixes": [
+        {
+          "prefix": "observed during",
+          "rows": 561,
+          "dominant_label": "modified",
+          "purity": 0.271
+        },
+        {
+          "prefix": "client call",
+          "rows": 559,
+          "dominant_label": "modified",
+          "purity": 0.243
+        },
+        {
+          "prefix": "client feedback",
+          "rows": 546,
+          "dominant_label": "modified",
+          "purity": 0.249
+        },
+        {
+          "prefix": "release grooming",
+          "rows": 537,
+          "dominant_label": "modified",
+          "purity": 0.255
+        },
+        {
+          "prefix": "pr review",
+          "rows": 525,
+          "dominant_label": "modified",
+          "purity": 0.265
+        },
+        {
+          "prefix": "product review",
+          "rows": 521,
+          "dominant_label": "modified",
+          "purity": 0.274
+        },
+        {
+          "prefix": "support escalation",
+          "rows": 507,
+          "dominant_label": "modified",
+          "purity": 0.27
+        },
+        {
+          "prefix": "qa uat",
+          "rows": 505,
+          "dominant_label": "modified",
+          "purity": 0.224
+        },
+        {
+          "prefix": "hi team",
+          "rows": 499,
+          "dominant_label": "modified",
+          "purity": 0.248
+        },
+        {
+          "prefix": "update this",
+          "rows": 65,
+          "dominant_label": "modified",
+          "purity": 0.446
+        },
+        {
+          "prefix": "usman initial",
+          "rows": 64,
+          "dominant_label": "modified",
+          "purity": 0.266
+        },
+        {
+          "prefix": "update they",
+          "rows": 63,
+          "dominant_label": "ambiguous",
+          "purity": 0.365
+        },
+        {
+          "prefix": "update the",
+          "rows": 59,
+          "dominant_label": "contradiction",
+          "purity": 0.441
+        },
+        {
+          "prefix": "daniel initial",
+          "rows": 58,
+          "dominant_label": "modified",
+          "purity": 0.293
+        },
+        {
+          "prefix": "leah initial",
+          "rows": 58,
+          "dominant_label": "modified",
+          "purity": 0.276
+        }
+      ],
+      "sha256": "d30a5a77b423a3308bd2d528f7000e845ef17a1d6ccd4f183b195f7f48d67ab8"
+    },
+    "validation": {
+      "rows": 969,
+      "labels": {
+        "added": 210,
+        "ambiguous": 155,
+        "contradiction": 109,
+        "modified": 250,
+        "removed": 104,
+        "unchanged": 141
+      },
+      "invalid_class_rows": 0,
+      "source_dataset": {
+        "ambiguous_edge_simulation_v5": 12,
+        "contradiction_security_simulation_v5": 14,
+        "domain_transfer_simulation_v5": 104,
+        "long_thread_simulation_v5": 111,
+        "multi_intent_simulation_v5": 64,
+        "noisy_ticket_simulation_v5": 60,
+        "normal_simulation_v5": 440,
+        "shortcut_trap_shortcut_trap_simulation_v5": 154,
+        "unchanged_hard_negative_simulation_v5": 10
+      },
+      "scenario_mode": {
+        "ambiguous_edge": 12,
+        "contradiction_security": 14,
+        "domain_transfer": 104,
+        "long_thread": 111,
+        "multi_intent": 64,
+        "noisy_ticket": 60,
+        "normal": 440,
+        "shortcut_trap": 154,
+        "unchanged_hard_negative": 10
+      },
+      "duplicate_ids": 0,
+      "exact_duplicate_pair_excess": 0,
+      "normalized_unique_baselines": 857,
+      "normalized_unique_messages": 877,
+      "reused_baseline_rows": 112,
+      "reused_message_rows": 92,
+      "numeric_mask_template_duplicate_excess": 92,
+      "frequent_first_two_token_prefixes": [
+        {
+          "prefix": "release grooming",
+          "rows": 83,
+          "dominant_label": "added",
+          "purity": 0.253
+        },
+        {
+          "prefix": "pr review",
+          "rows": 80,
+          "dominant_label": "modified",
+          "purity": 0.263
+        },
+        {
+          "prefix": "hi team",
+          "rows": 69,
+          "dominant_label": "modified",
+          "purity": 0.246
+        },
+        {
+          "prefix": "qa uat",
+          "rows": 69,
+          "dominant_label": "modified",
+          "purity": 0.246
+        },
+        {
+          "prefix": "support escalation",
+          "rows": 67,
+          "dominant_label": "modified",
+          "purity": 0.239
+        },
+        {
+          "prefix": "client call",
+          "rows": 64,
+          "dominant_label": "modified",
+          "purity": 0.281
+        },
+        {
+          "prefix": "observed during",
+          "rows": 61,
+          "dominant_label": "modified",
+          "purity": 0.246
+        },
+        {
+          "prefix": "product review",
+          "rows": 59,
+          "dominant_label": "added",
+          "purity": 0.254
+        },
+        {
+          "prefix": "client feedback",
+          "rows": 52,
+          "dominant_label": "modified",
+          "purity": 0.346
+        }
+      ],
+      "sha256": "ed4cf9444c58c2d805d08f69f0f302fdecabac9485612022b31c9c28a35d8729"
+    },
+    "test": {
+      "rows": 974,
+      "labels": {
+        "added": 211,
+        "ambiguous": 156,
+        "contradiction": 110,
+        "modified": 251,
+        "removed": 104,
+        "unchanged": 142
+      },
+      "invalid_class_rows": 0,
+      "source_dataset": {
+        "ambiguous_edge_simulation_v5": 7,
+        "contradiction_security_simulation_v5": 20,
+        "domain_transfer_simulation_v5": 101,
+        "long_thread_simulation_v5": 92,
+        "multi_intent_simulation_v5": 82,
+        "noisy_ticket_simulation_v5": 60,
+        "normal_simulation_v5": 433,
+        "shortcut_trap_shortcut_trap_simulation_v5": 162,
+        "unchanged_hard_negative_simulation_v5": 17
+      },
+      "scenario_mode": {
+        "ambiguous_edge": 7,
+        "contradiction_security": 20,
+        "domain_transfer": 101,
+        "long_thread": 92,
+        "multi_intent": 82,
+        "noisy_ticket": 60,
+        "normal": 433,
+        "shortcut_trap": 162,
+        "unchanged_hard_negative": 17
+      },
+      "duplicate_ids": 0,
+      "exact_duplicate_pair_excess": 0,
+      "normalized_unique_baselines": 868,
+      "normalized_unique_messages": 877,
+      "reused_baseline_rows": 106,
+      "reused_message_rows": 97,
+      "numeric_mask_template_duplicate_excess": 97,
+      "frequent_first_two_token_prefixes": [
+        {
+          "prefix": "support escalation",
+          "rows": 74,
+          "dominant_label": "modified",
+          "purity": 0.324
+        },
+        {
+          "prefix": "client feedback",
+          "rows": 73,
+          "dominant_label": "modified",
+          "purity": 0.315
+        },
+        {
+          "prefix": "client call",
+          "rows": 72,
+          "dominant_label": "modified",
+          "purity": 0.264
+        },
+        {
+          "prefix": "product review",
+          "rows": 72,
+          "dominant_label": "added",
+          "purity": 0.292
+        },
+        {
+          "prefix": "release grooming",
+          "rows": 71,
+          "dominant_label": "modified",
+          "purity": 0.282
+        },
+        {
+          "prefix": "hi team",
+          "rows": 69,
+          "dominant_label": "modified",
+          "purity": 0.275
+        },
+        {
+          "prefix": "observed during",
+          "rows": 69,
+          "dominant_label": "ambiguous",
+          "purity": 0.261
+        },
+        {
+          "prefix": "qa uat",
+          "rows": 68,
+          "dominant_label": "modified",
+          "purity": 0.294
+        },
+        {
+          "prefix": "pr review",
+          "rows": 49,
+          "dominant_label": "modified",
+          "purity": 0.327
+        }
+      ],
+      "sha256": "7b6c12cb3409eba7a0e4f296bce3c6de5d0e91895128a220e4051a7e73429f67"
+    },
+    "full": {
+      "rows": 9700,
+      "labels": {
+        "added": 2104,
+        "ambiguous": 1551,
+        "contradiction": 1092,
+        "modified": 2502,
+        "removed": 1040,
+        "unchanged": 1411
+      },
+      "invalid_class_rows": 0,
+      "source_dataset": {
+        "ambiguous_edge_simulation_v5": 109,
+        "contradiction_security_simulation_v5": 181,
+        "domain_transfer_simulation_v5": 936,
+        "long_thread_simulation_v5": 965,
+        "multi_intent_simulation_v5": 780,
+        "noisy_ticket_simulation_v5": 605,
+        "normal_simulation_v5": 4390,
+        "shortcut_trap_shortcut_trap_simulation_v5": 1624,
+        "unchanged_hard_negative_simulation_v5": 110
+      },
+      "scenario_mode": {
+        "ambiguous_edge": 109,
+        "contradiction_security": 181,
+        "domain_transfer": 936,
+        "long_thread": 965,
+        "multi_intent": 780,
+        "noisy_ticket": 605,
+        "normal": 4390,
+        "shortcut_trap": 1624,
+        "unchanged_hard_negative": 110
+      },
+      "duplicate_ids": 0,
+      "exact_duplicate_pair_excess": 2,
+      "normalized_unique_baselines": 5004,
+      "normalized_unique_messages": 6138,
+      "reused_baseline_rows": 4696,
+      "reused_message_rows": 3562,
+      "numeric_mask_template_duplicate_excess": 3562,
+      "frequent_first_two_token_prefixes": [
+        {
+          "prefix": "client call",
+          "rows": 695,
+          "dominant_label": "modified",
+          "purity": 0.249
+        },
+        {
+          "prefix": "observed during",
+          "rows": 691,
+          "dominant_label": "modified",
+          "purity": 0.259
+        },
+        {
+          "prefix": "release grooming",
+          "rows": 691,
+          "dominant_label": "modified",
+          "purity": 0.256
+        },
+        {
+          "prefix": "client feedback",
+          "rows": 671,
+          "dominant_label": "modified",
+          "purity": 0.264
+        },
+        {
+          "prefix": "pr review",
+          "rows": 654,
+          "dominant_label": "modified",
+          "purity": 0.269
+        },
+        {
+          "prefix": "product review",
+          "rows": 652,
+          "dominant_label": "modified",
+          "purity": 0.261
+        },
+        {
+          "prefix": "support escalation",
+          "rows": 648,
+          "dominant_label": "modified",
+          "purity": 0.273
+        },
+        {
+          "prefix": "qa uat",
+          "rows": 642,
+          "dominant_label": "modified",
+          "purity": 0.234
+        },
+        {
+          "prefix": "hi team",
+          "rows": 637,
+          "dominant_label": "modified",
+          "purity": 0.251
+        },
+        {
+          "prefix": "update they",
+          "rows": 85,
+          "dominant_label": "ambiguous",
+          "purity": 0.388
+        },
+        {
+          "prefix": "update the",
+          "rows": 78,
+          "dominant_label": "contradiction",
+          "purity": 0.449
+        },
+        {
+          "prefix": "update this",
+          "rows": 77,
+          "dominant_label": "modified",
+          "purity": 0.455
+        },
+        {
+          "prefix": "daniel initial",
+          "rows": 76,
+          "dominant_label": "modified",
+          "purity": 0.316
+        },
+        {
+          "prefix": "leah initial",
+          "rows": 74,
+          "dominant_label": "added",
+          "purity": 0.257
+        },
+        {
+          "prefix": "usman initial",
+          "rows": 74,
+          "dominant_label": "modified",
+          "purity": 0.27
+        }
+      ],
+      "sha256": "608c10670b3bd72bdd98788156a7a8eb4353f6752b0a08dbdbf90dd44001ced4"
+    }
+  },
+  "sft": {
+    "train": {
+      "rows": 8327,
+      "labels": {
+        "added": 1732,
+        "ambiguous": 1290,
+        "contradiction": 917,
+        "modified": 2061,
+        "removed": 877,
+        "unchanged": 1450
+      },
+      "invalid_assistant_label_or_json": 0,
+      "unparsed_user_pairs": 0,
+      "normalized_pair_duplicate_excess": 0,
+      "sha256": "ab80546e9ac74f4f11c6a15cf2f5626ef8ed4f189a574999601d06264caee435",
+      "pair_keys_not_in_corresponding_csv": 572
+    },
+    "validation": {
+      "rows": 969,
+      "labels": {
+        "added": 210,
+        "ambiguous": 155,
+        "contradiction": 109,
+        "modified": 250,
+        "removed": 104,
+        "unchanged": 141
+      },
+      "invalid_assistant_label_or_json": 0,
+      "unparsed_user_pairs": 0,
+      "normalized_pair_duplicate_excess": 0,
+      "sha256": "f60a3f5dd9091cc48ac383ee2c0dc8a27a1aa04dd5d8f7b7fa9134b39048edc5",
+      "pair_keys_not_in_corresponding_csv": 0
+    },
+    "test": {
+      "rows": 974,
+      "labels": {
+        "added": 211,
+        "ambiguous": 156,
+        "contradiction": 110,
+        "modified": 251,
+        "removed": 104,
+        "unchanged": 142
+      },
+      "invalid_assistant_label_or_json": 0,
+      "unparsed_user_pairs": 0,
+      "normalized_pair_duplicate_excess": 0,
+      "sha256": "c3d4f05ca355827a815d01005943603109d00f4c81737f4c7f797f3bfba7343c",
+      "pair_keys_not_in_corresponding_csv": 0
+    },
+    "full": {
+      "rows": 10270,
+      "labels": {
+        "added": 2153,
+        "ambiguous": 1601,
+        "contradiction": 1136,
+        "modified": 2562,
+        "removed": 1085,
+        "unchanged": 1733
+      },
+      "invalid_assistant_label_or_json": 0,
+      "unparsed_user_pairs": 0,
+      "normalized_pair_duplicate_excess": 0,
+      "sha256": "5faccdc5f8878cba4701079a5a4bce9fcd84d7492fe70f210947b503d96493b0",
+      "pair_keys_not_in_corresponding_csv": 572
+    }
+  },
+  "cross_split_overlap": {
+    "validation": {
+      "exact_normalized_pair_keys_shared_with_train": 0,
+      "id_keys_shared_with_train": 0,
+      "numeric_mask_template_keys_shared_with_train": 368,
+      "same_baseline_near_message_rows_jaccard_ge_0_8_excluding_exact": 0,
+      "near_candidate_comparisons": 1985
+    },
+    "test": {
+      "exact_normalized_pair_keys_shared_with_train": 0,
+      "id_keys_shared_with_train": 0,
+      "numeric_mask_template_keys_shared_with_train": 388,
+      "same_baseline_near_message_rows_jaccard_ge_0_8_excluding_exact": 0,
+      "near_candidate_comparisons": 1916
+    }
+  },
+  "sft_cross_split_overlap": {
+    "validation": {
+      "exact_normalized_pair_keys_shared_with_train": 0,
+      "same_baseline_near_message_pair_keys_jaccard_ge_0_8_excluding_exact": 0,
+      "near_candidate_comparisons": 1984
+    },
+    "test": {
+      "exact_normalized_pair_keys_shared_with_train": 0,
+      "same_baseline_near_message_pair_keys_jaccard_ge_0_8_excluding_exact": 0,
+      "near_candidate_comparisons": 1916
+    }
+  },
+  "caveats": [
+    "No raw text emitted",
+    "Numeric-mask templates are only one leakage proxy",
+    "Same-baseline near audit does not cover paraphrased baselines",
+    "Archive-to-adapter byte identity is not proven by checkpoint metadata"
+  ]
+}

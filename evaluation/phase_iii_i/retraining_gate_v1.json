@@ -1,0 +1,52 @@
+{
+  "role": "PHASE_III_I_PREDECLARED_RETRAINING_GATE_RESULT",
+  "decision": "RETRAINING JUSTIFIED",
+  "meaning": "A narrowly targeted data-engineering and training proposal is justified; this is not authorization to train, use GPU, promote a model, or change production defaults.",
+  "primary_dataset_sha256": "d0fae87de5a9413e3ffd61104e3ca4478c742399f9d49fb36be12231478a12b5",
+  "primary_metrics_sha256": "8ffd803020861e5d40646e382c0d989246584f2d5b2a98e215aacb3ba30c1d31",
+  "rule_source": "docs/phase_iii_i_study_plan.md",
+  "oracle_delivery": "DIRECT_CORRECT_BASELINE_NO_RETRIEVAL",
+  "singleton_structure": "90_OF_90_VALID",
+  "review_provenance": "Muneeb Anjum self-attested independent human review; process not observed; decision vector identical to prior GPT-5.6 Sol advisory review.",
+  "contamination": "No exact/simple near-overlap detected against supplied V5 train/validation/test; no exact normalized pair overlap with available closed historical finals. Archive-to-adapter exact byte identity and inaccessible sources remain unknown.",
+  "raw_semantic_result": {
+    "correct": 73,
+    "total": 90,
+    "macro_f1": 0.8088724647719183,
+    "removed_recall": "8/15",
+    "unchanged_recall": "8/15",
+    "contradiction_recall": "15/15"
+  },
+  "recurring_clear_boundary": {
+    "pattern": "Explicit baseline option/channel/data-item removal classified modified",
+    "count": 7,
+    "class_support": 15,
+    "domains": ["vehicle-inspection", "subsidy", "education", "weather", "charity", "pharmacy", "university"],
+    "case_ids": ["i-rem-01", "i-rem-04", "i-rem-06", "i-rem-07", "i-rem-08", "i-rem-12", "i-rem-13"],
+    "frozen_p1_rule": "removed = any explicit baseline capability, option, permission, or scope item is eliminated, even if other options remain",
+    "selected_repeat_error_stable": "i-rem-01"
+  },
+  "other_errors": {
+    "added_as_modified": 2,
+    "ambiguous_as_modified": 1,
+    "unchanged_as_drift": 7,
+    "unchanged_boundary_caution": "All seven are same-domain but unrelated new-feature messages. P1's added definition can also be read to cover a new capability while the baseline remains; these are label-sensitive diagnostics. Frozen primary labels and score are not changed after predictions. Do not train on them without separate independent adjudication."
+  },
+  "parser_or_transport_failures": 0,
+  "pp1_label_changes": 0,
+  "pp1_fixes": 0,
+  "pp1_worsened": 0,
+  "bounded_stability": "12/12 repeat labels matched first pass; two selected errors remained errors. This does not establish stability for all 17 errors.",
+  "training_data_readiness": "REPAIRABLE_NOT_READY",
+  "data_engineering_path": "Deduplicate and group by project/source/template family; create genuinely independent human-reviewed removal-vs-modification examples across domains; retain the Phase III-I corpus as a permanent closed final; establish fresh independent final and rollback before any training.",
+  "decision_basis": "The seven explicit-removal misses remain a recurring model-semantic pattern even if the seven label-sensitive unchanged hard negatives are set aside analytically. Direct oracle delivery, 90/90 structure, and zero PP1 changes separate this from retrieval/parser/postprocessing failure. A repaired training corpus is feasible but not yet ready.",
+  "limitations": [
+    "Human review is self-attested rather than externally audited and all decisions equal the earlier model advisory vector.",
+    "The corpus is synthetic, balanced, and only 15 cases per class; it is diagnostic, not production prevalence.",
+    "Prompt wording versus model-weight contribution cannot be fully isolated without a separately authorized experiment.",
+    "Original adapter training file identity is probable but unproven by checkpoint hash; historical legacy rows are not fully recovered."
+  ],
+  "training_executed": false,
+  "gpu_used": false,
+  "model_promoted": false
+}

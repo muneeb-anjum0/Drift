@@ -1,0 +1,20 @@
+{
+  "name": "drift-phase-iii-i-oracle-semantic-blueprint",
+  "version": "1.0.0",
+  "role": "PRE_PREDICTION_BLUEPRINT",
+  "starting_main": "dd3bf755387f8dd40b02ae5df21c495ef1d1685c",
+  "primary_prompt": "evaluation/prompts/P1.json",
+  "primary_prompt_sha256": "902ac43037c998afc4b6550995036bbc720bcae5dbbafc4504b2b9898abed339",
+  "development_source": "evaluation/datasets/drift_raw_dev_v1.json",
+  "decision_set_status": "DRAFT_PENDING_INDEPENDENT_HUMAN_REVIEW",
+  "target_cases": 90,
+  "target_per_class": {"added": 15, "modified": 15, "removed": 15, "contradiction": 15, "ambiguous": 15, "unchanged": 15},
+  "balance_rationale": "Diagnostic macro metrics and boundary analysis; not an estimate of production class prevalence; quality and human adjudication take precedence over quota.",
+  "minimum_distinct_domains": 15,
+  "required_styles": ["formal", "informal", "question", "negation", "partial_change", "conditional", "numeric", "role", "temporal", "long_message", "same_domain_hard_negative"],
+  "boundary_families": ["modified_vs_contradiction", "modified_vs_removed", "modified_vs_added", "ambiguous_vs_modified", "unchanged_vs_modified", "added_vs_unchanged"],
+  "provenance": "AI_ASSISTED_SYNTHETIC_PROPOSAL; labels require independent human review; V5 archive available for overlap audit but exact archive-to-adapter byte identity unproven",
+  "primary_score_policy": "First raw singleton P1 prediction per independently reviewed non-ambiguous, non-excluded case; invalid output counts incorrect; no retrieval or batching.",
+  "human_review_required_before_inference": true,
+  "allow_model_predictions_before_review_freeze": false
+}

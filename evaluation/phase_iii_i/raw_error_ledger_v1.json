@@ -1,0 +1,307 @@
+{
+  "role": "PHASE_III_I_RAW_ERROR_LEDGER",
+  "dataset_sha256": "d0fae87de5a9413e3ffd61104e3ca4478c742399f9d49fb36be12231478a12b5",
+  "errors": [
+    {
+      "case_id": "i-add-03",
+      "domain": "aviation",
+      "truth": "added",
+      "predicted": "modified",
+      "categories": [
+        "data_item",
+        "informal"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.9,
+      "latency_seconds": 12.566,
+      "prompt_tokens": 292,
+      "generated_tokens": 53,
+      "baseline_requirement": "Ground staff shall view a flight's assigned gate on the operations board.",
+      "message": "Show an estimated boarding-start time next to the gate on that board.",
+      "model_reasoning": "Adding a new display field (boarding-start time) to an existing operations board view."
+    },
+    {
+      "case_id": "i-add-10",
+      "domain": "warehouse",
+      "truth": "added",
+      "predicted": "modified",
+      "categories": [
+        "capability",
+        "conditional",
+        "long_message"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.92,
+      "latency_seconds": 12.873,
+      "prompt_tokens": 295,
+      "generated_tokens": 54,
+      "baseline_requirement": "Pickers shall confirm each picked item by scanning its barcode.",
+      "message": "Keep barcode confirmation, but let a picker attach an optional spoken note when a shelf is damaged.",
+      "model_reasoning": "Adding a new optional step (spoken note) to an existing mandatory process (barcode scan)."
+    },
+    {
+      "case_id": "i-rem-01",
+      "domain": "vehicle-inspection",
+      "truth": "removed",
+      "predicted": "modified",
+      "categories": [
+        "negation",
+        "partial_change"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.9,
+      "latency_seconds": 11.163,
+      "prompt_tokens": 287,
+      "generated_tokens": 47,
+      "baseline_requirement": "Inspectors shall attach photographs and notes to every failed vehicle inspection.",
+      "message": "Stop collecting the photographs; retain the written notes.",
+      "model_reasoning": "The data collection requirement is changed from 'photographs and notes' to 'notes' only."
+    },
+    {
+      "case_id": "i-rem-04",
+      "domain": "subsidy",
+      "truth": "removed",
+      "predicted": "modified",
+      "categories": [
+        "channel",
+        "informal"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.9,
+      "latency_seconds": 11.0,
+      "prompt_tokens": 292,
+      "generated_tokens": 40,
+      "baseline_requirement": "Applicants shall receive both email and SMS when an award decision is issued.",
+      "message": "We no longer want the text message; send only the email.",
+      "model_reasoning": "The channel of communication (SMS) is being removed."
+    },
+    {
+      "case_id": "i-rem-06",
+      "domain": "education",
+      "truth": "removed",
+      "predicted": "modified",
+      "categories": [
+        "format",
+        "negation"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.9,
+      "latency_seconds": 10.227,
+      "prompt_tokens": 288,
+      "generated_tokens": 41,
+      "baseline_requirement": "Students shall open course notes in the browser or download them as PDF.",
+      "message": "Disable PDF downloads of notes while keeping browser access.",
+      "model_reasoning": "The channel for accessing course notes is being restricted."
+    },
+    {
+      "case_id": "i-rem-07",
+      "domain": "weather",
+      "truth": "removed",
+      "predicted": "modified",
+      "categories": [
+        "data_item",
+        "partial_change"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.95,
+      "latency_seconds": 10.11,
+      "prompt_tokens": 288,
+      "generated_tokens": 39,
+      "baseline_requirement": "The public forecast shall display wind speed and relative humidity.",
+      "message": "Hide relative humidity from the public forecast, but retain wind speed.",
+      "model_reasoning": "Modifying visibility rules for existing data items."
+    },
+    {
+      "case_id": "i-rem-08",
+      "domain": "charity",
+      "truth": "removed",
+      "predicted": "modified",
+      "categories": [
+        "capability",
+        "scope"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.9,
+      "latency_seconds": 11.163,
+      "prompt_tokens": 284,
+      "generated_tokens": 48,
+      "baseline_requirement": "Donors may choose a one-time or monthly contribution.",
+      "message": "The donation form should offer monthly contributions only.",
+      "model_reasoning": "Changing the default option from 'one-time or monthly' to 'monthly' is a modification."
+    },
+    {
+      "case_id": "i-rem-12",
+      "domain": "pharmacy",
+      "truth": "removed",
+      "predicted": "modified",
+      "categories": [
+        "channel",
+        "partial_change"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.9,
+      "latency_seconds": 13.443,
+      "prompt_tokens": 293,
+      "generated_tokens": 58,
+      "baseline_requirement": "Dispensing alerts shall appear on the dashboard and be emailed to the pharmacist.",
+      "message": "Stop the email copy of dispensing alerts; the dashboard alert remains.",
+      "model_reasoning": "The baseline requirement specifies that both the dashboard and email are part of the alert delivery process. The new message removes the email component while retaining the dashboard alert."
+    },
+    {
+      "case_id": "i-rem-13",
+      "domain": "university",
+      "truth": "removed",
+      "predicted": "modified",
+      "categories": [
+        "channel",
+        "temporal"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.9,
+      "latency_seconds": 11.18,
+      "prompt_tokens": 289,
+      "generated_tokens": 46,
+      "baseline_requirement": "Students may enroll through the online portal or a campus kiosk.",
+      "message": "Close kiosk enrollment after term ends; online enrollment remains.",
+      "model_reasoning": "The kiosk enrollment option is removed, while online enrollment remains."
+    },
+    {
+      "case_id": "i-amb-07",
+      "domain": "education",
+      "truth": "ambiguous",
+      "predicted": "modified",
+      "categories": [
+        "temporal",
+        "unresolved"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.92,
+      "latency_seconds": 13.769,
+      "prompt_tokens": 292,
+      "generated_tokens": 58,
+      "baseline_requirement": "Students shall see final grades only after the registrar publishes them.",
+      "message": "We need to revisit when students can see marks, but faculty disagree about timing.",
+      "model_reasoning": "The baseline defines a clear timing rule (after registrar publishes). The new message indicates a need to revisit this timing, which is a modification."
+    },
+    {
+      "case_id": "i-unc-04",
+      "domain": "civic-permits",
+      "truth": "unchanged",
+      "predicted": "added",
+      "categories": [
+        "same_domain_hard_negative",
+        "added_vs_unchanged"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.95,
+      "latency_seconds": 10.904,
+      "prompt_tokens": 283,
+      "generated_tokens": 47,
+      "baseline_requirement": "Visitors shall search issued permits by street address.",
+      "message": "Please add a fee estimator for permit applicants.",
+      "model_reasoning": "A new capability (fee estimator) is requested while the baseline search-by-address requirement remains."
+    },
+    {
+      "case_id": "i-unc-05",
+      "domain": "aviation",
+      "truth": "unchanged",
+      "predicted": "added",
+      "categories": [
+        "same_domain_hard_negative"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.95,
+      "latency_seconds": 13.041,
+      "prompt_tokens": 288,
+      "generated_tokens": 56,
+      "baseline_requirement": "Baggage handlers shall see the last scan location of each checked bag.",
+      "message": "Give passengers a seat-map preview before check-in.",
+      "model_reasoning": "A new capability (seat-map preview) is introduced for passengers while the baseline baggage tracking remains."
+    },
+    {
+      "case_id": "i-unc-07",
+      "domain": "hospital-operations",
+      "truth": "unchanged",
+      "predicted": "added",
+      "categories": [
+        "same_domain_hard_negative"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.95,
+      "latency_seconds": 11.438,
+      "prompt_tokens": 286,
+      "generated_tokens": 49,
+      "baseline_requirement": "Managers shall download a monthly summary of discharge counts.",
+      "message": "Let patients preselect a meal from the ward menu.",
+      "model_reasoning": "A new capability (patient meal selection) is introduced while the baseline discharge summary download remains."
+    },
+    {
+      "case_id": "i-unc-08",
+      "domain": "museum",
+      "truth": "unchanged",
+      "predicted": "added",
+      "categories": [
+        "same_domain_hard_negative"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.95,
+      "latency_seconds": 11.978,
+      "prompt_tokens": 285,
+      "generated_tokens": 48,
+      "baseline_requirement": "Door staff shall scan a visitor's QR ticket to admit them.",
+      "message": "Add Spanish narration to the audio guide.",
+      "model_reasoning": "Adding a new language option (Spanish) to an existing audio guide is a new capability."
+    },
+    {
+      "case_id": "i-unc-11",
+      "domain": "transit",
+      "truth": "unchanged",
+      "predicted": "modified",
+      "categories": [
+        "same_domain_hard_negative"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.9,
+      "latency_seconds": 11.352,
+      "prompt_tokens": 286,
+      "generated_tokens": 47,
+      "baseline_requirement": "The public map shall display the next bus arrival time for each stop.",
+      "message": "Change the wording on emailed fare receipts.",
+      "model_reasoning": "Modifying the wording of an email template is a change to the presentation of existing data."
+    },
+    {
+      "case_id": "i-unc-13",
+      "domain": "university",
+      "truth": "unchanged",
+      "predicted": "added",
+      "categories": [
+        "same_domain_hard_negative"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.94,
+      "latency_seconds": 11.727,
+      "prompt_tokens": 284,
+      "generated_tokens": 51,
+      "baseline_requirement": "Students shall book available study rooms through the campus portal.",
+      "message": "Show lecture timetable colours in the student portal.",
+      "model_reasoning": "A new visualization feature (timetable colours) is being requested for an existing portal."
+    },
+    {
+      "case_id": "i-unc-14",
+      "domain": "insurance",
+      "truth": "unchanged",
+      "predicted": "added",
+      "categories": [
+        "same_domain_hard_negative"
+      ],
+      "structural_category": "VALID",
+      "confidence": 0.95,
+      "latency_seconds": 11.021,
+      "prompt_tokens": 285,
+      "generated_tokens": 46,
+      "baseline_requirement": "Claimants shall download a PDF copy of their submitted claim.",
+      "message": "Add a camera shortcut for taking claim photos.",
+      "model_reasoning": "A new capture method (camera) is introduced to supplement the existing PDF download requirement."
+    }
+  ]
+}

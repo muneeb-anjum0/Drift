@@ -1,0 +1,21 @@
+{
+  "decision_pairs": 90,
+  "limitation": "Exact normalized pair matching does not exclude paraphrase, template, or inaccessible historical-source overlap.",
+  "p1_prompt_contains_few_shot_examples": false,
+  "role": "PHASE_III_I_AGGREGATE_HISTORICAL_FINAL_OVERLAP_SCREEN",
+  "sources": {
+    "phase_iii_b_raw_final": {
+      "exact_normalized_pair_overlap": 0,
+      "historical_pairs": 24
+    },
+    "phase_iii_d": {
+      "exact_normalized_description_message_pair_overlap": 0,
+      "historical_possible_pairs": 400
+    },
+    "phase_iii_e": {
+      "exact_normalized_description_message_pair_overlap": 0,
+      "historical_possible_pairs": 560
+    }
+  },
+  "timing": "Post-prediction aggregate audit; no case-level historical content emitted or used to change labels/prompt."
+}

@@ -1,0 +1,31 @@
+{
+  "role": "PHASE_III_I_REVIEW_PROVENANCE_GATE",
+  "status": "HUMAN_REVIEW_STILL_REQUIRED",
+  "decision_date": "2026-10-05",
+  "draft_file": "decision_draft_v1.json",
+  "draft_sha256": "05e77f8327c17f73c02c7b63a8aa0279c047c77e0a7ca54a939769f7c5bcca2e",
+  "blueprint_sha256": "e87ee926682343cec669828d18ae71dcc9e0988b41fc97b3e1be43727c3245aa",
+  "advisory_review_file": "independent_model_review_advisory_v1.json",
+  "advisory_review_sha256": "b48d8173656d01d3e454df5d7ce919d7504346221296fd49a4c1361a501235d0",
+  "advisory_reviewer_provenance": "INDEPENDENT_MODEL_GPT_5_6_SOL_NOT_HUMAN",
+  "structural_validation": {
+    "valid": true,
+    "confirmed": 90,
+    "revised": 0,
+    "ambiguous": 0,
+    "exclude": 0
+  },
+  "methodology_sources": [
+    "evaluation/phase_iii_i/blueprint_v1.json",
+    "docs/phase_iii_i_study_plan.md",
+    "docs/phase_iii_i_independent_review_packet.md"
+  ],
+  "methodology_requires_independent_human_review": true,
+  "model_review_satisfies_human_gate": false,
+  "canonical_reviewed_corpus_frozen": false,
+  "decision_set_inference_permitted": false,
+  "decision_set_inference_executed": false,
+  "retraining_decision": "RETRAINING INCONCLUSIVE",
+  "reason": "The predeclared decision-set methodology expressly requires independent human label review; the supplied structurally valid review was performed by GPT-5.6 Sol. Model review is preserved as advisory evidence only.",
+  "next_required_evidence": "A separate human reviewer, blind to model predictions, must complete all decision entries against the unchanged P1 ontology and original draft. Validate, freeze, hash, and commit the human-reviewed corpus before inference."
+}
