@@ -151,7 +151,9 @@ def robustness(corpus, rows, corpus_sha):
     summary = {}
     for kind, counts in sorted(totals.items()):
         eligible = counts["eligible"]
-        summary[kind] = {**dict(counts), "consistency_rate": ratio(counts["consistent"], eligible),
+        summary[kind] = {**dict(counts), "eligible": eligible, "ineligible": counts["ineligible"],
+                         "consistent": counts["consistent"], "violated": counts["violated"],
+                         "consistency_rate": ratio(counts["consistent"], eligible),
                          "violation_rate": ratio(counts["violated"], eligible)}
     total_eligible = sum(item["eligible"] for item in summary.values())
     total_consistent = sum(item["consistent"] for item in summary.values())
