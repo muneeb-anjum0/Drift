@@ -1,0 +1,29 @@
+{
+  "role": "PHASE_III_I_REVIEW_PROVENANCE_GATE",
+  "status": "SATISFIED_BY_NAMED_HUMAN_SELF_ATTESTATION",
+  "decision_date": "2026-10-05",
+  "supersedes": "review_provenance_gate_v1.json",
+  "draft_sha256": "05e77f8327c17f73c02c7b63a8aa0279c047c77e0a7ca54a939769f7c5bcca2e",
+  "review_file": "human_review_self_attested_v1.json",
+  "review_sha256": "5f757fe76797530aadd2237c50a4a98cc0c67840d1d43e8c9a27d7e587612f90",
+  "reviewer": "Muneeb Anjum",
+  "reviewer_type": "Human, as self-attested by the user in the conversation on 2026-10-05",
+  "review_date": "2026-10-05",
+  "structural_validation": {
+    "valid": true,
+    "confirmed": 90,
+    "revised": 0,
+    "ambiguous": 0,
+    "exclude": 0
+  },
+  "frozen_corpus_file": "decision_reviewed_v1.json",
+  "frozen_corpus_sha256": "d0fae87de5a9413e3ffd61104e3ca4478c742399f9d49fb36be12231478a12b5",
+  "human_review_requirement_treated_as_satisfied": true,
+  "provenance_limitations": [
+    "The human review process was not observed or independently verified by this agent.",
+    "The decision vector is identical to the earlier GPT-5.6 Sol advisory review.",
+    "The user explicitly attested that the cases were human-reviewed; the review record identifies the named human reviewer."
+  ],
+  "inference_permitted_only_after_freeze_commit": true,
+  "decision_set_inference_executed_at_gate_record": false
+}
