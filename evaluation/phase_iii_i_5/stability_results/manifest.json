@@ -1,0 +1,45 @@
+{
+  "preflight": {
+    "freeze_manifest_sha256": "1e9bb5364278f4730b3aedc7ca4549fdd0b1a1dff950dcf6a79c23cd7f1f1f3a",
+    "corpus_sha256": "54b56f0b2068e9c26f8a315bbd925649b9bcf25c2d4bc248cb5258419b73ec5b",
+    "runtime": {
+      "build_info": "b11151-bd4f514db",
+      "model_ftype": "Q4_K - Medium",
+      "n_ctx": 768,
+      "total_slots": 1,
+      "command": [
+        "--model",
+        "/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8080",
+        "--ctx-size",
+        "768",
+        "--n-gpu-layers",
+        "0",
+        "--device",
+        "none",
+        "--threads",
+        "6",
+        "--parallel",
+        "1"
+      ],
+      "device_requests": null,
+      "image": "ghcr.io/ggml-org/llama.cpp:server-b11151",
+      "memory": 7516192768,
+      "memory_swap": 8589934592
+    },
+    "request_settings": {
+      "temperature": 0,
+      "top_p": 1,
+      "n_predict": 120,
+      "stop": [
+        "<|im_end|>",
+        "<|im_start|>"
+      ]
+    }
+  },
+  "selection_sha256": "73ed47171333d5fc53075b3d3642b8b113fa026cd507502093476bd9ec2a8e20",
+  "primary_metrics_sha256": "148333a07e1fa428dc5c19d6063e64e7bb2eaaf14daaeb5485819fb72488396c"
+}

@@ -1,0 +1,1651 @@
+{
+  "role": "PHASE_III_I_5_RAW_ROBUSTNESS",
+  "dataset_sha256": "54b56f0b2068e9c26f8a315bbd925649b9bcf25c2d4bc248cb5258419b73ec5b",
+  "summary": {
+    "distractor_invariance": {
+      "prediction_flips_relative_to_first": 5,
+      "prediction_flip_opportunities": 20,
+      "eligible": 20,
+      "all_correct": 13,
+      "consistent": 15,
+      "not_all_correct": 7,
+      "violated": 5,
+      "ineligible": 0,
+      "consistency_rate": 0.75,
+      "violation_rate": 0.25,
+      "prediction_flip_rate_relative_to_first": 0.25
+    },
+    "minimal_pair_contrast": {
+      "eligible": 18,
+      "both_correct": 12,
+      "consistent": 12,
+      "second_only_correct": 1,
+      "violated": 6,
+      "first_only_correct": 4,
+      "both_incorrect": 1,
+      "ineligible": 0,
+      "consistency_rate": 0.6666666666666666,
+      "violation_rate": 0.3333333333333333,
+      "prediction_flip_rate_relative_to_first": null
+    },
+    "order_invariance": {
+      "prediction_flips_relative_to_first": 4,
+      "prediction_flip_opportunities": 20,
+      "eligible": 20,
+      "not_all_correct": 5,
+      "violated": 4,
+      "consistent": 16,
+      "all_correct": 15,
+      "ineligible": 0,
+      "consistency_rate": 0.8,
+      "violation_rate": 0.2,
+      "prediction_flip_rate_relative_to_first": 0.2
+    },
+    "paraphrase_invariance": {
+      "prediction_flips_relative_to_first": 6,
+      "prediction_flip_opportunities": 18,
+      "eligible": 9,
+      "not_all_correct": 7,
+      "violated": 6,
+      "all_correct": 2,
+      "consistent": 3,
+      "ineligible": 1,
+      "consistency_rate": 0.3333333333333333,
+      "violation_rate": 0.6666666666666666,
+      "prediction_flip_rate_relative_to_first": 0.3333333333333333
+    }
+  },
+  "metamorphic_consistent": 46,
+  "metamorphic_eligible": 67,
+  "metamorphic_rate": 0.6865671641791045,
+  "relations": [
+    {
+      "id": "para-s01",
+      "type": "paraphrase_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s01-01",
+        "s01-03",
+        "s01-04"
+      ],
+      "expected": [
+        "removed",
+        "removed",
+        "removed"
+      ],
+      "predicted": [
+        "removed",
+        "removed",
+        "modified"
+      ],
+      "correct": [
+        true,
+        true,
+        false
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "para-s02",
+      "type": "paraphrase_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s02-01",
+        "s02-03",
+        "s02-04"
+      ],
+      "expected": [
+        "removed",
+        "removed",
+        "removed"
+      ],
+      "predicted": [
+        "removed",
+        "contradiction",
+        "removed"
+      ],
+      "correct": [
+        true,
+        false,
+        true
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "para-s03",
+      "type": "paraphrase_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s03-01",
+        "s03-03",
+        "s03-04"
+      ],
+      "expected": [
+        "modified",
+        "modified",
+        "modified"
+      ],
+      "predicted": [
+        "modified",
+        "modified",
+        "modified"
+      ],
+      "correct": [
+        true,
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "para-s04",
+      "type": "paraphrase_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s04-01",
+        "s04-03",
+        "s04-04"
+      ],
+      "expected": [
+        "contradiction",
+        "contradiction",
+        "contradiction"
+      ],
+      "predicted": [
+        "contradiction",
+        "modified",
+        "contradiction"
+      ],
+      "correct": [
+        true,
+        false,
+        true
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "para-s05",
+      "type": "paraphrase_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s05-01",
+        "s05-03",
+        "s05-04"
+      ],
+      "expected": [
+        "removed",
+        "removed",
+        "removed"
+      ],
+      "predicted": [
+        "removed",
+        "removed",
+        "removed"
+      ],
+      "correct": [
+        true,
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "para-s06",
+      "type": "paraphrase_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s06-01",
+        "s06-03",
+        "s06-04"
+      ],
+      "expected": [
+        "contradiction",
+        "contradiction",
+        "contradiction"
+      ],
+      "predicted": [
+        "modified",
+        "contradiction",
+        "modified"
+      ],
+      "correct": [
+        false,
+        true,
+        false
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "para-s07",
+      "type": "paraphrase_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s07-01",
+        "s07-03",
+        "s07-04"
+      ],
+      "expected": [
+        "removed",
+        "removed",
+        "removed"
+      ],
+      "predicted": [
+        "removed",
+        "removed",
+        "modified"
+      ],
+      "correct": [
+        true,
+        true,
+        false
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "para-s08",
+      "type": "paraphrase_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s08-01",
+        "s08-03",
+        "s08-04"
+      ],
+      "expected": [
+        "removed",
+        "removed",
+        "removed"
+      ],
+      "predicted": [
+        "modified",
+        "modified",
+        "modified"
+      ],
+      "correct": [
+        false,
+        false,
+        false
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "para-s09",
+      "type": "paraphrase_invariance",
+      "eligible": false,
+      "reason": "UNSCORED_MEMBER",
+      "case_ids": [
+        "s09-01",
+        "s09-03",
+        "s09-04"
+      ]
+    },
+    {
+      "id": "para-s10",
+      "type": "paraphrase_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s10-01",
+        "s10-03",
+        "s10-04"
+      ],
+      "expected": [
+        "removed",
+        "removed",
+        "removed"
+      ],
+      "predicted": [
+        "modified",
+        "modified",
+        "removed"
+      ],
+      "correct": [
+        false,
+        false,
+        true
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "dist-s11",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s11-03",
+        "s11-04"
+      ],
+      "expected": [
+        "added",
+        "added"
+      ],
+      "predicted": [
+        "added",
+        "added"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "order-s11",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s11-05",
+        "s11-06"
+      ],
+      "expected": [
+        "removed",
+        "removed"
+      ],
+      "predicted": [
+        "modified",
+        "removed"
+      ],
+      "correct": [
+        false,
+        true
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "dist-s12",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s12-03",
+        "s12-04"
+      ],
+      "expected": [
+        "modified",
+        "modified"
+      ],
+      "predicted": [
+        "modified",
+        "unchanged"
+      ],
+      "correct": [
+        true,
+        false
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "order-s12",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s12-05",
+        "s12-06"
+      ],
+      "expected": [
+        "added",
+        "added"
+      ],
+      "predicted": [
+        "modified",
+        "modified"
+      ],
+      "correct": [
+        false,
+        false
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "dist-s13",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s13-03",
+        "s13-04"
+      ],
+      "expected": [
+        "modified",
+        "modified"
+      ],
+      "predicted": [
+        "modified",
+        "modified"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "order-s13",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s13-05",
+        "s13-06"
+      ],
+      "expected": [
+        "removed",
+        "removed"
+      ],
+      "predicted": [
+        "removed",
+        "modified"
+      ],
+      "correct": [
+        true,
+        false
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "dist-s14",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s14-03",
+        "s14-04"
+      ],
+      "expected": [
+        "contradiction",
+        "contradiction"
+      ],
+      "predicted": [
+        "contradiction",
+        "modified"
+      ],
+      "correct": [
+        true,
+        false
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "order-s14",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s14-05",
+        "s14-06"
+      ],
+      "expected": [
+        "unchanged",
+        "unchanged"
+      ],
+      "predicted": [
+        "unchanged",
+        "unchanged"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "dist-s15",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s15-03",
+        "s15-04"
+      ],
+      "expected": [
+        "removed",
+        "removed"
+      ],
+      "predicted": [
+        "removed",
+        "removed"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "order-s15",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s15-05",
+        "s15-06"
+      ],
+      "expected": [
+        "added",
+        "added"
+      ],
+      "predicted": [
+        "added",
+        "added"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "dist-s16",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s16-03",
+        "s16-04"
+      ],
+      "expected": [
+        "removed",
+        "removed"
+      ],
+      "predicted": [
+        "modified",
+        "removed"
+      ],
+      "correct": [
+        false,
+        true
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "order-s16",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s16-05",
+        "s16-06"
+      ],
+      "expected": [
+        "added",
+        "added"
+      ],
+      "predicted": [
+        "added",
+        "added"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "dist-s17",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s17-03",
+        "s17-04"
+      ],
+      "expected": [
+        "contradiction",
+        "contradiction"
+      ],
+      "predicted": [
+        "contradiction",
+        "contradiction"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "order-s17",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s17-05",
+        "s17-06"
+      ],
+      "expected": [
+        "unchanged",
+        "unchanged"
+      ],
+      "predicted": [
+        "unchanged",
+        "unchanged"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "dist-s18",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s18-03",
+        "s18-04"
+      ],
+      "expected": [
+        "added",
+        "added"
+      ],
+      "predicted": [
+        "modified",
+        "modified"
+      ],
+      "correct": [
+        false,
+        false
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "order-s18",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s18-05",
+        "s18-06"
+      ],
+      "expected": [
+        "removed",
+        "removed"
+      ],
+      "predicted": [
+        "removed",
+        "modified"
+      ],
+      "correct": [
+        true,
+        false
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "dist-s19",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s19-03",
+        "s19-04"
+      ],
+      "expected": [
+        "modified",
+        "modified"
+      ],
+      "predicted": [
+        "modified",
+        "modified"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "order-s19",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s19-05",
+        "s19-06"
+      ],
+      "expected": [
+        "added",
+        "added"
+      ],
+      "predicted": [
+        "added",
+        "added"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "dist-s20",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s20-03",
+        "s20-04"
+      ],
+      "expected": [
+        "contradiction",
+        "contradiction"
+      ],
+      "predicted": [
+        "ambiguous",
+        "modified"
+      ],
+      "correct": [
+        false,
+        false
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "order-s20",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s20-05",
+        "s20-06"
+      ],
+      "expected": [
+        "unchanged",
+        "unchanged"
+      ],
+      "predicted": [
+        "unchanged",
+        "unchanged"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "dist-s21",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s21-03",
+        "s21-04"
+      ],
+      "expected": [
+        "ambiguous",
+        "ambiguous"
+      ],
+      "predicted": [
+        "ambiguous",
+        "ambiguous"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "order-s21",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s21-05",
+        "s21-06"
+      ],
+      "expected": [
+        "unchanged",
+        "unchanged"
+      ],
+      "predicted": [
+        "unchanged",
+        "unchanged"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "dist-s22",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s22-03",
+        "s22-04"
+      ],
+      "expected": [
+        "ambiguous",
+        "ambiguous"
+      ],
+      "predicted": [
+        "ambiguous",
+        "ambiguous"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "order-s22",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s22-05",
+        "s22-06"
+      ],
+      "expected": [
+        "unchanged",
+        "unchanged"
+      ],
+      "predicted": [
+        "unchanged",
+        "unchanged"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "dist-s23",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s23-03",
+        "s23-04"
+      ],
+      "expected": [
+        "added",
+        "added"
+      ],
+      "predicted": [
+        "added",
+        "added"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "order-s23",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s23-05",
+        "s23-06"
+      ],
+      "expected": [
+        "unchanged",
+        "unchanged"
+      ],
+      "predicted": [
+        "unchanged",
+        "unchanged"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "dist-s24",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s24-03",
+        "s24-04"
+      ],
+      "expected": [
+        "modified",
+        "modified"
+      ],
+      "predicted": [
+        "modified",
+        "modified"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "order-s24",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s24-05",
+        "s24-06"
+      ],
+      "expected": [
+        "unchanged",
+        "unchanged"
+      ],
+      "predicted": [
+        "unchanged",
+        "unchanged"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "dist-s25",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s25-03",
+        "s25-04"
+      ],
+      "expected": [
+        "added",
+        "added"
+      ],
+      "predicted": [
+        "added",
+        "added"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "order-s25",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s25-05",
+        "s25-06"
+      ],
+      "expected": [
+        "unchanged",
+        "unchanged"
+      ],
+      "predicted": [
+        "unchanged",
+        "unchanged"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "dist-s26",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s26-03",
+        "s26-04"
+      ],
+      "expected": [
+        "contradiction",
+        "contradiction"
+      ],
+      "predicted": [
+        "contradiction",
+        "contradiction"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "order-s26",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s26-05",
+        "s26-06"
+      ],
+      "expected": [
+        "unchanged",
+        "unchanged"
+      ],
+      "predicted": [
+        "unchanged",
+        "unchanged"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "dist-s27",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s27-03",
+        "s27-04"
+      ],
+      "expected": [
+        "modified",
+        "modified"
+      ],
+      "predicted": [
+        "modified",
+        "modified"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "order-s27",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s27-05",
+        "s27-06"
+      ],
+      "expected": [
+        "unchanged",
+        "unchanged"
+      ],
+      "predicted": [
+        "unchanged",
+        "unchanged"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "dist-s28",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s28-03",
+        "s28-04"
+      ],
+      "expected": [
+        "removed",
+        "removed"
+      ],
+      "predicted": [
+        "modified",
+        "unchanged"
+      ],
+      "correct": [
+        false,
+        false
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "order-s28",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s28-05",
+        "s28-06"
+      ],
+      "expected": [
+        "modified",
+        "modified"
+      ],
+      "predicted": [
+        "modified",
+        "modified"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "dist-s29",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s29-03",
+        "s29-04"
+      ],
+      "expected": [
+        "added",
+        "added"
+      ],
+      "predicted": [
+        "added",
+        "added"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "order-s29",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s29-05",
+        "s29-06"
+      ],
+      "expected": [
+        "unchanged",
+        "unchanged"
+      ],
+      "predicted": [
+        "unchanged",
+        "unchanged"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "dist-s30",
+      "type": "distractor_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s30-03",
+        "s30-04"
+      ],
+      "expected": [
+        "contradiction",
+        "contradiction"
+      ],
+      "predicted": [
+        "modified",
+        "modified"
+      ],
+      "correct": [
+        false,
+        false
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "order-s30",
+      "type": "order_invariance",
+      "eligible": true,
+      "case_ids": [
+        "s30-05",
+        "s30-06"
+      ],
+      "expected": [
+        "unchanged",
+        "unchanged"
+      ],
+      "predicted": [
+        "unchanged",
+        "modified"
+      ],
+      "correct": [
+        true,
+        false
+      ],
+      "outcome": "not_all_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "contrast-p01",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p01-01",
+        "p01-02"
+      ],
+      "expected": [
+        "removed",
+        "modified"
+      ],
+      "predicted": [
+        "removed",
+        "modified"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "both_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "contrast-p02",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p02-01",
+        "p02-02"
+      ],
+      "expected": [
+        "removed",
+        "modified"
+      ],
+      "predicted": [
+        "modified",
+        "modified"
+      ],
+      "correct": [
+        false,
+        true
+      ],
+      "outcome": "second_only_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "contrast-p03",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p03-01",
+        "p03-02"
+      ],
+      "expected": [
+        "removed",
+        "modified"
+      ],
+      "predicted": [
+        "removed",
+        "modified"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "both_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "contrast-p04",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p04-01",
+        "p04-02"
+      ],
+      "expected": [
+        "removed",
+        "modified"
+      ],
+      "predicted": [
+        "removed",
+        "modified"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "both_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "contrast-p05",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p05-01",
+        "p05-02"
+      ],
+      "expected": [
+        "removed",
+        "modified"
+      ],
+      "predicted": [
+        "removed",
+        "modified"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "both_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "contrast-p06",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p06-01",
+        "p06-02"
+      ],
+      "expected": [
+        "modified",
+        "added"
+      ],
+      "predicted": [
+        "modified",
+        "modified"
+      ],
+      "correct": [
+        true,
+        false
+      ],
+      "outcome": "first_only_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "contrast-p07",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p07-01",
+        "p07-02"
+      ],
+      "expected": [
+        "modified",
+        "added"
+      ],
+      "predicted": [
+        "modified",
+        "added"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "both_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "contrast-p08",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p08-01",
+        "p08-02"
+      ],
+      "expected": [
+        "modified",
+        "contradiction"
+      ],
+      "predicted": [
+        "modified",
+        "contradiction"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "both_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "contrast-p09",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p09-01",
+        "p09-02"
+      ],
+      "expected": [
+        "modified",
+        "contradiction"
+      ],
+      "predicted": [
+        "modified",
+        "modified"
+      ],
+      "correct": [
+        true,
+        false
+      ],
+      "outcome": "first_only_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "contrast-p10",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p10-01",
+        "p10-02"
+      ],
+      "expected": [
+        "unchanged",
+        "modified"
+      ],
+      "predicted": [
+        "unchanged",
+        "modified"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "both_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "contrast-p11",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p11-01",
+        "p11-02"
+      ],
+      "expected": [
+        "unchanged",
+        "modified"
+      ],
+      "predicted": [
+        "unchanged",
+        "modified"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "both_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "contrast-p12",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p12-01",
+        "p12-02"
+      ],
+      "expected": [
+        "modified",
+        "ambiguous"
+      ],
+      "predicted": [
+        "modified",
+        "ambiguous"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "both_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "contrast-p13",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p13-01",
+        "p13-02"
+      ],
+      "expected": [
+        "modified",
+        "ambiguous"
+      ],
+      "predicted": [
+        "modified",
+        "ambiguous"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "both_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "contrast-p14",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p14-01",
+        "p14-02"
+      ],
+      "expected": [
+        "unchanged",
+        "added"
+      ],
+      "predicted": [
+        "unchanged",
+        "modified"
+      ],
+      "correct": [
+        true,
+        false
+      ],
+      "outcome": "first_only_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "contrast-p15",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p15-01",
+        "p15-02"
+      ],
+      "expected": [
+        "unchanged",
+        "added"
+      ],
+      "predicted": [
+        "unchanged",
+        "added"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "both_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "contrast-p16",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p16-01",
+        "p16-02"
+      ],
+      "expected": [
+        "removed",
+        "contradiction"
+      ],
+      "predicted": [
+        "removed",
+        "contradiction"
+      ],
+      "correct": [
+        true,
+        true
+      ],
+      "outcome": "both_correct",
+      "metamorphic_consistent": true
+    },
+    {
+      "id": "contrast-p17",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p17-01",
+        "p17-02"
+      ],
+      "expected": [
+        "removed",
+        "contradiction"
+      ],
+      "predicted": [
+        "removed",
+        "modified"
+      ],
+      "correct": [
+        true,
+        false
+      ],
+      "outcome": "first_only_correct",
+      "metamorphic_consistent": false
+    },
+    {
+      "id": "contrast-p18",
+      "type": "minimal_pair_contrast",
+      "eligible": true,
+      "case_ids": [
+        "p18-01",
+        "p18-02"
+      ],
+      "expected": [
+        "added",
+        "contradiction"
+      ],
+      "predicted": [
+        "modified",
+        "added"
+      ],
+      "correct": [
+        false,
+        false
+      ],
+      "outcome": "both_incorrect",
+      "metamorphic_consistent": false
+    }
+  ]
+}

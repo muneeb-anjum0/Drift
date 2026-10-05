@@ -1,0 +1,108 @@
+{
+  "role": "PHASE_III_I_5_CONFIDENCE_LATENCY",
+  "dataset_sha256": "54b56f0b2068e9c26f8a315bbd925649b9bcf25c2d4bc248cb5258419b73ec5b",
+  "confidence_warning": "Self-reported model confidence is not calibrated probability.",
+  "confidence_bands": [
+    {
+      "lower_inclusive": 0.0,
+      "upper": 0.5,
+      "upper_inclusive": false,
+      "support": 0,
+      "correct": 0,
+      "accuracy": 0.0,
+      "mean_self_reported_confidence": null
+    },
+    {
+      "lower_inclusive": 0.5,
+      "upper": 0.8,
+      "upper_inclusive": false,
+      "support": 22,
+      "correct": 21,
+      "accuracy": 0.9545454545454546,
+      "mean_self_reported_confidence": 0.6
+    },
+    {
+      "lower_inclusive": 0.8,
+      "upper": 0.9,
+      "upper_inclusive": false,
+      "support": 7,
+      "correct": 2,
+      "accuracy": 0.2857142857142857,
+      "mean_self_reported_confidence": 0.8285714285714285
+    },
+    {
+      "lower_inclusive": 0.9,
+      "upper": 1.0,
+      "upper_inclusive": true,
+      "support": 186,
+      "correct": 138,
+      "accuracy": 0.7419354838709677,
+      "mean_self_reported_confidence": 0.9430645161290322
+    }
+  ],
+  "high_confidence_wrong_ge_0_9": 48,
+  "high_confidence_wrong_case_ids": [
+    "s02-03",
+    "s03-02",
+    "s03-05",
+    "s04-02",
+    "s04-03",
+    "s06-01",
+    "s06-06",
+    "s07-04",
+    "s08-01",
+    "s08-02",
+    "s08-03",
+    "s08-04",
+    "s09-01",
+    "s09-02",
+    "s09-04",
+    "s10-01",
+    "s10-03",
+    "s11-02",
+    "s11-05",
+    "s12-02",
+    "s12-04",
+    "s12-05",
+    "s12-06",
+    "s13-06",
+    "s14-01",
+    "s14-02",
+    "s14-04",
+    "s16-03",
+    "s17-01",
+    "s18-01",
+    "s18-03",
+    "s18-04",
+    "s18-06",
+    "s20-01",
+    "s20-04",
+    "s28-01",
+    "s28-03",
+    "s28-04",
+    "s30-01",
+    "s30-03",
+    "s30-06",
+    "p02-01",
+    "p06-02",
+    "p09-02",
+    "p14-02",
+    "p17-02",
+    "p18-01",
+    "p18-02"
+  ],
+  "latency_seconds": {
+    "calls": 216,
+    "total": 2366.509,
+    "mean": 10.956060185185185,
+    "median": 10.7045,
+    "p95_nearest_rank": 14.309,
+    "max": 16.405
+  },
+  "prompt_tokens": {
+    "max": 357
+  },
+  "generated_tokens": {
+    "max": 74
+  }
+}

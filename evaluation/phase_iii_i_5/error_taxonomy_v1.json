@@ -1,0 +1,828 @@
+{
+  "role": "PHASE_III_I_5_POST_HOC_RAW_ERROR_TAXONOMY",
+  "dataset_sha256": "54b56f0b2068e9c26f8a315bbd925649b9bcf25c2d4bc248cb5258419b73ec5b",
+  "error_count": 54,
+  "primary_family_counts": {
+    "ADDITION_BOUNDARY_ERROR": 12,
+    "CONTRADICTION_MISSED": 18,
+    "FALSE_CONTRADICTION": 1,
+    "OTHER": 3,
+    "REMOVAL_AS_MODIFICATION": 16,
+    "UNCHANGED_BOUNDARY_ERROR": 4
+  },
+  "causal_warning": "Boundary families describe observed labels; phenomenon tags are exposure context, not established causes.",
+  "rows": [
+    {
+      "case_id": "s01-04",
+      "truth": "removed",
+      "predicted": "modified",
+      "primary_family": "REMOVAL_AS_MODIFICATION",
+      "boundary_explanation": "Explicit removal was labeled as a surviving-behavior modification.",
+      "phenomena_present_not_proven_causal": [
+        "naturalistic",
+        "negation",
+        "partial_removal"
+      ],
+      "observed_relation_instability": [
+        "PARAPHRASE_INSTABILITY"
+      ],
+      "difficulty_tier": "T4",
+      "domain": "community-clinic-messaging"
+    },
+    {
+      "case_id": "s02-03",
+      "truth": "removed",
+      "predicted": "contradiction",
+      "primary_family": "FALSE_CONTRADICTION",
+      "boundary_explanation": "No reviewed explicit-invariant contradiction was present.",
+      "phenomena_present_not_proven_causal": [
+        "negation",
+        "partial_removal"
+      ],
+      "observed_relation_instability": [
+        "PARAPHRASE_INSTABILITY"
+      ],
+      "difficulty_tier": "T2",
+      "domain": "museum-access"
+    },
+    {
+      "case_id": "s03-02",
+      "truth": "unchanged",
+      "predicted": "modified",
+      "primary_family": "UNCHANGED_BOUNDARY_ERROR",
+      "boundary_explanation": "Reviewed unchanged behavior was assigned another class.",
+      "phenomena_present_not_proven_causal": [
+        "channel",
+        "numeric"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T1",
+      "domain": "cold-storage-monitoring"
+    },
+    {
+      "case_id": "s03-05",
+      "truth": "removed",
+      "predicted": "modified",
+      "primary_family": "REMOVAL_AS_MODIFICATION",
+      "boundary_explanation": "Explicit removal was labeled as a surviving-behavior modification.",
+      "phenomena_present_not_proven_causal": [
+        "negation",
+        "partial_removal"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T2",
+      "domain": "cold-storage-monitoring"
+    },
+    {
+      "case_id": "s04-02",
+      "truth": "added",
+      "predicted": "modified",
+      "primary_family": "ADDITION_BOUNDARY_ERROR",
+      "boundary_explanation": "Reviewed addition was assigned another class.",
+      "phenomena_present_not_proven_causal": [
+        "permission",
+        "role"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T1",
+      "domain": "school-transcripts"
+    },
+    {
+      "case_id": "s04-03",
+      "truth": "contradiction",
+      "predicted": "modified",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "role",
+        "scope"
+      ],
+      "observed_relation_instability": [
+        "PARAPHRASE_INSTABILITY"
+      ],
+      "difficulty_tier": "T2",
+      "domain": "school-transcripts"
+    },
+    {
+      "case_id": "s06-01",
+      "truth": "contradiction",
+      "predicted": "modified",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "lexical_trap",
+        "numeric",
+        "temporal"
+      ],
+      "observed_relation_instability": [
+        "PARAPHRASE_INSTABILITY"
+      ],
+      "difficulty_tier": "T3",
+      "domain": "expense-approval"
+    },
+    {
+      "case_id": "s06-04",
+      "truth": "contradiction",
+      "predicted": "modified",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "naturalistic",
+        "numeric",
+        "role"
+      ],
+      "observed_relation_instability": [
+        "PARAPHRASE_INSTABILITY"
+      ],
+      "difficulty_tier": "T4",
+      "domain": "expense-approval"
+    },
+    {
+      "case_id": "s06-05",
+      "truth": "unchanged",
+      "predicted": "modified",
+      "primary_family": "UNCHANGED_BOUNDARY_ERROR",
+      "boundary_explanation": "Reviewed unchanged behavior was assigned another class.",
+      "phenomena_present_not_proven_causal": [
+        "distractor",
+        "role"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T2",
+      "domain": "expense-approval"
+    },
+    {
+      "case_id": "s06-06",
+      "truth": "added",
+      "predicted": "unchanged",
+      "primary_family": "ADDITION_BOUNDARY_ERROR",
+      "boundary_explanation": "Reviewed addition was assigned another class.",
+      "phenomena_present_not_proven_causal": [
+        "naturalistic",
+        "temporal"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T4",
+      "domain": "expense-approval"
+    },
+    {
+      "case_id": "s07-04",
+      "truth": "removed",
+      "predicted": "modified",
+      "primary_family": "REMOVAL_AS_MODIFICATION",
+      "boundary_explanation": "Explicit removal was labeled as a surviving-behavior modification.",
+      "phenomena_present_not_proven_causal": [
+        "naturalistic",
+        "partial_removal",
+        "scope"
+      ],
+      "observed_relation_instability": [
+        "PARAPHRASE_INSTABILITY"
+      ],
+      "difficulty_tier": "T4",
+      "domain": "photo-backup"
+    },
+    {
+      "case_id": "s08-01",
+      "truth": "removed",
+      "predicted": "modified",
+      "primary_family": "REMOVAL_AS_MODIFICATION",
+      "boundary_explanation": "Explicit removal was labeled as a surviving-behavior modification.",
+      "phenomena_present_not_proven_causal": [
+        "negation",
+        "partial_removal",
+        "role"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T3",
+      "domain": "marketplace-disputes"
+    },
+    {
+      "case_id": "s08-02",
+      "truth": "modified",
+      "predicted": "unchanged",
+      "primary_family": "OTHER",
+      "boundary_explanation": "modified was labeled unchanged; no narrower preregistered primary family fits.",
+      "phenomena_present_not_proven_causal": [
+        "modification_control",
+        "numeric",
+        "temporal"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T1",
+      "domain": "marketplace-disputes"
+    },
+    {
+      "case_id": "s08-03",
+      "truth": "removed",
+      "predicted": "modified",
+      "primary_family": "REMOVAL_AS_MODIFICATION",
+      "boundary_explanation": "Explicit removal was labeled as a surviving-behavior modification.",
+      "phenomena_present_not_proven_causal": [
+        "partial_removal",
+        "role"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T2",
+      "domain": "marketplace-disputes"
+    },
+    {
+      "case_id": "s08-04",
+      "truth": "removed",
+      "predicted": "modified",
+      "primary_family": "REMOVAL_AS_MODIFICATION",
+      "boundary_explanation": "Explicit removal was labeled as a surviving-behavior modification.",
+      "phenomena_present_not_proven_causal": [
+        "naturalistic",
+        "partial_removal",
+        "role"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T4",
+      "domain": "marketplace-disputes"
+    },
+    {
+      "case_id": "s09-01",
+      "truth": "contradiction",
+      "predicted": "modified",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "lexical_trap",
+        "permission",
+        "role"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T3",
+      "domain": "api-key-management"
+    },
+    {
+      "case_id": "s09-02",
+      "truth": "added",
+      "predicted": "modified",
+      "primary_family": "ADDITION_BOUNDARY_ERROR",
+      "boundary_explanation": "Reviewed addition was assigned another class.",
+      "phenomena_present_not_proven_causal": [
+        "format",
+        "role"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T1",
+      "domain": "api-key-management"
+    },
+    {
+      "case_id": "s09-04",
+      "truth": "contradiction",
+      "predicted": "added",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "naturalistic",
+        "permission",
+        "role"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T4",
+      "domain": "api-key-management"
+    },
+    {
+      "case_id": "s10-01",
+      "truth": "removed",
+      "predicted": "modified",
+      "primary_family": "REMOVAL_AS_MODIFICATION",
+      "boundary_explanation": "Explicit removal was labeled as a surviving-behavior modification.",
+      "phenomena_present_not_proven_causal": [
+        "lexical_trap",
+        "numeric",
+        "partial_removal"
+      ],
+      "observed_relation_instability": [
+        "PARAPHRASE_INSTABILITY"
+      ],
+      "difficulty_tier": "T3",
+      "domain": "sports-booking"
+    },
+    {
+      "case_id": "s10-03",
+      "truth": "removed",
+      "predicted": "modified",
+      "primary_family": "REMOVAL_AS_MODIFICATION",
+      "boundary_explanation": "Explicit removal was labeled as a surviving-behavior modification.",
+      "phenomena_present_not_proven_causal": [
+        "numeric",
+        "partial_removal"
+      ],
+      "observed_relation_instability": [
+        "PARAPHRASE_INSTABILITY"
+      ],
+      "difficulty_tier": "T2",
+      "domain": "sports-booking"
+    },
+    {
+      "case_id": "s11-02",
+      "truth": "unchanged",
+      "predicted": "modified",
+      "primary_family": "UNCHANGED_BOUNDARY_ERROR",
+      "boundary_explanation": "Reviewed unchanged behavior was assigned another class.",
+      "phenomena_present_not_proven_causal": [
+        "distractor"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T1",
+      "domain": "library-discovery"
+    },
+    {
+      "case_id": "s11-05",
+      "truth": "removed",
+      "predicted": "modified",
+      "primary_family": "REMOVAL_AS_MODIFICATION",
+      "boundary_explanation": "Explicit removal was labeled as a surviving-behavior modification.",
+      "phenomena_present_not_proven_causal": [
+        "order",
+        "partial_removal"
+      ],
+      "observed_relation_instability": [
+        "ORDER_SENSITIVITY"
+      ],
+      "difficulty_tier": "T2",
+      "domain": "library-discovery"
+    },
+    {
+      "case_id": "s12-02",
+      "truth": "removed",
+      "predicted": "modified",
+      "primary_family": "REMOVAL_AS_MODIFICATION",
+      "boundary_explanation": "Explicit removal was labeled as a surviving-behavior modification.",
+      "phenomena_present_not_proven_causal": [
+        "partial_removal",
+        "scope"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T1",
+      "domain": "payroll-export"
+    },
+    {
+      "case_id": "s12-04",
+      "truth": "modified",
+      "predicted": "unchanged",
+      "primary_family": "OTHER",
+      "boundary_explanation": "modified was labeled unchanged; no narrower preregistered primary family fits.",
+      "phenomena_present_not_proven_causal": [
+        "distractor",
+        "naturalistic",
+        "temporal"
+      ],
+      "observed_relation_instability": [
+        "DISTRACTOR_SENSITIVITY"
+      ],
+      "difficulty_tier": "T4",
+      "domain": "payroll-export"
+    },
+    {
+      "case_id": "s12-05",
+      "truth": "added",
+      "predicted": "modified",
+      "primary_family": "ADDITION_BOUNDARY_ERROR",
+      "boundary_explanation": "Reviewed addition was assigned another class.",
+      "phenomena_present_not_proven_causal": [
+        "order",
+        "scope"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T2",
+      "domain": "payroll-export"
+    },
+    {
+      "case_id": "s12-06",
+      "truth": "added",
+      "predicted": "modified",
+      "primary_family": "ADDITION_BOUNDARY_ERROR",
+      "boundary_explanation": "Reviewed addition was assigned another class.",
+      "phenomena_present_not_proven_causal": [
+        "naturalistic",
+        "order"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T4",
+      "domain": "payroll-export"
+    },
+    {
+      "case_id": "s13-06",
+      "truth": "removed",
+      "predicted": "modified",
+      "primary_family": "REMOVAL_AS_MODIFICATION",
+      "boundary_explanation": "Explicit removal was labeled as a surviving-behavior modification.",
+      "phenomena_present_not_proven_causal": [
+        "naturalistic",
+        "negation",
+        "order"
+      ],
+      "observed_relation_instability": [
+        "ORDER_SENSITIVITY"
+      ],
+      "difficulty_tier": "T4",
+      "domain": "bike-share"
+    },
+    {
+      "case_id": "s14-01",
+      "truth": "contradiction",
+      "predicted": "modified",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "lexical_trap",
+        "temporal"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T3",
+      "domain": "court-filing"
+    },
+    {
+      "case_id": "s14-02",
+      "truth": "added",
+      "predicted": "modified",
+      "primary_family": "ADDITION_BOUNDARY_ERROR",
+      "boundary_explanation": "Reviewed addition was assigned another class.",
+      "phenomena_present_not_proven_causal": [
+        "addition",
+        "temporal"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T1",
+      "domain": "court-filing"
+    },
+    {
+      "case_id": "s14-04",
+      "truth": "contradiction",
+      "predicted": "modified",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "distractor",
+        "naturalistic",
+        "temporal"
+      ],
+      "observed_relation_instability": [
+        "DISTRACTOR_SENSITIVITY"
+      ],
+      "difficulty_tier": "T4",
+      "domain": "court-filing"
+    },
+    {
+      "case_id": "s16-03",
+      "truth": "removed",
+      "predicted": "modified",
+      "primary_family": "REMOVAL_AS_MODIFICATION",
+      "boundary_explanation": "Explicit removal was labeled as a surviving-behavior modification.",
+      "phenomena_present_not_proven_causal": [
+        "distractor",
+        "partial_removal"
+      ],
+      "observed_relation_instability": [
+        "DISTRACTOR_SENSITIVITY"
+      ],
+      "difficulty_tier": "T2",
+      "domain": "subscription-billing"
+    },
+    {
+      "case_id": "s17-01",
+      "truth": "contradiction",
+      "predicted": "modified",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "lexical_trap",
+        "role"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T3",
+      "domain": "factory-safety"
+    },
+    {
+      "case_id": "s18-01",
+      "truth": "added",
+      "predicted": "modified",
+      "primary_family": "ADDITION_BOUNDARY_ERROR",
+      "boundary_explanation": "Reviewed addition was assigned another class.",
+      "phenomena_present_not_proven_causal": [
+        "lexical_trap",
+        "role"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T3",
+      "domain": "hr-onboarding"
+    },
+    {
+      "case_id": "s18-03",
+      "truth": "added",
+      "predicted": "modified",
+      "primary_family": "ADDITION_BOUNDARY_ERROR",
+      "boundary_explanation": "Reviewed addition was assigned another class.",
+      "phenomena_present_not_proven_causal": [
+        "distractor",
+        "role"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T2",
+      "domain": "hr-onboarding"
+    },
+    {
+      "case_id": "s18-04",
+      "truth": "added",
+      "predicted": "modified",
+      "primary_family": "ADDITION_BOUNDARY_ERROR",
+      "boundary_explanation": "Reviewed addition was assigned another class.",
+      "phenomena_present_not_proven_causal": [
+        "distractor",
+        "naturalistic",
+        "role"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T4",
+      "domain": "hr-onboarding"
+    },
+    {
+      "case_id": "s18-06",
+      "truth": "removed",
+      "predicted": "modified",
+      "primary_family": "REMOVAL_AS_MODIFICATION",
+      "boundary_explanation": "Explicit removal was labeled as a surviving-behavior modification.",
+      "phenomena_present_not_proven_causal": [
+        "naturalistic",
+        "negation",
+        "order",
+        "role"
+      ],
+      "observed_relation_instability": [
+        "ORDER_SENSITIVITY"
+      ],
+      "difficulty_tier": "T4",
+      "domain": "hr-onboarding"
+    },
+    {
+      "case_id": "s20-01",
+      "truth": "contradiction",
+      "predicted": "modified",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "lexical_trap",
+        "temporal"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T3",
+      "domain": "telemedicine-consent"
+    },
+    {
+      "case_id": "s20-03",
+      "truth": "contradiction",
+      "predicted": "ambiguous",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "distractor",
+        "temporal"
+      ],
+      "observed_relation_instability": [
+        "DISTRACTOR_SENSITIVITY"
+      ],
+      "difficulty_tier": "T2",
+      "domain": "telemedicine-consent"
+    },
+    {
+      "case_id": "s20-04",
+      "truth": "contradiction",
+      "predicted": "modified",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "distractor",
+        "naturalistic",
+        "numeric"
+      ],
+      "observed_relation_instability": [
+        "DISTRACTOR_SENSITIVITY"
+      ],
+      "difficulty_tier": "T4",
+      "domain": "telemedicine-consent"
+    },
+    {
+      "case_id": "s26-01",
+      "truth": "contradiction",
+      "predicted": "modified",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "lexical_trap",
+        "role",
+        "temporal"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T3",
+      "domain": "account-security"
+    },
+    {
+      "case_id": "s28-01",
+      "truth": "removed",
+      "predicted": "modified",
+      "primary_family": "REMOVAL_AS_MODIFICATION",
+      "boundary_explanation": "Explicit removal was labeled as a surviving-behavior modification.",
+      "phenomena_present_not_proven_causal": [
+        "lexical_trap",
+        "negation",
+        "partial_removal"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T3",
+      "domain": "fulfillment-packing"
+    },
+    {
+      "case_id": "s28-03",
+      "truth": "removed",
+      "predicted": "modified",
+      "primary_family": "REMOVAL_AS_MODIFICATION",
+      "boundary_explanation": "Explicit removal was labeled as a surviving-behavior modification.",
+      "phenomena_present_not_proven_causal": [
+        "distractor",
+        "partial_removal"
+      ],
+      "observed_relation_instability": [
+        "DISTRACTOR_SENSITIVITY"
+      ],
+      "difficulty_tier": "T2",
+      "domain": "fulfillment-packing"
+    },
+    {
+      "case_id": "s28-04",
+      "truth": "removed",
+      "predicted": "unchanged",
+      "primary_family": "OTHER",
+      "boundary_explanation": "removed was labeled unchanged; no narrower preregistered primary family fits.",
+      "phenomena_present_not_proven_causal": [
+        "distractor",
+        "naturalistic",
+        "partial_removal"
+      ],
+      "observed_relation_instability": [
+        "DISTRACTOR_SENSITIVITY"
+      ],
+      "difficulty_tier": "T4",
+      "domain": "fulfillment-packing"
+    },
+    {
+      "case_id": "s30-01",
+      "truth": "contradiction",
+      "predicted": "modified",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "lexical_trap",
+        "numeric",
+        "temporal"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T3",
+      "domain": "research-data-retention"
+    },
+    {
+      "case_id": "s30-03",
+      "truth": "contradiction",
+      "predicted": "modified",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "distractor",
+        "temporal"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T2",
+      "domain": "research-data-retention"
+    },
+    {
+      "case_id": "s30-04",
+      "truth": "contradiction",
+      "predicted": "modified",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "distractor",
+        "naturalistic",
+        "numeric"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T4",
+      "domain": "research-data-retention"
+    },
+    {
+      "case_id": "s30-06",
+      "truth": "unchanged",
+      "predicted": "modified",
+      "primary_family": "UNCHANGED_BOUNDARY_ERROR",
+      "boundary_explanation": "Reviewed unchanged behavior was assigned another class.",
+      "phenomena_present_not_proven_causal": [
+        "naturalistic",
+        "order",
+        "temporal"
+      ],
+      "observed_relation_instability": [
+        "ORDER_SENSITIVITY"
+      ],
+      "difficulty_tier": "T4",
+      "domain": "research-data-retention"
+    },
+    {
+      "case_id": "p02-01",
+      "truth": "removed",
+      "predicted": "modified",
+      "primary_family": "REMOVAL_AS_MODIFICATION",
+      "boundary_explanation": "Explicit removal was labeled as a surviving-behavior modification.",
+      "phenomena_present_not_proven_causal": [
+        "partial_removal"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T3",
+      "domain": "weather-alerts"
+    },
+    {
+      "case_id": "p06-02",
+      "truth": "added",
+      "predicted": "modified",
+      "primary_family": "ADDITION_BOUNDARY_ERROR",
+      "boundary_explanation": "Reviewed addition was assigned another class.",
+      "phenomena_present_not_proven_causal": [
+        "format",
+        "numeric"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T3",
+      "domain": "portfolio-export"
+    },
+    {
+      "case_id": "p09-02",
+      "truth": "contradiction",
+      "predicted": "modified",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "temporal"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T3",
+      "domain": "equipment-rental"
+    },
+    {
+      "case_id": "p14-02",
+      "truth": "added",
+      "predicted": "modified",
+      "primary_family": "ADDITION_BOUNDARY_ERROR",
+      "boundary_explanation": "Reviewed addition was assigned another class.",
+      "phenomena_present_not_proven_causal": [
+        "temporal"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T3",
+      "domain": "shipment-tracking"
+    },
+    {
+      "case_id": "p17-02",
+      "truth": "contradiction",
+      "predicted": "modified",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "lexical_trap",
+        "role"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T3",
+      "domain": "medication-dispensing"
+    },
+    {
+      "case_id": "p18-01",
+      "truth": "added",
+      "predicted": "modified",
+      "primary_family": "ADDITION_BOUNDARY_ERROR",
+      "boundary_explanation": "Reviewed addition was assigned another class.",
+      "phenomena_present_not_proven_causal": [
+        "role"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T3",
+      "domain": "membership-renewal"
+    },
+    {
+      "case_id": "p18-02",
+      "truth": "contradiction",
+      "predicted": "added",
+      "primary_family": "CONTRADICTION_MISSED",
+      "boundary_explanation": "An incompatible explicit invariant was not labeled contradiction.",
+      "phenomena_present_not_proven_causal": [
+        "lexical_trap",
+        "role"
+      ],
+      "observed_relation_instability": [],
+      "difficulty_tier": "T3",
+      "domain": "membership-renewal"
+    }
+  ]
+}

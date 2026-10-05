@@ -1,0 +1,990 @@
+{
+  "role": "PHASE_III_I_5_RAW_SLICE_METRICS",
+  "dataset_sha256": "54b56f0b2068e9c26f8a315bbd925649b9bcf25c2d4bc248cb5258419b73ec5b",
+  "slices": {
+    "difficulty_tier": {
+      "T1": {
+        "support": 34,
+        "correct": 27,
+        "accuracy": 0.7941176470588235,
+        "error_case_ids": [
+          "s03-02",
+          "s04-02",
+          "s08-02",
+          "s09-02",
+          "s11-02",
+          "s12-02",
+          "s14-02"
+        ]
+      },
+      "T2": {
+        "support": 59,
+        "correct": 46,
+        "accuracy": 0.7796610169491526,
+        "error_case_ids": [
+          "s02-03",
+          "s03-05",
+          "s04-03",
+          "s06-05",
+          "s08-03",
+          "s10-03",
+          "s11-05",
+          "s12-05",
+          "s16-03",
+          "s18-03",
+          "s20-03",
+          "s28-03",
+          "s30-03"
+        ]
+      },
+      "T3": {
+        "support": 62,
+        "correct": 44,
+        "accuracy": 0.7096774193548387,
+        "error_case_ids": [
+          "s06-01",
+          "s08-01",
+          "s09-01",
+          "s10-01",
+          "s14-01",
+          "s17-01",
+          "s18-01",
+          "s20-01",
+          "s26-01",
+          "s28-01",
+          "s30-01",
+          "p02-01",
+          "p06-02",
+          "p09-02",
+          "p14-02",
+          "p17-02",
+          "p18-01",
+          "p18-02"
+        ]
+      },
+      "T4": {
+        "support": 60,
+        "correct": 44,
+        "accuracy": 0.7333333333333333,
+        "error_case_ids": [
+          "s01-04",
+          "s06-04",
+          "s06-06",
+          "s07-04",
+          "s08-04",
+          "s09-04",
+          "s12-04",
+          "s12-06",
+          "s13-06",
+          "s14-04",
+          "s18-04",
+          "s18-06",
+          "s20-04",
+          "s28-04",
+          "s30-04",
+          "s30-06"
+        ]
+      }
+    },
+    "domain": {
+      "access-audit": {
+        "support": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "account-security": {
+        "support": 6,
+        "correct": 5,
+        "accuracy": 0.8333333333333334,
+        "error_case_ids": [
+          "s26-01"
+        ]
+      },
+      "api-key-management": {
+        "support": 5,
+        "correct": 2,
+        "accuracy": 0.4,
+        "error_case_ids": [
+          "s09-01",
+          "s09-02",
+          "s09-04"
+        ]
+      },
+      "bike-share": {
+        "support": 6,
+        "correct": 5,
+        "accuracy": 0.8333333333333334,
+        "error_case_ids": [
+          "s13-06"
+        ]
+      },
+      "calendar-delegation": {
+        "support": 6,
+        "correct": 6,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "cold-storage-monitoring": {
+        "support": 6,
+        "correct": 4,
+        "accuracy": 0.6666666666666666,
+        "error_case_ids": [
+          "s03-02",
+          "s03-05"
+        ]
+      },
+      "community-clinic-messaging": {
+        "support": 6,
+        "correct": 5,
+        "accuracy": 0.8333333333333334,
+        "error_case_ids": [
+          "s01-04"
+        ]
+      },
+      "conference-registration": {
+        "support": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "course-accessibility": {
+        "support": 6,
+        "correct": 6,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "court-filing": {
+        "support": 6,
+        "correct": 3,
+        "accuracy": 0.5,
+        "error_case_ids": [
+          "s14-01",
+          "s14-02",
+          "s14-04"
+        ]
+      },
+      "document-sharing": {
+        "support": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "donation-checkout": {
+        "support": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "equipment-rental": {
+        "support": 2,
+        "correct": 1,
+        "accuracy": 0.5,
+        "error_case_ids": [
+          "p09-02"
+        ]
+      },
+      "expense-approval": {
+        "support": 6,
+        "correct": 2,
+        "accuracy": 0.3333333333333333,
+        "error_case_ids": [
+          "s06-01",
+          "s06-04",
+          "s06-05",
+          "s06-06"
+        ]
+      },
+      "factory-safety": {
+        "support": 6,
+        "correct": 5,
+        "accuracy": 0.8333333333333334,
+        "error_case_ids": [
+          "s17-01"
+        ]
+      },
+      "fitness-tracking": {
+        "support": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "fleet-maintenance": {
+        "support": 6,
+        "correct": 6,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "fulfillment-packing": {
+        "support": 6,
+        "correct": 3,
+        "accuracy": 0.5,
+        "error_case_ids": [
+          "s28-01",
+          "s28-03",
+          "s28-04"
+        ]
+      },
+      "hr-onboarding": {
+        "support": 6,
+        "correct": 2,
+        "accuracy": 0.3333333333333333,
+        "error_case_ids": [
+          "s18-01",
+          "s18-03",
+          "s18-04",
+          "s18-06"
+        ]
+      },
+      "insurance-payout": {
+        "support": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "lab-sampling": {
+        "support": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "learning-assessment": {
+        "support": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "library-discovery": {
+        "support": 6,
+        "correct": 4,
+        "accuracy": 0.6666666666666666,
+        "error_case_ids": [
+          "s11-02",
+          "s11-05"
+        ]
+      },
+      "marketplace-disputes": {
+        "support": 6,
+        "correct": 2,
+        "accuracy": 0.3333333333333333,
+        "error_case_ids": [
+          "s08-01",
+          "s08-02",
+          "s08-03",
+          "s08-04"
+        ]
+      },
+      "meal-booking": {
+        "support": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "medication-dispensing": {
+        "support": 2,
+        "correct": 1,
+        "accuracy": 0.5,
+        "error_case_ids": [
+          "p17-02"
+        ]
+      },
+      "membership-renewal": {
+        "support": 2,
+        "correct": 0,
+        "accuracy": 0.0,
+        "error_case_ids": [
+          "p18-01",
+          "p18-02"
+        ]
+      },
+      "museum-access": {
+        "support": 6,
+        "correct": 5,
+        "accuracy": 0.8333333333333334,
+        "error_case_ids": [
+          "s02-03"
+        ]
+      },
+      "parcel-notifications": {
+        "support": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "payroll-export": {
+        "support": 6,
+        "correct": 2,
+        "accuracy": 0.3333333333333333,
+        "error_case_ids": [
+          "s12-02",
+          "s12-04",
+          "s12-05",
+          "s12-06"
+        ]
+      },
+      "pharmacy-refills": {
+        "support": 6,
+        "correct": 6,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "photo-backup": {
+        "support": 6,
+        "correct": 5,
+        "accuracy": 0.8333333333333334,
+        "error_case_ids": [
+          "s07-04"
+        ]
+      },
+      "portfolio-export": {
+        "support": 2,
+        "correct": 1,
+        "accuracy": 0.5,
+        "error_case_ids": [
+          "p06-02"
+        ]
+      },
+      "public-transport-arrivals": {
+        "support": 6,
+        "correct": 6,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "rail-pass-renewal": {
+        "support": 6,
+        "correct": 6,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "report-scheduling": {
+        "support": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "research-data-retention": {
+        "support": 6,
+        "correct": 2,
+        "accuracy": 0.3333333333333333,
+        "error_case_ids": [
+          "s30-01",
+          "s30-03",
+          "s30-04",
+          "s30-06"
+        ]
+      },
+      "school-transcripts": {
+        "support": 6,
+        "correct": 4,
+        "accuracy": 0.6666666666666666,
+        "error_case_ids": [
+          "s04-02",
+          "s04-03"
+        ]
+      },
+      "shipment-tracking": {
+        "support": 2,
+        "correct": 1,
+        "accuracy": 0.5,
+        "error_case_ids": [
+          "p14-02"
+        ]
+      },
+      "sports-booking": {
+        "support": 6,
+        "correct": 4,
+        "accuracy": 0.6666666666666666,
+        "error_case_ids": [
+          "s10-01",
+          "s10-03"
+        ]
+      },
+      "subscription-billing": {
+        "support": 6,
+        "correct": 5,
+        "accuracy": 0.8333333333333334,
+        "error_case_ids": [
+          "s16-03"
+        ]
+      },
+      "telemedicine-consent": {
+        "support": 6,
+        "correct": 3,
+        "accuracy": 0.5,
+        "error_case_ids": [
+          "s20-01",
+          "s20-03",
+          "s20-04"
+        ]
+      },
+      "tenant-messaging": {
+        "support": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "video-transcription": {
+        "support": 6,
+        "correct": 6,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "warehouse-returns": {
+        "support": 6,
+        "correct": 6,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "water-usage": {
+        "support": 6,
+        "correct": 6,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "weather-alerts": {
+        "support": 2,
+        "correct": 1,
+        "accuracy": 0.5,
+        "error_case_ids": [
+          "p02-01"
+        ]
+      },
+      "wildlife-survey": {
+        "support": 6,
+        "correct": 6,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      }
+    },
+    "length_bucket": {
+      "long": {
+        "support": 12,
+        "correct": 6,
+        "accuracy": 0.5,
+        "error_case_ids": [
+          "s01-04",
+          "s06-04",
+          "s07-04",
+          "s08-04",
+          "s09-04",
+          "s12-04"
+        ]
+      },
+      "medium": {
+        "support": 191,
+        "correct": 145,
+        "accuracy": 0.7591623036649214,
+        "error_case_ids": [
+          "s02-03",
+          "s03-02",
+          "s03-05",
+          "s04-02",
+          "s04-03",
+          "s06-01",
+          "s06-05",
+          "s06-06",
+          "s08-01",
+          "s08-02",
+          "s08-03",
+          "s09-01",
+          "s09-02",
+          "s10-01",
+          "s10-03",
+          "s11-02",
+          "s11-05",
+          "s12-02",
+          "s12-05",
+          "s12-06",
+          "s13-06",
+          "s14-01",
+          "s14-02",
+          "s14-04",
+          "s16-03",
+          "s17-01",
+          "s18-01",
+          "s18-03",
+          "s18-04",
+          "s18-06",
+          "s20-01",
+          "s20-03",
+          "s20-04",
+          "s26-01",
+          "s28-01",
+          "s28-03",
+          "s28-04",
+          "s30-01",
+          "s30-03",
+          "s30-04",
+          "s30-06",
+          "p06-02",
+          "p09-02",
+          "p14-02",
+          "p18-01",
+          "p18-02"
+        ]
+      },
+      "short": {
+        "support": 12,
+        "correct": 10,
+        "accuracy": 0.8333333333333334,
+        "error_case_ids": [
+          "p02-01",
+          "p17-02"
+        ]
+      }
+    },
+    "phenomenon_tag": {
+      "addition": {
+        "support": 1,
+        "correct": 0,
+        "accuracy": 0.0,
+        "error_case_ids": [
+          "s14-02"
+        ]
+      },
+      "channel": {
+        "support": 7,
+        "correct": 6,
+        "accuracy": 0.8571428571428571,
+        "error_case_ids": [
+          "s03-02"
+        ]
+      },
+      "distractor": {
+        "support": 46,
+        "correct": 33,
+        "accuracy": 0.717391304347826,
+        "error_case_ids": [
+          "s06-05",
+          "s11-02",
+          "s12-04",
+          "s14-04",
+          "s16-03",
+          "s18-03",
+          "s18-04",
+          "s20-03",
+          "s20-04",
+          "s28-03",
+          "s28-04",
+          "s30-03",
+          "s30-04"
+        ]
+      },
+      "format": {
+        "support": 9,
+        "correct": 7,
+        "accuracy": 0.7777777777777778,
+        "error_case_ids": [
+          "s09-02",
+          "p06-02"
+        ]
+      },
+      "hypothetical": {
+        "support": 18,
+        "correct": 18,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "lexical_trap": {
+        "support": 34,
+        "correct": 22,
+        "accuracy": 0.6470588235294118,
+        "error_case_ids": [
+          "s06-01",
+          "s09-01",
+          "s10-01",
+          "s14-01",
+          "s17-01",
+          "s18-01",
+          "s20-01",
+          "s26-01",
+          "s28-01",
+          "s30-01",
+          "p17-02",
+          "p18-02"
+        ]
+      },
+      "modification_control": {
+        "support": 34,
+        "correct": 33,
+        "accuracy": 0.9705882352941176,
+        "error_case_ids": [
+          "s08-02"
+        ]
+      },
+      "naturalistic": {
+        "support": 60,
+        "correct": 44,
+        "accuracy": 0.7333333333333333,
+        "error_case_ids": [
+          "s01-04",
+          "s06-04",
+          "s06-06",
+          "s07-04",
+          "s08-04",
+          "s09-04",
+          "s12-04",
+          "s12-06",
+          "s13-06",
+          "s14-04",
+          "s18-04",
+          "s18-06",
+          "s20-04",
+          "s28-04",
+          "s30-04",
+          "s30-06"
+        ]
+      },
+      "negation": {
+        "support": 24,
+        "correct": 17,
+        "accuracy": 0.7083333333333334,
+        "error_case_ids": [
+          "s01-04",
+          "s02-03",
+          "s03-05",
+          "s08-01",
+          "s13-06",
+          "s18-06",
+          "s28-01"
+        ]
+      },
+      "numeric": {
+        "support": 34,
+        "correct": 24,
+        "accuracy": 0.7058823529411765,
+        "error_case_ids": [
+          "s03-02",
+          "s06-01",
+          "s06-04",
+          "s08-02",
+          "s10-01",
+          "s10-03",
+          "s20-04",
+          "s30-01",
+          "s30-04",
+          "p06-02"
+        ]
+      },
+      "order": {
+        "support": 40,
+        "correct": 34,
+        "accuracy": 0.85,
+        "error_case_ids": [
+          "s11-05",
+          "s12-05",
+          "s12-06",
+          "s13-06",
+          "s18-06",
+          "s30-06"
+        ]
+      },
+      "partial_removal": {
+        "support": 41,
+        "correct": 25,
+        "accuracy": 0.6097560975609756,
+        "error_case_ids": [
+          "s01-04",
+          "s02-03",
+          "s03-05",
+          "s07-04",
+          "s08-01",
+          "s08-03",
+          "s08-04",
+          "s10-01",
+          "s10-03",
+          "s11-05",
+          "s12-02",
+          "s16-03",
+          "s28-01",
+          "s28-03",
+          "s28-04",
+          "p02-01"
+        ]
+      },
+      "permission": {
+        "support": 3,
+        "correct": 0,
+        "accuracy": 0.0,
+        "error_case_ids": [
+          "s04-02",
+          "s09-01",
+          "s09-04"
+        ]
+      },
+      "question": {
+        "support": 3,
+        "correct": 3,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "role": {
+        "support": 46,
+        "correct": 27,
+        "accuracy": 0.5869565217391305,
+        "error_case_ids": [
+          "s04-02",
+          "s04-03",
+          "s06-04",
+          "s06-05",
+          "s08-01",
+          "s08-03",
+          "s08-04",
+          "s09-01",
+          "s09-02",
+          "s09-04",
+          "s17-01",
+          "s18-01",
+          "s18-03",
+          "s18-04",
+          "s18-06",
+          "s26-01",
+          "p17-02",
+          "p18-01",
+          "p18-02"
+        ]
+      },
+      "scope": {
+        "support": 13,
+        "correct": 9,
+        "accuracy": 0.6923076923076923,
+        "error_case_ids": [
+          "s04-03",
+          "s07-04",
+          "s12-02",
+          "s12-05"
+        ]
+      },
+      "security": {
+        "support": 1,
+        "correct": 1,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "temporal": {
+        "support": 61,
+        "correct": 46,
+        "accuracy": 0.7540983606557377,
+        "error_case_ids": [
+          "s06-01",
+          "s06-06",
+          "s08-02",
+          "s12-04",
+          "s14-01",
+          "s14-02",
+          "s14-04",
+          "s20-01",
+          "s20-03",
+          "s26-01",
+          "s30-01",
+          "s30-03",
+          "s30-06",
+          "p09-02",
+          "p14-02"
+        ]
+      }
+    },
+    "requirement_structure": {
+      "atomic": {
+        "support": 10,
+        "correct": 9,
+        "accuracy": 0.9,
+        "error_case_ids": [
+          "p14-02"
+        ]
+      },
+      "conditional": {
+        "support": 18,
+        "correct": 13,
+        "accuracy": 0.7222222222222222,
+        "error_case_ids": [
+          "s08-01",
+          "s08-02",
+          "s08-03",
+          "s08-04",
+          "s13-06"
+        ]
+      },
+      "multi_option": {
+        "support": 62,
+        "correct": 50,
+        "accuracy": 0.8064516129032258,
+        "error_case_ids": [
+          "s01-04",
+          "s07-04",
+          "s10-01",
+          "s10-03",
+          "s11-02",
+          "s11-05",
+          "s16-03",
+          "s28-01",
+          "s28-03",
+          "s28-04",
+          "p02-01",
+          "p06-02"
+        ]
+      },
+      "negative_invariant": {
+        "support": 57,
+        "correct": 32,
+        "accuracy": 0.5614035087719298,
+        "error_case_ids": [
+          "s04-02",
+          "s04-03",
+          "s06-01",
+          "s06-04",
+          "s06-05",
+          "s06-06",
+          "s09-01",
+          "s09-02",
+          "s09-04",
+          "s14-01",
+          "s14-02",
+          "s14-04",
+          "s17-01",
+          "s20-01",
+          "s20-03",
+          "s20-04",
+          "s26-01",
+          "s30-01",
+          "s30-03",
+          "s30-04",
+          "s30-06",
+          "p09-02",
+          "p17-02",
+          "p18-01",
+          "p18-02"
+        ]
+      },
+      "numeric": {
+        "support": 28,
+        "correct": 22,
+        "accuracy": 0.7857142857142857,
+        "error_case_ids": [
+          "s03-02",
+          "s03-05",
+          "s12-02",
+          "s12-04",
+          "s12-05",
+          "s12-06"
+        ]
+      },
+      "role": {
+        "support": 24,
+        "correct": 19,
+        "accuracy": 0.7916666666666666,
+        "error_case_ids": [
+          "s02-03",
+          "s18-01",
+          "s18-03",
+          "s18-04",
+          "s18-06"
+        ]
+      },
+      "temporal": {
+        "support": 16,
+        "correct": 16,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      }
+    },
+    "truth": {
+      "added": {
+        "support": 38,
+        "correct": 26,
+        "accuracy": 0.6842105263157895,
+        "error_case_ids": [
+          "s04-02",
+          "s06-06",
+          "s09-02",
+          "s12-05",
+          "s12-06",
+          "s14-02",
+          "s18-01",
+          "s18-03",
+          "s18-04",
+          "p06-02",
+          "p14-02",
+          "p18-01"
+        ]
+      },
+      "ambiguous": {
+        "support": 23,
+        "correct": 23,
+        "accuracy": 1.0,
+        "error_case_ids": []
+      },
+      "contradiction": {
+        "support": 28,
+        "correct": 10,
+        "accuracy": 0.35714285714285715,
+        "error_case_ids": [
+          "s04-03",
+          "s06-01",
+          "s06-04",
+          "s09-01",
+          "s09-04",
+          "s14-01",
+          "s14-04",
+          "s17-01",
+          "s20-01",
+          "s20-03",
+          "s20-04",
+          "s26-01",
+          "s30-01",
+          "s30-03",
+          "s30-04",
+          "p09-02",
+          "p17-02",
+          "p18-02"
+        ]
+      },
+      "modified": {
+        "support": 46,
+        "correct": 44,
+        "accuracy": 0.9565217391304348,
+        "error_case_ids": [
+          "s08-02",
+          "s12-04"
+        ]
+      },
+      "removed": {
+        "support": 43,
+        "correct": 25,
+        "accuracy": 0.5813953488372093,
+        "error_case_ids": [
+          "s01-04",
+          "s02-03",
+          "s03-05",
+          "s07-04",
+          "s08-01",
+          "s08-03",
+          "s08-04",
+          "s10-01",
+          "s10-03",
+          "s11-05",
+          "s12-02",
+          "s13-06",
+          "s16-03",
+          "s18-06",
+          "s28-01",
+          "s28-03",
+          "s28-04",
+          "p02-01"
+        ]
+      },
+      "unchanged": {
+        "support": 37,
+        "correct": 33,
+        "accuracy": 0.8918918918918919,
+        "error_case_ids": [
+          "s03-02",
+          "s06-05",
+          "s11-02",
+          "s30-06"
+        ]
+      }
+    }
+  },
+  "small_slice_warning": "All slices are diagnostic, not prevalence estimates."
+}

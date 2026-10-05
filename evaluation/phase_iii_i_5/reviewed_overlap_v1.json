@@ -1,0 +1,82 @@
+{
+  "archive": {
+    "decision_cases": 216,
+    "interpretation": "Exact pair overlap is strong contamination evidence; same baseline, message or template alone are risks, not proof. Archive-to-adapter exact-byte identity is unproven.",
+    "role": "PRE_PREDICTION_CONTAMINATION_SCREEN",
+    "scope": "User-supplied V5 archive train/validation/test; other unavailable sources remain unknown",
+    "sources": {
+      "csv_train": {
+        "exact_normalized_pair_case_ids": [],
+        "numeric_mask_message_template_case_ids": [],
+        "rows_unique_pairs": 7755,
+        "same_baseline_case_ids": [],
+        "same_baseline_near_message_jaccard_ge_0_8_case_ids": [],
+        "same_message_case_ids": []
+      },
+      "sft_test": {
+        "exact_normalized_pair_case_ids": [],
+        "numeric_mask_message_template_case_ids": [],
+        "rows_unique_pairs": 974,
+        "same_baseline_case_ids": [],
+        "same_baseline_near_message_jaccard_ge_0_8_case_ids": [],
+        "same_message_case_ids": []
+      },
+      "sft_train": {
+        "exact_normalized_pair_case_ids": [],
+        "numeric_mask_message_template_case_ids": [],
+        "rows_unique_pairs": 8327,
+        "same_baseline_case_ids": [],
+        "same_baseline_near_message_jaccard_ge_0_8_case_ids": [],
+        "same_message_case_ids": []
+      },
+      "sft_validation": {
+        "exact_normalized_pair_case_ids": [],
+        "numeric_mask_message_template_case_ids": [],
+        "rows_unique_pairs": 969,
+        "same_baseline_case_ids": [],
+        "same_baseline_near_message_jaccard_ge_0_8_case_ids": [],
+        "same_message_case_ids": []
+      }
+    }
+  },
+  "candidate_cases": 216,
+  "closed_final_aggregate_only": {
+    "phase_iii_b_raw_final": {
+      "exact_normalized_pair_candidate_ids": [],
+      "historical_pairs": 24,
+      "same_baseline_message_jaccard_ge_0_85_candidate_ids": []
+    },
+    "phase_iii_d": {
+      "exact_normalized_pair_candidate_ids": [],
+      "historical_pairs": 400,
+      "same_baseline_message_jaccard_ge_0_85_candidate_ids": []
+    },
+    "phase_iii_e": {
+      "exact_normalized_pair_candidate_ids": [],
+      "historical_pairs": 560,
+      "same_baseline_message_jaccard_ge_0_85_candidate_ids": []
+    },
+    "phase_iii_i": {
+      "exact_normalized_pair_candidate_ids": [],
+      "historical_pairs": 90,
+      "same_baseline_message_jaccard_ge_0_85_candidate_ids": []
+    }
+  },
+  "cross_family_same_baseline_near_pairs": [],
+  "draft_path": "evaluation/phase_iii_i_5/reviewed_frozen_v1.json",
+  "draft_sha256": "54b56f0b2068e9c26f8a315bbd925649b9bcf25c2d4bc248cb5258419b73ec5b",
+  "internal_exact_duplicate_pairs": [],
+  "internal_numeric_mask_pair_templates": [
+    [
+      "p11-01",
+      "p11-02"
+    ]
+  ],
+  "limitations": [
+    "No historical case content emitted",
+    "Exact/lexical overlap cannot exclude paraphrase contamination",
+    "Archive-to-adapter byte identity unproven",
+    "Within-family similarity is intentional and grouped"
+  ],
+  "role": "PHASE_III_I_5_PRE_INFERENCE_CONTAMINATION_SCREEN"
+}

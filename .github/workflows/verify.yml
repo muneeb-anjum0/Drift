@@ -43,6 +43,7 @@ jobs:
       - run: python -m pytest tools/verification/test_phase3i_oracle.py
       - run: python -m pytest tools/verification/test_phase3i_score_raw.py
       - run: python -m pytest tools/verification/test_phase3i_overlap_historical.py
+      - run: python -m pytest tools/verification/test_phase3i5_freeze.py tools/verification/test_phase3i5_review_evidence.py tools/verification/test_phase3i5_score.py tools/verification/test_phase3i5_error_taxonomy.py
       - run: ruff check services/inference tools
       - run: npm audit --audit-level=high
       - run: pip-audit --requirement services/inference/requirements.txt

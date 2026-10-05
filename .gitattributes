@@ -1,0 +1,2 @@
+# Preserve the exact reviewer-supplied CRLF CSV bytes and treat CR as an EOL marker.
+evaluation/phase_iii_i_5/human_review/source.csv -text whitespace=cr-at-eol

@@ -1,0 +1,392 @@
+{
+  "role": "AUTHORING_SEED_NOT_REVIEWED_NOT_SCORED",
+  "note": "New synthetic Phase III-I.5 scenarios. Expand to the flat candidate only when all 30 groups are complete.",
+  "groups": [
+    {
+      "id": "s01", "domain": "community-clinic-messaging", "structure": "multi_option", "baseline": "The clinic sends appointment reminders by email and SMS; the patient can choose either channel.",
+      "cases": [
+        ["removed", "T3", "Keep email reminders, but take texts off the menu altogether.", "SMS is an explicit option being eliminated.", ["partial_removal", "lexical_trap", "negation"]],
+        ["modified", "T1", "Keep email and text reminders, but send the texts two hours earlier.", "SMS survives with changed timing.", ["temporal", "modification_control"]],
+        ["removed", "T2", "Patients can still get email. They shouldn't be offered the phone-message option now.", "The SMS choice disappears while email survives.", ["partial_removal", "role"]],
+        ["removed", "T4", "tiny correction from ops: email stays, txt reminders don't. booking itself is same.", "Only the SMS reminder channel is withdrawn.", ["partial_removal", "naturalistic", "negation"]],
+        ["added", "T2", "Could the reminder also go to the patient's portal inbox, without changing the existing channels?", "A third channel is added.", ["channel", "question"]],
+        ["ambiguous", "T4", "Maybe we should rethink those reminders? The team hasn't settled what to do with email or texts.", "No definite change is specified.", ["naturalistic", "hypothetical"]]
+      ]
+    },
+    {
+      "id": "s02", "domain": "museum-access", "structure": "role", "baseline": "Visitors may enter with a printed ticket or a ticket stored in the museum app; guards verify either at the door.",
+      "cases": [
+        ["removed", "T3", "App tickets are fine; please retire paper admission at the door.", "Printed tickets are removed.", ["partial_removal", "lexical_trap"]],
+        ["modified", "T1", "App and printed tickets should both work, though guards will scan them at the desk rather than the door.", "Both options survive with a changed verification location.", ["modification_control", "scope"]],
+        ["removed", "T2", "The guards should stop taking the printed version, not the one in the app.", "One named admission format is withdrawn.", ["partial_removal", "negation"]],
+        ["removed", "T4", "Sorry, confusing note earlier. mobile pass yes; the printout no longer counts. door team unchanged.", "The printout ceases to be accepted.", ["partial_removal", "naturalistic", "negation"]],
+        ["unchanged", "T2", "Keep checking both forms at entry; the sign explaining it could use friendlier wording.", "Only signage copy changes, not ticket acceptance.", ["lexical_trap", "distractor"]],
+        ["added", "T4", "can we take a PDF pass too? not replacing paper or the app, just another way in", "PDF is an additional ticket format.", ["naturalistic", "channel"]]
+      ]
+    },
+    {
+      "id": "s03", "domain": "cold-storage-monitoring", "structure": "numeric", "baseline": "A warehouse sensor records freezer temperature every five minutes and displays readings in Celsius and Fahrenheit.",
+      "cases": [
+        ["modified", "T3", "Change the sampling interval to two minutes; don't change what the probe measures.", "Existing sampling continues at a new frequency.", ["numeric", "temporal", "lexical_trap", "negation"]],
+        ["added", "T1", "Keep the five-minute Celsius reading and also show a Fahrenheit conversion.", "A new display option is added.", ["numeric", "channel"]],
+        ["modified", "T2", "The freezer still needs a temperature point, only more often: every two minutes.", "The interval changes, not the capability.", ["numeric", "temporal", "modification_control"]],
+        ["modified", "T4", "ops says 5 min feels laggy; make it 2. still Celsius, still the same probe.", "The measurement frequency changes.", ["naturalistic", "numeric"]],
+        ["removed", "T2", "Stop showing Celsius while retaining the temperature record in Fahrenheit.", "The explicit Celsius display is removed.", ["partial_removal", "negation"]],
+        ["ambiguous", "T4", "maybe faster sampling? need to ask facilities what interval they actually want", "No final interval or instruction is settled.", ["naturalistic", "hypothetical"]]
+      ]
+    },
+    {
+      "id": "s04", "domain": "school-transcripts", "structure": "negative_invariant", "baseline": "The transcript portal must never show an unpublished grade to students; teachers may preview unpublished grades.",
+      "cases": [
+        ["contradiction", "T3", "Keep that privacy rule, but let students peek at grades before publication.", "Student preview violates the explicit never invariant.", ["role", "lexical_trap"]],
+        ["added", "T1", "Let department heads preview unpublished grades as teachers already do; students still cannot.", "A new authorized preview actor is added without violating the student ban.", ["role", "permission"]],
+        ["contradiction", "T2", "A student preview link should work while the grade is still unpublished, even if it's read-only.", "Read-only visibility still breaks the invariant.", ["role", "scope"]],
+        ["contradiction", "T4", "i know it says never for students, but could we show them draft marks just for a minute? yes please ship that", "A definite request violates the student-visibility prohibition.", ["naturalistic", "role", "lexical_trap", "negation"]],
+        ["unchanged", "T2", "Teachers can keep previewing drafts; publish the student-facing grades only when released.", "The stated visibility boundary is preserved.", ["role", "negation"]],
+        ["ambiguous", "T4", "Can we revisit who sees the draft? not decided whether that means staff or pupils yet", "The actor and decision are unresolved.", ["naturalistic", "role"]]
+      ]
+    },
+    {
+      "id": "s05", "domain": "rail-pass-renewal", "structure": "temporal", "baseline": "Commuters can renew a monthly rail pass in the app or at a station kiosk before the pass expires.",
+      "cases": [
+        ["removed", "T3", "Leave renewal in the app, but drop kiosk renewals. The expiry rule stays.", "The kiosk channel is explicitly eliminated.", ["partial_removal", "temporal", "lexical_trap"]],
+        ["modified", "T1", "Keep both renewal channels but allow renewal for two days after expiry.", "Renewal survives with a changed time window.", ["temporal", "modification_control"]],
+        ["removed", "T2", "Station kiosks will no longer renew passes; passengers still have the app before expiry.", "The kiosk option is removed.", ["partial_removal", "negation"]],
+        ["removed", "T4", "quick one: the app route is good. kiosk renewal is out of scope now, not kiosk sales in general", "Only kiosk renewal is withdrawn.", ["naturalistic", "scope", "partial_removal"]],
+        ["added", "T2", "Could riders also renew through the website while app and kiosk remain?", "The website is an additional renewal channel.", ["channel", "question"]],
+        ["unchanged", "T4", "The kiosk screen can have nicer colours, sure, but renewal still needs to work there and in-app before expiry.", "Only presentation changes.", ["naturalistic", "distractor"]]
+      ]
+    },
+    {
+      "id": "s06", "domain": "expense-approval", "structure": "negative_invariant", "baseline": "A manager must approve an employee expense over 500 dollars before finance pays it; employees may draft expenses without approval.",
+      "cases": [
+        ["contradiction", "T3", "Keep the manager gate, but pay an $800 claim first and get approval afterward.", "Paying before required approval violates the invariant.", ["numeric", "temporal", "lexical_trap"]],
+        ["modified", "T1", "Require manager approval before payment for expenses over $400 rather than $500.", "The approval gate remains with a new threshold.", ["numeric", "modification_control"]],
+        ["contradiction", "T2", "For a claim above the limit, finance should release funds while the manager's decision is still pending.", "Payment precedes mandatory approval.", ["temporal", "role"]],
+        ["contradiction", "T4", "hey, big reimbursements are taking ages. Can payroll send them now and chase the signoff later? yes, even the $900 ones", "A definite post-payment approval request conflicts with the before invariant.", ["naturalistic", "numeric", "role"]],
+        ["unchanged", "T2", "Let employees save drafts without manager involvement, then keep the pre-payment gate for large claims.", "Existing draft and approval behavior are restated.", ["role", "distractor"]],
+        ["added", "T4", "Could finance send a receipt after approved payouts? approvals still happen first of course", "A receipt is added without changing the approval gate.", ["naturalistic", "temporal"]]
+      ]
+    },
+    {
+      "id": "s07", "domain": "photo-backup", "structure": "multi_option", "baseline": "The backup app saves original photos to local storage and to the user's cloud vault when both destinations are enabled.",
+      "cases": [
+        ["removed", "T3", "Keep the cloud copy, but remove the local copy from the backup flow.", "Local storage is a named baseline destination being removed.", ["partial_removal", "lexical_trap"]],
+        ["modified", "T1", "Keep both copies, but upload the cloud one overnight instead of immediately.", "Both destinations survive with changed timing.", ["temporal", "modification_control"]],
+        ["removed", "T2", "There should be no on-device backup file; the vault copy still happens.", "The local destination is eliminated.", ["partial_removal", "negation"]],
+        ["removed", "T4", "phone storage is filling up. please cloud-only the backup; gallery display isn't what I'm asking to delete", "Local backup storage is withdrawn.", ["naturalistic", "scope", "partial_removal"]],
+        ["added", "T2", "Add an optional encrypted USB backup alongside the current two destinations.", "A third backup destination is added.", ["channel", "security"]],
+        ["ambiguous", "T4", "what if we don't keep every copy? not sure which place we'd trim yet", "Destination choice is unresolved.", ["naturalistic", "hypothetical"]]
+      ]
+    },
+    {
+      "id": "s08", "domain": "marketplace-disputes", "structure": "conditional", "baseline": "If a buyer opens a dispute, the platform emails both buyer and seller within one hour and keeps the dispute visible in the portal.",
+      "cases": [
+        ["removed", "T3", "The portal record stays, and sellers still get the email; buyers no longer need that email.", "The buyer email is explicitly removed.", ["partial_removal", "negation", "role"]],
+        ["modified", "T1", "Email both parties within thirty minutes; keep the portal record.", "Both notifications survive with a shorter deadline.", ["numeric", "temporal", "modification_control"]],
+        ["removed", "T2", "Skip only the buyer's dispute email, not the seller's or the portal entry.", "One actor's notification capability is removed.", ["partial_removal", "role"]],
+        ["removed", "T4", "support clarified: no buyer mail on new disputes pls. seller gets theirs; portal page isn't going away", "Buyer email is withdrawn while the other outputs persist.", ["naturalistic", "role", "partial_removal"]],
+        ["added", "T2", "Add a push alert for the buyer, while keeping both existing emails and the portal record.", "A new notification channel is added.", ["channel", "role"]],
+        ["unchanged", "T4", "Can we rename the dispute tab? no change to the emails, timing, or record itself", "The requirement's behavior is unchanged.", ["naturalistic", "distractor"]]
+      ]
+    },
+    {
+      "id": "s09", "domain": "api-key-management", "structure": "negative_invariant", "baseline": "Only workspace owners may revoke an API key; editors may view a key's last-used timestamp but must not see the secret value.",
+      "cases": [
+        ["contradiction", "T3", "Keep owners as revokers; editors should also be able to revoke stale keys.", "Editor revocation violates the only-owners invariant.", ["role", "permission", "lexical_trap"]],
+        ["added", "T1", "Let editors export the last-used timestamps as CSV; secret values stay hidden.", "A timestamp export is added without breaking the secret restriction.", ["role", "format"]],
+        ["contradiction", "T2", "An editor should be allowed to disable a compromised key immediately, even before an owner reviews it.", "Editor disable/revocation conflicts with the exclusive owner permission.", ["role", "temporal"]],
+        ["contradiction", "T4", "in an incident the editor on call needs to kill the key. owner can be asleep; let's enable that role", "The proposed editor revocation violates the owner-only invariant.", ["naturalistic", "role", "permission"]],
+        ["unchanged", "T2", "Keep secret values away from editors; last-used time is still visible to them.", "The view boundary is restated.", ["role", "negation"]],
+        ["ambiguous", "T4", "Could the on-call person maybe get 'more control' over keys? we haven't decided which role or action", "Actor and permission are unresolved.", ["naturalistic", "role", "hypothetical"]]
+      ]
+    },
+    {
+      "id": "s10", "domain": "sports-booking", "structure": "multi_option", "baseline": "Players may reserve a court for a 30-minute or 60-minute session; both durations appear in the booking picker.",
+      "cases": [
+        ["removed", "T3", "Make the half-hour slot unavailable. The hour slot is still bookable.", "The 30-minute option is removed.", ["partial_removal", "numeric", "lexical_trap"]],
+        ["modified", "T1", "Keep both durations but start every reservation ten minutes later than the displayed slot time.", "Both options remain with changed start timing.", ["numeric", "temporal", "modification_control"]],
+        ["removed", "T2", "People should only be offered the hour-long court session from now on.", "The half-hour baseline option disappears.", ["partial_removal", "numeric"]],
+        ["removed", "T4", "small booking tweak: 30m is gone, 60m isn't. don't touch court inventory", "The 30-minute option is eliminated.", ["naturalistic", "numeric", "partial_removal"]],
+        ["added", "T2", "Could we offer a 45-minute slot as well as the two existing lengths?", "A third duration is added.", ["numeric", "question"]],
+        ["ambiguous", "T4", "maybe drop a length? haven't picked which one, and maybe we'd keep both after all", "No definite option removal is chosen.", ["naturalistic", "hypothetical"]]
+      ]
+    },
+    {
+      "id": "s11", "domain": "library-discovery", "structure": "multi_option", "baseline": "Readers can filter the catalogue by author or by subject; the filter panel works on desktop and mobile.",
+      "cases": [
+        ["added", "T3", "Add language as another filter; don't replace author or subject.", "Language is a new filter option.", ["lexical_trap", "scope"]],
+        ["unchanged", "T1", "Keep author and subject filtering on both devices; rename the panel heading.", "Only panel copy changes.", ["distractor"]],
+        ["added", "T2", "Let readers narrow results by language too. The existing author and subject controls stay.", "A third filtering facet is added.", ["distractor", "scope"]],
+        ["added", "T4", "Side note: the mobile header is cramped and design will fix it later. For this ticket, add a language facet, leave the old filters alone.", "Irrelevant UI context does not alter the added filter.", ["distractor", "naturalistic"]],
+        ["removed", "T2", "Keep subject filtering, but stop offering author filtering on both desktop and mobile.", "Author filtering is withdrawn.", ["partial_removal", "order"]],
+        ["removed", "T4", "On both devices, author filtering goes away; subject filtering stays. sorry for the wordy note.", "Clause order changes, not the removal.", ["partial_removal", "order", "naturalistic"]]
+      ]
+    },
+    {
+      "id": "s12", "domain": "payroll-export", "structure": "numeric", "baseline": "Payroll clerks may export the monthly pay register as CSV, and each export includes employee ID and net pay.",
+      "cases": [
+        ["modified", "T3", "Change the export cadence to weekly; CSV and both columns remain.", "The existing export occurs more frequently.", ["temporal", "lexical_trap", "modification_control"]],
+        ["removed", "T1", "Omit employee ID from the CSV; net pay and the export remain.", "One explicit output field is eliminated.", ["partial_removal", "scope"]],
+        ["modified", "T2", "Clerks still need the same CSV fields; generate the register every week instead of monthly.", "Only frequency changes.", ["temporal", "distractor"]],
+        ["modified", "T4", "Finance mentioned filenames too, but that's a separate ticket. This one is weekly CSV, same ID/net fields.", "Filename context is irrelevant to a frequency modification.", ["naturalistic", "distractor", "temporal"]],
+        ["added", "T2", "Add gross pay as a third column, while preserving employee ID and net pay.", "An output field is added.", ["scope", "order"]],
+        ["added", "T4", "Keep ID and net pay, and put gross pay in there too. monthly CSV otherwise unchanged.", "Clause order changes but the new field is the same.", ["naturalistic", "order"]]
+      ]
+    },
+    {
+      "id": "s13", "domain": "bike-share", "structure": "conditional", "baseline": "Riders unlock a bike with an app QR code, and a ride receipt appears in the app after the bike is returned.",
+      "cases": [
+        ["modified", "T3", "Show the same receipt immediately at unlock instead of at return; QR unlock still works.", "Receipt timing changes while both capabilities survive.", ["temporal", "lexical_trap", "modification_control"]],
+        ["ambiguous", "T1", "Could receipts maybe happen earlier? We have not chosen when.", "Receipt timing is unresolved.", ["hypothetical", "temporal"]],
+        ["modified", "T2", "The receipt should arrive when the ride starts, not when it ends. Nothing about unlocking changes.", "Receipt timing is set to the start.", ["temporal", "distractor"]],
+        ["modified", "T4", "QR scans are a little flaky but that's for another ticket. here: receipt at start of trip, not at dock-back.", "QR commentary is irrelevant to a definite receipt-timing change.", ["naturalistic", "distractor", "temporal"]],
+        ["removed", "T2", "Retain the QR unlock; discontinue the in-app ride receipt entirely.", "The explicit receipt capability is eliminated.", ["partial_removal", "order"]],
+        ["removed", "T4", "No receipt in the app anymore, but leave the QR unlock alone pls.", "Clause order does not alter removal of the receipt.", ["naturalistic", "order", "negation"]]
+      ]
+    },
+    {
+      "id": "s14", "domain": "court-filing", "structure": "negative_invariant", "baseline": "A filing must be signed by the submitting lawyer before it is transmitted; clerks may preview the unsigned draft.",
+      "cases": [
+        ["contradiction", "T3", "Keep the signature rule, but transmit urgent unsigned filings and have counsel sign later.", "Transmission before required signature violates the invariant.", ["temporal", "lexical_trap"]],
+        ["added", "T1", "Keep signatures before transmission; add a 24-hour reminder to the lawyer if the draft is still unsigned.", "A reminder is added without relaxing the signing gate.", ["temporal", "addition"]],
+        ["contradiction", "T2", "Urgent filings should go out before the lawyer signs, with signature collected afterward.", "The required order is reversed.", ["temporal", "distractor"]],
+        ["contradiction", "T4", "Clerks asked for bigger preview text, separate thing. For this one, send first, sign after if it's urgent.", "UI detail distracts from an incompatible transmission order.", ["naturalistic", "distractor", "temporal"]],
+        ["unchanged", "T2", "Counsel signs before sending; the clerk can still inspect an unsigned draft.", "The signing and preview order is preserved.", ["temporal", "order"]],
+        ["unchanged", "T4", "Clerk preview is fine while unsigned; don't actually send until lawyer's signature is there.", "Clause order differs but behavior is unchanged.", ["naturalistic", "order", "negation"]]
+      ]
+    },
+    {
+      "id": "s15", "domain": "warehouse-returns", "structure": "role", "baseline": "Receiving staff record returned parcels and supervisors approve disposal; staff can place parcels in quarantine pending review.",
+      "cases": [
+        ["removed", "T3", "Supervisors still approve disposal, but take quarantine off the receiving team's options.", "One explicit staff capability is removed.", ["partial_removal", "role", "lexical_trap"]],
+        ["modified", "T1", "Keep quarantine and disposal approval, but have staff record returns within two hours rather than at intake.", "Return logging survives with changed timing.", ["temporal", "modification_control"]],
+        ["removed", "T2", "The team may log returns as before; they must not park them in quarantine anymore.", "Quarantine is withdrawn.", ["partial_removal", "distractor", "negation"]],
+        ["removed", "T4", "we still need parcel logging and boss signoff. quarantine button is confusing though—please remove that workflow, not just the text", "Quarantine capability itself is removed.", ["naturalistic", "distractor", "partial_removal"]],
+        ["added", "T2", "Let auditors view the disposal approval log, without altering staff or supervisor powers.", "A read-only actor capability is added.", ["role", "order"]],
+        ["added", "T4", "Staff and supervisor steps stay put; auditors can now read the disposal log. that's it.", "Clause order leaves the additional auditor access intact.", ["naturalistic", "role", "order"]]
+      ]
+    },
+    {
+      "id": "s16", "domain": "subscription-billing", "structure": "multi_option", "baseline": "Customers may pay subscription invoices by card or bank transfer and can download a PDF receipt after settlement.",
+      "cases": [
+        ["removed", "T3", "Leave bank transfer in place; card payments should no longer be accepted for these invoices.", "One explicit payment mechanism is removed.", ["partial_removal", "negation", "lexical_trap"]],
+        ["modified", "T1", "Retain card and transfer, but make receipts available before settlement instead of after.", "The receipt survives with changed timing.", ["temporal", "modification_control"]],
+        ["removed", "T2", "The finance portal can still take transfers. Take the card route out of subscription checkout.", "Card payment is eliminated.", ["partial_removal", "distractor"]],
+        ["removed", "T4", "unrelated: receipt PDF typography needs love. actual change is no cards for subs; transfers okay.", "The typography remark does not change the card removal.", ["naturalistic", "distractor", "partial_removal"]],
+        ["added", "T2", "Offer direct debit alongside the existing card and transfer routes; receipts stay as they are.", "A third payment mechanism is added.", ["order"]],
+        ["added", "T4", "Keep the receipt thing and both current payment methods. Direct debit too, please.", "Clause order leaves the additional payment method intact.", ["naturalistic", "order"]]
+      ]
+    },
+    {
+      "id": "s17", "domain": "factory-safety", "structure": "negative_invariant", "baseline": "A machine must not restart while its maintenance lock is engaged; operators may inspect status during lockout, and the status display refreshes every five seconds.",
+      "cases": [
+        ["contradiction", "T3", "Keep the lock indicator, but let a supervisor restart the motor before removing the maintenance lock.", "Restart during lockout violates the explicit prohibition.", ["role", "lexical_trap"]],
+        ["modified", "T1", "Keep restart blocked during lockout; refresh the status display every second instead of every five.", "The existing display refresh interval changes.", ["numeric", "modification_control"]],
+        ["contradiction", "T2", "While the lock remains engaged, a remote operator should be able to resume the machine.", "Restart under lock is forbidden.", ["role", "distractor"]],
+        ["contradiction", "T4", "Safety still owns the lock process; remote restart during a locked service window would save time. yes, enable it.", "Context does not remove the lockout invariant.", ["naturalistic", "distractor", "role"]],
+        ["unchanged", "T2", "Operators can inspect status during maintenance, and the machine stays stopped until unlocked.", "The inspection and restart constraints remain.", ["order"]],
+        ["unchanged", "T4", "while locked, show status to ops. no restart till lock is off, obviously.", "Clause order and casual wording preserve the rule.", ["naturalistic", "order", "negation"]]
+      ]
+    },
+    {
+      "id": "s18", "domain": "hr-onboarding", "structure": "role", "baseline": "New employees upload identity documents to the HR portal; HR officers verify them and employees can view the verification status.",
+      "cases": [
+        ["added", "T3", "Let team leads see the status too; HR still verifies and employees still see their own status.", "A new viewer role is added.", ["role", "lexical_trap"]],
+        ["unchanged", "T1", "Keep HR as the verifier and employees as status viewers; change the portal heading to 'Onboarding'.", "Only UI wording changes.", ["distractor"]],
+        ["added", "T2", "Keep the current identity workflow and expose status to the recruit's team lead as well.", "Another actor gains status visibility.", ["role", "distractor"]],
+        ["added", "T4", "Design also wants a new icon, but that's later. Main ask: lead can read status, not verify docs.", "Icon commentary does not alter the added lead-view capability.", ["naturalistic", "distractor", "role"]],
+        ["removed", "T2", "Employees should still upload documents, but remove their status view; HR verification remains.", "Employee status visibility is eliminated.", ["partial_removal", "order", "role"]],
+        ["removed", "T4", "HR still checks the ID and new hires still upload it. they just don't get to see the status anymore.", "Clause order preserves the status-view removal.", ["naturalistic", "order", "role", "negation"]]
+      ]
+    },
+    {
+      "id": "s19", "domain": "water-usage", "structure": "numeric", "baseline": "The utility dashboard shows daily water consumption in litres and lets households download a monthly CSV summary.",
+      "cases": [
+        ["modified", "T3", "Display the same daily amount in cubic metres; keep the monthly download.", "The display unit changes while usage reporting survives.", ["numeric", "lexical_trap", "modification_control"]],
+        ["removed", "T1", "End the monthly CSV download, but keep daily consumption on screen.", "A named export capability is removed.", ["partial_removal"]],
+        ["modified", "T2", "The daily chart is still there; express volume in m³ instead of L.", "A display unit changes.", ["numeric", "distractor"]],
+        ["modified", "T4", "CSV isn't the issue. change the daily chart units to m3 so it matches bills, same measurements.", "CSV context is irrelevant to the unit modification.", ["naturalistic", "distractor", "numeric"]],
+        ["added", "T2", "Add a weekly PDF digest without removing the daily chart or monthly CSV.", "A new summary is added.", ["order", "format"]],
+        ["added", "T4", "Daily chart + monthly CSV stay. also could we have a weekly PDF? yes that's the ask.", "Clause order does not alter the added digest.", ["naturalistic", "order", "format"]]
+      ]
+    },
+    {
+      "id": "s20", "domain": "telemedicine-consent", "structure": "negative_invariant", "baseline": "Clinicians must obtain patient consent before recording a video visit; the consent prompt appears when the call begins, and patients may withdraw consent at any time to stop recording.",
+      "cases": [
+        ["contradiction", "T3", "Keep the consent banner, but begin recording before patients respond so we don't miss the greeting.", "Recording before consent violates the explicit invariant.", ["temporal", "lexical_trap"]],
+        ["modified", "T1", "Show the consent prompt during scheduling instead of at call start; recording still waits for consent.", "The existing prompt moves earlier without weakening the consent rule.", ["temporal", "modification_control"]],
+        ["contradiction", "T2", "Capture the start of the call, then ask permission to keep that footage.", "Capture occurs before mandatory consent.", ["temporal", "distractor"]],
+        ["contradiction", "T4", "No one is removing the opt-out, but the first 30 seconds need to be captured before they click yes. please do it.", "Opt-out context does not cure pre-consent recording.", ["naturalistic", "distractor", "numeric"]],
+        ["unchanged", "T2", "Recording starts only after consent; a later withdrawal ends it immediately.", "The baseline order and withdrawal effect are restated.", ["order", "temporal"]],
+        ["unchanged", "T4", "If they back out, stop the video. and obviously don't record till they opt in.", "Clause order preserves both consent rules.", ["naturalistic", "order", "negation"]]
+      ]
+    },
+    {
+      "id": "s21", "domain": "calendar-delegation", "structure": "role", "baseline": "An assistant may schedule meetings up to 30 days ahead on an executive's calendar, while only the executive may cancel a confirmed meeting.",
+      "cases": [
+        ["modified", "T3", "Change the assistant's booking horizon to 45 days; confirmed cancellation stays with the executive.", "The existing booking permission survives with a changed horizon.", ["role", "temporal", "lexical_trap", "modification_control"]],
+        ["ambiguous", "T1", "Could the assistant have more control over confirmed meetings? We haven't specified which actions.", "The additional permission is unresolved.", ["role", "hypothetical"]],
+        ["ambiguous", "T2", "Somebody should be able to adjust a confirmed meeting. Not sure whether we mean time, venue, or cancellation.", "The intended operation is not determined.", ["distractor", "role"]],
+        ["ambiguous", "T4", "exec team also wants a nicer invite email, separate ticket. here they asked for 'more control' for assistants, but wouldn't say what that covers.", "Email context cannot resolve the unspecified permission.", ["naturalistic", "distractor", "role"]],
+        ["unchanged", "T2", "Only the executive cancels confirmed meetings; assistants still arrange new ones.", "The role split is restated.", ["order", "role"]],
+        ["unchanged", "T4", "Assistants book the meetings; confirmed cancellations stay with the exec. yes that's still the rule.", "Clause order does not alter permissions.", ["naturalistic", "order", "role"]]
+      ]
+    },
+    {
+      "id": "s22", "domain": "pharmacy-refills", "structure": "conditional", "baseline": "A patient can request a repeat prescription through the portal; requests reach a pharmacist in a nightly batch, and the pharmacist reviews them before dispatch.",
+      "cases": [
+        ["modified", "T3", "Keep review before dispatch, but send refill requests from the portal to a pharmacist immediately rather than in the nightly batch.", "The review path remains with changed routing time.", ["temporal", "lexical_trap", "modification_control"]],
+        ["ambiguous", "T1", "What if refills went faster? Nothing decided about which step yet.", "The target and change are unspecified.", ["hypothetical"]],
+        ["ambiguous", "T2", "The clinic mentioned same-day refills but did not say whether that means review, dispatch, or delivery.", "The operation to change is unresolved.", ["distractor", "temporal"]],
+        ["ambiguous", "T4", "We also have a packaging redesign coming. for the refill flow they said 'speed it up somehow' and then left the call.", "Packaging context does not settle the vague request.", ["naturalistic", "distractor"]],
+        ["unchanged", "T2", "Keep the pharmacist check before any medicine goes out, with portal requests still available.", "The baseline review order and intake channel remain.", ["order", "temporal"]],
+        ["unchanged", "T4", "Request in portal, pharmacist checks, then dispatch. no shortcut to shipping first.", "Clause order reiterates the baseline sequence.", ["naturalistic", "order", "negation"]]
+      ]
+    },
+    {
+      "id": "s23", "domain": "video-transcription", "structure": "multi_option", "baseline": "Creators can generate subtitles in English or Spanish and edit the subtitle text before publication.",
+      "cases": [
+        ["added", "T3", "Keep both subtitle languages; support French too, but leave editing as-is.", "A third language option is introduced.", ["lexical_trap", "scope"]],
+        ["ambiguous", "T1", "Maybe we need another subtitle language; the team hasn't selected one or approved it.", "No definite new language is chosen.", ["hypothetical"]],
+        ["added", "T2", "Creators should also be able to generate French captions, alongside English and Spanish.", "French is an additional generation option.", ["distractor", "scope"]],
+        ["added", "T4", "Ignore last week's font debate. Product signed off on French captions as a third choice; editing still works.", "Font context does not change the addition.", ["naturalistic", "distractor"]],
+        ["unchanged", "T2", "English and Spanish subtitle generation and pre-publication edits should stay.", "The baseline features are restated.", ["order"]],
+        ["unchanged", "T4", "Let them edit before posting; languages are still English and Spanish. nothing to change there.", "Clause order preserves existing behavior.", ["naturalistic", "order"]]
+      ]
+    },
+    {
+      "id": "s24", "domain": "fleet-maintenance", "structure": "numeric", "baseline": "Fleet managers receive a service alert every 10,000 kilometres and can record completed service in a vehicle ledger.",
+      "cases": [
+        ["modified", "T3", "Set the alert at 8,000 km; recording completed service doesn't change.", "The alert threshold changes.", ["numeric", "lexical_trap", "modification_control"]],
+        ["ambiguous", "T1", "Should we revisit the mileage interval? Nobody has picked a new figure.", "The new threshold is not decided.", ["numeric", "hypothetical"]],
+        ["modified", "T2", "Managers keep getting a mileage alert, only at eight thousand rather than ten.", "The existing alert persists with a changed threshold.", ["numeric", "distractor"]],
+        ["modified", "T4", "Ignore the oil-brand discussion from ops. Make the service ping 8k km, ledger stays put.", "Oil context does not alter the threshold modification.", ["naturalistic", "distractor", "numeric"]],
+        ["unchanged", "T2", "Keep the ten-thousand-kilometre alert and ledger entry for completed service.", "Both baseline capabilities remain unchanged.", ["order", "numeric"]],
+        ["unchanged", "T4", "Service still gets logged after it's done, and alert at 10k km as before. cheers.", "Clause order and casual wording preserve the baseline.", ["naturalistic", "order", "numeric"]]
+      ]
+    },
+    {
+      "id": "s25", "domain": "wildlife-survey", "structure": "atomic", "baseline": "Field researchers upload a geotagged photo for each bird sighting to the survey portal.",
+      "cases": [
+        ["added", "T3", "Add an optional audio clip to each sighting; keep the geotagged photograph.", "An audio evidence option is added.", ["lexical_trap", "scope"]],
+        ["ambiguous", "T1", "Could we include something else with sightings someday? The team hasn't decided what.", "The potential addition is unresolved.", ["hypothetical"]],
+        ["added", "T2", "A researcher should be able to attach a sound recording as well as the existing photo.", "Audio evidence is added.", ["distractor", "scope"]],
+        ["added", "T4", "Map colours are being changed separately. this request is about attaching a short bird-call recording along with the usual pic.", "UI context does not change the audio addition.", ["naturalistic", "distractor"]],
+        ["unchanged", "T2", "Each sighting still needs its location-stamped photograph in the portal.", "The baseline upload is restated.", ["order"]],
+        ["unchanged", "T4", "Portal upload still takes the bird photo with location, one for every sighting. no workflow change.", "Clause order preserves the requirement.", ["naturalistic", "order", "negation"]]
+      ]
+    },
+    {
+      "id": "s26", "domain": "account-security", "structure": "negative_invariant", "baseline": "A password reset must require a verified recovery code before access is restored; support agents may explain the reset steps but cannot see the code.",
+      "cases": [
+        ["contradiction", "T3", "Keep the code check for most people, but restore access first for callers who sound familiar.", "A bypass violates the mandatory code-before-access invariant.", ["role", "temporal", "lexical_trap"]],
+        ["ambiguous", "T1", "Could support streamline resets? We haven't said which step is changing.", "The intended reset change is unspecified.", ["hypothetical", "role"]],
+        ["contradiction", "T2", "Let an agent reopen the account while the customer is still looking for the recovery code.", "Access is restored before code verification.", ["distractor", "role"]],
+        ["contradiction", "T4", "The call script is too long, but that's separate. Here I mean unlock them now and check the code after the call.", "Script context does not make post-access verification compatible.", ["naturalistic", "distractor", "temporal"]],
+        ["unchanged", "T2", "Agents can guide a caller, but code verification has to happen before reopening access.", "The baseline order and agent role remain.", ["order", "role"]],
+        ["unchanged", "T4", "Code first, access second; support can talk them through it without seeing the code.", "Clause order preserves the same security workflow.", ["naturalistic", "order", "temporal"]]
+      ]
+    },
+    {
+      "id": "s27", "domain": "public-transport-arrivals", "structure": "temporal", "baseline": "The station display refreshes predicted bus arrival times every thirty seconds and shows the route number beside each prediction.",
+      "cases": [
+        ["modified", "T3", "Keep route numbers; refresh arrival estimates every fifteen seconds instead.", "The prediction refresh interval changes.", ["numeric", "temporal", "lexical_trap", "modification_control"]],
+        ["ambiguous", "T1", "Maybe the display should update faster; dispatch hasn't chosen an interval.", "The timing change is not settled.", ["hypothetical", "temporal"]],
+        ["modified", "T2", "Arrival predictions should still refresh, now twice as often as the present thirty-second rate.", "The refresh interval is halved.", ["numeric", "distractor"]],
+        ["modified", "T4", "Separate ask: change the bezel colour. For prediction updates, go 30s to 15s, routes still visible.", "Appearance context does not alter the timing modification.", ["naturalistic", "distractor", "numeric"]],
+        ["unchanged", "T2", "Show route IDs alongside predictions that update every half-minute.", "The baseline frequency and display content are restated.", ["order", "numeric"]],
+        ["unchanged", "T4", "Every 30 seconds, refresh arrivals; leave the route number right next to them.", "Clause order changes but the behavior does not.", ["naturalistic", "order"]]
+      ]
+    },
+    {
+      "id": "s28", "domain": "fulfillment-packing", "structure": "multi_option", "baseline": "Packers may print a paper packing slip or display a digital slip on a handheld device; the slip lists SKU and quantity in pick order.",
+      "cases": [
+        ["removed", "T3", "Keep the handheld slip; don't print a paper one anymore. SKU and count remain.", "The paper output option is removed.", ["partial_removal", "negation", "lexical_trap"]],
+        ["ambiguous", "T1", "Should we simplify slip formats? We haven't decided which format would go.", "No particular option is selected for removal.", ["hypothetical"]],
+        ["removed", "T2", "Drop printing but preserve the handheld view and both fields.", "The paper slip is eliminated.", ["partial_removal", "distractor"]],
+        ["removed", "T4", "Unrelated scanner rollout next month. right now: no paper slip, SKU and qty still on the handheld.", "Scanner context does not alter paper-slip removal.", ["naturalistic", "distractor", "partial_removal"]],
+        ["modified", "T2", "Keep print and handheld slips, but sort the line items by SKU instead of pick order.", "Both formats survive with a changed ordering rule.", ["order", "modification_control"]],
+        ["modified", "T4", "Sort items by SKU on the slip; paper and handheld both stay. wasn't asking to drop either.", "Clause order preserves the sorting modification.", ["naturalistic", "order", "modification_control"]]
+      ]
+    },
+    {
+      "id": "s29", "domain": "course-accessibility", "structure": "multi_option", "baseline": "Students can read course notes as HTML or download them as PDF; instructors can attach alt text to diagrams.",
+      "cases": [
+        ["added", "T3", "Leave HTML and PDF alone; also make the notes available as EPUB.", "EPUB is a new output option.", ["lexical_trap", "format"]],
+        ["ambiguous", "T1", "Could we support another reading format? The accessibility group hasn't chosen one.", "A possible format is not specified or approved.", ["hypothetical", "format"]],
+        ["added", "T2", "Give students an EPUB version too; the existing formats remain.", "EPUB is an additional format.", ["distractor", "format"]],
+        ["added", "T4", "We also need better lecture thumbnails later. Current ask: EPUB alongside the HTML page and PDF, please.", "Thumbnail context does not change the EPUB addition.", ["naturalistic", "distractor", "format"]],
+        ["unchanged", "T2", "Students keep HTML and PDF access, and instructors may still provide diagram alt text.", "The baseline capabilities remain.", ["order"]],
+        ["unchanged", "T4", "Alt text stays editable by instructors; HTML/PDF notes stay available. no content change here.", "Clause order preserves all capabilities.", ["naturalistic", "order", "negation"]]
+      ]
+    },
+    {
+      "id": "s30", "domain": "research-data-retention", "structure": "negative_invariant", "baseline": "The lab must delete raw participant audio after thirty days; analysts may retain anonymized transcripts for one year.",
+      "cases": [
+        ["contradiction", "T3", "Keep the deletion policy on paper, but preserve raw recordings for six months for possible rechecks.", "Keeping raw audio beyond thirty days violates the explicit must-delete invariant.", ["numeric", "temporal", "lexical_trap"]],
+        ["ambiguous", "T1", "Could we revisit retention? Legal has not decided which data or period.", "Both target data and retention period are unresolved.", ["hypothetical", "temporal"]],
+        ["contradiction", "T2", "At day thirty, move the raw audio to an archive instead of deleting it.", "Archival retention violates mandatory deletion.", ["distractor", "temporal"]],
+        ["contradiction", "T4", "Storage is cheap now, so leave the original voice files for 90 days. transcripts can keep their current year.", "Cost context does not override the thirty-day raw-audio deletion invariant.", ["naturalistic", "distractor", "numeric"]],
+        ["unchanged", "T2", "Raw audio goes after a month; anonymized transcripts may remain for twelve months.", "The two retention periods are restated.", ["order", "numeric"]],
+        ["unchanged", "T4", "Keep de-identified text for a year, but wipe the actual recordings at 30d as before.", "Clause order preserves the retention rules.", ["naturalistic", "order", "temporal"]]
+      ]
+    }
+  ],
+  "minimal_pairs": [
+    {"id":"p01","domain":"parcel-notifications","structure":"multi_option","baseline":"Recipients can receive a delivery reminder by email or SMS.","cases":[
+      ["removed","T3","Stop SMS reminders; email remains.","The SMS option is eliminated.",["partial_removal","negation"]],
+      ["modified","T3","Delay SMS reminders; email remains.","The SMS option survives with later delivery.",["temporal","modification_control"]]]},
+    {"id":"p02","domain":"weather-alerts","structure":"multi_option","baseline":"Residents can subscribe to rain alerts by push notification or text message.","cases":[
+      ["removed","T3","Cancel text alerts; push stays.","A named alert channel is removed.",["partial_removal"]],
+      ["modified","T3","Reschedule text alerts; push stays.","Text alerts persist with changed timing.",["temporal","modification_control"]]]},
+    {"id":"p03","domain":"donation-checkout","structure":"multi_option","baseline":"Donors may pay by debit card or bank transfer and receive a digital receipt.","cases":[
+      ["removed","T3","Disable debit-card payment; transfer and receipts remain.","The debit-card mechanism is eliminated.",["partial_removal"]],
+      ["modified","T3","Defer debit-card payment one day; transfer and receipts remain.","The debit-card mechanism survives with delayed processing.",["temporal","modification_control"]]]},
+    {"id":"p04","domain":"conference-registration","structure":"multi_option","baseline":"Attendees can register online or by phone; either route issues a confirmation number.","cases":[
+      ["removed","T3","Stop phone registration; online and confirmation numbers stay.","A registration channel is removed.",["partial_removal"]],
+      ["modified","T3","Defer phone registration until next morning; online and confirmation numbers stay.","Phone registration remains but is processed later.",["temporal","modification_control"]]]},
+    {"id":"p05","domain":"document-sharing","structure":"multi_option","baseline":"Users can share a document by direct link or by inviting a named collaborator.","cases":[
+      ["removed","T3","Turn off direct links; named invitations remain.","A sharing option is removed.",["partial_removal"]],
+      ["modified","T3","Expire direct links after 24 hours; named invitations remain.","Direct links survive with a new expiry rule.",["temporal","modification_control"]]]},
+    {"id":"p06","domain":"portfolio-export","structure":"multi_option","baseline":"Investors can download account positions as CSV; the file includes ticker and quantity.","cases":[
+      ["modified","T3","Keep ticker and quantity, but change the CSV delimiter to semicolon.","The existing export format changes internally.",["format","modification_control"]],
+      ["added","T3","Keep ticker and quantity, but add market value to the CSV.","A new data field is added.",["format","numeric"]]]},
+    {"id":"p07","domain":"tenant-messaging","structure":"multi_option","baseline":"Property staff may message tenants in the portal, and tenants can reply there.","cases":[
+      ["modified","T3","Make portal replies close after seven days; existing messages stay.","Reply capability remains with a time limit.",["temporal","modification_control"]],
+      ["added","T3","Make portal replies available by email too; existing messages stay.","An additional reply channel is added.",["channel"]]]},
+    {"id":"p08","domain":"insurance-payout","structure":"negative_invariant","baseline":"An adjuster must approve a claim before the system pays it, and payment occurs within three days of approval; claimants can view the decision online.","cases":[
+      ["modified","T3","Pay the claim after adjuster approval, but within one day instead of three.","Payout timing changes while approval order stays.",["temporal","modification_control"]],
+      ["contradiction","T3","Pay the claim before adjuster approval, but within one day instead of three.","Payout before mandatory approval violates the invariant.",["temporal"]]]},
+    {"id":"p09","domain":"equipment-rental","structure":"negative_invariant","baseline":"A safety check must occur before a rented lift is released; the release desk sends a receipt immediately after release.","cases":[
+      ["modified","T3","Do the safety check before release, but send the receipt a day later.","Receipt timing changes while safety order remains.",["temporal","modification_control"]],
+      ["contradiction","T3","Do the safety check after release, but send the receipt a day later.","Safety check after release conflicts with the before invariant.",["temporal"]]]},
+    {"id":"p10","domain":"lab-sampling","structure":"numeric","baseline":"The instrument records a sample every twelve minutes.","cases":[
+      ["unchanged","T1","Keep recording a sample every twelve minutes.","The sampling interval is unchanged.",["numeric"]],
+      ["modified","T3","Keep recording a sample every ten minutes.","The sampling interval changes.",["numeric","modification_control"]]]},
+    {"id":"p11","domain":"meal-booking","structure":"temporal","baseline":"Employees can cancel a lunch booking until 10 a.m. on the day of service.","cases":[
+      ["unchanged","T1","Let employees cancel until 10 a.m. that day.","The cancellation cutoff is unchanged.",["temporal"]],
+      ["modified","T3","Let employees cancel until 11 a.m. that day.","The cutoff moves one hour later.",["temporal","modification_control"]]]},
+    {"id":"p12","domain":"report-scheduling","structure":"temporal","baseline":"Analysts receive a utilization report every Friday morning.","cases":[
+      ["modified","T3","Send the utilization report every Thursday morning instead.","The report continues on a different day.",["temporal","modification_control"]],
+      ["ambiguous","T3","Should we send the utilization report every Thursday morning instead? The team has not decided.","The proposed day is explicitly unsettled.",["temporal","hypothetical"]]]},
+    {"id":"p13","domain":"fitness-tracking","structure":"numeric","baseline":"The app records a workout summary at the end of each session.","cases":[
+      ["modified","T3","Record the workout summary halfway through each session instead.","The summary timing changes definitively.",["temporal","modification_control"]],
+      ["ambiguous","T3","Could we record the workout summary halfway through each session instead? It's still just an idea.","The timing change is explicitly hypothetical.",["temporal","hypothetical"]]]},
+    {"id":"p14","domain":"shipment-tracking","structure":"atomic","baseline":"Customers can view parcel position on a map.","cases":[
+      ["unchanged","T1","Customers should see the parcel position on a map.","The map view is restated.",["scope"]],
+      ["added","T3","Customers should see the parcel position on a map and its last scan time.","A new data item is added.",["temporal"]]]},
+    {"id":"p15","domain":"learning-assessment","structure":"atomic","baseline":"Learners can review their quiz answers after submission.","cases":[
+      ["unchanged","T1","Learners can review quiz answers after submission.","The baseline review capability is restated.",["temporal"]],
+      ["added","T3","Learners can review quiz answers and instructor comments after submission.","Instructor comments add a new data item.",["temporal"]]]},
+    {"id":"p16","domain":"access-audit","structure":"negative_invariant","baseline":"Only security administrators may export the access log; auditors may view entries on screen.","cases":[
+      ["removed","T3","Stop auditors viewing log entries; administrator export stays.","A named auditor permission is withdrawn.",["partial_removal","role"]],
+      ["contradiction","T3","Start auditors exporting log entries; administrator export stays.","Giving auditors export access conflicts with the admin-only invariant.",["role","lexical_trap"]]]},
+    {"id":"p17","domain":"medication-dispensing","structure":"negative_invariant","baseline":"Only pharmacists may release a filled prescription; technicians may print its label.","cases":[
+      ["removed","T3","Stop technicians printing labels; pharmacist release stays.","A named technician capability is withdrawn.",["partial_removal","role"]],
+      ["contradiction","T3","Start technicians releasing prescriptions; pharmacist release stays.","Permitting technicians to release conflicts with the pharmacist-only invariant.",["role","lexical_trap"]]]},
+    {"id":"p18","domain":"membership-renewal","structure":"negative_invariant","baseline":"Only account owners may renew a team membership; team members may view its expiry date.","cases":[
+      ["added","T3","Let auditors view the expiry date too; only owners still renew.","A new read-only actor is added compatibly.",["role"]],
+      ["contradiction","T3","Let auditors renew the membership too; owners still renew.","Auditor renewal conflicts with the owner-only invariant.",["role","lexical_trap"]]]}
+  ]
+}

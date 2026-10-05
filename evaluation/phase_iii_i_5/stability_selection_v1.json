@@ -1,0 +1,81 @@
+{
+  "role": "PHASE_III_I_5_PRE_INFERENCE_STABILITY_SELECTION",
+  "corpus_sha256": "54b56f0b2068e9c26f8a315bbd925649b9bcf25c2d4bc248cb5258419b73ec5b",
+  "selection_algorithm": "One hash-first case from a hash-first contrast pair per eight boundaries, then greedy class/tier deficit with SHA-256 tie-break; 24 distinct cases",
+  "selection_count": 24,
+  "case_ids": [
+    "s11-05",
+    "s20-01",
+    "s28-04",
+    "s30-02",
+    "p10-01",
+    "s23-06",
+    "p02-02",
+    "s16-01",
+    "s10-06",
+    "p07-02",
+    "s28-01",
+    "s30-05",
+    "s23-04",
+    "s21-05",
+    "p09-01",
+    "s16-02",
+    "s09-05",
+    "p05-01",
+    "p11-01",
+    "p06-02",
+    "p12-02",
+    "p15-02",
+    "p16-02",
+    "p18-02"
+  ],
+  "selected_minimal_pair_relations": {
+    "added/contradiction": {
+      "relation_id": "contrast-p18",
+      "selected_case_id": "p18-02"
+    },
+    "added/modified": {
+      "relation_id": "contrast-p06",
+      "selected_case_id": "p06-02"
+    },
+    "added/unchanged": {
+      "relation_id": "contrast-p15",
+      "selected_case_id": "p15-02"
+    },
+    "ambiguous/modified": {
+      "relation_id": "contrast-p12",
+      "selected_case_id": "p12-02"
+    },
+    "contradiction/modified": {
+      "relation_id": "contrast-p09",
+      "selected_case_id": "p09-01"
+    },
+    "contradiction/removed": {
+      "relation_id": "contrast-p16",
+      "selected_case_id": "p16-02"
+    },
+    "modified/removed": {
+      "relation_id": "contrast-p05",
+      "selected_case_id": "p05-01"
+    },
+    "modified/unchanged": {
+      "relation_id": "contrast-p11",
+      "selected_case_id": "p11-01"
+    }
+  },
+  "class_counts": {
+    "added": 4,
+    "ambiguous": 3,
+    "contradiction": 3,
+    "modified": 3,
+    "removed": 5,
+    "unchanged": 6
+  },
+  "tier_counts": {
+    "T1": 4,
+    "T2": 4,
+    "T3": 12,
+    "T4": 4
+  },
+  "repeat_policy": "Exactly one additional raw singleton call per selected case after primary scoring; no majority vote"
+}
