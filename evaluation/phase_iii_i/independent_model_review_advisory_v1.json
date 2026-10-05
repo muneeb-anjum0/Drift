@@ -1,0 +1,550 @@
+{
+  "role": "INDEPENDENT_MODEL_REVIEW_COMPLETED",
+  "draft_file": "decision_draft_v1.json",
+  "draft_sha256": "05e77f8327c17f73c02c7b63a8aa0279c047c77e0a7ca54a939769f7c5bcca2e",
+  "reviewer": "independent-reviewer-gpt-5.6-sol",
+  "review_date": "2026-10-05",
+  "review_method": "Blind to model predictions; independently reviewed each baseline/message pair, proposed class, and rationale against the canonical P1 ontology. Reviewer is GPT-5.6 Sol, not a human reviewer.",
+  "decisions": [
+    {
+      "case_id": "i-mod-01",
+      "decision": "CONFIRMED",
+      "reviewed_label": "modified",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-mod-02",
+      "decision": "CONFIRMED",
+      "reviewed_label": "modified",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-mod-03",
+      "decision": "CONFIRMED",
+      "reviewed_label": "modified",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-mod-04",
+      "decision": "CONFIRMED",
+      "reviewed_label": "modified",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-mod-05",
+      "decision": "CONFIRMED",
+      "reviewed_label": "modified",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-mod-06",
+      "decision": "CONFIRMED",
+      "reviewed_label": "modified",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-mod-07",
+      "decision": "CONFIRMED",
+      "reviewed_label": "modified",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-mod-08",
+      "decision": "CONFIRMED",
+      "reviewed_label": "modified",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-mod-09",
+      "decision": "CONFIRMED",
+      "reviewed_label": "modified",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-mod-10",
+      "decision": "CONFIRMED",
+      "reviewed_label": "modified",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-mod-11",
+      "decision": "CONFIRMED",
+      "reviewed_label": "modified",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-mod-12",
+      "decision": "CONFIRMED",
+      "reviewed_label": "modified",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-mod-13",
+      "decision": "CONFIRMED",
+      "reviewed_label": "modified",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-mod-14",
+      "decision": "CONFIRMED",
+      "reviewed_label": "modified",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-mod-15",
+      "decision": "CONFIRMED",
+      "reviewed_label": "modified",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-add-01",
+      "decision": "CONFIRMED",
+      "reviewed_label": "added",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-add-02",
+      "decision": "CONFIRMED",
+      "reviewed_label": "added",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-add-03",
+      "decision": "CONFIRMED",
+      "reviewed_label": "added",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-add-04",
+      "decision": "CONFIRMED",
+      "reviewed_label": "added",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-add-05",
+      "decision": "CONFIRMED",
+      "reviewed_label": "added",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-add-06",
+      "decision": "CONFIRMED",
+      "reviewed_label": "added",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-add-07",
+      "decision": "CONFIRMED",
+      "reviewed_label": "added",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-add-08",
+      "decision": "CONFIRMED",
+      "reviewed_label": "added",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-add-09",
+      "decision": "CONFIRMED",
+      "reviewed_label": "added",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-add-10",
+      "decision": "CONFIRMED",
+      "reviewed_label": "added",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-add-11",
+      "decision": "CONFIRMED",
+      "reviewed_label": "added",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-add-12",
+      "decision": "CONFIRMED",
+      "reviewed_label": "added",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-add-13",
+      "decision": "CONFIRMED",
+      "reviewed_label": "added",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-add-14",
+      "decision": "CONFIRMED",
+      "reviewed_label": "added",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-add-15",
+      "decision": "CONFIRMED",
+      "reviewed_label": "added",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-rem-01",
+      "decision": "CONFIRMED",
+      "reviewed_label": "removed",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-rem-02",
+      "decision": "CONFIRMED",
+      "reviewed_label": "removed",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-rem-03",
+      "decision": "CONFIRMED",
+      "reviewed_label": "removed",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-rem-04",
+      "decision": "CONFIRMED",
+      "reviewed_label": "removed",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-rem-05",
+      "decision": "CONFIRMED",
+      "reviewed_label": "removed",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-rem-06",
+      "decision": "CONFIRMED",
+      "reviewed_label": "removed",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-rem-07",
+      "decision": "CONFIRMED",
+      "reviewed_label": "removed",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-rem-08",
+      "decision": "CONFIRMED",
+      "reviewed_label": "removed",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-rem-09",
+      "decision": "CONFIRMED",
+      "reviewed_label": "removed",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-rem-10",
+      "decision": "CONFIRMED",
+      "reviewed_label": "removed",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-rem-11",
+      "decision": "CONFIRMED",
+      "reviewed_label": "removed",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-rem-12",
+      "decision": "CONFIRMED",
+      "reviewed_label": "removed",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-rem-13",
+      "decision": "CONFIRMED",
+      "reviewed_label": "removed",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-rem-14",
+      "decision": "CONFIRMED",
+      "reviewed_label": "removed",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-rem-15",
+      "decision": "CONFIRMED",
+      "reviewed_label": "removed",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-con-01",
+      "decision": "CONFIRMED",
+      "reviewed_label": "contradiction",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-con-02",
+      "decision": "CONFIRMED",
+      "reviewed_label": "contradiction",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-con-03",
+      "decision": "CONFIRMED",
+      "reviewed_label": "contradiction",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-con-04",
+      "decision": "CONFIRMED",
+      "reviewed_label": "contradiction",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-con-05",
+      "decision": "CONFIRMED",
+      "reviewed_label": "contradiction",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-con-06",
+      "decision": "CONFIRMED",
+      "reviewed_label": "contradiction",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-con-07",
+      "decision": "CONFIRMED",
+      "reviewed_label": "contradiction",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-con-08",
+      "decision": "CONFIRMED",
+      "reviewed_label": "contradiction",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-con-09",
+      "decision": "CONFIRMED",
+      "reviewed_label": "contradiction",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-con-10",
+      "decision": "CONFIRMED",
+      "reviewed_label": "contradiction",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-con-11",
+      "decision": "CONFIRMED",
+      "reviewed_label": "contradiction",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-con-12",
+      "decision": "CONFIRMED",
+      "reviewed_label": "contradiction",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-con-13",
+      "decision": "CONFIRMED",
+      "reviewed_label": "contradiction",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-con-14",
+      "decision": "CONFIRMED",
+      "reviewed_label": "contradiction",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-con-15",
+      "decision": "CONFIRMED",
+      "reviewed_label": "contradiction",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-amb-01",
+      "decision": "CONFIRMED",
+      "reviewed_label": "ambiguous",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-amb-02",
+      "decision": "CONFIRMED",
+      "reviewed_label": "ambiguous",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-amb-03",
+      "decision": "CONFIRMED",
+      "reviewed_label": "ambiguous",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-amb-04",
+      "decision": "CONFIRMED",
+      "reviewed_label": "ambiguous",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-amb-05",
+      "decision": "CONFIRMED",
+      "reviewed_label": "ambiguous",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-amb-06",
+      "decision": "CONFIRMED",
+      "reviewed_label": "ambiguous",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-amb-07",
+      "decision": "CONFIRMED",
+      "reviewed_label": "ambiguous",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-amb-08",
+      "decision": "CONFIRMED",
+      "reviewed_label": "ambiguous",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-amb-09",
+      "decision": "CONFIRMED",
+      "reviewed_label": "ambiguous",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-amb-10",
+      "decision": "CONFIRMED",
+      "reviewed_label": "ambiguous",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-amb-11",
+      "decision": "CONFIRMED",
+      "reviewed_label": "ambiguous",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-amb-12",
+      "decision": "CONFIRMED",
+      "reviewed_label": "ambiguous",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-amb-13",
+      "decision": "CONFIRMED",
+      "reviewed_label": "ambiguous",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-amb-14",
+      "decision": "CONFIRMED",
+      "reviewed_label": "ambiguous",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-amb-15",
+      "decision": "CONFIRMED",
+      "reviewed_label": "ambiguous",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-unc-01",
+      "decision": "CONFIRMED",
+      "reviewed_label": "unchanged",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-unc-02",
+      "decision": "CONFIRMED",
+      "reviewed_label": "unchanged",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-unc-03",
+      "decision": "CONFIRMED",
+      "reviewed_label": "unchanged",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-unc-04",
+      "decision": "CONFIRMED",
+      "reviewed_label": "unchanged",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-unc-05",
+      "decision": "CONFIRMED",
+      "reviewed_label": "unchanged",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-unc-06",
+      "decision": "CONFIRMED",
+      "reviewed_label": "unchanged",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-unc-07",
+      "decision": "CONFIRMED",
+      "reviewed_label": "unchanged",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-unc-08",
+      "decision": "CONFIRMED",
+      "reviewed_label": "unchanged",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-unc-09",
+      "decision": "CONFIRMED",
+      "reviewed_label": "unchanged",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-unc-10",
+      "decision": "CONFIRMED",
+      "reviewed_label": "unchanged",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-unc-11",
+      "decision": "CONFIRMED",
+      "reviewed_label": "unchanged",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-unc-12",
+      "decision": "CONFIRMED",
+      "reviewed_label": "unchanged",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-unc-13",
+      "decision": "CONFIRMED",
+      "reviewed_label": "unchanged",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-unc-14",
+      "decision": "CONFIRMED",
+      "reviewed_label": "unchanged",
+      "review_note": ""
+    },
+    {
+      "case_id": "i-unc-15",
+      "decision": "CONFIRMED",
+      "reviewed_label": "unchanged",
+      "review_note": ""
+    }
+  ]
+}
