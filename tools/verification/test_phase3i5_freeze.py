@@ -20,12 +20,15 @@ def fixtures(tmp_path):
             "semantic_family": f"test-{index}",
             "domain": "unit-test",
             "requirement_structure": "atomic",
+            "length_bucket": "short",
             "phenomenon_tags": ["unit_test"],
             "author_provenance": "AI_ASSISTED_SYNTHETIC_PROPOSAL",
         })
     draft_path = tmp_path / "draft.json"
     draft_path.write_text(json.dumps({"role": "PHASE_III_I_5_PROPOSED_NOT_REVIEWED_NOT_SCORED",
-                                      "cases": cases}))
+                                      "cases": cases,
+                                      "relations": [{"id": "test-relation", "type": "paraphrase_invariance",
+                                                     "case_ids": ["stress-000", "stress-001"]}]}))
     review = {
         "draft_sha256": hashlib.sha256(draft_path.read_bytes()).hexdigest(),
         "reviewer": "Unit Test Reviewer",
@@ -48,6 +51,7 @@ def test_valid_review_preserves_proposal(tmp_path):
     assert len(frozen["cases"]) == 180
     assert frozen["cases"][0]["proposed_label"] == "unchanged"
     assert frozen["cases"][0]["review"]["reviewed_label"] == "unchanged"
+    assert frozen["relations"][0]["primary_eligible"] is True
 
 
 def test_stale_review_is_rejected(tmp_path):
@@ -76,6 +80,7 @@ def test_ambiguous_case_is_unscored(tmp_path):
     review.write_text(json.dumps(data))
     frozen = validate_review(draft, review)
     assert frozen["cases"][0]["primary_scored"] is False
+    assert frozen["relations"][0]["primary_eligible"] is False
 
 
 def test_revised_label_must_change(tmp_path):

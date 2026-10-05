@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 from collections import Counter
 from datetime import date
 from pathlib import Path
@@ -20,6 +21,7 @@ STRUCTURES = {
     "atomic", "compound", "conditional", "role", "numeric", "temporal",
     "multi_option", "negative_invariant",
 }
+RELATION_TYPES = {"minimal_pair_contrast", "paraphrase_invariance", "distractor_invariance", "order_invariance"}
 
 
 def digest(path):
@@ -61,6 +63,31 @@ def validate_draft(path):
             raise ValueError(f"{case_id}: phenomenon tags missing")
         if case.get("author_provenance") != "AI_ASSISTED_SYNTHETIC_PROPOSAL":
             raise ValueError(f"{case_id}: inaccurate author provenance")
+        length = len(re.findall(r"\b[\w'-]+\b", case["baseline_requirement"] + " " + case["message"]))
+        expected_bucket = "short" if length <= 20 else "medium" if length <= 60 else "long"
+        if length > 160 or case.get("length_bucket") != expected_bucket:
+            raise ValueError(f"{case_id}: invalid length bucket")
+    relations = draft.get("relations")
+    if not isinstance(relations, list) or not relations:
+        raise ValueError("relation metadata missing")
+    relation_ids = set()
+    by_id = {case["id"]: case for case in cases}
+    for relation in relations:
+        relation_id = relation.get("id")
+        members = relation.get("case_ids")
+        kind = relation.get("type")
+        if not nonempty(relation_id) or relation_id in relation_ids or kind not in RELATION_TYPES:
+            raise ValueError("invalid or duplicate relation")
+        relation_ids.add(relation_id)
+        if (not isinstance(members, list) or len(members) < 2 or len(set(members)) != len(members)
+                or any(member not in by_id for member in members)):
+            raise ValueError(f"{relation_id}: invalid member IDs")
+        labels = [by_id[member]["proposed_label"] for member in members]
+        if kind == "minimal_pair_contrast":
+            if len(members) != 2 or len(set(labels)) != 2 or relation.get("expected_labels") != labels:
+                raise ValueError(f"{relation_id}: invalid proposed contrast")
+        elif len(set(labels)) != 1:
+            raise ValueError(f"{relation_id}: proposed invariant labels differ")
     return draft
 
 
@@ -116,6 +143,19 @@ def validate_review(draft_path, review_path):
             "review_note": item["review_note"].strip(),
         }, "primary_scored": item["decision"] in {"CONFIRMED", "REVISED"}})
     counts = Counter(item["decision"] for item in decisions)
+    frozen_by_id = {case["id"]: case for case in reviewed}
+    frozen_relations = []
+    for relation in draft["relations"]:
+        members = [frozen_by_id[case_id] for case_id in relation["case_ids"]]
+        scored = all(case["primary_scored"] for case in members)
+        reviewed_labels = [case["review"]["reviewed_label"] for case in members]
+        if relation["type"] == "minimal_pair_contrast":
+            semantic_match = reviewed_labels == relation["expected_labels"]
+        else:
+            semantic_match = len(set(reviewed_labels)) == 1
+        frozen_relations.append({**relation, "primary_eligible": scored and semantic_match,
+                                 "eligibility_reason": "ELIGIBLE" if scored and semantic_match else
+                                 "UNSCORED_MEMBER" if not scored else "REVIEW_CHANGED_RELATION"})
     return {
         "role": "PHASE_III_I_5_REVIEWED_FROZEN_CORPUS",
         "draft_sha256": digest(draft_path),
@@ -127,6 +167,7 @@ def validate_review(draft_path, review_path):
         "review_date": review["review_date"],
         "review_decision_counts": dict(sorted(counts.items())),
         "cases": reviewed,
+        "relations": frozen_relations,
     }
 
 

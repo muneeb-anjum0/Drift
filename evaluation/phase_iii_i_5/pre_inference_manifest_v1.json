@@ -1,0 +1,135 @@
+{
+  "role": "PHASE_III_I_5_PRE_INFERENCE_FREEZE_MANIFEST",
+  "status": "NO_MODEL_PREDICTIONS_EXISTED_AT_MANIFEST_CREATION",
+  "starting_main": "2c54555dc09580f759e8a2cbf92b8f82e4f4a3af",
+  "methodology_commit": "922ee58",
+  "files": {
+    "candidate": {
+      "path": "evaluation/phase_iii_i_5/candidate_draft_v1.json",
+      "sha256": "5477c3a1444aec75b7054ee35e68bb97cdc9ed1369341b1d22f9a617c43704fe"
+    },
+    "review_source_json": {
+      "path": "evaluation/phase_iii_i_5/human_review/source.json",
+      "sha256": "4e1eef0b4ab81530099f56a698a1293eeb8c29d86238ae2e5931826a581e1cd4"
+    },
+    "review_source_csv": {
+      "path": "evaluation/phase_iii_i_5/human_review/source.csv",
+      "sha256": "442908b41a1a9159c602d56207716abbe0e3b77ae713d7d90a87796f521391ee"
+    },
+    "review_source_txt": {
+      "path": "evaluation/phase_iii_i_5/human_review/source.txt",
+      "sha256": "8ec574ba2945ae797e767aa3573a6cba8c7aa151194d7bded75841bd403ecdaa"
+    },
+    "review_transcription": {
+      "path": "evaluation/phase_iii_i_5/human_review/normalized_review_v1.json",
+      "sha256": "b339bfed46dc3103c46299db9e88e572cd29209609d5d50a2305e42cf1f16039"
+    },
+    "frozen_corpus": {
+      "path": "evaluation/phase_iii_i_5/reviewed_frozen_v1.json",
+      "sha256": "54b56f0b2068e9c26f8a315bbd925649b9bcf25c2d4bc248cb5258419b73ec5b"
+    },
+    "frozen_corpus_checksum": {
+      "path": "evaluation/phase_iii_i_5/reviewed_frozen_v1.json.sha256",
+      "sha256": "93a97a21590ea071a4b05d958edbcdafdf171f3095196e7950cae8f6cc56e977"
+    },
+    "stability_selection": {
+      "path": "evaluation/phase_iii_i_5/stability_selection_v1.json",
+      "sha256": "73ed47171333d5fc53075b3d3642b8b113fa026cd507502093476bd9ec2a8e20"
+    },
+    "reviewed_overlap": {
+      "path": "evaluation/phase_iii_i_5/reviewed_overlap_v1.json",
+      "sha256": "a55a839ea7b2ea4eae43c187abc0633657fc18c9fb2e778beefb053a1e2836c4"
+    },
+    "methodology": {
+      "path": "docs/phase_iii_i_5_methodology.md",
+      "sha256": "03a31dea34844392422451600917a3d7c145b19dd0576e0fa24d19eeaef9e9e3"
+    },
+    "author_exposure_disclosure": {
+      "path": "docs/phase_iii_i_5_provenance_deviation.md",
+      "sha256": "c8801e5d572c342e9e36a5a2623c9cb0fdb1e22a03d40d8377591da6850345f9"
+    },
+    "model": {
+      "path": "models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf",
+      "sha256": "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9"
+    },
+    "p1_prompt": {
+      "path": "evaluation/prompts/P1.json",
+      "sha256": "902ac43037c998afc4b6550995036bbc720bcae5dbbafc4504b2b9898abed339"
+    },
+    "pp1_source": {
+      "path": "server-go/internal/modules/drift/drift_postprocess.go",
+      "sha256": "0c8bf5cf8fad54d2f9285a4392c2a4fa96d3fc758d3331a0fb0020c834b643e7"
+    },
+    "singleton_runner": {
+      "path": "tools/verification/phase3i_run_oracle.py",
+      "sha256": "2f6be4a807a266b2ce52331a53fae3b68139e5484572e6681c6a48059972bc0c"
+    },
+    "singleton_contract": {
+      "path": "tools/verification/phase3h_contracts.py",
+      "sha256": "4fff38883a444c14a5776f24d64913dc37984a053f9a797ae58bf7a94aed20fb"
+    },
+    "stress_runner": {
+      "path": "tools/verification/phase3i5_run_oracle.py",
+      "sha256": "9ce79fee5c780f9a46af0b59a957554418568f174c7c6f8733ed8d5bd8b0854f"
+    }
+  },
+  "review_decision_counts": {
+    "AMBIGUOUS": 1,
+    "CONFIRMED": 214,
+    "REVISED": 1
+  },
+  "proposed_cases": 216,
+  "primary_scored_cases": 215,
+  "unscored_ontology_gap_case_ids": [
+    "s09-03"
+  ],
+  "scored_class_counts": {
+    "added": 38,
+    "ambiguous": 23,
+    "contradiction": 28,
+    "modified": 46,
+    "removed": 43,
+    "unchanged": 37
+  },
+  "scored_tier_counts": {
+    "T1": 34,
+    "T2": 59,
+    "T3": 62,
+    "T4": 60
+  },
+  "eligible_relation_counts": {
+    "minimal_pair_contrast": 18,
+    "paraphrase_invariance": 9,
+    "distractor_invariance": 20,
+    "order_invariance": 20
+  },
+  "review_provenance": "Muneeb human semantic review, self-attested; process not independently witnessed",
+  "author_exposure": "ACCEPTABLE_WITH_LIMITATION; not perfectly blind to old proposed III-I text",
+  "primary_score_policy": "All 215 human-reviewed CONFIRMED/REVISED cases; one AMBIGUOUS review case retained but unscored",
+  "request_settings": {
+    "temperature": 0,
+    "top_p": 1,
+    "n_predict": 120,
+    "stop": [
+      "<|im_end|>",
+      "<|im_start|>"
+    ]
+  },
+  "expected_runtime": {
+    "image": "ghcr.io/ggml-org/llama.cpp:server-b11151",
+    "n_ctx": 768,
+    "slots": 1,
+    "threads": 6,
+    "gpu_layers": 0,
+    "device": "none",
+    "device_requests": null,
+    "container_memory_bytes": 7516192768,
+    "container_memory_swap_bytes": 8589934592
+  },
+  "limitations": [
+    "V5 archive-to-adapter byte identity unproven",
+    "Exact/lexical overlap is not semantic proof",
+    "Review is human self-attested, not independently witnessed",
+    "Case author saw a few old proposed III-I cases before authoring"
+  ]
+}
