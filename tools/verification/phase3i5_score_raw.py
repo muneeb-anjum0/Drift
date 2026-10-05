@@ -141,6 +141,9 @@ def robustness(corpus, rows, corpus_sha):
         else:
             outcome = "all_correct" if all(correct) else "not_all_correct"
             consistent = len(set(predicted)) == 1
+            flips = sum(value != predicted[0] for value in predicted[1:])
+            totals[kind]["prediction_flips_relative_to_first"] += flips
+            totals[kind]["prediction_flip_opportunities"] += len(predicted) - 1
         totals[kind]["eligible"] += 1
         totals[kind][outcome] += 1
         totals[kind]["consistent" if consistent else "violated"] += 1
@@ -154,7 +157,11 @@ def robustness(corpus, rows, corpus_sha):
         summary[kind] = {**dict(counts), "eligible": eligible, "ineligible": counts["ineligible"],
                          "consistent": counts["consistent"], "violated": counts["violated"],
                          "consistency_rate": ratio(counts["consistent"], eligible),
-                         "violation_rate": ratio(counts["violated"], eligible)}
+                         "violation_rate": ratio(counts["violated"], eligible),
+                         "prediction_flip_rate_relative_to_first": ratio(
+                             counts["prediction_flips_relative_to_first"],
+                             counts["prediction_flip_opportunities"])
+                         if kind != "minimal_pair_contrast" else None}
     total_eligible = sum(item["eligible"] for item in summary.values())
     total_consistent = sum(item["consistent"] for item in summary.values())
     return {"role": "PHASE_III_I_5_RAW_ROBUSTNESS", "dataset_sha256": corpus_sha,
