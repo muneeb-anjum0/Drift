@@ -47,3 +47,11 @@ def test_slices_and_confidence_count_only_scored():
     confidence = confidence_and_latency(rows, "frozen")
     assert sum(band["support"] for band in confidence["confidence_bands"]) == 1
     assert confidence["latency_seconds"]["calls"] == 2
+
+
+def test_confidence_one_is_in_final_band():
+    case = row("one", "added", "added")
+    case["confidence"] = 1.0
+    result = confidence_and_latency([case], "frozen")
+    assert result["confidence_bands"][-1]["support"] == 1
+    assert result["confidence_bands"][-1]["upper_inclusive"] is True

@@ -172,13 +172,15 @@ def robustness(corpus, rows, corpus_sha):
 
 def confidence_and_latency(rows, corpus_sha):
     scored = [row for row in rows if row["primary_scored"]]
-    bands = ((0.0, 0.5), (0.5, 0.8), (0.8, 0.9), (0.9, 1.0000001))
+    bands = ((0.0, 0.5), (0.5, 0.8), (0.8, 0.9), (0.9, 1.0))
     confidence = []
     for lower, upper in bands:
         members = [row for row in scored if row["confidence"] is not None
-                   and lower <= row["confidence"] < upper]
+                   and lower <= row["confidence"] and
+                   (row["confidence"] < upper or upper == 1.0 and row["confidence"] == 1.0)]
         correct = sum(row["predicted"] == row["truth"] for row in members)
-        confidence.append({"lower_inclusive": lower, "upper_exclusive": min(upper, 1.0),
+        confidence.append({"lower_inclusive": lower, "upper": upper,
+                           "upper_inclusive": upper == 1.0,
                            "support": len(members), "correct": correct,
                            "accuracy": ratio(correct, len(members)),
                            "mean_self_reported_confidence": statistics.mean(
