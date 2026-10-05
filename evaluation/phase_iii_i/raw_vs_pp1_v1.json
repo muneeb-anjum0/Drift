@@ -1,0 +1,337 @@
+{
+  "role": "PHASE_III_I_RAW_VS_FROZEN_GO_PP1",
+  "dataset_sha256": "d0fae87de5a9413e3ffd61104e3ca4478c742399f9d49fb36be12231478a12b5",
+  "raw": {
+    "role": "PHASE_III_I_RAW_ORACLE_SCORE",
+    "dataset_sha256": "d0fae87de5a9413e3ffd61104e3ca4478c742399f9d49fb36be12231478a12b5",
+    "total_cases": 90,
+    "valid_cases": 90,
+    "invalid_cases": 0,
+    "invalid_categories": {},
+    "correct_cases": 73,
+    "accuracy": 0.8111111111111111,
+    "macro_precision": 0.876855600539811,
+    "macro_recall": 0.8111111111111112,
+    "macro_f1": 0.8088724647719183,
+    "per_class": {
+      "added": {
+        "support": 15,
+        "correct": 13,
+        "false_positive": 6,
+        "false_negative_including_invalid": 2,
+        "precision": 0.6842105263157895,
+        "recall": 0.8666666666666667,
+        "f1": 0.7647058823529413
+      },
+      "modified": {
+        "support": 15,
+        "correct": 15,
+        "false_positive": 11,
+        "false_negative_including_invalid": 0,
+        "precision": 0.5769230769230769,
+        "recall": 1.0,
+        "f1": 0.7317073170731707
+      },
+      "removed": {
+        "support": 15,
+        "correct": 8,
+        "false_positive": 0,
+        "false_negative_including_invalid": 7,
+        "precision": 1.0,
+        "recall": 0.5333333333333333,
+        "f1": 0.6956521739130436
+      },
+      "contradiction": {
+        "support": 15,
+        "correct": 15,
+        "false_positive": 0,
+        "false_negative_including_invalid": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ambiguous": {
+        "support": 15,
+        "correct": 14,
+        "false_positive": 0,
+        "false_negative_including_invalid": 1,
+        "precision": 1.0,
+        "recall": 0.9333333333333333,
+        "f1": 0.9655172413793104
+      },
+      "unchanged": {
+        "support": 15,
+        "correct": 8,
+        "false_positive": 0,
+        "false_negative_including_invalid": 7,
+        "precision": 1.0,
+        "recall": 0.5333333333333333,
+        "f1": 0.6956521739130436
+      }
+    },
+    "confusion_matrix": {
+      "added": {
+        "added": 13,
+        "modified": 2,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "modified": {
+        "added": 0,
+        "modified": 15,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "removed": {
+        "added": 0,
+        "modified": 7,
+        "removed": 8,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "contradiction": {
+        "added": 0,
+        "modified": 0,
+        "removed": 0,
+        "contradiction": 15,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "ambiguous": {
+        "added": 0,
+        "modified": 1,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 14,
+        "unchanged": 0
+      },
+      "unchanged": {
+        "added": 6,
+        "modified": 1,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 8
+      }
+    },
+    "prediction_distribution": {
+      "added": 19,
+      "modified": 26,
+      "removed": 8,
+      "contradiction": 15,
+      "ambiguous": 14,
+      "unchanged": 8
+    },
+    "confusion_pairs_ranked": [
+      {
+        "truth": "removed",
+        "predicted": "modified",
+        "count": 7
+      },
+      {
+        "truth": "unchanged",
+        "predicted": "added",
+        "count": 6
+      },
+      {
+        "truth": "added",
+        "predicted": "modified",
+        "count": 2
+      },
+      {
+        "truth": "ambiguous",
+        "predicted": "modified",
+        "count": 1
+      },
+      {
+        "truth": "unchanged",
+        "predicted": "modified",
+        "count": 1
+      }
+    ],
+    "critical_errors": {
+      "actual_drift_predicted_unchanged": 0,
+      "unchanged_predicted_drift": 7,
+      "contradiction_missed": 0,
+      "contradiction_overpredicted": 0,
+      "ambiguous_overpredicted": 0,
+      "added_or_removed_predicted_modified": 9
+    },
+    "confidence_calibration": "NOT_MEASURED"
+  },
+  "raw_plus_pp1": {
+    "role": "PHASE_III_I_RAW_ORACLE_SCORE",
+    "dataset_sha256": "d0fae87de5a9413e3ffd61104e3ca4478c742399f9d49fb36be12231478a12b5",
+    "total_cases": 90,
+    "valid_cases": 90,
+    "invalid_cases": 0,
+    "invalid_categories": {},
+    "correct_cases": 73,
+    "accuracy": 0.8111111111111111,
+    "macro_precision": 0.876855600539811,
+    "macro_recall": 0.8111111111111112,
+    "macro_f1": 0.8088724647719183,
+    "per_class": {
+      "added": {
+        "support": 15,
+        "correct": 13,
+        "false_positive": 6,
+        "false_negative_including_invalid": 2,
+        "precision": 0.6842105263157895,
+        "recall": 0.8666666666666667,
+        "f1": 0.7647058823529413
+      },
+      "modified": {
+        "support": 15,
+        "correct": 15,
+        "false_positive": 11,
+        "false_negative_including_invalid": 0,
+        "precision": 0.5769230769230769,
+        "recall": 1.0,
+        "f1": 0.7317073170731707
+      },
+      "removed": {
+        "support": 15,
+        "correct": 8,
+        "false_positive": 0,
+        "false_negative_including_invalid": 7,
+        "precision": 1.0,
+        "recall": 0.5333333333333333,
+        "f1": 0.6956521739130436
+      },
+      "contradiction": {
+        "support": 15,
+        "correct": 15,
+        "false_positive": 0,
+        "false_negative_including_invalid": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ambiguous": {
+        "support": 15,
+        "correct": 14,
+        "false_positive": 0,
+        "false_negative_including_invalid": 1,
+        "precision": 1.0,
+        "recall": 0.9333333333333333,
+        "f1": 0.9655172413793104
+      },
+      "unchanged": {
+        "support": 15,
+        "correct": 8,
+        "false_positive": 0,
+        "false_negative_including_invalid": 7,
+        "precision": 1.0,
+        "recall": 0.5333333333333333,
+        "f1": 0.6956521739130436
+      }
+    },
+    "confusion_matrix": {
+      "added": {
+        "added": 13,
+        "modified": 2,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "modified": {
+        "added": 0,
+        "modified": 15,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "removed": {
+        "added": 0,
+        "modified": 7,
+        "removed": 8,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "contradiction": {
+        "added": 0,
+        "modified": 0,
+        "removed": 0,
+        "contradiction": 15,
+        "ambiguous": 0,
+        "unchanged": 0
+      },
+      "ambiguous": {
+        "added": 0,
+        "modified": 1,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 14,
+        "unchanged": 0
+      },
+      "unchanged": {
+        "added": 6,
+        "modified": 1,
+        "removed": 0,
+        "contradiction": 0,
+        "ambiguous": 0,
+        "unchanged": 8
+      }
+    },
+    "prediction_distribution": {
+      "added": 19,
+      "modified": 26,
+      "removed": 8,
+      "contradiction": 15,
+      "ambiguous": 14,
+      "unchanged": 8
+    },
+    "confusion_pairs_ranked": [
+      {
+        "truth": "removed",
+        "predicted": "modified",
+        "count": 7
+      },
+      {
+        "truth": "unchanged",
+        "predicted": "added",
+        "count": 6
+      },
+      {
+        "truth": "added",
+        "predicted": "modified",
+        "count": 2
+      },
+      {
+        "truth": "ambiguous",
+        "predicted": "modified",
+        "count": 1
+      },
+      {
+        "truth": "unchanged",
+        "predicted": "modified",
+        "count": 1
+      }
+    ],
+    "critical_errors": {
+      "actual_drift_predicted_unchanged": 0,
+      "unchanged_predicted_drift": 7,
+      "contradiction_missed": 0,
+      "contradiction_overpredicted": 0,
+      "ambiguous_overpredicted": 0,
+      "added_or_removed_predicted_modified": 9
+    },
+    "confidence_calibration": "NOT_MEASURED"
+  },
+  "effect_counts": {
+    "FIXED": 0,
+    "WORSENED": 0,
+    "NEUTRAL": 90
+  },
+  "changed_label_case_ids": [],
+  "primary_result": "RAW"
+}

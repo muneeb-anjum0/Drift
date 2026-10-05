@@ -1,0 +1,731 @@
+{
+  "role": "PHASE_III_I_FROZEN_GO_PP1_REPLAY",
+  "rows": [
+    {
+      "case_id": "i-add-01",
+      "truth": "added",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-add-02",
+      "truth": "added",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-add-03",
+      "truth": "added",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-add-04",
+      "truth": "added",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-add-05",
+      "truth": "added",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-add-06",
+      "truth": "added",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-add-07",
+      "truth": "added",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-add-08",
+      "truth": "added",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-add-09",
+      "truth": "added",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-add-10",
+      "truth": "added",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-add-11",
+      "truth": "added",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-add-12",
+      "truth": "added",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-add-13",
+      "truth": "added",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-add-14",
+      "truth": "added",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-add-15",
+      "truth": "added",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-amb-01",
+      "truth": "ambiguous",
+      "raw_label": "ambiguous",
+      "pp1_label": "ambiguous",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-amb-02",
+      "truth": "ambiguous",
+      "raw_label": "ambiguous",
+      "pp1_label": "ambiguous",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-amb-03",
+      "truth": "ambiguous",
+      "raw_label": "ambiguous",
+      "pp1_label": "ambiguous",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-amb-04",
+      "truth": "ambiguous",
+      "raw_label": "ambiguous",
+      "pp1_label": "ambiguous",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-amb-05",
+      "truth": "ambiguous",
+      "raw_label": "ambiguous",
+      "pp1_label": "ambiguous",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-amb-06",
+      "truth": "ambiguous",
+      "raw_label": "ambiguous",
+      "pp1_label": "ambiguous",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-amb-07",
+      "truth": "ambiguous",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-amb-08",
+      "truth": "ambiguous",
+      "raw_label": "ambiguous",
+      "pp1_label": "ambiguous",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-amb-09",
+      "truth": "ambiguous",
+      "raw_label": "ambiguous",
+      "pp1_label": "ambiguous",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-amb-10",
+      "truth": "ambiguous",
+      "raw_label": "ambiguous",
+      "pp1_label": "ambiguous",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-amb-11",
+      "truth": "ambiguous",
+      "raw_label": "ambiguous",
+      "pp1_label": "ambiguous",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-amb-12",
+      "truth": "ambiguous",
+      "raw_label": "ambiguous",
+      "pp1_label": "ambiguous",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-amb-13",
+      "truth": "ambiguous",
+      "raw_label": "ambiguous",
+      "pp1_label": "ambiguous",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-amb-14",
+      "truth": "ambiguous",
+      "raw_label": "ambiguous",
+      "pp1_label": "ambiguous",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-amb-15",
+      "truth": "ambiguous",
+      "raw_label": "ambiguous",
+      "pp1_label": "ambiguous",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-con-01",
+      "truth": "contradiction",
+      "raw_label": "contradiction",
+      "pp1_label": "contradiction",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-con-02",
+      "truth": "contradiction",
+      "raw_label": "contradiction",
+      "pp1_label": "contradiction",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-con-03",
+      "truth": "contradiction",
+      "raw_label": "contradiction",
+      "pp1_label": "contradiction",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-con-04",
+      "truth": "contradiction",
+      "raw_label": "contradiction",
+      "pp1_label": "contradiction",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-con-05",
+      "truth": "contradiction",
+      "raw_label": "contradiction",
+      "pp1_label": "contradiction",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-con-06",
+      "truth": "contradiction",
+      "raw_label": "contradiction",
+      "pp1_label": "contradiction",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-con-07",
+      "truth": "contradiction",
+      "raw_label": "contradiction",
+      "pp1_label": "contradiction",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-con-08",
+      "truth": "contradiction",
+      "raw_label": "contradiction",
+      "pp1_label": "contradiction",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-con-09",
+      "truth": "contradiction",
+      "raw_label": "contradiction",
+      "pp1_label": "contradiction",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-con-10",
+      "truth": "contradiction",
+      "raw_label": "contradiction",
+      "pp1_label": "contradiction",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-con-11",
+      "truth": "contradiction",
+      "raw_label": "contradiction",
+      "pp1_label": "contradiction",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-con-12",
+      "truth": "contradiction",
+      "raw_label": "contradiction",
+      "pp1_label": "contradiction",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-con-13",
+      "truth": "contradiction",
+      "raw_label": "contradiction",
+      "pp1_label": "contradiction",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-con-14",
+      "truth": "contradiction",
+      "raw_label": "contradiction",
+      "pp1_label": "contradiction",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-con-15",
+      "truth": "contradiction",
+      "raw_label": "contradiction",
+      "pp1_label": "contradiction",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-mod-01",
+      "truth": "modified",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-mod-02",
+      "truth": "modified",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-mod-03",
+      "truth": "modified",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-mod-04",
+      "truth": "modified",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-mod-05",
+      "truth": "modified",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-mod-06",
+      "truth": "modified",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-mod-07",
+      "truth": "modified",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-mod-08",
+      "truth": "modified",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-mod-09",
+      "truth": "modified",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-mod-10",
+      "truth": "modified",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-mod-11",
+      "truth": "modified",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-mod-12",
+      "truth": "modified",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-mod-13",
+      "truth": "modified",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-mod-14",
+      "truth": "modified",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-mod-15",
+      "truth": "modified",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-rem-01",
+      "truth": "removed",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-rem-02",
+      "truth": "removed",
+      "raw_label": "removed",
+      "pp1_label": "removed",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-rem-03",
+      "truth": "removed",
+      "raw_label": "removed",
+      "pp1_label": "removed",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-rem-04",
+      "truth": "removed",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-rem-05",
+      "truth": "removed",
+      "raw_label": "removed",
+      "pp1_label": "removed",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-rem-06",
+      "truth": "removed",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-rem-07",
+      "truth": "removed",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-rem-08",
+      "truth": "removed",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-rem-09",
+      "truth": "removed",
+      "raw_label": "removed",
+      "pp1_label": "removed",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-rem-10",
+      "truth": "removed",
+      "raw_label": "removed",
+      "pp1_label": "removed",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-rem-11",
+      "truth": "removed",
+      "raw_label": "removed",
+      "pp1_label": "removed",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-rem-12",
+      "truth": "removed",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-rem-13",
+      "truth": "removed",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-rem-14",
+      "truth": "removed",
+      "raw_label": "removed",
+      "pp1_label": "removed",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-rem-15",
+      "truth": "removed",
+      "raw_label": "removed",
+      "pp1_label": "removed",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-unc-01",
+      "truth": "unchanged",
+      "raw_label": "unchanged",
+      "pp1_label": "unchanged",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-unc-02",
+      "truth": "unchanged",
+      "raw_label": "unchanged",
+      "pp1_label": "unchanged",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-unc-03",
+      "truth": "unchanged",
+      "raw_label": "unchanged",
+      "pp1_label": "unchanged",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-unc-04",
+      "truth": "unchanged",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-unc-05",
+      "truth": "unchanged",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-unc-06",
+      "truth": "unchanged",
+      "raw_label": "unchanged",
+      "pp1_label": "unchanged",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-unc-07",
+      "truth": "unchanged",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-unc-08",
+      "truth": "unchanged",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-unc-09",
+      "truth": "unchanged",
+      "raw_label": "unchanged",
+      "pp1_label": "unchanged",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-unc-10",
+      "truth": "unchanged",
+      "raw_label": "unchanged",
+      "pp1_label": "unchanged",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-unc-11",
+      "truth": "unchanged",
+      "raw_label": "modified",
+      "pp1_label": "modified",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-unc-12",
+      "truth": "unchanged",
+      "raw_label": "unchanged",
+      "pp1_label": "unchanged",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-unc-13",
+      "truth": "unchanged",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-unc-14",
+      "truth": "unchanged",
+      "raw_label": "added",
+      "pp1_label": "added",
+      "effect": "NEUTRAL",
+      "changed": false
+    },
+    {
+      "case_id": "i-unc-15",
+      "truth": "unchanged",
+      "raw_label": "unchanged",
+      "pp1_label": "unchanged",
+      "effect": "NEUTRAL",
+      "changed": false
+    }
+  ],
+  "effect_counts": {
+    "FIXED": 0,
+    "NEUTRAL": 90,
+    "WORSENED": 0
+  },
+  "changed_labels": 0
+}
