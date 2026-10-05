@@ -49,3 +49,6 @@ reports/evaluation/
 docker-compose.override.yml
 tools/model/vendor/llama.cpp/build/
 tools/model/vendor/llama.cpp/
+
+# User-supplied Phase III-I training provenance archive; keep large source data local.
+archive/drift-dataset-kaggle-v5-cumulative/

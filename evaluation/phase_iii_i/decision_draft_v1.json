@@ -1,0 +1,1542 @@
+{
+  "role": "PROPOSED_DECISION_CASES_NOT_REVIEWED_NOT_SCORED",
+  "version": "1.0.0-draft",
+  "blueprint": "blueprint_v1.json",
+  "cases": [
+    {
+      "id": "i-mod-01",
+      "domain": "water-utility",
+      "baseline_requirement": "District meters shall record flow every fifteen minutes.",
+      "message": "Could we take a reading every ten minutes instead?",
+      "proposed_label": "modified",
+      "proposed_rationale": "The same flow measurement remains, with a shorter sampling interval.",
+      "categories": [
+        "numeric",
+        "temporal",
+        "question"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-mod-02",
+      "domain": "library",
+      "baseline_requirement": "Patrons may borrow ordinary books for fourteen days.",
+      "message": "Set the ordinary-book loan period to twenty-one days for everyone.",
+      "proposed_label": "modified",
+      "proposed_rationale": "The loan capability persists with a changed duration.",
+      "categories": [
+        "numeric",
+        "temporal",
+        "modified_vs_ambiguous_pair"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": "Paired with i-amb-02."
+    },
+    {
+      "id": "i-mod-03",
+      "domain": "air-cargo",
+      "baseline_requirement": "The cargo desk shall acknowledge a temperature alarm within thirty minutes of receipt.",
+      "message": "Make that response window twenty minutes; the desk still owns the acknowledgement.",
+      "proposed_label": "modified",
+      "proposed_rationale": "Only the acknowledgement deadline changes.",
+      "categories": [
+        "numeric",
+        "temporal",
+        "partial_change"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-mod-04",
+      "domain": "education",
+      "baseline_requirement": "School office staff shall correct a student's attendance record after a documented appeal.",
+      "message": "After an appeal, let the class teacher make that correction instead of the office team.",
+      "proposed_label": "modified",
+      "proposed_rationale": "The correction workflow remains but the authorized actor changes.",
+      "categories": [
+        "role",
+        "access",
+        "informal"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": "Reviewer should check whether actor replacement counts as removed under P1."
+    },
+    {
+      "id": "i-mod-05",
+      "domain": "coastal-monitoring",
+      "baseline_requirement": "The public flood dashboard shall display river depth in metres to one decimal place.",
+      "message": "Display that depth in centimetres, retaining the same one-decimal precision.",
+      "proposed_label": "modified",
+      "proposed_rationale": "The same measurement remains with a changed unit.",
+      "categories": [
+        "format",
+        "numeric"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-mod-06",
+      "domain": "parking",
+      "baseline_requirement": "A driver may extend a parking session during the five-minute grace period after expiry.",
+      "message": "The grace period should last twelve minutes after expiry.",
+      "proposed_label": "modified",
+      "proposed_rationale": "Extension remains available with a different cutoff.",
+      "categories": [
+        "numeric",
+        "temporal",
+        "boundary"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-mod-07",
+      "domain": "hospital-operations",
+      "baseline_requirement": "Unanswered high-priority triage calls shall escalate to the on-call nurse after eight minutes.",
+      "message": "Please make the escalation happen after five minutes, without changing who receives it.",
+      "proposed_label": "modified",
+      "proposed_rationale": "The escalation route remains and only the delay changes.",
+      "categories": [
+        "numeric",
+        "temporal",
+        "partial_change"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-mod-08",
+      "domain": "agriculture",
+      "baseline_requirement": "The irrigation planner shall recalculate the field schedule each Monday morning.",
+      "message": "Could it recalculate at the start of every day instead?",
+      "proposed_label": "modified",
+      "proposed_rationale": "Recalculation remains, with higher frequency.",
+      "categories": [
+        "temporal",
+        "question"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-mod-09",
+      "domain": "museum",
+      "baseline_requirement": "The collections team shall receive a weekly PDF summary of gallery humidity readings.",
+      "message": "Keep the weekly summary, but send it as an HTML page rather than a PDF.",
+      "proposed_label": "modified",
+      "proposed_rationale": "The report survives with a different presentation format.",
+      "categories": [
+        "format",
+        "modified_vs_removed_boundary"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": "Reviewer should decide whether explicit PDF elimination is removed under P1."
+    },
+    {
+      "id": "i-mod-10",
+      "domain": "manufacturing",
+      "baseline_requirement": "Quality staff shall inspect one valve from each lot of twenty manufactured valves.",
+      "message": "Inspect one valve per ten in the lot from now on.",
+      "proposed_label": "modified",
+      "proposed_rationale": "The sampling workflow remains with a denser rate.",
+      "categories": [
+        "numeric",
+        "scope"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-mod-11",
+      "domain": "nonprofit",
+      "baseline_requirement": "Volunteers may claim up to forty dollars for approved local travel per event.",
+      "message": "Raise the local-travel reimbursement ceiling to sixty dollars per event.",
+      "proposed_label": "modified",
+      "proposed_rationale": "The reimbursement remains with an increased cap.",
+      "categories": [
+        "numeric",
+        "constraint"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-mod-12",
+      "domain": "laboratory",
+      "baseline_requirement": "Specimen labels shall show the eight-character accession code beside the sample date.",
+      "message": "The accession code is moving to twelve characters; keep the date beside it.",
+      "proposed_label": "modified",
+      "proposed_rationale": "Label content remains but a field constraint changes.",
+      "categories": [
+        "numeric",
+        "partial_change"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-mod-13",
+      "domain": "civic-permits",
+      "baseline_requirement": "A zoning clerk shall review each permit application before the building unit receives it.",
+      "message": "Route that first review to the planning officer, then continue sending the file to the building unit.",
+      "proposed_label": "modified",
+      "proposed_rationale": "The review sequence persists with a changed reviewer role.",
+      "categories": [
+        "role",
+        "conditional",
+        "multi_clause"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-mod-14",
+      "domain": "energy-storage",
+      "baseline_requirement": "The battery operator shall publish a monthly utilisation summary on the first business day of the next month.",
+      "message": "Publish the same utilisation summary quarterly, on the first business day after each quarter closes.",
+      "proposed_label": "modified",
+      "proposed_rationale": "The report persists while cadence and deadline change.",
+      "categories": [
+        "temporal",
+        "conditional",
+        "long_message"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-mod-15",
+      "domain": "film-archive",
+      "baseline_requirement": "Digitised film previews shall be available at 1080p resolution.",
+      "message": "Make the preview stream 4K while leaving the archive download unchanged.",
+      "proposed_label": "modified",
+      "proposed_rationale": "The preview capability continues with higher resolution.",
+      "categories": [
+        "numeric",
+        "format",
+        "partial_change"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-add-01",
+      "domain": "ferry",
+      "baseline_requirement": "Passengers shall receive a printable boarding pass by email after booking.",
+      "message": "Let passengers also show a boarding pass inside the mobile app; keep the emailed copy.",
+      "proposed_label": "added",
+      "proposed_rationale": "An additional boarding channel is introduced while email remains.",
+      "categories": [
+        "channel",
+        "partial_change"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-add-02",
+      "domain": "veterinary",
+      "baseline_requirement": "The clinic shall email owners when a pet's laboratory result is ready.",
+      "message": "Can owners opt into a text alert as well as the existing email?",
+      "proposed_label": "added",
+      "proposed_rationale": "SMS is an additional notification option.",
+      "categories": [
+        "channel",
+        "question"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-add-03",
+      "domain": "aviation",
+      "baseline_requirement": "Ground staff shall view a flight's assigned gate on the operations board.",
+      "message": "Show an estimated boarding-start time next to the gate on that board.",
+      "proposed_label": "added",
+      "proposed_rationale": "A new data item is requested without replacing the gate.",
+      "categories": [
+        "data_item",
+        "informal"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-add-04",
+      "domain": "theater",
+      "baseline_requirement": "Ticket buyers shall select an available numbered seat.",
+      "message": "Keep seat selection and add an optional field for access needs at checkout.",
+      "proposed_label": "added",
+      "proposed_rationale": "An optional checkout field is added to an intact seat-selection flow.",
+      "categories": [
+        "data_item",
+        "accessibility"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-add-05",
+      "domain": "flood-response",
+      "baseline_requirement": "The warning service shall sound a riverside siren when the flood threshold is crossed.",
+      "message": "The siren still sounds; send an app push alert at the same threshold too.",
+      "proposed_label": "added",
+      "proposed_rationale": "Push delivery is a new parallel alert channel.",
+      "categories": [
+        "channel",
+        "conditional"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-add-06",
+      "domain": "agriculture",
+      "baseline_requirement": "Field sensors shall upload soil moisture readings each hour.",
+      "message": "Alongside moisture, could those uploads include soil pH?",
+      "proposed_label": "added",
+      "proposed_rationale": "Soil pH is a new measured data item.",
+      "categories": [
+        "data_item",
+        "question"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-add-07",
+      "domain": "library",
+      "baseline_requirement": "Patrons shall search the catalogue by book title.",
+      "message": "Please add author-name search without removing title search.",
+      "proposed_label": "added",
+      "proposed_rationale": "A second search key is offered while the first remains.",
+      "categories": [
+        "capability",
+        "partial_change"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-add-08",
+      "domain": "hospital-operations",
+      "baseline_requirement": "Patients shall view their appointment letters in the patient portal.",
+      "message": "Allow a patient to nominate a caregiver who may also view those letters.",
+      "proposed_label": "added",
+      "proposed_rationale": "A delegated actor is added to existing patient access.",
+      "categories": [
+        "role",
+        "access"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-add-09",
+      "domain": "building-maintenance",
+      "baseline_requirement": "Managers shall download a monthly PDF of completed repair counts.",
+      "message": "Could we offer a CSV download of the same counts beside the PDF?",
+      "proposed_label": "added",
+      "proposed_rationale": "CSV is a new export option; PDF remains.",
+      "categories": [
+        "format",
+        "question",
+        "modified_vs_added"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-add-10",
+      "domain": "warehouse",
+      "baseline_requirement": "Pickers shall confirm each picked item by scanning its barcode.",
+      "message": "Keep barcode confirmation, but let a picker attach an optional spoken note when a shelf is damaged.",
+      "proposed_label": "added",
+      "proposed_rationale": "An optional voice-note capability is added.",
+      "categories": [
+        "capability",
+        "conditional",
+        "long_message"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-add-11",
+      "domain": "rail-maintenance",
+      "baseline_requirement": "Inspectors shall attach a photograph to each track defect report.",
+      "message": "Let inspectors attach a short video clip too, while continuing to require the photograph.",
+      "proposed_label": "added",
+      "proposed_rationale": "Video is a new attachment type alongside the required photo.",
+      "categories": [
+        "data_item",
+        "partial_change"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-add-12",
+      "domain": "civic-permits",
+      "baseline_requirement": "Applicants shall lodge permit applications through the city website.",
+      "message": "Keep the website, and let the service desk record applications made by phone.",
+      "proposed_label": "added",
+      "proposed_rationale": "Telephone intake is an additional application channel.",
+      "categories": [
+        "channel",
+        "role"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-add-13",
+      "domain": "satellite-imagery",
+      "baseline_requirement": "Analysts shall annotate images by drawing polygons around observed land changes.",
+      "message": "Can analysts also mark uncertain areas with freehand strokes? Polygon annotation stays available.",
+      "proposed_label": "added",
+      "proposed_rationale": "Freehand annotation is an additional tool.",
+      "categories": [
+        "capability",
+        "question"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-add-14",
+      "domain": "charity",
+      "baseline_requirement": "A donor shall receive a PDF receipt for each contribution.",
+      "message": "Add a yearly gift total to the donor dashboard; individual PDF receipts should continue.",
+      "proposed_label": "added",
+      "proposed_rationale": "An aggregate dashboard data item is introduced.",
+      "categories": [
+        "data_item",
+        "temporal"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-add-15",
+      "domain": "insurance",
+      "baseline_requirement": "Claimants may upload photographs of damaged property with a claim.",
+      "message": "Give claimants an optional voice-note attachment as well as photos.",
+      "proposed_label": "added",
+      "proposed_rationale": "A new attachment modality is added.",
+      "categories": [
+        "capability",
+        "format"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-rem-01",
+      "domain": "vehicle-inspection",
+      "baseline_requirement": "Inspectors shall attach photographs and notes to every failed vehicle inspection.",
+      "message": "Stop collecting the photographs; retain the written notes.",
+      "proposed_label": "removed",
+      "proposed_rationale": "An explicitly supported evidence item is eliminated.",
+      "categories": [
+        "negation",
+        "partial_change"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-rem-02",
+      "domain": "hotel",
+      "baseline_requirement": "Guests may request room service through both the mobile app and the front desk.",
+      "message": "Retire in-app room-service requests; the desk can still take them.",
+      "proposed_label": "removed",
+      "proposed_rationale": "One supported request channel is removed.",
+      "categories": [
+        "channel",
+        "partial_change"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-rem-03",
+      "domain": "court-records",
+      "baseline_requirement": "Visitors shall search the public docket by case number or party name.",
+      "message": "Take away party-name lookup, but leave case-number search.",
+      "proposed_label": "removed",
+      "proposed_rationale": "One search option is withdrawn.",
+      "categories": [
+        "capability",
+        "negation"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-rem-04",
+      "domain": "subsidy",
+      "baseline_requirement": "Applicants shall receive both email and SMS when an award decision is issued.",
+      "message": "We no longer want the text message; send only the email.",
+      "proposed_label": "removed",
+      "proposed_rationale": "SMS notification is removed.",
+      "categories": [
+        "channel",
+        "informal"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-rem-05",
+      "domain": "theater",
+      "baseline_requirement": "Ticket holders may present either a QR code or a printable ticket at entry.",
+      "message": "Retire printable admission tickets; QR entry stays.",
+      "proposed_label": "removed",
+      "proposed_rationale": "The printable option is withdrawn.",
+      "categories": [
+        "format",
+        "partial_change"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-rem-06",
+      "domain": "education",
+      "baseline_requirement": "Students shall open course notes in the browser or download them as PDF.",
+      "message": "Disable PDF downloads of notes while keeping browser access.",
+      "proposed_label": "removed",
+      "proposed_rationale": "The download option is removed.",
+      "categories": [
+        "format",
+        "negation"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-rem-07",
+      "domain": "weather",
+      "baseline_requirement": "The public forecast shall display wind speed and relative humidity.",
+      "message": "Hide relative humidity from the public forecast, but retain wind speed.",
+      "proposed_label": "removed",
+      "proposed_rationale": "A displayed data item is removed.",
+      "categories": [
+        "data_item",
+        "partial_change"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-rem-08",
+      "domain": "charity",
+      "baseline_requirement": "Donors may choose a one-time or monthly contribution.",
+      "message": "The donation form should offer monthly contributions only.",
+      "proposed_label": "removed",
+      "proposed_rationale": "One contribution option is withdrawn.",
+      "categories": [
+        "capability",
+        "scope"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-rem-09",
+      "domain": "harbor",
+      "baseline_requirement": "Pilots may approve a berth plan from the web console or mobile app.",
+      "message": "Remove berth-plan approval from phones; leave the web console alone.",
+      "proposed_label": "removed",
+      "proposed_rationale": "Mobile approval is eliminated.",
+      "categories": [
+        "channel",
+        "partial_change"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-rem-10",
+      "domain": "laboratory",
+      "baseline_requirement": "Staff may export specimen results as PDF or CSV.",
+      "message": "We can do without the CSV export; preserve the PDF.",
+      "proposed_label": "removed",
+      "proposed_rationale": "One export format is removed.",
+      "categories": [
+        "format",
+        "informal"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-rem-11",
+      "domain": "manufacturing",
+      "baseline_requirement": "Workers shall sign into the assembly terminal using either a badge or PIN.",
+      "message": "Drop PIN sign-in; badges will still work.",
+      "proposed_label": "removed",
+      "proposed_rationale": "One authentication option is withdrawn.",
+      "categories": [
+        "access",
+        "negation"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-rem-12",
+      "domain": "pharmacy",
+      "baseline_requirement": "Dispensing alerts shall appear on the dashboard and be emailed to the pharmacist.",
+      "message": "Stop the email copy of dispensing alerts; the dashboard alert remains.",
+      "proposed_label": "removed",
+      "proposed_rationale": "An alert channel is removed.",
+      "categories": [
+        "channel",
+        "partial_change"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-rem-13",
+      "domain": "university",
+      "baseline_requirement": "Students may enroll through the online portal or a campus kiosk.",
+      "message": "Close kiosk enrollment after term ends; online enrollment remains.",
+      "proposed_label": "removed",
+      "proposed_rationale": "A supported enrollment channel is withdrawn.",
+      "categories": [
+        "channel",
+        "temporal"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-rem-14",
+      "domain": "library",
+      "baseline_requirement": "Patrons may renew eligible loans online or at the circulation desk.",
+      "message": "Please end in-person renewal but keep online renewal.",
+      "proposed_label": "removed",
+      "proposed_rationale": "A renewal channel is removed.",
+      "categories": [
+        "channel",
+        "negation"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-rem-15",
+      "domain": "electricity",
+      "baseline_requirement": "Customers may pay bills by card or bank transfer.",
+      "message": "Remove card payments from the bill screen; bank transfer continues.",
+      "proposed_label": "removed",
+      "proposed_rationale": "One payment option is removed.",
+      "categories": [
+        "capability",
+        "partial_change"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-con-01",
+      "domain": "rail-safety",
+      "baseline_requirement": "The crossing barrier must remain closed until the last train carriage clears the crossing.",
+      "message": "Raise the barrier while the train is still passing so traffic can move.",
+      "proposed_label": "contradiction",
+      "proposed_rationale": "The request directly violates the required closed-until-clear invariant.",
+      "categories": [
+        "temporal",
+        "safety"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-con-02",
+      "domain": "medical-records",
+      "baseline_requirement": "The public appointment display must never show a patient's full national identifier.",
+      "message": "Put each patient's full national identifier on the public display.",
+      "proposed_label": "contradiction",
+      "proposed_rationale": "The request directly violates a never-display constraint.",
+      "categories": [
+        "privacy",
+        "negation"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-con-03",
+      "domain": "aviation",
+      "baseline_requirement": "Only a certified flight dispatcher may approve a flight release.",
+      "message": "Let an uncertified trainee approve a release alone.",
+      "proposed_label": "contradiction",
+      "proposed_rationale": "The proposed actor is expressly excluded by the only rule.",
+      "categories": [
+        "role",
+        "access"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-con-04",
+      "domain": "cold-chain",
+      "baseline_requirement": "Vaccines must remain below five degrees Celsius throughout transit.",
+      "message": "Allow vaccine boxes to travel at ten degrees Celsius for the full route.",
+      "proposed_label": "contradiction",
+      "proposed_rationale": "The requested temperature is incompatible with a strict upper bound.",
+      "categories": [
+        "numeric",
+        "constraint"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-con-05",
+      "domain": "elections",
+      "baseline_requirement": "The ballot-counting terminal must never connect to an external network.",
+      "message": "Sync ballot totals directly from that terminal to a cloud service.",
+      "proposed_label": "contradiction",
+      "proposed_rationale": "Cloud syncing contradicts the network isolation rule.",
+      "categories": [
+        "access",
+        "safety"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-con-06",
+      "domain": "dam-maintenance",
+      "baseline_requirement": "A maintenance crew may enter the pump chamber only after electrical isolation is confirmed.",
+      "message": "Send the crew into the chamber before isolation is confirmed.",
+      "proposed_label": "contradiction",
+      "proposed_rationale": "The requested sequence breaches an only-after condition.",
+      "categories": [
+        "temporal",
+        "conditional"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-con-07",
+      "domain": "museum",
+      "baseline_requirement": "Ultraviolet lamps must never be used in the manuscript display case.",
+      "message": "Install a UV lamp inside that display case for the exhibition.",
+      "proposed_label": "contradiction",
+      "proposed_rationale": "The prohibited device is expressly requested.",
+      "categories": [
+        "negation",
+        "constraint"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-con-08",
+      "domain": "education",
+      "baseline_requirement": "Student grades must not be visible to students before the official release time.",
+      "message": "Give students a preview of their own grades an hour before release.",
+      "proposed_label": "contradiction",
+      "proposed_rationale": "Early visibility is forbidden by the baseline.",
+      "categories": [
+        "temporal",
+        "access"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-con-09",
+      "domain": "banking",
+      "baseline_requirement": "Every high-value transfer must be approved by two distinct authorizers before execution.",
+      "message": "Execute a high-value transfer after just one person approves it.",
+      "proposed_label": "contradiction",
+      "proposed_rationale": "One approval violates the explicit two-person minimum.",
+      "categories": [
+        "numeric",
+        "role"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-con-10",
+      "domain": "hazardous-logistics",
+      "baseline_requirement": "Hazardous-goods deliveries must never be routed through residential streets.",
+      "message": "Route a hazardous-goods delivery through the nearby housing estate.",
+      "proposed_label": "contradiction",
+      "proposed_rationale": "The proposed route uses a prohibited street type.",
+      "categories": [
+        "safety",
+        "scope"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-con-11",
+      "domain": "laboratory",
+      "baseline_requirement": "A blood specimen may be collected only after informed consent is recorded.",
+      "message": "Collect the specimen first and record consent afterward.",
+      "proposed_label": "contradiction",
+      "proposed_rationale": "Collection precedes the required consent record.",
+      "categories": [
+        "temporal",
+        "conditional"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-con-12",
+      "domain": "visitor-management",
+      "baseline_requirement": "Every visitor must be escorted while inside the restricted laboratory.",
+      "message": "Let a visitor tour the restricted laboratory unaccompanied.",
+      "proposed_label": "contradiction",
+      "proposed_rationale": "Unescorted access conflicts with the every-visitor escort rule.",
+      "categories": [
+        "role",
+        "access"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-con-13",
+      "domain": "wildlife-conservation",
+      "baseline_requirement": "The exact coordinates of protected nesting sites must never be shown publicly.",
+      "message": "Publish a public map with each protected nest's exact coordinates.",
+      "proposed_label": "contradiction",
+      "proposed_rationale": "The requested disclosure is explicitly barred.",
+      "categories": [
+        "privacy",
+        "data_item"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-con-14",
+      "domain": "turbine-maintenance",
+      "baseline_requirement": "The turbine must be shut down before anyone enters its service enclosure.",
+      "message": "Keep the turbine running while a technician enters the enclosure.",
+      "proposed_label": "contradiction",
+      "proposed_rationale": "Entry with the turbine running breaches the before-entry rule.",
+      "categories": [
+        "temporal",
+        "safety"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-con-15",
+      "domain": "pharmacy",
+      "baseline_requirement": "Dispensing staff must verify the patient's identifier before handing over any prescription.",
+      "message": "For repeat prescriptions, hand over the medicine without checking the identifier.",
+      "proposed_label": "contradiction",
+      "proposed_rationale": "The exception contradicts the universal verification requirement.",
+      "categories": [
+        "conditional",
+        "access"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-amb-01",
+      "domain": "emergency-dispatch",
+      "baseline_requirement": "Dispatchers shall assign an ambulance within six minutes of a priority-one call.",
+      "message": "Can we make the handoff feel faster somehow?",
+      "proposed_label": "ambiguous",
+      "proposed_rationale": "No measurable change or specific workflow is identified.",
+      "categories": [
+        "vague",
+        "question"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-amb-02",
+      "domain": "library",
+      "baseline_requirement": "Patrons may borrow ordinary books for fourteen days.",
+      "message": "Perhaps ordinary loans should be a bit more generous. We have not settled on a duration.",
+      "proposed_label": "ambiguous",
+      "proposed_rationale": "A direction is suggested but the intended constraint is unresolved.",
+      "categories": [
+        "temporal",
+        "modified_vs_ambiguous_pair"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-amb-03",
+      "domain": "civic-permits",
+      "baseline_requirement": "Applicants shall upload a site plan and an ownership document with each permit request.",
+      "message": "Maybe tighten the attachment rules next year; we have not chosen which files.",
+      "proposed_label": "ambiguous",
+      "proposed_rationale": "Neither the attachments nor rule change is specified.",
+      "categories": [
+        "hypothetical",
+        "data_item"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-amb-04",
+      "domain": "museum",
+      "baseline_requirement": "The museum shall open at nine each morning and close at five each evening.",
+      "message": "The opening hours are not working well; let's discuss a better schedule.",
+      "proposed_label": "ambiguous",
+      "proposed_rationale": "A dissatisfaction statement does not settle a new schedule.",
+      "categories": [
+        "temporal",
+        "vague"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-amb-05",
+      "domain": "agriculture",
+      "baseline_requirement": "The irrigation scheduler shall publish a daily watering plan for each field.",
+      "message": "Should we automate more of the field work one day? This is only an idea.",
+      "proposed_label": "ambiguous",
+      "proposed_rationale": "The hypothetical does not define a specific change to the daily plan.",
+      "categories": [
+        "hypothetical",
+        "question"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-amb-06",
+      "domain": "pharmacy",
+      "baseline_requirement": "The system shall email a pharmacist each time a stock item reaches its reorder point.",
+      "message": "Alerts should be more helpful, without getting annoying.",
+      "proposed_label": "ambiguous",
+      "proposed_rationale": "Neither the alert behavior nor threshold is determinable.",
+      "categories": [
+        "vague",
+        "same_domain"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-amb-07",
+      "domain": "education",
+      "baseline_requirement": "Students shall see final grades only after the registrar publishes them.",
+      "message": "We need to revisit when students can see marks, but faculty disagree about timing.",
+      "proposed_label": "ambiguous",
+      "proposed_rationale": "There is no chosen replacement rule.",
+      "categories": [
+        "temporal",
+        "unresolved"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-amb-08",
+      "domain": "freight",
+      "baseline_requirement": "A vehicle shall be flagged when its payload exceeds twelve tonnes.",
+      "message": "Could we use the threshold we had last year? I cannot remember what it was.",
+      "proposed_label": "ambiguous",
+      "proposed_rationale": "The requested threshold is unknown.",
+      "categories": [
+        "numeric",
+        "question"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-amb-09",
+      "domain": "theater",
+      "baseline_requirement": "Attendees may request a refund until forty-eight hours before a performance.",
+      "message": "Some staff want a longer cancellation window and others want a shorter one; no decision yet.",
+      "proposed_label": "ambiguous",
+      "proposed_rationale": "Conflicting proposals do not identify a decided change.",
+      "categories": [
+        "temporal",
+        "unresolved"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-amb-10",
+      "domain": "hospital-operations",
+      "baseline_requirement": "The ward shall send discharge summaries to the attending physician at the end of each day.",
+      "message": "Nurses say send these earlier; doctors say later. We have not agreed.",
+      "proposed_label": "ambiguous",
+      "proposed_rationale": "The new delivery time is unresolved.",
+      "categories": [
+        "temporal",
+        "unresolved"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-amb-11",
+      "domain": "energy-storage",
+      "baseline_requirement": "The control room shall report the battery's peak output each day.",
+      "message": "Could we make the peak figures better for the board?",
+      "proposed_label": "ambiguous",
+      "proposed_rationale": "Better is underspecified; no distinct data or format change is settled.",
+      "categories": [
+        "vague",
+        "question"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-amb-12",
+      "domain": "coastal-monitoring",
+      "baseline_requirement": "Residents shall receive a text alert when the coastal flood level reaches the red band.",
+      "message": "Maybe drop texts and use the app instead, or maybe keep both; we're still debating.",
+      "proposed_label": "ambiguous",
+      "proposed_rationale": "Mutually different changes are proposed without a decision.",
+      "categories": [
+        "channel",
+        "unresolved"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-amb-13",
+      "domain": "grant-management",
+      "baseline_requirement": "Reviewers shall score each application against four published criteria.",
+      "message": "We should make the scoring fairer, but the revised formula is still being worked out.",
+      "proposed_label": "ambiguous",
+      "proposed_rationale": "No concrete scoring rule can be inferred.",
+      "categories": [
+        "vague",
+        "constraint"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-amb-14",
+      "domain": "warehouse",
+      "baseline_requirement": "Pickers shall scan a shelf label before removing each item.",
+      "message": "Do we still need all these scans, or is there a less manual approach?",
+      "proposed_label": "ambiguous",
+      "proposed_rationale": "The question offers no committed alternative workflow.",
+      "categories": [
+        "question",
+        "hypothetical"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-amb-15",
+      "domain": "insurance",
+      "baseline_requirement": "Claimants may attach a photograph when submitting a new claim.",
+      "message": "Let them do it again like before; I mean the other thing.",
+      "proposed_label": "ambiguous",
+      "proposed_rationale": "The referent and intended action cannot be resolved from the pair.",
+      "categories": [
+        "referent",
+        "informal"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-unc-01",
+      "domain": "library",
+      "baseline_requirement": "Patrons may borrow ordinary books for twenty-one days.",
+      "message": "So ordinary books can be kept for three weeks, right?",
+      "proposed_label": "unchanged",
+      "proposed_rationale": "Three weeks is semantically equivalent to twenty-one days.",
+      "categories": [
+        "paraphrase",
+        "temporal"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-unc-02",
+      "domain": "ferry",
+      "baseline_requirement": "The system shall email a boarding pass to each passenger after booking.",
+      "message": "After someone books, send their boarding pass to their email address.",
+      "proposed_label": "unchanged",
+      "proposed_rationale": "The same delivery action and timing are restated.",
+      "categories": [
+        "paraphrase",
+        "channel"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-unc-03",
+      "domain": "laboratory",
+      "baseline_requirement": "Each custody transfer record shall contain the receiving staff member's name and transfer time.",
+      "message": "Record who received the specimen and when the handoff happened.",
+      "proposed_label": "unchanged",
+      "proposed_rationale": "The same two custody data fields are requested.",
+      "categories": [
+        "paraphrase",
+        "data_item"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-unc-04",
+      "domain": "civic-permits",
+      "baseline_requirement": "Visitors shall search issued permits by street address.",
+      "message": "Please add a fee estimator for permit applicants.",
+      "proposed_label": "unchanged",
+      "proposed_rationale": "A fee estimator is same-domain but does not change address lookup.",
+      "categories": [
+        "same_domain_hard_negative",
+        "added_vs_unchanged"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-unc-05",
+      "domain": "aviation",
+      "baseline_requirement": "Baggage handlers shall see the last scan location of each checked bag.",
+      "message": "Give passengers a seat-map preview before check-in.",
+      "proposed_label": "unchanged",
+      "proposed_rationale": "Seat-map preview does not change baggage scan location access.",
+      "categories": [
+        "same_domain_hard_negative"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-unc-06",
+      "domain": "agriculture",
+      "baseline_requirement": "Operators shall be able to stop an irrigation pump remotely.",
+      "message": "Let an operator switch off the irrigation pump from elsewhere.",
+      "proposed_label": "unchanged",
+      "proposed_rationale": "Remote pump stopping is restated in different words.",
+      "categories": [
+        "paraphrase",
+        "informal"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-unc-07",
+      "domain": "hospital-operations",
+      "baseline_requirement": "Managers shall download a monthly summary of discharge counts.",
+      "message": "Let patients preselect a meal from the ward menu.",
+      "proposed_label": "unchanged",
+      "proposed_rationale": "Meal selection is unrelated to the discharge-count report.",
+      "categories": [
+        "same_domain_hard_negative"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-unc-08",
+      "domain": "museum",
+      "baseline_requirement": "Door staff shall scan a visitor's QR ticket to admit them.",
+      "message": "Add Spanish narration to the audio guide.",
+      "proposed_label": "unchanged",
+      "proposed_rationale": "Audio-guide language does not alter QR admission.",
+      "categories": [
+        "same_domain_hard_negative"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-unc-09",
+      "domain": "energy-storage",
+      "baseline_requirement": "Operators shall receive an alert after battery temperature exceeds forty degrees for ten minutes.",
+      "message": "Notify the operator when the battery stays above forty degrees for a full ten minutes.",
+      "proposed_label": "unchanged",
+      "proposed_rationale": "The same threshold and duration are restated.",
+      "categories": [
+        "paraphrase",
+        "numeric"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-unc-10",
+      "domain": "warehouse",
+      "baseline_requirement": "The inventory screen shall show each bin's SKU identifier.",
+      "message": "Display the SKU code beside each storage bin.",
+      "proposed_label": "unchanged",
+      "proposed_rationale": "The same identifier visibility is restated.",
+      "categories": [
+        "paraphrase",
+        "data_item"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-unc-11",
+      "domain": "transit",
+      "baseline_requirement": "The public map shall display the next bus arrival time for each stop.",
+      "message": "Change the wording on emailed fare receipts.",
+      "proposed_label": "unchanged",
+      "proposed_rationale": "Receipt wording does not modify arrival times on the map.",
+      "categories": [
+        "same_domain_hard_negative"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-unc-12",
+      "domain": "charity",
+      "baseline_requirement": "The system shall email a receipt after each completed donation.",
+      "message": "Once a contribution goes through, send its receipt to the donor by email.",
+      "proposed_label": "unchanged",
+      "proposed_rationale": "The same receipt action is paraphrased.",
+      "categories": [
+        "paraphrase",
+        "temporal"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-unc-13",
+      "domain": "university",
+      "baseline_requirement": "Students shall book available study rooms through the campus portal.",
+      "message": "Show lecture timetable colours in the student portal.",
+      "proposed_label": "unchanged",
+      "proposed_rationale": "Timetable presentation does not alter study-room booking.",
+      "categories": [
+        "same_domain_hard_negative"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-unc-14",
+      "domain": "insurance",
+      "baseline_requirement": "Claimants shall download a PDF copy of their submitted claim.",
+      "message": "Add a camera shortcut for taking claim photos.",
+      "proposed_label": "unchanged",
+      "proposed_rationale": "The shortcut does not alter PDF claim download.",
+      "categories": [
+        "same_domain_hard_negative"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    },
+    {
+      "id": "i-unc-15",
+      "domain": "weather",
+      "baseline_requirement": "The station shall sample wind speed every five minutes.",
+      "message": "Take a wind-speed reading once every five minutes.",
+      "proposed_label": "unchanged",
+      "proposed_rationale": "The same sampling cadence is restated.",
+      "categories": [
+        "paraphrase",
+        "numeric"
+      ],
+      "source": "NEW_SYNTHETIC_III_I",
+      "author_provenance": "AI_ASSISTED",
+      "review_provenance": "PENDING_HUMAN",
+      "ambiguity_status": "NOT_REVIEWED",
+      "notes": ""
+    }
+  ]
+}
