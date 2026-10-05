@@ -6,6 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from phase3i_score_raw import category_results, metrics
+from phase3i_score_pp1 import analyze
 
 
 def row(case_id, truth, predicted, categories=()):
@@ -42,3 +43,22 @@ def test_metrics_count_invalid_as_wrong_and_preserve_six_classes():
     assert categories["numeric"]["support"] == 2
     assert categories["numeric"]["correct"] == 1
     assert categories["negation"]["error_case_ids"] == ["c"]
+
+
+def test_pp1_effects_are_verified_against_raw_truth():
+    rows = [row("a", "added", "modified"), row("b", "removed", "removed")]
+    replay = {
+        "role": "PHASE_III_I_FROZEN_GO_PP1_REPLAY",
+        "effect_counts": {"FIXED": 1, "WORSENED": 0, "NEUTRAL": 1},
+        "changed_labels": 1,
+        "rows": [
+            {"case_id": "a", "truth": "added", "raw_label": "modified",
+             "pp1_label": "added", "effect": "FIXED", "changed": True},
+            {"case_id": "b", "truth": "removed", "raw_label": "removed",
+             "pp1_label": "removed", "effect": "NEUTRAL", "changed": False},
+        ],
+    }
+    report = analyze(rows, replay)
+    assert report["raw"]["correct_cases"] == 1
+    assert report["raw_plus_pp1"]["correct_cases"] == 2
+    assert report["changed_label_case_ids"] == ["a"]
