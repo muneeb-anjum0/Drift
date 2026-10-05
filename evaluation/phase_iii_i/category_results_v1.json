@@ -1,0 +1,241 @@
+{
+  "role": "PHASE_III_I_CATEGORY_RESULTS",
+  "dataset_sha256": "d0fae87de5a9413e3ffd61104e3ca4478c742399f9d49fb36be12231478a12b5",
+  "categories": {
+    "access": {
+      "support": 8,
+      "correct": 8,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "accessibility": {
+      "support": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "added_vs_unchanged": {
+      "support": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "error_case_ids": [
+        "i-unc-04"
+      ]
+    },
+    "boundary": {
+      "support": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "capability": {
+      "support": 7,
+      "correct": 5,
+      "accuracy": 0.7142857142857143,
+      "error_case_ids": [
+        "i-add-10",
+        "i-rem-08"
+      ]
+    },
+    "channel": {
+      "support": 12,
+      "correct": 9,
+      "accuracy": 0.75,
+      "error_case_ids": [
+        "i-rem-04",
+        "i-rem-12",
+        "i-rem-13"
+      ]
+    },
+    "conditional": {
+      "support": 7,
+      "correct": 6,
+      "accuracy": 0.8571428571428571,
+      "error_case_ids": [
+        "i-add-10"
+      ]
+    },
+    "constraint": {
+      "support": 4,
+      "correct": 4,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "data_item": {
+      "support": 10,
+      "correct": 8,
+      "accuracy": 0.8,
+      "error_case_ids": [
+        "i-add-03",
+        "i-rem-07"
+      ]
+    },
+    "format": {
+      "support": 8,
+      "correct": 7,
+      "accuracy": 0.875,
+      "error_case_ids": [
+        "i-rem-06"
+      ]
+    },
+    "hypothetical": {
+      "support": 3,
+      "correct": 3,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "informal": {
+      "support": 6,
+      "correct": 4,
+      "accuracy": 0.6666666666666666,
+      "error_case_ids": [
+        "i-add-03",
+        "i-rem-04"
+      ]
+    },
+    "long_message": {
+      "support": 2,
+      "correct": 1,
+      "accuracy": 0.5,
+      "error_case_ids": [
+        "i-add-10"
+      ]
+    },
+    "modified_vs_added": {
+      "support": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "modified_vs_ambiguous_pair": {
+      "support": 2,
+      "correct": 2,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "modified_vs_removed_boundary": {
+      "support": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "multi_clause": {
+      "support": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "negation": {
+      "support": 7,
+      "correct": 5,
+      "accuracy": 0.7142857142857143,
+      "error_case_ids": [
+        "i-rem-01",
+        "i-rem-06"
+      ]
+    },
+    "numeric": {
+      "support": 15,
+      "correct": 15,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "paraphrase": {
+      "support": 8,
+      "correct": 8,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "partial_change": {
+      "support": 14,
+      "correct": 11,
+      "accuracy": 0.7857142857142857,
+      "error_case_ids": [
+        "i-rem-01",
+        "i-rem-07",
+        "i-rem-12"
+      ]
+    },
+    "privacy": {
+      "support": 2,
+      "correct": 2,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "question": {
+      "support": 11,
+      "correct": 11,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "referent": {
+      "support": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "role": {
+      "support": 7,
+      "correct": 7,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "safety": {
+      "support": 4,
+      "correct": 4,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "same_domain": {
+      "support": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    },
+    "same_domain_hard_negative": {
+      "support": 7,
+      "correct": 0,
+      "accuracy": 0.0,
+      "error_case_ids": [
+        "i-unc-04",
+        "i-unc-05",
+        "i-unc-07",
+        "i-unc-08",
+        "i-unc-11",
+        "i-unc-13",
+        "i-unc-14"
+      ]
+    },
+    "scope": {
+      "support": 3,
+      "correct": 2,
+      "accuracy": 0.6666666666666666,
+      "error_case_ids": [
+        "i-rem-08"
+      ]
+    },
+    "temporal": {
+      "support": 21,
+      "correct": 19,
+      "accuracy": 0.9047619047619048,
+      "error_case_ids": [
+        "i-rem-13",
+        "i-amb-07"
+      ]
+    },
+    "unresolved": {
+      "support": 4,
+      "correct": 3,
+      "accuracy": 0.75,
+      "error_case_ids": [
+        "i-amb-07"
+      ]
+    },
+    "vague": {
+      "support": 5,
+      "correct": 5,
+      "accuracy": 1.0,
+      "error_case_ids": []
+    }
+  }
+}
