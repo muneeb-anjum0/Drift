@@ -1,0 +1,49 @@
+{
+  "role": "PHASE_III_J_PREDECLARED_FINAL_ACCEPTANCE_GATE",
+  "status": "FROZEN_BEFORE_TRAINING_OR_FINAL_PREDICTIONS",
+  "provenance": "AI-authored and separately AI-reviewed; NOT human-reviewed. Human-review requirement from the original proposal is unmet.",
+  "comparison": "Old frozen raw Q4_K_M versus one frozen new raw candidate, same P1 singleton contract and same final cases; no PP1 in primary scoring.",
+  "old_model_sha256": "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9",
+  "prompt_sha256": "902ac43037c998afc4b6550995036bbc720bcae5dbbafc4504b2b9898abed339",
+  "sealed_final_sha256": "a3a391962e0fac7b6129d4ea57808a6b4189444fb106395d4d944b9c93670ccb",
+  "final_total": 182,
+  "final_scored": 179,
+  "final_support": {"added": 29, "modified": 48, "removed": 32, "contradiction": 21, "ambiguous": 23, "unchanged": 26},
+  "co_primary_all_required": {
+    "removed": {"correct_gain_min_cases": 4, "correct_gain_min_percentage_points": 12.5, "to_modified_reduction_min_cases": 4},
+    "contradiction": {"correct_gain_min_cases": 3, "correct_gain_min_percentage_points": 14.2857142857, "to_modified_reduction_min_cases": 3}
+  },
+  "secondary_all_required": {
+    "added": {"correct_gain_min_cases": 2, "correct_gain_min_percentage_points": 6.8965517241, "to_modified_reduction_min_cases": 2}
+  },
+  "regression_controls_all_required": {
+    "modified_correct_max_loss_cases": 2,
+    "modified_correct_max_loss_percentage_points": 4.1666666667,
+    "modified_to_removed_max_increase_cases": 1,
+    "modified_to_removed_max_increase_percentage_points": 2.0833333333,
+    "modified_to_contradiction_max_increase_cases": 1,
+    "modified_to_contradiction_max_increase_percentage_points": 2.0833333333,
+    "added_correct_max_loss_cases": 0,
+    "added_correct_max_loss_percentage_points": 0,
+    "unchanged_correct_max_loss_cases": 1,
+    "unchanged_correct_max_loss_percentage_points": 3.8461538462,
+    "ambiguous_correct_max_loss_cases": 1,
+    "ambiguous_correct_max_loss_percentage_points": 4.347826087,
+    "macro_f1_min_gain_absolute": 0.03,
+    "raw_structure_valid_min_cases": 182,
+    "raw_structure_valid_denominator": 182,
+    "raw_structure_valid_min_percent": 100,
+    "repeat_label_agreement_min_cases": 29,
+    "repeat_label_agreement_denominator": 30,
+    "repeat_label_agreement_min_percent": 96.6666666667,
+    "repeat_disagreement_max_increase_vs_old_cases": 1,
+    "latency_p95_max_ratio_vs_old": 1.25,
+    "latency_p95_max_percent_of_old": 125,
+    "peak_rss_max_bytes": 7516192768,
+    "swap_max_bytes": 0,
+    "candidate_gguf_max_bytes": 6000000000
+  },
+  "stability_selection": "Before inference, rank scored final IDs by SHA-256(seed 'phase3j-stability-v1' + ID), select first 30, run a second raw call for old and new on those IDs only. No selection by outcome.",
+  "resource_comparison": "Same host, llama.cpp build, P1 prompt, decoding, context, slots and invocation order for old and new. If not matched or not measured, acceptance is INCONCLUSIVE.",
+  "rejection": "Reject if any co-primary, secondary or regression control fails, a required raw result is missing, the final seal changes, or comparison settings differ. Inconclusive if a required measurement cannot be obtained. Never tune against this final set."
+}
