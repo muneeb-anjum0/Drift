@@ -336,7 +336,7 @@ def train(config, datasets, output_dir, cache_dir, runtime, resume):
         eval_strategy="epoch", save_strategy="epoch", save_total_limit=config["checkpoint_limit"],
         load_best_model_at_end=True, metric_for_best_model="eval_loss", greater_is_better=False,
         logging_steps=10, dataloader_num_workers=config["dataloader_workers"],
-        remove_unused_columns=False, save_safetensors=True, report_to=[],
+        remove_unused_columns=False, report_to=[],
         seed=config["seed"], data_seed=config["seed"],
     )
     trainer = Trainer(model=model, args=args, train_dataset=train_rows, eval_dataset=dev_rows,
