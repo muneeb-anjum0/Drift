@@ -22,6 +22,19 @@ CASE_COLUMNS = {"id", "partition", "family_id", "domain", "baseline_requirement"
                 "privacy_classification", "kaggle_upload_approved"}
 REVIEW_COLUMNS = {"case_id", "decision", "reviewed_label", "reason", "reviewer",
                   "review_date", "review_provenance"}
+LEGACY_CASE_ID = re.compile(r"[a-z0-9][a-z0-9_-]{2,63}")
+PARTITION_ID_PREFIX = {"train": "TR", "development": "DV", "final": "FH"}
+NUMBERED_CASE_ID = re.compile(r"(TR|DV|FH)[0-9]{4,}")
+
+
+def valid_case_id(case_id, partition):
+    """Accept original template IDs and the supplied partition-numbered IDs."""
+    if not isinstance(case_id, str) or not case_id:
+        return False
+    if LEGACY_CASE_ID.fullmatch(case_id):
+        return True
+    numbered = NUMBERED_CASE_ID.fullmatch(case_id)
+    return bool(numbered and numbered.group(1) == PARTITION_ID_PREFIX.get(partition))
 
 
 def read_csv(path, required):
@@ -106,7 +119,7 @@ def validate(cases, decisions, min_final_per_label=20, protected_pairs=None,
     protected_rows = protected_rows if protected_rows is not None else []
     for row in cases:
         case_id = row["id"]
-        if not isinstance(case_id, str) or not re.fullmatch(r"[a-z0-9][a-z0-9_-]{2,63}", case_id):
+        if not valid_case_id(case_id, row["partition"]):
             raise ValueError(f"unsafe/invalid case ID: {case_id}")
         if row["partition"] not in PARTITIONS or row["proposed_label"] not in LABELS:
             raise ValueError(f"invalid partition/proposed label: {case_id}")
@@ -181,7 +194,7 @@ def validate(cases, decisions, min_final_per_label=20, protected_pairs=None,
             partition: {label: counts[(partition, label)] for label in sorted(LABELS)}
             for partition in sorted(PARTITIONS)},
         "family_count": len(family_partition),
-        "provenance_limitation": "User-supplied human review is self-attested; the process and author/reviewer independence were not independently witnessed.",
+        "provenance_limitation": "Author and reviewer identities are recorded from source files; their independence was not independently witnessed. No human review is claimed by this freeze.",
     }
 
 
@@ -209,31 +222,61 @@ def partition_for_freeze(frozen):
     }, hashlib.sha256(final_bytes).hexdigest(), len(final)
 
 
+def canonical_json_bytes(value):
+    return (json.dumps(value, indent=2, ensure_ascii=False, sort_keys=True) + "\n").encode()
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--cases", required=True, type=Path)
-    parser.add_argument("--review", required=True, type=Path)
+    parser.add_argument("--cases", required=True, type=Path, nargs="+")
+    parser.add_argument("--review", required=True, type=Path, nargs="+")
     parser.add_argument("--output-dir", required=True, type=Path)
+    parser.add_argument("--sealed-final-path", required=True, type=Path,
+                        help="Local final payload path outside the Git repository")
     parser.add_argument("--min-final-per-label", type=int, default=20)
     args = parser.parse_args()
     if args.min_final_per_label < 1:
         raise ValueError("minimum final support must be positive")
-    cases = read_csv(args.cases, CASE_COLUMNS)
-    decisions = read_csv(args.review, REVIEW_COLUMNS)
+    cases = [row for path in args.cases for row in read_csv(path, CASE_COLUMNS)]
+    decisions = [row for path in args.review for row in read_csv(path, REVIEW_COLUMNS)]
     protected_pairs, protected_messages = closed_keys()
     frozen = validate(cases, decisions, args.min_final_per_label, protected_pairs,
                       protected_messages, historical_train_pairs(), closed_classifier_rows())
-    args.output_dir.mkdir(parents=True, exist_ok=True)
+    if args.sealed_final_path.resolve().is_relative_to(ROOT.resolve()):
+        raise ValueError("sealed final payload must stay outside the Git repository")
+    if not args.sealed_final_path.parent.is_dir():
+        raise ValueError("sealed final parent directory must exist")
     corpus_path = args.output_dir / "reviewed_train_dev_v1.json"
+    train_path = args.output_dir / "reviewed_train_v1.json"
+    development_path = args.output_dir / "reviewed_development_v1.json"
     manifest_path = args.output_dir / "pretraining_manifest_v1.json"
-    if corpus_path.exists() or manifest_path.exists():
-        raise FileExistsError("train/development freeze or manifest exists; refusing overwrite")
+    destinations = (corpus_path, train_path, development_path, manifest_path,
+                    args.sealed_final_path)
+    if any(path.exists() for path in destinations):
+        raise FileExistsError("freeze destination exists; refusing overwrite")
+    args.output_dir.mkdir(parents=True, exist_ok=True)
     train_dev, final_sha, final_count = partition_for_freeze(frozen)
+    final_cases = [case for case in frozen["cases"] if case["partition"] == "final"]
+    if hashlib.sha256(canonical_json_bytes(final_cases)).hexdigest() != final_sha:
+        raise AssertionError("final seal mismatch")
+    final_written_sha = save_new(args.sealed_final_path, final_cases)
+    if final_written_sha != final_sha:
+        raise AssertionError("written final seal mismatch")
     corpus_sha = save_new(corpus_path, train_dev)
+    train_sha = save_new(train_path, [case for case in train_dev["cases"]
+                                      if case["partition"] == "train"])
+    development_sha = save_new(development_path, [case for case in train_dev["cases"]
+                                            if case["partition"] == "development"])
     manifest = {
         "role": "PHASE_III_J_PRETRAINING_FREEZE_MANIFEST",
         "status": "NO_PHASE_III_J_TRAINING_OR_FINAL_INFERENCE_AT_FREEZE",
-        "source_case_sha256": sha256(args.cases), "source_review_sha256": sha256(args.review),
+        "source_case_sha256": [{"file": path.name, "sha256": sha256(path)}
+                               for path in args.cases],
+        "source_review_sha256": [{"file": path.name, "sha256": sha256(path)}
+                                 for path in args.review],
+        "reviewed_corpus_sha256": hashlib.sha256(canonical_json_bytes(frozen)).hexdigest(),
+        "reviewed_train_sha256": train_sha,
+        "reviewed_development_sha256": development_sha,
         "reviewed_train_dev_sha256": corpus_sha,
         "sealed_final_case_count": final_count, "sealed_final_payload_sha256": final_sha,
         "review_decision_counts": frozen["review_decision_counts"],

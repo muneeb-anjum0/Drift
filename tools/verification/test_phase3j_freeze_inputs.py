@@ -2,11 +2,30 @@
 
 import pytest
 
-from phase3j_freeze_inputs import partition_for_freeze, validate
+from phase3j_freeze_inputs import partition_for_freeze, valid_case_id, validate
 
 
 LABELS = ("added", "modified", "removed", "contradiction", "ambiguous", "unchanged")
 PARTITIONS = ("train", "development", "final")
+
+
+@pytest.mark.parametrize("case_id,partition", [
+    ("TR0001", "train"), ("DV0124", "development"),
+    ("FH0156", "final"), ("FH10000", "final"),
+    ("j-train-added", "train"),
+])
+def test_valid_case_id_formats(case_id, partition):
+    assert valid_case_id(case_id, partition)
+
+
+@pytest.mark.parametrize("case_id,partition", [
+    ("", "train"), ("TR001", "train"), ("TR0001 ", "train"),
+    (" TR0001", "train"), ("TR00A1", "train"), ("XX0001", "train"),
+    ("FH0001", "train"), ("DV0001\n", "development"),
+    ("j bad id", "train"),
+])
+def test_malformed_case_ids_rejected(case_id, partition):
+    assert not valid_case_id(case_id, partition)
 
 
 def fixtures():
@@ -47,6 +66,13 @@ def test_missing_review_blocks_freeze():
     cases, reviews = fixtures()
     with pytest.raises(ValueError, match="every case needs exactly one"):
         validate(cases, reviews[:-1], min_final_per_label=1)
+
+
+def test_duplicate_case_ids_block_freeze():
+    cases, reviews = fixtures()
+    cases[1]["id"] = cases[0]["id"]
+    with pytest.raises(ValueError, match="duplicate case IDs"):
+        validate(cases, reviews, min_final_per_label=1)
 
 
 def test_same_family_across_splits_blocks_freeze():

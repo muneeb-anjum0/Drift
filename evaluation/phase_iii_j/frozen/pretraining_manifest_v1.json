@@ -1,0 +1,69 @@
+{
+  "closed_overlap_policy": "Exact normalized pair/message and high lexical classifier-pair similarity rejected; semantic near-overlap still requires separate assessment.",
+  "family_count": 237,
+  "min_final_per_label": 20,
+  "review_decision_counts": {
+    "AMBIGUOUS": 3,
+    "CONFIRMED": 691,
+    "REVISED": 89
+  },
+  "reviewed_class_counts_by_partition": {
+    "development": {
+      "added": 24,
+      "ambiguous": 2,
+      "contradiction": 16,
+      "modified": 39,
+      "removed": 24,
+      "unchanged": 19
+    },
+    "final": {
+      "added": 29,
+      "ambiguous": 23,
+      "contradiction": 21,
+      "modified": 48,
+      "removed": 32,
+      "unchanged": 26
+    },
+    "train": {
+      "added": 81,
+      "ambiguous": 6,
+      "contradiction": 82,
+      "modified": 156,
+      "removed": 84,
+      "unchanged": 68
+    }
+  },
+  "reviewed_corpus_sha256": "af6cb5d281dbdac6e37ac8daa84d97e2a9e7ff99f126d12ec3ea7a7b5c449f46",
+  "reviewed_development_sha256": "89a9506ddf3c65dd6a7361a4e69366917046c8ea38ef0c45f81838f8b661baa7",
+  "reviewed_train_dev_sha256": "ad7faba61a75078c7215f22636d913cd09642c5311e97f1ec56fe424336b2d86",
+  "reviewed_train_sha256": "d3198232c18b48aaafbb795e511f94e033d01172803465fa63ee13630bfc0658",
+  "role": "PHASE_III_J_PRETRAINING_FREEZE_MANIFEST",
+  "sealed_final_case_count": 182,
+  "sealed_final_payload_sha256": "a3a391962e0fac7b6129d4ea57808a6b4189444fb106395d4d944b9c93670ccb",
+  "source_case_sha256": [
+    {
+      "file": "cases (1).csv",
+      "sha256": "eb9c3587fb46b927a5cb7e53ec52a8e8a607bad23b092ea9bdabb28bb8691ded"
+    },
+    {
+      "file": "phase_iii_j_supplemental_cases.csv",
+      "sha256": "2550974ed4a3141f059fef0c7037525a86dc5851c71dbc6483725a861ed008c8"
+    },
+    {
+      "file": "phase_iii_j_supplemental_cases_round2.csv",
+      "sha256": "fa29b1f98b28d4875adac537f088078de9e054e0b40a2031f502840061fa4488"
+    }
+  ],
+  "source_review_sha256": [
+    {
+      "file": "phase_iii_j_ai_semantic_review.csv",
+      "sha256": "e0133f42dd9ecc8a5109ec54a526aaa0faaace2e11d5cb4c137ec9e1e7d1d82f"
+    },
+    {
+      "file": "phase_iii_j_supplemental_review.csv",
+      "sha256": "aa592799d80f18f496752cbf7fb90d1af3719025af4dbd2b0907e8c972de6fd6"
+    }
+  ],
+  "status": "NO_PHASE_III_J_TRAINING_OR_FINAL_INFERENCE_AT_FREEZE",
+  "training_zip_policy": "Only reviewed_train_dev_v1.json may enter the training ZIP; final case text stays outside Git and the training ZIP until the candidate and gate are frozen."
+}
