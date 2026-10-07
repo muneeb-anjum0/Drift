@@ -18,6 +18,7 @@ models/base/
 models/gguf/
 models/huggingface/
 reports/evaluation/
+archive/phase_iii_j/
 .cache/
 __pycache__/
 *.pyc

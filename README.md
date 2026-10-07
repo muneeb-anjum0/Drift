@@ -61,4 +61,11 @@ Standard verification never downloads or starts model weights. Model smoke and e
 - [Frontend style guide](docs/frontend-style-guide.md)
 - [Architecture decisions](docs/decisions/)
 
+## Repository layout
+
+- `client/`, `server-go/`, and `services/` contain the application components.
+- `evaluation/` contains tracked evaluation contracts and frozen manifests; `docs/` records research decisions and outcomes.
+- `tools/` contains model and Kaggle utilities. `models/` is the local model-artifact area; its large weights are ignored by Git.
+- `archive/` holds private local source and experiment artifacts. In particular, `archive/phase_iii_j/` contains the downloaded Phase III-J Kaggle ZIPs and is excluded from both Git and Docker build contexts. See the [baseline outcome](docs/phase_iii_j_baseline_outcome.md).
+
 Model artifacts, `.env`, caches, reports, and the recovered local `Model/` directory are intentionally excluded from the tracked software state.
