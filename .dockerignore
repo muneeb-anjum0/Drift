@@ -12,6 +12,7 @@ server-go/firebase-service-account.json
 .env
 .env.*
 !.env.example
+!.env.staging.example
 models/adapters/*.zip
 models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA/
 models/base/
@@ -19,6 +20,10 @@ models/gguf/
 models/huggingface/
 reports/evaluation/
 archive/phase_iii_j/
+archive/phase_iii_k/
+archive/phase_iv_c_local_backup/
+archive/drift-dataset-kaggle-v5-cumulative/
+tools/phase3j_label_only/
 .cache/
 __pycache__/
 *.pyc

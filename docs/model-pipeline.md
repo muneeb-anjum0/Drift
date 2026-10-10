@@ -1,5 +1,7 @@
 # Model Pipeline
 
+**Status:** This is the existing runtime and historical reconstruction guide, not authorization to build, train, replace, or evaluate a new model. Phase III research is frozen; retain the original GGUF. The Phase III-J candidate was rejected and the reviewed development set is closed for future tuning. See [Model Research Status](model_research_status.md) before any model-related work.
+
 Model work is separate from normal software development. Standard setup, verification, and CI neither download nor run weights.
 
 ## Runtime artifact

@@ -10,6 +10,7 @@ playwright-report
 .env.*
 .env.*.local
 !.env.example
+!.env.staging.example
 .DS_Store
 *.log
 .vscode/settings.json
@@ -55,3 +56,7 @@ archive/drift-dataset-kaggle-v5-cumulative/
 
 # Private, locally preserved Phase III-J Kaggle packages and run artifacts.
 archive/phase_iii_j/
+archive/phase_iii_k/
+
+# Retained synthetic Phase IV-C local rehearsal artifacts; never ship in Git.
+archive/phase_iv_c_local_backup/
