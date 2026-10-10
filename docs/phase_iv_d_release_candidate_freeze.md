@@ -77,3 +77,7 @@ This source record is *pending remote CI*. `RELEASE_CANDIDATE_FROZEN` may be dec
 ## 12. Next Action
 
 Review the full PR diff and exact-SHA CI evidence. If all required checks pass, request separate authorization for controlled target-host staging deployment and operational validation. Do not deploy during Phase IV-D.
+
+## Phase IV-E1 pre-merge correction
+
+The later full PR review **blocked source freeze before merge**: `CheckIndexes` used MongoDB driver's `ListSpecifications`, which omitted `partialFilterExpression` and collation. A disposable `users.email_1` index with `{email:1}`, `unique:true`, and `partialFilterExpression:{email:{$exists:true}}` was incorrectly reported compatible, while two synthetic records without email coexisted. The focused correction reads complete raw `listIndexes` documents, preserves ordered key comparison, and rejects partial filters, custom collation, sparse, TTL, hidden, wrong uniqueness/name/keys, and other unexpected semantic options without dropping or altering an index. The expanded isolated-Mongo and metadata tests cover those cases plus safe missing-index provisioning. **Source freeze remains blocked until the corrected PR head is reviewed and its required remote CI passes; even then, PR #25 must not be merged without a separate final source-freeze authorization.**

@@ -73,6 +73,121 @@ type IndexReport struct {
 	Unexpected []string `json:"unexpected"`
 }
 
+// listIndexes exposes options that ListSpecifications omits, including partial
+// filters and collations. Only v/ns and the completed build's background flag
+// are irrelevant to the semantics of Drift's ordinary B-tree indexes.
+type indexMetadata struct {
+	name                 string
+	keys                 bson.Raw
+	unique               bool
+	sparse               bool
+	hidden               bool
+	hasTTL               bool
+	hasPartialFilter     bool
+	hasCollation         bool
+	otherSemanticOptions []string
+}
+
+func parseIndexMetadata(document bson.Raw) (indexMetadata, error) {
+	metadata := indexMetadata{}
+	elements, err := document.Elements()
+	if err != nil {
+		return metadata, err
+	}
+	seen := make(map[string]bool, len(elements))
+	for _, element := range elements {
+		key := element.Key()
+		if seen[key] {
+			return metadata, fmt.Errorf("duplicate index metadata field %q", key)
+		}
+		seen[key] = true
+		value := element.Value()
+		switch key {
+		case "name":
+			metadata.name, err = stringIndexOption(value, key)
+		case "key":
+			var ok bool
+			metadata.keys, ok = value.DocumentOK()
+			if !ok {
+				err = fmt.Errorf("index metadata %q must be a document", key)
+			} else {
+				metadata.keys = bytes.Clone(metadata.keys)
+			}
+		case "unique":
+			metadata.unique, err = boolIndexOption(value, key)
+		case "sparse":
+			metadata.sparse, err = boolIndexOption(value, key)
+		case "hidden":
+			metadata.hidden, err = boolIndexOption(value, key)
+		case "expireAfterSeconds":
+			metadata.hasTTL = true
+		case "partialFilterExpression":
+			metadata.hasPartialFilter = true
+		case "collation":
+			metadata.hasCollation = true
+		case "v", "ns", "background":
+			// Server/index-build metadata does not alter a completed index's behavior.
+		default:
+			// Unknown options are incompatible for an expected Drift index.
+			metadata.otherSemanticOptions = append(metadata.otherSemanticOptions, key)
+		}
+		if err != nil {
+			return metadata, err
+		}
+	}
+	if !seen["name"] || metadata.name == "" || !seen["key"] {
+		return metadata, errors.New("index metadata lacks name or ordered key document")
+	}
+	return metadata, nil
+}
+
+func stringIndexOption(value bson.RawValue, name string) (string, error) {
+	result, ok := value.StringValueOK()
+	if !ok {
+		return "", fmt.Errorf("index metadata %q must be a string", name)
+	}
+	return result, nil
+}
+
+func boolIndexOption(value bson.RawValue, name string) (bool, error) {
+	result, ok := value.BooleanOK()
+	if !ok {
+		return false, fmt.Errorf("index metadata %q must be a boolean", name)
+	}
+	return result, nil
+}
+
+func incompatibleIndex(expected indexDefinition, existing indexMetadata, expectedKeys bson.Raw) string {
+	if existing.name != expected.name {
+		return "wrong name"
+	}
+	if !bytes.Equal(existing.keys, expectedKeys) {
+		return "wrong ordered keys or direction"
+	}
+	if existing.unique != expected.unique {
+		return "wrong unique setting"
+	}
+	if existing.sparse {
+		return "unexpected sparse setting"
+	}
+	if existing.hasTTL {
+		return "unexpected expireAfterSeconds"
+	}
+	if existing.hasPartialFilter {
+		return "unexpected partialFilterExpression"
+	}
+	if existing.hasCollation {
+		return "unexpected collation"
+	}
+	if existing.hidden {
+		return "unexpected hidden setting"
+	}
+	if len(existing.otherSemanticOptions) > 0 {
+		return "unexpected option " + existing.otherSemanticOptions[0]
+	}
+	return ""
+}
+
 func (d indexDefinition) model() mongo.IndexModel {
 	indexOptions := options.Index().SetName(d.name)
 	if d.unique {
@@ -93,7 +208,7 @@ func CheckIndexes(ctx context.Context, db *mongo.Database) (IndexReport, error) 
 	for _, name := range collections {
 		known[name] = true
 	}
-	byCollection := make(map[string][]*mongo.IndexSpecification)
+	byCollection := make(map[string][]indexMetadata)
 	for _, expected := range expectedIndexes {
 		if !known[expected.collection] {
 			continue
@@ -101,11 +216,32 @@ func CheckIndexes(ctx context.Context, db *mongo.Database) (IndexReport, error) 
 		if _, loaded := byCollection[expected.collection]; loaded {
 			continue
 		}
-		specifications, err := db.Collection(expected.collection).Indexes().ListSpecifications(ctx)
+		cursor, err := db.Collection(expected.collection).Indexes().List(ctx)
 		if err != nil {
 			return report, fmt.Errorf("list %s indexes: %w", expected.collection, err)
 		}
-		byCollection[expected.collection] = specifications
+		indexes := []indexMetadata{}
+		for cursor.Next(ctx) {
+			var document bson.Raw
+			if err := cursor.Decode(&document); err != nil {
+				_ = cursor.Close(ctx)
+				return report, fmt.Errorf("decode %s index: %w", expected.collection, err)
+			}
+			metadata, err := parseIndexMetadata(document)
+			if err != nil {
+				_ = cursor.Close(ctx)
+				return report, fmt.Errorf("parse %s index: %w", expected.collection, err)
+			}
+			indexes = append(indexes, metadata)
+		}
+		if err := cursor.Err(); err != nil {
+			_ = cursor.Close(ctx)
+			return report, fmt.Errorf("read %s indexes: %w", expected.collection, err)
+		}
+		if err := cursor.Close(ctx); err != nil {
+			return report, fmt.Errorf("close %s indexes: %w", expected.collection, err)
+		}
+		byCollection[expected.collection] = indexes
 	}
 	matched := make(map[string]bool, len(expectedIndexes))
 	for _, expected := range expectedIndexes {
@@ -115,13 +251,12 @@ func CheckIndexes(ctx context.Context, db *mongo.Database) (IndexReport, error) 
 			return report, fmt.Errorf("encode %s keys: %w", identity, err)
 		}
 		for _, existing := range byCollection[expected.collection] {
-			sameKeys := bytes.Equal(existing.KeysDocument, expectedKeys)
-			if existing.Name != expected.name && !sameKeys {
+			sameKeys := bytes.Equal(existing.keys, expectedKeys)
+			if existing.name != expected.name && !sameKeys {
 				continue
 			}
-			unique := existing.Unique != nil && *existing.Unique
-			if existing.Name != expected.name || !sameKeys || unique != expected.unique || existing.Sparse != nil && *existing.Sparse || existing.ExpireAfterSeconds != nil {
-				return report, fmt.Errorf("incompatible index %s.%s: expected %s keys=%v unique=%t", expected.collection, existing.Name, expected.name, expected.keys, expected.unique)
+			if reason := incompatibleIndex(expected, existing, expectedKeys); reason != "" {
+				return report, fmt.Errorf("incompatible index %s.%s: %s; expected %s keys=%v unique=%t", expected.collection, existing.name, reason, expected.name, expected.keys, expected.unique)
 			}
 			matched[identity] = true
 		}
@@ -129,10 +264,10 @@ func CheckIndexes(ctx context.Context, db *mongo.Database) (IndexReport, error) 
 			report.Missing = append(report.Missing, identity)
 		}
 	}
-	for collection, specifications := range byCollection {
-		for _, existing := range specifications {
-			if existing.Name != "_id_" && !matched[collection+"."+existing.Name] {
-				report.Unexpected = append(report.Unexpected, collection+"."+existing.Name)
+	for collection, indexes := range byCollection {
+		for _, existing := range indexes {
+			if existing.name != "_id_" && !matched[collection+"."+existing.name] {
+				report.Unexpected = append(report.Unexpected, collection+"."+existing.name)
 			}
 		}
 	}
