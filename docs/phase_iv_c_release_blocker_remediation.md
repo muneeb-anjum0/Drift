@@ -1,0 +1,77 @@
+# Phase IV-C Release Blocker Remediation
+
+## 1. Status
+
+**RELEASE_BLOCKERS_REMAIN.** This is local remediation and verification on branch `phase-3/targeted-retraining`, source HEAD `88e81355688ad2daf21ffcc7fac95d26823477ca`, with an uncommitted worktree. No staging or production deployment, commit, push, merge, tag, model training/replacement, candidate promotion, or final-holdout access occurred. Phase III remains frozen; the original model is the only runtime model. The 32-row [staging gate](staging_readiness_gate.md) is 23 PASS, 1 FAIL, 7 BLOCKED, 1 NOT TESTED. A local PASS is not a target-host PASS.
+
+## 2. Starting Blockers
+
+Phase IV-B recorded 17 PASS, 4 FAIL, 6 BLOCKED, 2 NOT TESTED. Concrete issues were Go vulnerability findings, implicit Gin proxy trust, no validated TLS ingress, missing Mongo index compatibility rehearsal, no retained/off-host backup, no rollback drill, unverified monitoring/restart behavior, no target-host original-model load, dirty source revision, and no CI evidence on that revision. Before edits, branch/HEAD/status, zero staged files, untracked files, ignored research/private artifacts, and the original GGUF hash were checked. Prior dirty user/research work was preserved; no blanket staging or commit occurred. The sealed final was not searched for, restored, or read.
+
+## 3. Go Vulnerability
+
+Baseline Go `1.26.6` and `golang.org/x/net` `0.58.0` produced a nonzero `govulncheck@v1.1.4` result: 11 reachable standard-library findings, two package findings, and one module-only finding. At least [GO-2026-6617](https://pkg.go.dev/vuln/GO-2026-6617), an HTTP/2 HPACK race, was reachable through the API HTTP server and the Firebase storage HTTP client; the advisory requires Go `1.26.9` and `x/net` `0.60.0`. The Docker builder, `go.mod`, and `go.sum` now use those versions. `go mod tidy` selected their required transitive `x/crypto` `0.57.0`, `x/sync` `0.23.0`, `x/sys` `0.48.0`, and `x/text` `0.42.0`. No unrelated application dependency was deliberately upgraded.
+
+Containerized `golang:1.26.9-alpine`: `gofmt -l .` empty, `go mod tidy`, `go vet ./...`, `go test -count=1 ./...` (including authenticated isolated Mongo integration), `go build ./cmd/api`, and `go run golang.org/x/vuln/cmd/govulncheck@v1.1.4 ./...` all exit 0. Post-fix scanner reports 0 reachable and 0 imported-package vulnerabilities; one uncalled `x/crypto/openpgp` module advisory remains visible, **not suppressed**. A later scan on the reviewed revision is still required.
+
+## 4. Trusted Proxy
+
+Gin previously trusted all proxies by default, so an untrusted `X-Forwarded-For` could influence `ClientIP()` used for process-local rate limiting and request logs. `TRUSTED_PROXY_CIDRS` now defaults empty, making direct socket IP authoritative. Invalid or wildcard CIDRs fail configuration validation. Staging supplies only the reserved external TLS proxy's exact `/32`; the proxy must overwrite, never append to, untrusted incoming forwarding headers. Focused config/middleware/router tests cover direct connection, untrusted and trusted source, spoofed and multi-hop XFF, `X-Real-IP`, and invalid CIDRs. Backend HSTS no longer trusts a raw `X-Forwarded-Proto` assertion. Client IP is not a JWT/tenant-authorization input. Real target ingress peer identity remains untested.
+
+## 5. TLS / Ingress
+
+Supported chain: public HTTPS client → separately operated TLS ingress on `staging-internal` at configured `STAGING_TLS_PROXY_IP` → Go backend for `/api/`, frontend for `/`. [`deploy/staging-ingress.nginx.example.conf`](../deploy/staging-ingress.nginx.example.conf) specifies HTTP→HTTPS redirect, HTTPS-only HSTS, cert/key placeholders, and XFF overwrite. Backend, inference, llama, and Mongo expose no staging host ports; frontend HTTP remains loopback. A Docker test caught a real flaw: `aux_addresses` reserved the proposed proxy IP and attaching a container failed `Address already in use`. The overlay now gives all existing services distinct static IPs without `aux_addresses`; a separate test network attached service `.2` and proxy `.11` simultaneously. Env tests reject duplicate/out-of-subnet/gateway IPs; Compose config and static ingress tests pass. No certificate, DNS, live ingress, target firewall, or HTTPS/header probe exists; this remains **BLOCKED**, not a software PASS.
+
+## 6. Mongo Schema / Index Compatibility
+
+Fifteen required indexes across users, workspace members/workspaces, projects, activity logs, requirements/versions, drift analyses, change requests, and files are now represented by one deterministic registry. Unique constraints cover user email, membership pair, workspace slug, and project/version pair; project/workspace/created-at indexes support tenant and lifecycle queries. Startup preflights all existing index definitions before creating missing ones, never drops or rewrites, and rechecks afterward. `cmd/check-schema` is read-only for `drift_staging`; `--provision` is restricted to disposable `drift_ivc_*` databases and accepts the URI only from environment. Isolated Mongo tests passed for empty provisioning, compatible idempotence with retained records, and incompatible nonunique `users.email_1` rejection; CLI empty→MISSING, provision→PASS, check→PASS. Additional unknown indexes are reported, not silently removed. Limitations: an incompatible index/data conflict is operator work; index creation is not a transaction, and no general reverse schema migration exists.
+
+## 7. Backup / Restore
+
+[`tools/ops/staging_mongo_backup.sh`](../tools/ops/staging_mongo_backup.sh) uses a mode-0600 MongoDB tools config, an absolute operator-owned directory, full release SHA, UTC timestamp, unique `.archive.gz`, SHA-256/size manifest, and refuses non-staging/non-disposable DB names. The [runbook](staging_backup_restore.md) defines staging-host path, restrictive permissions, retention, encrypted off-host custody if sensitive data is introduced, checksum, safe isolated restore, and post-restore records/index verification. No real credential is in Git.
+
+Local rehearsal: isolated synthetic `drift_ivc_backup_rehearsal` had two identifiable records and `kind_1`. Retained ignored archive `archive/phase_iv_c_local_backup/drift_ivc_backup_rehearsal_20261009T193814Z_88e81355688a.archive.gz` is 396 bytes, SHA-256 `26366d4e12ee8ed502d7be35cffd17d799ce2ec349f9e1488d4d585a5f53cb92`. A second **same-host** copy matched. Source database was dropped by exact name, restored with `mongorestore --config ... --archive ... --gzip --stopOnError`, and two exact records plus `_id_`/`kind_1` were verified. The adjacent ignored manifest is retained. **Actual off-host copy/retrieval and target-host backup remain BLOCKED**; the local copy is not substituted for them.
+
+## 8. Rollback
+
+Isolated `drift-ivc-rehearsal` Compose project performed A→B→A with distinct frontend, Go, and inference image IDs; rate-limit config 10→12→10; same original GGUF read-only mount throughout. Each state had all five services healthy, UI 200, unauthenticated API 401, and synthetic inference 200/`unchanged`. Exact local image ID prefixes and steps are in [rollback](staging_rollback.md). A/B images used the same application source with different image labels: this proves orchestration mechanics, **not** compatibility between two real releases. No database migration occurred; data/index rollback is not automatic. After verification the five rehearsal containers were **stopped**, without deleting their containers, named volumes, images, logs, or the ignored retained backup archive. Target-host rollback remains BLOCKED.
+
+## 9. Monitoring
+
+Existing Docker health states, restart counts, Nginx/Go/inference/llama/Mongo logs, frontend/API status, backend `/health` versus `/ready`, inference keyed `/live` versus `/health`, and disk `df` are usable signals. Proposed minute probes/thresholds and operator actions are in [staging configuration](staging_configuration.md): three consecutive availability failures, backend readiness 503, five 5xx in five minutes, two restarts in ten minutes, or free disk under 20%/10 GiB. With only the isolated backend stopped, five API requests returned 502 and five matching Nginx access-log entries were counted; explicit restart restored backend health. Two successive controlled backend PID-1 exits raised restart count 1→3 with log entries. No alert receiver, owner, delivery test, log-retention policy, or actual disk-pressure drill exists; those remain BLOCKED for target staging.
+
+## 10. Restart / Recovery
+
+In the isolated stack, backend, inference, llama.cpp, and Mongo PID-1 exits each incremented Docker restart count and returned to healthy under `unless-stopped`; backend unauthorized API returned 401 after recovery, inference model health 200, Mongo-backed backend readiness 200. Mongo pause caused backend `/ready=503` while liveness stayed distinct, then 200 on unpause; llama pause caused inference `/health=503`, then 200. A manual `docker kill` of backend was treated as an explicit stop by Docker and **did not restart**; an operator `docker start` restored it. This nuance is documented so a stopped container is not mistaken for self-healing. Automatic restart does not replace external alerting.
+
+## 11. Target Host
+
+No legitimate staging target exists. [Host requirements](staging_host_requirements.md) derive CPU/RAM/disk planning from the 4,683,074,112-byte GGUF, observed image sizes, and 7 GiB llama memory limit, and require separate original-model custody, TLS, Mongo persistence, and backup destination. The local original GGUF SHA-256 was rechecked as `11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9`; local read-only mount, llama load, keyed inference health and synthetic prediction passed. These facts **do not** pass target-host load, which remains BLOCKED.
+
+## 12. Security Scanning
+
+`npm audit --audit-level=high`: 0 vulnerabilities. `pip-audit --requirement services/inference/requirements.txt`: none. `govulncheck`: 0 reachable/imported findings, one uncalled module-level advisory. Tracked and working-tree private-key/common-token marker scans: 0; `git ls-files` GGUF/archive/real `.env`/key files: 0. `.dockerignore` excludes model/private archives, env, caches and local backup; built image environment keys and Compose exposed ports/mounts were inspected. No repository-configured Trivy/Grype/Docker Scout is available; **container CVE scanning NOT TESTED**. Marker scans do not prove absence of every possible secret or historical leak. Local unqualified `ruff check services/inference tools` entered an ignored, untracked vendored llama.cpp checkout and reported 386 third-party findings; `ruff check services/inference tools --exclude tools/model/vendor` passed for first-party paths. CI's clean checkout does not contain that ignored vendor tree. No first-party lint finding was suppressed.
+
+## 13. Updated Staging Gate
+
+[Gate](staging_readiness_gate.md): **23 PASS / 1 FAIL / 7 BLOCKED / 1 NOT TESTED**, 32 criteria. The sole FAIL is the dirty, unreviewed release revision. BLOCKED items include immutable release identities, public TLS, actual off-host backup, target model load, remote CI on the reviewed SHA, target alerting, and target rollback. Image CVE scanning remains NOT TESTED. No criterion is credited merely because a document or template exists.
+
+## 14. Remaining Blockers
+
+The full intended diff—especially pre-existing Phase III evidence—needs independent review and a clean authorized revision; remote CI cannot run on this uncommitted SHA. A target staging host, real TLS ingress/certificate/DNS/firewall, dedicated original-model copy, staging secrets, off-host backup, alert owner/delivery, image scan strategy, and target A→B→A/model-load rehearsal are absent. These are concrete prerequisites, not permission to deploy. Local dependency/proxy/schema/backup/restart/rollback work does not remove them.
+
+## 15. Release Revision Plan
+
+No commit is authorized here. The [manifest](release_candidate_manifest.md) lists exact proposed paths and explicit exclusions. Proposed review/commit sequence, **only after separate authorization**:
+
+1. Phase III research provenance/documentation: `docs/phase_iii_j_baseline_outcome.md`, `docs/phase_iii_j_probe_runbook.md`, `docs/phase_iii_j_corrective_training_proposal.md`, `docs/phase_iii_j_label_only_baseline_plan.md`, `docs/phase_iii_j_label_only_baseline_result.md`, `docs/phase_iii_j_label_only_candidate_freeze.md`, `docs/phase_iii_j_label_only_conversion_and_cpu_screen_plan.md`, `docs/phase_iii_j_label_only_conversion_environment.md`, `docs/phase_iii_j_label_only_conversion_result.md`, `docs/phase_iii_j_label_only_cpu_development_screen_result.md`, `docs/phase_iii_j_label_only_final_gate_translation.md`, `docs/phase_iii_j_label_only_retraining_proposal.md`, `docs/phase_iii_j_label_only_training_outcome.md`, `docs/phase_iii_j_label_only_training_runbook.md`, `docs/phase_iii_j_model_output_contract_review.md`, `docs/phase_iii_j_structural_failure_probe.md`, `docs/phase_iii_k_post_rejection_analysis.md`. Verify provenance, links and frozen-status wording; no binaries or `tools/phase3j_label_only/` in this staging sequence without separate review.
+2. Repository/current-status documentation: `README.md`, `docs/README.md`, `docs/development.md`, `docs/model_research_status.md`, `docs/known-limitations.md`, `docs/model-pipeline.md`, `docs/phase_iii_e_development_report.md`, `docs/phase_iv_a_repository_and_release_readiness.md`, `docs/phase_iv_b_release_candidate_readiness.md`, `docs/release_candidate_manifest.md`. Verify historical claims, portable links and consistency with Phase III freeze.
+3. Staging/runtime/security: `.gitignore`, `.dockerignore`, `.github/workflows/verify.yml`, `.env.staging.example`, `docker-compose.staging.yml`, `docker-compose.test.yml`, `docker-compose.rehearsal.yml`, `deploy/staging-ingress.nginx.example.conf`, `package.json`, `package-lock.json`, `client/playwright.config.ts`, `server-go/Dockerfile`, `server-go/go.mod`, `server-go/go.sum`, `server-go/cmd/check-schema/main.go`, `server-go/internal/config/config.go`, `server-go/internal/config/config_test.go`, `server-go/internal/database/mongo.go`, `server-go/internal/database/schema_integration_test.go`, `server-go/internal/middleware/cors.go`, `server-go/internal/middleware/cors_test.go`, `server-go/internal/middleware/security.go`, `server-go/internal/middleware/proxy_test.go`, `server-go/internal/router/router.go`, `server-go/internal/router/proxy_test.go`, `tools/ops/staging_mongo_backup.sh`, `tools/verification/check_staging_env.py`, `tools/verification/test_staging_env.py`, `tools/verification/test_staging_ingress.py`, `docs/staging_configuration.md`, `docs/staging_data_custody.md`, `docs/staging_backup_restore.md`, `docs/staging_host_requirements.md`, `docs/staging_rollback.md`, `docs/staging_readiness_gate.md`, `docs/phase_iv_c_release_blocker_remediation.md`. Verify full local build/test/security suite, secret/ignore checks, manifest and reviewed diff before any commit. Then seek remote CI on the exact immutable revision; do not assume local passes transfer.
+
+## 16. Decision
+
+**RELEASE_BLOCKERS_REMAIN.** Local technical remediations passed, but the release is not frozen and target-only safety/operational evidence is missing. The Phase IV-B `RELEASE_CANDIDATE_BLOCKED` position is unchanged. No release, stage, or promotion is authorized by this report.
+
+## 17. Next Action
+
+Resolve the remaining concrete blockers before creating the release revision.

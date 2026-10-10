@@ -1,6 +1,6 @@
 # Documentation Index
 
-This index is the starting point for current engineering work. Historical reports are preserved as evidence, not as instructions to restart model research. The [model research status](model_research_status.md) and [Phase IV-C release-blocker report](phase_iv_c_release_blocker_remediation.md) state the current decisions: Phase III is frozen and release blockers remain.
+This index is the starting point for current engineering work. Historical reports are preserved as evidence, not as instructions to restart model research. The [model research status](model_research_status.md) and [Phase IV-D source-freeze report](phase_iv_d_release_candidate_freeze.md) state the current decisions: Phase III is frozen and staging remains blocked pending host-dependent checks.
 
 ## Current engineering guidance
 
@@ -12,10 +12,10 @@ This index is the starting point for current engineering work. Historical report
 | Frontend/product behavior | [Product guide](product-guide.md), [frontend style](frontend-style-guide.md), [label taxonomy](label-taxonomy.md) | Current guidance; verify against code when changing behavior. |
 | Tests and CI | [Verification](verification.md) | Current command/job guide; latest CI outcome must be checked separately. |
 | Inference/model runtime | [Model pipeline](model-pipeline.md), [model artifact manifest](model-artifact-manifest.json), [model research status](model_research_status.md) | Runtime/build reference and current research decision; model-build instructions do not authorize new training or replacement. |
-| Deployment and operations | [Operations](operations.md), [ADR 0002](decisions/0002-local-deployment-tradeoffs.md), [Phase IV-C report](phase_iv_c_release_blocker_remediation.md), [release manifest](release_candidate_manifest.md), [staging gate](staging_readiness_gate.md) | Local Compose/operations reference; staging remains not ready. |
+| Deployment and operations | [Operations](operations.md), [ADR 0002](decisions/0002-local-deployment-tradeoffs.md), [Phase IV-D report](phase_iv_d_release_candidate_freeze.md), [release manifest](release_candidate_manifest.md), [staging gate](staging_readiness_gate.md) | Local Compose/operations reference; staging remains not ready. |
 | Backup and recovery | [Operations](operations.md), [staging custody](staging_data_custody.md), [backup runbook](staging_backup_restore.md), [rollback](staging_rollback.md), [host requirements](staging_host_requirements.md) | Retained local synthetic Mongo restore and A→B→A passed; off-host and target-host rehearsals remain blocked. |
 | Cloud file storage | [Firebase setup](firebase_setup.md), [configuration](configuration.md) | Incomplete as a hosted-staging validation guide. |
-| Current limitations and release baseline | [Known limitations](known-limitations.md), [Phase IV-A report](phase_iv_a_repository_and_release_readiness.md), [Phase IV-B report](phase_iv_b_release_candidate_readiness.md), [Phase IV-C report](phase_iv_c_release_blocker_remediation.md) | Phase IV-C is the current blocker status; IV-A/B are historical baselines. |
+| Current limitations and release baseline | [Known limitations](known-limitations.md), [Phase IV-A report](phase_iv_a_repository_and_release_readiness.md), [Phase IV-B report](phase_iv_b_release_candidate_readiness.md), [Phase IV-C report](phase_iv_c_release_blocker_remediation.md), [Phase IV-D report](phase_iv_d_release_candidate_freeze.md) | Phase IV-D tracks source freeze/CI; IV-A/B/C are historical baselines. |
 
 ## Research and evaluation record
 

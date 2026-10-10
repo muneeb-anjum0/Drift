@@ -1,0 +1,67 @@
+name: drift-ivc-rehearsal
+
+# Local-only A -> B -> A image/config rehearsal, never a staging deployment.
+services:
+  frontend:
+    container_name: drift-ivc-rehearsal-frontend
+    image: drift-ivc/frontend:${IVC_REHEARSAL_REVISION:?set A or B}
+    ports: !override
+      - "127.0.0.1:5176:80"
+
+  backend:
+    container_name: drift-ivc-rehearsal-backend
+    image: drift-ivc/backend:${IVC_REHEARSAL_REVISION:?set A or B}
+    environment:
+      APP_ENV: test
+      CLIENT_URL: http://localhost:5176
+      MONGO_URI: mongodb://db:27017/drift_ivc_rehearsal
+      MONGO_DATABASE: drift_ivc_rehearsal
+      TRUSTED_PROXY_CIDRS: ""
+      AUTH_RATE_LIMIT_REQUESTS: ${IVC_REHEARSAL_AUTH_LIMIT:?set local config revision}
+    ports: !reset []
+    volumes: !override
+      - ivc-rehearsal-reports:/app/reports
+
+  inference:
+    container_name: drift-ivc-rehearsal-inference
+    image: drift-ivc/inference:${IVC_REHEARSAL_REVISION:?set A or B}
+    environment:
+      DRIFT_LOCAL_ENGINE: gguf
+      DRIFT_GGUF_MODEL_PATH: /app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf
+      DRIFT_LLAMA_SERVER_URL: http://llama:8080
+    ports: !reset []
+    volumes: !override
+      - ./models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf:/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf:ro
+
+  llama:
+    container_name: drift-ivc-rehearsal-llama
+    command:
+      - --model
+      - /app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - --ctx-size
+      - "768"
+      - --n-gpu-layers
+      - "0"
+      - --device
+      - none
+      - --threads
+      - "4"
+      - --parallel
+      - "1"
+    ports: !reset []
+    volumes: !override
+      - ./models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf:/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf:ro
+
+  db:
+    container_name: drift-ivc-rehearsal-db
+    ports: !reset []
+    volumes: !override
+      - ivc-rehearsal-mongo:/data/db
+
+volumes:
+  ivc-rehearsal-mongo:
+  ivc-rehearsal-reports:

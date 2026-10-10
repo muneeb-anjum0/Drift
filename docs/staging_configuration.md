@@ -1,0 +1,40 @@
+# Staging Configuration and Minimum Monitoring
+
+**Defined but not deployed.** The least-disruptive staging design is the existing `docker-compose.yml` plus [`docker-compose.staging.yml`](../docker-compose.staging.yml), a dedicated Compose project, and an ignored `.env.staging` copied from [the example](../.env.staging.example). The overlay is intentionally not a public ingress configuration: frontend HTTP binds `127.0.0.1:5174` by default and requires a separately reviewed external TLS terminator. Docker Compose v2.24.4+ is needed for `!override`/`!reset`. See the [host requirements](staging_host_requirements.md).
+
+| Concern | Staging setting | Boundary / open verification |
+| --- | --- | --- |
+| Release images | `STAGING_RELEASE_ID` full reviewed Git SHA tags frontend/backend/inference images | Preflight requires a clean matching checkout. Record immutable image digests; tags alone are not a freeze. |
+| Frontend origin/API | `STAGING_CLIENT_ORIGIN` dedicated HTTPS origin; Vite build uses same-origin `/api/v1` | External TLS/DNS are not deployed. The [ingress template](../deploy/staging-ingress.nginx.example.conf) routes `/api/` **directly** to Go and `/` to frontend; this makes the TLS proxy the immediate Go peer. Do not proxy `/api/` through frontend in staging or the Go client-IP trust rule will not match. |
+| Mongo | Internal `db:27017`, database `drift_staging`, authenticated root credentials from `STAGING_MONGO_USER`/`STAGING_MONGO_PASSWORD` | Dedicated Compose volume. Credentials must be URL-safe because the fixed URI is assembled in Compose; no arbitrary production URI setting. |
+| JWT and inference authentication | Independent `STAGING_JWT_SECRET` and `STAGING_INFERENCE_API_KEY` | Blank in example, mandatory in Compose, validated again in the app and preflight; never production values. |
+| Inference endpoint | Backend `http://inference:8000`; inference `http://llama:8080` | No host ports for these services. Backend `/ready` means Mongo ready, **not** model ready. |
+| Model | Exact original GGUF file mounted read-only at the historical runtime path | `STAGING_ORIGINAL_GGUF` is a dedicated external copy; preflight hashes it. No candidate mount. |
+| File storage | `STAGING_FIREBASE_STORAGE_ENABLED=false`; bucket/credentials empty | No uploads initially. A future GCS stage needs a separate bucket/service account and recovery plan. |
+| CORS | Backend `CLIENT_URL=STAGING_CLIENT_ORIGIN` | Phase IV-B restricts the legacy `http://localhost:5173` allowance to development. Unit and isolated-container checks passed; real staging-origin/ingress validation remains pending. |
+| Trusted proxies | `TRUSTED_PROXY_CIDRS` defaults empty (forwarding ignored); staging supplies the exact reserved `STAGING_TLS_PROXY_IP/32` | Go rejects wildcard/invalid CIDRs and trusts forwarding only from that immediate peer. Ingress must overwrite incoming `X-Forwarded-For` with the observed remote IP. A static template and local unit tests pass; real ingress-to-Go IP behavior remains blocked until a target host exists. Client IP affects rate limiting and logs, not JWT/tenant authorization. |
+| Logs | Go JSON logs at `APP_ENV=staging`; FastAPI, llama.cpp, Nginx, Mongo logs through Docker | Define collection, access/retention, redaction, and alert recipient before deployment. Do not log expanded Compose config or secrets. |
+| Rate limits | Explicit `STAGING_AUTH_RATE_LIMIT_REQUESTS`, `STAGING_INFERENCE_RATE_LIMIT_REQUESTS`, `STAGING_RATE_LIMIT_WINDOW_SECONDS` | Process-local; check client-IP behavior behind proxy. Defaults mirror local only for initial synthetic testing. |
+| Health | Frontend `/`, backend `/health` and `/ready`, inference keyed `/live` and `/health`, llama `/health`, Mongo authenticated ping | External monitor must distinguish process liveness, database readiness, and model readiness. Inference `/live` alone is insufficient. |
+| Ports | Frontend loopback 5174; no host ports for Go, inference, llama, Mongo; `staging-internal` network with configurable subnet and explicit unique service IPs plus a distinct future proxy IP | TLS proxy only after network/security review. Test subnet collision and firewall rules on the target. Do not expose base Compose's unqualified frontend binding. |
+| Volumes | `drift-staging_staging-mongo-data`, `drift-staging_staging-reports`; original GGUF host file bind | See [data custody](staging_data_custody.md) for backups and reset boundary. |
+| Restart | Existing `unless-stopped` policies retained | Restart loops must be observed and alerted; policy alone is not recovery proof. |
+
+## Minimum first-stage monitoring
+
+- **API down:** external TLS probe of `/api/` route plus internal backend `/health` and `/ready`; alert on repeated non-2xx or no response. A `200 /health` with `503 /ready` means Mongo dependency failure, not product readiness.
+- **Mongo unavailable:** backend `/ready=503`, authenticated Mongo ping/health failure, and backend connection-error logs. Alert without disclosing URI/password.
+- **Inference unavailable:** authenticated inference `/live` or `/health` fails; the backend may remain ready because inference is optional for the rest of the product. Alert separately on analysis failures.
+- **Model load failure:** llama `/health` non-200 or inference `/health=503`, plus loader/llama logs. A successful `/live` does not prove the GGUF loaded.
+- **Requests failing:** track frontend proxy 5xx, Go JSON status/error counts, inference 5xx, and rate-limit 429s; use synthetic canary requests only. Confirm no secrets or client text leak into logs.
+- **Restart loops:** compare `docker compose ps` restart counts/state with recent `docker compose logs` for every service; alert on repeated restarts or unhealthy status.
+
+No alert transport, retention window, SLO, or on-call owner is configured yet. The first staging release can use existing Docker logs and health checks **if** an operator-owned polling/alert procedure is actually installed and tested. Until then monitoring is defined but not verified. See the [staging gate](staging_readiness_gate.md) and [rollback](staging_rollback.md).
+
+## TLS and forwarding contract
+
+Public client → external HTTPS ingress at the reserved Compose-network IP → Go API (`/api/`) or frontend Nginx (`/`). The ingress redirects HTTP to HTTPS, emits HSTS **only on HTTPS**, and sets `X-Forwarded-For` to the socket client IP (not a user-supplied chain). Its certificate/key remain outside Git. Backend direct HTTP does not emit HSTS merely because an untrusted request asserts `X-Forwarded-Proto: https`. The frontend is same-origin; no cross-site cookie flow is planned. JWT remains explicit Authorization bearer auth. Static template/env tests are not proof of DNS, certificate renewal, firewall, or live header/client-IP behavior.
+
+The overlay gives each service a distinct explicit IPv4 address so the future ingress can attach at `STAGING_TLS_PROXY_IP`. A local Docker proof showed an `aux_addresses` reservation makes that proxy IP **unattachable** (`Address already in use`); the corrected overlay does not use it. An isolated network successfully attached two simultaneous test containers at service `.2` and proxy `.11`. The env checker rejects duplicate, out-of-subnet, and gateway addresses. Operators must change **all** service/proxy IPs together when choosing a different subnet and verify the actual ingress container binds the configured peer IP before trusting forwarding headers.
+
+Minimum operator-owned monitoring before public exposure: probe frontend HTTPS and API readiness every minute; probe authenticated inference `/health` and llama `/health` internally; alert after three consecutive failures, any backend `/ready=503`, any service restart count increase twice within ten minutes, repeated 5xx (five in five minutes), or volume free space under 20%/10 GiB, whichever triggers first. Record log access/retention and alert recipient. These are proposed conditions, **not installed alerts**; the local rehearsal can only demonstrate signal observability.

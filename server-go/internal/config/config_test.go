@@ -39,3 +39,26 @@ func TestValidateRequiresIndependentInferenceCredential(t *testing.T) {
 		t.Fatalf("expected valid configuration: %v", err)
 	}
 }
+
+func TestTrustedProxyCIDRsAreExplicit(t *testing.T) {
+	for _, value := range []string{"invalid", "0.0.0.0/0", "::/0", ""} {
+		cfg := validConfig()
+		cfg.TrustedProxyCIDRs = []string{value}
+		if err := cfg.Validate(); err == nil {
+			t.Fatalf("expected trusted proxy value %q to fail", value)
+		}
+	}
+	cfg := validConfig()
+	cfg.TrustedProxyCIDRs = []string{"192.0.2.10/32", "2001:db8::10/128"}
+	if err := cfg.Validate(); err != nil {
+		t.Fatalf("expected explicit proxy hosts to pass: %v", err)
+	}
+}
+
+func TestLoadTrustedProxyCIDRs(t *testing.T) {
+	t.Setenv("TRUSTED_PROXY_CIDRS", "192.0.2.10/32, 2001:db8::10/128")
+	cfg := Load()
+	if len(cfg.TrustedProxyCIDRs) != 2 || cfg.TrustedProxyCIDRs[0] != "192.0.2.10/32" || cfg.TrustedProxyCIDRs[1] != "2001:db8::10/128" {
+		t.Fatalf("unexpected trusted proxy configuration: %#v", cfg.TrustedProxyCIDRs)
+	}
+}

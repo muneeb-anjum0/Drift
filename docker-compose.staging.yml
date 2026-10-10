@@ -1,0 +1,107 @@
+name: drift-staging
+
+# Overlay for a later isolated staging run. Never run without the env preflight.
+# Requires Docker Compose supporting !override and !reset (v2.24.4 or newer).
+services:
+  frontend:
+    container_name: drift-staging-frontend
+    image: drift-staging/frontend:${STAGING_RELEASE_ID:?set the reviewed release commit}
+    ports: !override
+      - "127.0.0.1:${STAGING_HTTP_PORT:-5174}:80"
+    networks:
+      staging-internal:
+        ipv4_address: ${STAGING_FRONTEND_IP:?set the staging frontend IP}
+
+  backend:
+    container_name: drift-staging-backend
+    image: drift-staging/backend:${STAGING_RELEASE_ID:?set the reviewed release commit}
+    environment:
+      APP_ENV: staging
+      CLIENT_URL: ${STAGING_CLIENT_ORIGIN:?set a dedicated HTTPS staging origin}
+      TRUSTED_PROXY_CIDRS: ${STAGING_TLS_PROXY_IP:?set the exact external ingress container IP}/32
+      MONGO_URI: mongodb://${STAGING_MONGO_USER:?set staging Mongo user}:${STAGING_MONGO_PASSWORD:?set staging Mongo password}@db:27017/drift_staging?authSource=admin
+      MONGO_DATABASE: drift_staging
+      JWT_SECRET: ${STAGING_JWT_SECRET:?set a distinct staging JWT secret}
+      JWT_EXPIRES_IN_HOURS: ${STAGING_JWT_EXPIRES_IN_HOURS:-24}
+      AUTH_RATE_LIMIT_REQUESTS: ${STAGING_AUTH_RATE_LIMIT_REQUESTS:-10}
+      INFERENCE_RATE_LIMIT_REQUESTS: ${STAGING_INFERENCE_RATE_LIMIT_REQUESTS:-20}
+      RATE_LIMIT_WINDOW_SECONDS: ${STAGING_RATE_LIMIT_WINDOW_SECONDS:-60}
+      DRIFT_INFERENCE_ENABLED: "true"
+      DRIFT_INFERENCE_URL: http://inference:8000
+      DRIFT_INFERENCE_API_KEY: ${STAGING_INFERENCE_API_KEY:?set a distinct staging inference key}
+      DRIFT_INFERENCE_TIMEOUT_MS: ${STAGING_INFERENCE_TIMEOUT_MS:-65000}
+      FIREBASE_STORAGE_ENABLED: ${STAGING_FIREBASE_STORAGE_ENABLED:-false}
+      FIREBASE_STORAGE_BUCKET: ${STAGING_FIREBASE_STORAGE_BUCKET:-}
+      GOOGLE_APPLICATION_CREDENTIALS: ${STAGING_GOOGLE_APPLICATION_CREDENTIALS:-}
+      MAX_UPLOAD_SIZE_MB: ${STAGING_MAX_UPLOAD_SIZE_MB:-10}
+    ports: !reset []
+    volumes: !override
+      - staging-reports:/app/reports
+    networks:
+      staging-internal:
+        ipv4_address: ${STAGING_BACKEND_IP:?set the staging backend IP}
+
+  inference:
+    container_name: drift-staging-inference
+    image: drift-staging/inference:${STAGING_RELEASE_ID:?set the reviewed release commit}
+    environment:
+      DRIFT_LOCAL_ENGINE: gguf
+      DRIFT_GGUF_MODEL_PATH: /app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf
+      DRIFT_LLAMA_SERVER_URL: http://llama:8080
+      DRIFT_INFERENCE_API_KEY: ${STAGING_INFERENCE_API_KEY:?set a distinct staging inference key}
+    ports: !reset []
+    volumes: !override
+      - ${STAGING_ORIGINAL_GGUF:?set the verified original GGUF path}:/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf:ro
+    networks:
+      staging-internal:
+        ipv4_address: ${STAGING_INFERENCE_IP:?set the staging inference IP}
+
+  llama:
+    container_name: drift-staging-llama
+    command:
+      - --model
+      - /app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - --ctx-size
+      - "768"
+      - --n-gpu-layers
+      - "0"
+      - --device
+      - none
+      - --threads
+      - "6"
+      - --parallel
+      - "1"
+    ports: !reset []
+    volumes: !override
+      - ${STAGING_ORIGINAL_GGUF:?set the verified original GGUF path}:/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf:ro
+    networks:
+      staging-internal:
+        ipv4_address: ${STAGING_LLAMA_IP:?set the staging llama IP}
+
+  db:
+    container_name: drift-staging-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${STAGING_MONGO_USER:?set staging Mongo user}
+      MONGO_INITDB_ROOT_PASSWORD: ${STAGING_MONGO_PASSWORD:?set staging Mongo password}
+    ports: !reset []
+    volumes: !override
+      - staging-mongo-data:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --username \"$${MONGO_INITDB_ROOT_USERNAME}\" --password \"$${MONGO_INITDB_ROOT_PASSWORD}\" --authenticationDatabase admin --eval 'quit(db.adminCommand(\"ping\").ok ? 0 : 2)' >/dev/null"]
+    networks:
+      staging-internal:
+        ipv4_address: ${STAGING_DB_IP:?set the staging Mongo IP}
+
+networks:
+  staging-internal:
+    ipam:
+      config:
+        - subnet: ${STAGING_NETWORK_SUBNET:-172.30.41.0/24}
+
+volumes:
+  staging-mongo-data:
+  staging-reports:
