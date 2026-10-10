@@ -35,3 +35,5 @@ Do not make the result look better by weakening the strict parser, changing P1, 
 The original one-follow-up limit still applies; there is no hyperparameter sweep or endless retry loop.
 
 As of 2026-10-08, the [development-only probe runbook](phase_iii_j_probe_runbook.md) and a compact private upload bundle have been prepared and model-free checked. The probe has **not** been run on a GPU; no new model results or correction decision are claimed.
+
+Post-probe addendum (2026-10-08): the 12-case GPU diagnostic has since completed. Its verified result and limitations are recorded separately in the [structural-failure probe report](phase_iii_j_structural_failure_probe.md). The pre-probe statements above are retained as the historical evidence boundary; the rejected baseline, unopened final holdout, and no-promotion decision are unchanged.

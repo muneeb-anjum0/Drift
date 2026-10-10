@@ -85,3 +85,5 @@ print("SHA-256:", hashlib.sha256(evidence_zip.read_bytes()).hexdigest())
 ```
 
 Download `drift_phase_iii_j_probe_v1.zip` from the Kaggle notebook's Output panel **before closing the session**. Confirm it appears in the laptop Downloads folder, then move it to the Git-ignored `archive/phase_iii_j/` directory and compare SHA-256. Do not rely on the draft session or saved-version Output as the only copy. The ZIP contains raw model output and development-case IDs, so keep it private and out of GitHub. Only after local verification should the raw outputs be inspected and the response-target hypothesis accepted or rejected.
+
+Post-run note (2026-10-08): the probe was completed, and the preserved evidence is `archive/phase_iii_j/drift_phase3j_raw_probe.zip`. The [diagnostic report](phase_iii_j_structural_failure_probe.md) records its verified hash, 0/12 structural result, raw-output patterns, and limitations. The instructions above remain the pre-run procedure, not a request to run it again.
