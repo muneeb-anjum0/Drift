@@ -33,6 +33,11 @@ func New(db *mongo.Database, cfg config.Config, storage storageSvc.Backend) *gin
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.New()
+	// Gin otherwise trusts every forwarding peer. Only explicitly configured
+	// immediate peers may supply client-IP headers used by logs and rate limits.
+	if err := r.SetTrustedProxies(cfg.TrustedProxyCIDRs); err != nil {
+		panic("invalid TRUSTED_PROXY_CIDRS: " + err.Error())
+	}
 	r.MaxMultipartMemory = cfg.MaxUploadSizeMB << 20
 	if cfg.AppEnv == "development" {
 		r.Use(middleware.DevRequestLogger(), middleware.Recovery(), middleware.SecurityHeaders(), middleware.CORS(cfg))

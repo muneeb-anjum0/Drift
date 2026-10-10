@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - Node.js 22
-- Go 1.26.6 (or Docker for the Go commands)
+- Go 1.26.9 (or Docker for the Go commands)
 - Python 3.13+
 - Docker with Compose
 

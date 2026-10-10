@@ -1,0 +1,40 @@
+name: drift-ivb-test
+
+# Disposable local verification project. Never point it at staging/production data.
+services:
+  frontend:
+    container_name: drift-ivb-test-frontend
+    image: drift-frontend:latest
+    ports: !override
+      - "127.0.0.1:5175:80"
+
+  backend:
+    container_name: drift-ivb-test-backend
+    image: drift-backend:latest
+    environment:
+      APP_ENV: test
+      CLIENT_URL: http://localhost:5175
+    ports: !reset []
+    volumes: !override
+      - ivb-test-reports:/app/reports
+
+  inference:
+    container_name: drift-ivb-test-inference
+    image: drift-inference:latest
+    ports: !reset []
+    volumes: !reset []
+
+  llama:
+    container_name: drift-ivb-test-llama
+    ports: !reset []
+    volumes: !reset []
+
+  db:
+    container_name: drift-ivb-test-db
+    ports: !reset []
+    volumes: !override
+      - ivb-test-mongo-data:/data/db
+
+volumes:
+  ivb-test-mongo-data:
+  ivb-test-reports:

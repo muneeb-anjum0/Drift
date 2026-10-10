@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"net/netip"
 	"os"
 	"strconv"
 	"strings"
@@ -21,6 +22,7 @@ type Config struct {
 	InferenceRateLimitRequests   int
 	RateLimitWindow              time.Duration
 	ClientURL                    string
+	TrustedProxyCIDRs            []string
 	DriftInferenceEnabled        bool
 	DriftInferenceURL            string
 	DriftInferenceAPIKey         string
@@ -45,6 +47,7 @@ func Load() Config {
 		InferenceRateLimitRequests:   getInt("INFERENCE_RATE_LIMIT_REQUESTS", 20),
 		RateLimitWindow:              time.Duration(getInt("RATE_LIMIT_WINDOW_SECONDS", 60)) * time.Second,
 		ClientURL:                    get("CLIENT_URL", "http://localhost:5173"),
+		TrustedProxyCIDRs:            getList("TRUSTED_PROXY_CIDRS"),
 		DriftInferenceEnabled:        getBool("DRIFT_INFERENCE_ENABLED", false),
 		DriftInferenceURL:            get("DRIFT_INFERENCE_URL", "http://localhost:8000"),
 		DriftInferenceAPIKey:         strings.TrimSpace(os.Getenv("DRIFT_INFERENCE_API_KEY")),
@@ -69,6 +72,12 @@ func (c Config) Validate() error {
 	}
 	if c.MaxUploadSizeMB <= 0 {
 		return fmt.Errorf("MAX_UPLOAD_SIZE_MB must be greater than zero")
+	}
+	for _, raw := range c.TrustedProxyCIDRs {
+		prefix, err := netip.ParsePrefix(raw)
+		if err != nil || prefix.Bits() == 0 {
+			return fmt.Errorf("TRUSTED_PROXY_CIDRS must contain explicit non-default IP CIDRs")
+		}
 	}
 	if c.FirebaseStorageEnabled && strings.TrimSpace(c.FirebaseStorageBucket) == "" {
 		return fmt.Errorf("FIREBASE_STORAGE_BUCKET is required when Firebase Storage is enabled")
@@ -98,6 +107,18 @@ func get(key, fallback string) string {
 		return value
 	}
 	return fallback
+}
+
+func getList(key string) []string {
+	raw := strings.TrimSpace(os.Getenv(key))
+	if raw == "" {
+		return nil
+	}
+	parts := strings.Split(raw, ",")
+	for index := range parts {
+		parts[index] = strings.TrimSpace(parts[index])
+	}
+	return parts
 }
 
 func getInt(key string, fallback int) int {

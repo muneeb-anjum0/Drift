@@ -44,6 +44,9 @@ jobs:
       - run: python -m pytest tools/verification/test_phase3i_score_raw.py
       - run: python -m pytest tools/verification/test_phase3i_overlap_historical.py
       - run: python -m pytest tools/verification/test_phase3i5_freeze.py tools/verification/test_phase3i5_review_evidence.py tools/verification/test_phase3i5_score.py tools/verification/test_phase3i5_error_taxonomy.py
+      - run: python -m pytest tools/verification/test_phase3j_audit_training.py tools/verification/test_phase3j_freeze_inputs.py
+      - run: python -m pytest tools/verification/test_staging_env.py
+      - run: python -m pytest tools/verification/test_staging_ingress.py
       - run: ruff check services/inference tools
       - run: npm audit --audit-level=high
       - run: pip-audit --requirement services/inference/requirements.txt
@@ -53,9 +56,16 @@ jobs:
         env:
           JWT_SECRET: ci-only-jwt-secret-at-least-32-characters
           DRIFT_INFERENCE_API_KEY: ci-only-inference-key-at-least-32-characters
+          STAGING_RELEASE_ID: ${{ github.sha }}
+          STAGING_JWT_SECRET: ci-only-staging-jwt-at-least-32-characters
+          STAGING_INFERENCE_API_KEY: ci-only-staging-inference-at-least-32-characters
+          STAGING_MONGO_PASSWORD: ci-only-staging-mongo-password
+          STAGING_ORIGINAL_GGUF: /tmp/ci-config-only-not-a-model.gguf
         run: |
           docker compose config --quiet
           docker compose -f docker-compose.yml -f docker-compose.gpu.yml config --quiet
+          docker compose -f docker-compose.yml -f docker-compose.test.yml config --quiet
+          docker compose --env-file .env.staging.example -f docker-compose.yml -f docker-compose.staging.yml --profile model config --quiet
 
   integration:
     runs-on: ubuntu-latest
@@ -78,7 +88,7 @@ jobs:
       - name: Mongo-backed invariants
         env:
           MONGO_TEST_URI: mongodb://127.0.0.1:27017
-        run: cd server-go && go test -count=1 ./internal/integration
+        run: cd server-go && go test -count=1 ./internal/integration ./internal/database
 
   e2e:
     runs-on: ubuntu-latest
