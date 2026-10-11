@@ -18,10 +18,10 @@ export const SettingsPage = () => {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-3xl space-y-5">
       <section className="flex flex-wrap items-end justify-between gap-5 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-card)]">
         <div>
-          <p className="app-eyebrow">Settings</p>
+          <p className="app-eyebrow">About</p>
           <h2 className="mt-2 text-3xl font-semibold text-[var(--color-text)]">Account and runtime</h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--color-text-muted)]">
-            Only the settings that matter for using DriftLedger are shown here.
+            Read-only account and installation information. No settings can be changed on this page.
           </p>
         </div>
         <Button type="button" variant="secondary" onClick={confirmLogout}>

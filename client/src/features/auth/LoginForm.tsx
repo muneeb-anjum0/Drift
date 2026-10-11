@@ -121,6 +121,7 @@ export const LoginForm = () => {
             />
             <motion.button
               type="button"
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
               onClick={() => setShowPassword((current) => !current)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}

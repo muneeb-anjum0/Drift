@@ -87,7 +87,7 @@ export const RegisterForm = () => {
           transition={{ delay: 0.2 }}
           className="text-3xl font-bold text-white"
         >
-          Sign Up
+          Create your account
         </motion.h2>
         <motion.p
           initial={{ opacity: 0 }}
@@ -95,7 +95,7 @@ export const RegisterForm = () => {
           transition={{ delay: 0.3 }}
           className="text-gray-400"
         >
-          Join Drift and start detecting requirement changes
+          Start with a project and what your team agreed to deliver.
         </motion.p>
       </div>
 
@@ -158,6 +158,7 @@ export const RegisterForm = () => {
             />
             <motion.button
               type="button"
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
               onClick={() => setShowPassword((current) => !current)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -186,6 +187,7 @@ export const RegisterForm = () => {
             />
             <motion.button
               type="button"
+              aria-label={showConfirmPassword ? 'Hide confirmation password' : 'Show confirmation password'}
               onClick={() => setShowConfirmPassword((current) => !current)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
