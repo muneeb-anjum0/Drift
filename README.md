@@ -54,34 +54,32 @@ Browser and model output are untrusted. The Go API is the authorization boundary
 
 Phase III research is frozen. Keep the original GGUF as the selected production/default model. The Phase III-J label-only candidate failed its development screen and is a research artifact only; Phase III-K calls for new independent data before further tuning. The sealed final holdout remains unused. No retraining or model replacement is authorized by this README. See [model research status](docs/model_research_status.md).
 
-## Local Development
+## Run Locally
 
-Prerequisites: Node.js 22, Go 1.26.9, Python 3.13+, and Docker Compose. Copy `.env.example` to `.env` and set independent `JWT_SECRET` and `DRIFT_INFERENCE_API_KEY` values of at least 32 characters. Never commit `.env`.
+Drift is distributed as a **local-first** application, not a hosted service. The normal runtime needs Git, Docker Engine/Desktop, and Docker Compose v2. Copy `.env.example` to `.env` and set independent random `JWT_SECRET` and `DRIFT_INFERENCE_API_KEY` values of at least 32 characters. Never commit `.env`.
 
 ```bash
 cp .env.example .env
-make setup
-make run
-make verify
+docker compose up -d --build --wait db inference backend frontend
 ```
 
-The default Compose stack serves the UI at `http://localhost:5173` and starts MongoDB, FastAPI, and Go; it does **not** start llama.cpp or load model weights. See [development setup](docs/development.md) for component commands and prerequisites.
+Open `http://localhost:5173`. The core app starts without model weights; drift analysis is unavailable until the separately supplied, SHA-verified original GGUF is started. No model binary or public download link is bundled. The [local setup guide](docs/development.md) covers secret generation, optional CPU/GPU model startup, backups, restore, stopping, updating, and troubleshooting. Host Go/Node/Python are needed only for source-level development checks.
 
 ## Repository Structure
 
 `client/`, `server-go/`, and `services/` are application code; `tools/` contains verification and model/research utilities; `evaluation/` holds tracked contracts and evidence metadata; `docs/` holds engineering guidance and historical decisions. `models/` and `archive/` also contain ignored local binaries and private evidence. Generated output, `.env`, local model weights, and private archives must stay out of Git and Docker build contexts.
 
-## Deployment Overview
+## Distribution and Deployment
 
-The repository defines a single-host Docker Compose topology, an optional GPU override, and a separate [proposed staging overlay](docs/staging_configuration.md) that passed local configuration checks. It is **not** a proven staging or production platform: no staging deployment, live TLS/ingress validation, or target-host rollback rehearsal has occurred. A local synthetic A→B→A rollback did pass. See the [Phase IV-C release-blocker report](docs/phase_iv_c_release_blocker_remediation.md) before any staging work.
+The supported direction is `LOCAL_FIRST_DISTRIBUTION`. Normal use is a private localhost Compose installation; it does not require a VPS, public DNS, or public TLS. A separate [proposed staging overlay](docs/staging_configuration.md) and historical server-readiness evidence are retained for a possible future hosted deployment, not as local-release gates.
 
 ## Project Status
 
-The existing application is under repository consolidation. Model research is frozen; the original model is retained, and the Phase III-J candidate is rejected. Staging is **not ready** under the [objective gate](docs/staging_readiness_gate.md). No deployment is implied by local test results.
+Model research is frozen; the original model is retained, and the Phase III-J candidate is rejected. Local-distribution readiness is tracked separately from the historical [server staging gate](docs/staging_readiness_gate.md). A local install is not a public deployment.
 
 ## Known Limitations
 
-The four-field inference contract predates the label-only research conclusion. Some historical research documents describe now-superseded proposals. Local Compose defaults are not equivalent to a secured deployment; despite passing isolated local E2E and Mongo restore tests, external storage, target-host recovery, remote CI, and rollback still require staging-level verification. See [known limitations](docs/known-limitations.md).
+The four-field inference contract predates the label-only research conclusion. Some historical research documents describe now-superseded proposals. Local Compose defaults are not a secured public deployment; users must protect their host, `.env`, model, and backups. See [known limitations](docs/known-limitations.md).
 
 ## Engineering Decisions
 

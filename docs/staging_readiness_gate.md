@@ -1,5 +1,7 @@
 # Staging Readiness Gate
 
+**Phase IV-G reclassification:** the release target is now `LOCAL_FIRST_DISTRIBUTION`. This is retained as a public/server deployment gate and historical evidence, not the local-release gate. Its DNS, public TLS, host firewall/ingress, VPS, off-host staging backup, and target-host rollback criteria are `NOT_APPLICABLE_TO_LOCAL_RELEASE`; this does **not** change their historical `BLOCKED`/`NOT TESTED` results or claim they passed. Use the local gate in [Phase IV-G](phase_iv_g_local_distribution_readiness.md) for clone-to-run readiness.
+
 **Phase IV-D source-freeze snapshot: NOT READY for staging.** This is a prerequisite checklist, not deployment authorization. Every status is exactly one of `PASS`, `FAIL`, `BLOCKED`, or `NOT TESTED`. `PASS` applies only to the narrow evidence named in its row; a local pass is not a staging deployment pass. `FAIL` is an observed unmet condition; `BLOCKED` needs a prior decision, release revision, or staging environment; `NOT TESTED` lacks a completed check. All required rows must be `PASS` on a reviewed release before controlled staging deployment. This committed snapshot predates remote CI; the PR is the live exact-SHA attestation.
 
 | Area | Criterion | Status | Evidence / command / remaining gap |

@@ -1,8 +1,7 @@
-name: Drift
+name: ${COMPOSE_PROJECT_NAME:-drift}
 
 services:
   frontend:
-    container_name: drift-frontend
     build:
       context: .
       dockerfile: client/Dockerfile
@@ -13,7 +12,7 @@ services:
       backend:
         condition: service_healthy
     ports:
-      - "5173:80"
+      - "127.0.0.1:${DRIFT_FRONTEND_PORT:-5173}:80"
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
       interval: 10s
@@ -24,7 +23,6 @@ services:
     restart: unless-stopped
 
   backend:
-    container_name: drift-backend
     build:
       context: .
       dockerfile: server-go/Dockerfile
@@ -38,7 +36,7 @@ services:
       AUTH_RATE_LIMIT_REQUESTS: ${AUTH_RATE_LIMIT_REQUESTS:-10}
       INFERENCE_RATE_LIMIT_REQUESTS: ${INFERENCE_RATE_LIMIT_REQUESTS:-20}
       RATE_LIMIT_WINDOW_SECONDS: ${RATE_LIMIT_WINDOW_SECONDS:-60}
-      CLIENT_URL: http://localhost:5173
+      CLIENT_URL: http://localhost:${DRIFT_FRONTEND_PORT:-5173}
       DRIFT_INFERENCE_ENABLED: "true"
       DRIFT_INFERENCE_URL: http://inference:8000
       DRIFT_INFERENCE_API_KEY: ${DRIFT_INFERENCE_API_KEY:-}
@@ -58,7 +56,7 @@ services:
       inference:
         condition: service_started
     ports:
-      - "127.0.0.1:5000:5000"
+      - "127.0.0.1:${DRIFT_BACKEND_PORT:-5000}:5000"
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:5000/ready"]
       interval: 10s
@@ -74,7 +72,6 @@ services:
     restart: unless-stopped
 
   inference:
-    container_name: drift-inference
     build:
       context: .
       dockerfile: services/inference/Dockerfile
@@ -94,8 +91,6 @@ services:
       DRIFT_INFERENCE_API_KEY: ${DRIFT_INFERENCE_API_KEY:-}
     volumes:
       - ./models:/app/models
-    ports:
-      - "127.0.0.1:8000:8000"
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS -H 'X-Drift-Inference-Key: '$${DRIFT_INFERENCE_API_KEY} http://localhost:8000/live >/dev/null"]
       interval: 10s
@@ -112,7 +107,6 @@ services:
 
   llama:
     image: ghcr.io/ggml-org/llama.cpp:server-b11151
-    container_name: drift-llama
     profiles: ["model"]
     command:
       - --model
@@ -133,8 +127,6 @@ services:
       - ${DRIFT_LLAMA_PARALLEL:-1}
     volumes:
       - ./models:/app/models:ro
-    ports:
-      - "127.0.0.1:8080:8080"
     read_only: true
     tmpfs:
       - /tmp
@@ -148,11 +140,8 @@ services:
 
   db:
     image: mongo:7
-    container_name: drift-db
     volumes:
       - mongo-data:/data/db
-    ports:
-      - "127.0.0.1:27017:27017"
     healthcheck:
       test: ["CMD", "mongosh", "--quiet", "--eval", "quit(db.adminCommand('ping').ok ? 0 : 2)"]
       interval: 10s
