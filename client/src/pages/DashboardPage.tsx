@@ -105,10 +105,10 @@ export const DashboardPage = () => {
               const action = nextProjectAction(data, canWrite(role), canApprove(role));
               const pending = data.requests.some((request) => request.approvalStatus === 'pending_approval');
               const latest = data.analyses[0];
-              return <div key={project._id} className="grid gap-3 p-5 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_auto] md:items-center">
+              return <div key={project._id} className="grid gap-3 p-5 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_12rem] md:items-center">
                 <div><Link className="font-semibold hover:underline" to={`/projects/${project._id}`}>{project.name}</Link><p className="v-muted mt-1 text-sm">{project.clientName} · {data.versions[0] ? `Scope snapshot #${data.versions[0].versionNumber}` : 'No scope snapshot yet'}</p></div>
                 <div><p className="text-sm">{pending ? 'Decision pending' : latest?.detectedChanges.length ? 'Proposed change to review' : 'No open change shown'}</p><p className="v-muted mt-1 text-xs">Updated {formatDate(project.updatedAt)}</p></div>
-                <Link className="v-link text-sm" to={action.to}>{action.label}</Link>
+                <Link className="v-link text-sm md:justify-self-end" to={action.to}>{action.label}</Link>
               </div>;
             })}
           </div>

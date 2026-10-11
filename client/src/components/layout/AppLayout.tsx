@@ -23,7 +23,7 @@ export const AppLayout = ({ children }: { children?: ReactNode }) => {
       <a className="v-skip" href="#main-content">Skip to content</a>
       <header className="v-topbar">
         <div className="v-topbar-inner">
-          <Link to="/dashboard" className="v-brand" aria-label="Drift home"><span className="v-brand-mark" aria-hidden="true">D</span><span>Drift</span></Link>
+          <Link to="/dashboard" className="text-xl font-bold tracking-tight" aria-label="Drift home">Drift<span className="text-[var(--v-accent)]">.</span></Link>
           <nav className="v-desktop-nav" aria-label="Primary navigation">
             <NavLink to="/dashboard" className={navClass}>Home</NavLink>
             <NavLink to="/projects" className={({ isActive }) => navClass({ isActive: isActive || location.pathname.startsWith('/projects/') })}>Projects</NavLink>

@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { useAuth } from '../../hooks/useAuth';
 import type { LoginFormValues } from './auth.types';
 
@@ -34,139 +33,64 @@ export const LoginForm = () => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="w-full"
-    >
-      <motion.button
-        type="button"
-        onClick={() => navigate('/')}
-        whileHover={{ scale: 1.05, x: -5 }}
-        whileTap={{ scale: 0.95 }}
-        className="mb-8 flex items-center gap-2 text-gray-400 hover:text-lime-400 transition-colors"
-      >
-        <ArrowLeft size={18} />
-        <span className="text-sm font-medium">Back to Home</span>
-      </motion.button>
+    <div className="w-full">
+      <Link to="/" className="mb-10 inline-flex items-center gap-2 text-sm font-semibold text-[var(--v-accent)] hover:underline">
+        <ArrowLeft size={16} aria-hidden="true" /> Back to home
+      </Link>
 
-      <div className="mb-8 space-y-3">
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-lime-400/30 bg-lime-400/5"
-        >
-          <div className="w-2 h-2 bg-lime-400 rounded-full"></div>
-          <span className="text-xs font-semibold text-lime-400 uppercase tracking-wider">Secure Login</span>
-        </motion.div>
-        <motion.h2 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-3xl font-bold text-white"
-        >
-          Sign In
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="text-gray-400"
-        >
-          Access your workspaces and projects
-        </motion.p>
-      </div>
+      <p className="v-kicker">Your workspace</p>
+      <h1 className="mt-3 text-4xl font-semibold tracking-tight text-[var(--v-text)]">Sign in</h1>
+      <p className="v-muted mt-3 text-sm leading-6">Pick up where your team left off, with the agreed scope in view.</p>
 
-      <motion.form 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
-        className="space-y-5" 
-        onSubmit={handleSubmit}
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <label htmlFor="login-email" className="block text-sm font-semibold text-white mb-2">Email Address</label>
+      <form className="mt-9 space-y-5" onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="login-email" className="mb-2 block text-sm font-semibold text-[var(--v-text)]">Email address</label>
           <input
             id="login-email"
             type="email"
+            autoComplete="email"
             value={values.email}
             onChange={(event) => onChange('email', event.target.value)}
             placeholder="you@company.com"
             required
-            className="w-full px-4 py-3 rounded-lg bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:border-lime-400 focus:outline-none focus:ring-1 focus:ring-lime-400 transition-all"
+            className="w-full rounded-lg border border-[var(--v-border)] bg-white px-4 py-3 text-[var(--v-text)] placeholder:text-[var(--v-muted)] focus:border-[var(--v-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--v-accent)]"
           />
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          <label htmlFor="login-password" className="block text-sm font-semibold text-white mb-2">Password</label>
+        <div>
+          <label htmlFor="login-password" className="mb-2 block text-sm font-semibold text-[var(--v-text)]">Password</label>
           <div className="relative">
             <input
               id="login-password"
               type={showPassword ? 'text' : 'password'}
+              autoComplete="current-password"
               value={values.password}
               onChange={(event) => onChange('password', event.target.value)}
-              placeholder="********"
+              placeholder="Enter your password"
               required
-              className="w-full px-4 py-3 rounded-lg bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:border-lime-400 focus:outline-none focus:ring-1 focus:ring-lime-400 transition-all"
+              className="w-full rounded-lg border border-[var(--v-border)] bg-white px-4 py-3 pr-12 text-[var(--v-text)] placeholder:text-[var(--v-muted)] focus:border-[var(--v-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--v-accent)]"
             />
-            <motion.button
+            <button
               type="button"
               aria-label={showPassword ? 'Hide password' : 'Show password'}
               onClick={() => setShowPassword((current) => !current)}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-lime-400 transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-1 text-[var(--v-muted)] hover:text-[var(--v-accent)]"
             >
-              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-            </motion.button>
+              {showPassword ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}
+            </button>
           </div>
-        </motion.div>
+        </div>
 
-        {error ? (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-sm text-red-400"
-          >
-            {error}
-          </motion.div>
-        ) : null}
+        {error ? <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p> : null}
 
-        <motion.button
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          whileHover={{ y: -2 }}
-          whileTap={{ scale: 0.98 }}
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full py-3 px-4 bg-lime-400 text-black font-semibold rounded-lg hover:bg-lime-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-        >
-          {isSubmitting ? 'Signing in...' : 'Sign In'}
-        </motion.button>
-      </motion.form>
+        <button type="submit" disabled={isSubmitting} className="v-button w-full disabled:cursor-not-allowed disabled:opacity-50">
+          {isSubmitting ? 'Signing in…' : 'Sign in'}
+        </button>
+      </form>
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.7 }}
-        className="mt-6 text-center text-sm text-gray-400"
-      >
-        Don't have an account?{' '}
-        <Link to="/register" className="text-lime-400 font-semibold hover:text-lime-300 transition-colors">
-          Create one
-        </Link>
-      </motion.p>
-    </motion.div>
+      <p className="v-muted mt-7 border-t border-[var(--v-border)] pt-6 text-center text-sm">
+        New to Drift? <Link to="/register" className="v-link">Create an account</Link>
+      </p>
+    </div>
   );
 };

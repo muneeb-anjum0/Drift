@@ -71,10 +71,8 @@ body {
 .v-shell { min-height: 100vh; background: var(--v-bg); color: var(--v-text); }
 .v-skip { position: fixed; left: 1rem; top: -4rem; z-index: 300; border-radius: 6px; background: var(--v-text); color: white; padding: .6rem 1rem; }
 .v-skip:focus { top: .5rem; }
-.v-topbar { border-bottom: 1px solid var(--v-border); background: var(--v-surface); }
-.v-topbar-inner { max-width: 1260px; margin: auto; min-height: 72px; padding: 0 2rem; display: flex; align-items: center; gap: 3rem; }
-.v-brand { display: inline-flex; align-items: center; gap: .65rem; font-size: 1.2rem; font-weight: 750; letter-spacing: -.04em; }
-.v-brand-mark { width: 29px; height: 29px; display: grid; place-items: center; border-radius: 7px; background: var(--v-accent); color: white; font-size: 1rem; }
+.v-topbar { background: var(--v-bg); }
+.v-topbar-inner { max-width: 1152px; margin: auto; min-height: 68px; padding: 0 2rem; display: flex; align-items: center; gap: 3rem; }
 .v-desktop-nav { display: flex; align-items: center; gap: .4rem; }
 .v-nav-link { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: .5rem .85rem; border-radius: 8px; color: var(--v-muted); font-size: .9rem; font-weight: 600; }
 .v-nav-link:hover, .v-nav-link.is-active { background: var(--v-accent-soft); color: var(--v-accent); }

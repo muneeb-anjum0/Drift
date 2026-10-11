@@ -1,84 +1,40 @@
 import type { ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
-export const AuthLayout = ({ children }: { children: ReactNode }) => {
-  return (
-    <div className="min-h-screen overflow-hidden bg-[var(--color-bg)] text-[var(--color-text)]">
-      <div className="relative z-10 mx-auto min-h-screen max-w-7xl gap-0 lg:grid lg:grid-cols-[1fr_1fr]">
-        <motion.section
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          className="hidden flex-col justify-between border-r border-[var(--color-border)] px-14 py-20 lg:flex"
-        >
-          <div>
-            <motion.div whileHover={{ y: -2 }} className="mb-12 text-3xl font-bold tracking-normal">
-              <span>Drift</span>
-              <span className="text-[var(--color-text-muted)]">Ledger</span>
-            </motion.div>
+const steps = [
+  ['01', 'Keep the agreement visible', 'Capture the scope your team and client agreed to.'],
+  ['02', 'Compare a new request', 'See what may have changed before work begins.'],
+  ['03', 'Make a human decision', 'Review the impact and record the next step.'],
+];
 
-            <div className="space-y-8">
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-5xl font-bold leading-tight text-[var(--color-text)]"
-              >
-                Welcome Back
-              </motion.h1>
+export const AuthLayout = ({ children }: { children: ReactNode }) => (
+  <div className="min-h-screen bg-[var(--v-bg)] text-[var(--v-text)]">
+    <header className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5 sm:px-8">
+      <Link to="/" className="text-xl font-bold tracking-tight">Drift<span className="text-[var(--v-accent)]">.</span></Link>
+      <Link to="/" className="v-link text-sm">Explore Drift</Link>
+    </header>
 
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="max-w-md text-xl leading-relaxed text-[var(--color-text-muted)]"
-              >
-                Manage workspaces, project scope, baselines, and requirement drift from one clean control surface.
-              </motion.p>
+    <main className="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-6 sm:px-8 lg:min-h-[calc(100vh-124px)] lg:grid-cols-2 lg:gap-20 lg:pb-20 lg:pt-8">
+      <section className="hidden lg:block" aria-label="How Drift works">
+        <p className="v-kicker">Agree → Compare → Decide</p>
+        <h2 className="mt-5 max-w-xl text-5xl font-semibold leading-[1.1] tracking-tight">A clear place to manage changing scope.</h2>
+        <p className="v-muted mt-6 max-w-lg text-lg leading-8">Keep the original agreement close, understand a new ask, and make the next decision with your team.</p>
+        <ol className="v-hero mt-9 overflow-hidden px-7 py-2">
+          {steps.map(([number, title, description]) => (
+            <li key={number} className="flex gap-5 border-b border-[var(--v-border)] py-5 last:border-b-0">
+              <span className="v-kicker pt-1">{number}</span>
+              <div><h3 className="font-semibold">{title}</h3><p className="v-muted mt-1 text-sm leading-6">{description}</p></div>
+            </li>
+          ))}
+        </ol>
+        <p className="v-muted mt-5 text-xs">The model suggests differences; people decide what to do with them.</p>
+      </section>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="grid gap-4"
-              >
-                {[
-                  { title: 'Workspaces', desc: 'Organize client environments' },
-                  { title: 'Requirements', desc: 'Preserve agreed scope' },
-                  { title: 'Drift Analysis', desc: 'Review Qwen GGUF model output' },
-                ].map((item) => (
-                  <motion.div
-                    key={item.title}
-                    whileHover={{ x: 4 }}
-                    className="flex gap-3 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 transition-colors hover:border-[var(--color-text)]"
-                  >
-                    <div className="mt-2 h-1 w-1 rounded-full bg-[var(--color-text)]" />
-                    <div>
-                      <p className="font-semibold text-[var(--color-text)]">{item.title}</p>
-                      <p className="text-sm text-[var(--color-text-muted)]">{item.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-          </div>
+      <section className="flex justify-center lg:justify-end" aria-label="Account access">
+        <div className="v-panel w-full max-w-md p-6 shadow-[var(--shadow-card)] sm:p-9">{children}</div>
+      </section>
+    </main>
 
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-sm text-[var(--color-text-soft)]">
-            © 2026 DriftLedger. All rights reserved.
-          </motion.p>
-        </motion.section>
-
-        <motion.section
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          className="flex items-center justify-center px-6 py-14 sm:px-10 lg:px-14"
-        >
-          <div className="w-full max-w-md rounded-[var(--radius-modal)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-card)] sm:p-8">
-            {children}
-          </div>
-        </motion.section>
-      </div>
-    </div>
-  );
-};
+    <footer className="v-muted mx-auto max-w-6xl px-5 pb-7 text-xs sm:px-8">Drift · Scope change, made visible</footer>
+  </div>
+);
