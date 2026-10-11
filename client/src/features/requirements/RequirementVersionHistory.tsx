@@ -8,8 +8,8 @@ export const RequirementVersionHistory = ({ versions }: { versions: RequirementV
   if (!versions.length) {
     return (
       <EmptyState
-        title="No baseline versions yet."
-        description="Create a baseline after your current requirements are structured."
+        title="No scope snapshots yet"
+        description="Save a comparison point after the current scope items are written."
         icon={<History className="h-5 w-5" />}
       />
     );
@@ -20,7 +20,7 @@ export const RequirementVersionHistory = ({ versions }: { versions: RequirementV
       <div className="mb-3 flex items-center justify-between gap-3">
         <div>
           <p className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-lime-400">Version history</p>
-          <h3 className="mt-1 text-base font-semibold text-white">Baseline versions</h3>
+          <h3 className="mt-1 text-base font-semibold text-white">Scope snapshots</h3>
         </div>
         <History className="h-4 w-4 text-lime-400" />
       </div>
@@ -30,8 +30,8 @@ export const RequirementVersionHistory = ({ versions }: { versions: RequirementV
           <div key={version._id} className="rounded-[1rem] border border-gray-800 bg-black/40 p-3 transition hover:border-lime-400/30">
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
-                <p className="text-sm font-semibold text-white">Version {version.versionNumber}</p>
-                <p className="mt-0.5 text-xs text-lime-300">{version.label || 'Baseline snapshot'}</p>
+                <p className="text-sm font-semibold text-white">Snapshot #{version.versionNumber}</p>
+                <p className="mt-0.5 text-xs text-lime-300">{version.label || 'Comparison point'}</p>
               </div>
               <div className="rounded-full border border-lime-400/20 bg-lime-400/10 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.1em] text-lime-300">
                 {version.requirementsSnapshot.length} requirements

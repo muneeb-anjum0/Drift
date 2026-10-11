@@ -28,10 +28,12 @@ export const RequirementTable = ({
   requirements,
   onEdit,
   onDelete,
+  canEdit = true,
 }: {
   requirements: Requirement[];
   onEdit: (requirement: Requirement) => void;
   onDelete: (requirement: Requirement) => void;
+  canEdit?: boolean;
 }) => {
   const [openRequirementId, setOpenRequirementId] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(REQUIREMENTS_PAGE_SIZE);
@@ -39,8 +41,8 @@ export const RequirementTable = ({
   if (!requirements.length) {
     return (
       <EmptyState
-        title="No requirements yet"
-        description="Add a requirement manually or extract them from the project scope to build the baseline."
+        title="No agreed scope items yet"
+        description="Add what this project is expected to deliver, then save a comparison snapshot."
         icon={<span className="text-lime-400">REQ</span>}
       />
     );
@@ -70,9 +72,6 @@ export const RequirementTable = ({
                   </span>
                 </span>
                 <span className="flex shrink-0 items-center gap-2">
-                  <span className="hidden rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-bg-soft)] px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.1em] text-[var(--color-text)] sm:inline-flex">
-                    {requirement.estimatedEffort ? `${requirement.estimatedEffort}h` : 'No estimate'}
-                  </span>
                   <ChevronDown className={cn('h-4 w-4 text-[var(--color-text-muted)] transition-transform duration-200', isOpen && 'rotate-180')} />
                 </span>
               </button>
@@ -95,11 +94,9 @@ export const RequirementTable = ({
                       <p className="mt-3 text-sm leading-6 text-[var(--color-text-muted)]">{requirement.description}</p>
                       <div className="mt-3 flex flex-wrap items-center gap-2">
                         <RequirementBadges requirement={requirement} />
-                        <span className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.1em] text-[var(--color-text-muted)]">
-                          {requirement.estimatedEffort ? `${requirement.estimatedEffort}h effort` : 'Effort not set'}
-                        </span>
+                        {requirement.estimatedEffort !== null && requirement.estimatedEffort !== undefined ? <span className="text-xs text-[var(--color-text-muted)]">Planning effort: {requirement.estimatedEffort} (unit unspecified)</span> : null}
                       </div>
-                      <div className="mt-4 flex flex-wrap justify-end gap-2">
+                      {canEdit ? <div className="mt-4 flex flex-wrap justify-end gap-2">
                         <Button type="button" variant="secondary" size="sm" onClick={() => onEdit(requirement)}>
                           <Pencil className="mr-2 h-3.5 w-3.5" />
                           Edit
@@ -108,7 +105,7 @@ export const RequirementTable = ({
                           <Trash2 className="mr-2 h-3.5 w-3.5" />
                           Delete
                         </Button>
-                      </div>
+                      </div> : null}
                     </div>
                   </motion.div>
                 ) : null}
