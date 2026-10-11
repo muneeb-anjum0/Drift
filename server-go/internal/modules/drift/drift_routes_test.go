@@ -33,4 +33,9 @@ func TestDirectInferenceRoutesRequireAuthentication(t *testing.T) {
 			t.Fatalf("expected %s to require authentication, got %d", path, response.Code)
 		}
 	}
+	readiness := httptest.NewRecorder()
+	router.ServeHTTP(readiness, httptest.NewRequest(http.MethodGet, "/api/v1/drift/readiness", nil))
+	if readiness.Code != http.StatusUnauthorized {
+		t.Fatalf("expected readiness to require authentication, got %d", readiness.Code)
+	}
 }

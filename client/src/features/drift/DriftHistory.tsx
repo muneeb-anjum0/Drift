@@ -16,10 +16,12 @@ export const DriftHistory = ({
   analyses,
   onDelete,
   isDeleting = false,
+  canDelete = true,
 }: {
   analyses: DriftAnalysis[];
   onDelete: (analysis: DriftAnalysis) => void;
   isDeleting?: boolean;
+  canDelete?: boolean;
 }) => {
   const [openAnalysisId, setOpenAnalysisId] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(HISTORY_PAGE_SIZE);
@@ -27,8 +29,8 @@ export const DriftHistory = ({
   if (!analyses.length) {
     return (
       <EmptyState
-        title="No saved drift analyses yet"
-        description="Run a drift analysis and save it to build the project history."
+        title="No saved comparisons yet"
+        description="Compare a new request with a scope snapshot, then save the proposed result to build project history."
         icon={<span className="text-lime-400">HIST</span>}
       />
     );
@@ -55,16 +57,11 @@ export const DriftHistory = ({
                 <span className="min-w-0">
                   <span className="block truncate text-sm font-semibold text-[var(--color-text)]">{driftAnalysisTitle(analysis.inputText)}</span>
                   <span className="mt-1 block text-xs text-[var(--color-text-muted)]">
-                    Baseline version {analysis.baselineVersionNumber} - Created {formatDate(analysis.createdAt)}
+                    Scope snapshot #{analysis.baselineVersionNumber} · Saved {formatDate(analysis.createdAt)}
                   </span>
                 </span>
                 <span className="flex shrink-0 items-center gap-2">
-                  <span className="rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-bg-soft)] px-2.5 py-1 text-[0.68rem] font-semibold text-[var(--color-text)]">
-                    {analysis.driftScore}/100
-                  </span>
-                  <span className="hidden rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-bg-soft)] px-2.5 py-1 text-[0.68rem] font-semibold text-[var(--color-text)] sm:inline-flex">
-                    {analysis.estimatedExtraHours}h
-                  </span>
+                  <span className="text-xs text-[var(--color-text-muted)]">{analysis.detectedChanges.length} proposed changes</span>
                   <ChevronDown className={cn('h-4 w-4 text-[var(--color-text-muted)] transition-transform duration-200', isOpen && 'rotate-180')} />
                 </span>
               </button>
@@ -79,20 +76,18 @@ export const DriftHistory = ({
                     className="overflow-hidden"
                   >
                     <div className="space-y-3 bg-[var(--color-bg-soft)] px-4 pb-4">
-                      <div className="pt-1">
-                        <DriftScoreCard analysis={analysis} />
-                      </div>
+                      <details className="pt-2 text-xs text-[var(--color-text-muted)]"><summary className="cursor-pointer">Technical estimate</summary><div className="mt-2"><DriftScoreCard analysis={analysis} /></div></details>
                       <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 text-xs leading-5 text-[var(--color-text-muted)]">
                         <p className="font-semibold text-[var(--color-text)]">Summary</p>
                         <p className="mt-1.5">{analysis.summary}</p>
                       </div>
                       <DetectedChangesList changes={analysis.detectedChanges} />
-                      <div className="flex justify-end">
+                      {canDelete ? <div className="flex justify-end">
                         <Button type="button" variant="danger" size="sm" onClick={() => onDelete(analysis)} disabled={isDeleting}>
                           <Trash2 className="mr-2 h-4 w-4" />
                           Delete
                         </Button>
-                      </div>
+                      </div> : null}
                     </div>
                   </motion.div>
                 ) : null}

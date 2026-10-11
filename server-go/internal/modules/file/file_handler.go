@@ -16,6 +16,9 @@ import (
 type Handler struct{ service Service }
 
 func NewHandler(service Service) Handler { return Handler{service: service} }
+func (h Handler) Capabilities(c *gin.Context) {
+	response.Success(c, http.StatusOK, "File capabilities fetched", gin.H{"uploadEnabled": h.service.storage.Enabled()})
+}
 func (h Handler) Upload(c *gin.Context) {
 	c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, h.service.MaxUploadBytes()+(1<<20))
 	header, err := c.FormFile("file")

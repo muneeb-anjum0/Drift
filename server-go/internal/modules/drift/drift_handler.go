@@ -22,6 +22,20 @@ type Handler struct {
 
 func NewHandler(service Service) Handler { return Handler{service: service, validate: validator.New()} }
 
+func (h Handler) Readiness(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 3*time.Second)
+	defer cancel()
+	available := h.service.inference.Health(ctx) == nil
+	reason := "ready"
+	if !available {
+		reason = "unavailable"
+		if !h.service.inference.Enabled() {
+			reason = "disabled"
+		}
+	}
+	response.Success(c, http.StatusOK, "Change analysis readiness checked", gin.H{"available": available, "reason": reason})
+}
+
 func (h Handler) AnalyzeDirect(c *gin.Context) {
 	var p ModelAnalyzeRequest
 	if c.ShouldBindJSON(&p) != nil || h.validate.Struct(p) != nil {

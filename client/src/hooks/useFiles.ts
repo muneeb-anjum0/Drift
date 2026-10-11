@@ -9,6 +9,12 @@ export const useProjectFiles = (projectId?: string) =>
     enabled: Boolean(projectId),
   });
 
+export const useFileCapabilities = () => useQuery({
+  queryKey: ['file-capabilities'],
+  queryFn: fileApi.capabilities,
+  staleTime: 60_000,
+});
+
 export const useUploadFile = () => {
   const queryClient = useQueryClient();
   return useMutation({

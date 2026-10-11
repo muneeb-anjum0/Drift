@@ -10,6 +10,7 @@ import (
 func RegisterRoutes(group *gin.RouterGroup, db *mongo.Database, cfg config.Config, inferenceLimiter *middleware.RateLimiter) {
 	handler := NewHandler(NewService(db, NewInferenceClient(cfg)))
 	group.Use(middleware.Auth(db, cfg))
+	group.GET("/readiness", handler.Readiness)
 	group.POST("/analyze-direct", inferenceLimiter.Middleware(middleware.RateLimitByUser), handler.AnalyzeDirect)
 	group.POST("/analyze", inferenceLimiter.Middleware(middleware.RateLimitByUser), handler.Analyze)
 	group.POST("/save", handler.Save)

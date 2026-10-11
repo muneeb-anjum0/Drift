@@ -14,13 +14,15 @@ export const FileList = ({
   files,
   isDeleting,
   onDelete,
+  canDelete = true,
 }: {
   files: ProjectFile[];
   isDeleting: boolean;
   onDelete: (file: ProjectFile) => void;
+  canDelete?: boolean;
 }) => {
   if (files.length === 0) {
-    return <EmptyState title="No project documents yet." description="Upload scope documents, briefs, contracts, screenshots, or meeting notes." icon={<FileText className="h-5 w-5" />} />;
+    return <EmptyState title="No project documents yet" description="Supporting documents will appear here when file storage is enabled and someone adds them." icon={<FileText className="h-5 w-5" />} />;
   }
 
   return (
@@ -35,15 +37,15 @@ export const FileList = ({
           </div>
           <div className="flex items-center gap-2">
             {file.publicUrl ? (
-              <a href={file.publicUrl} target="_blank" rel="noreferrer">
+              <a href={file.publicUrl} target="_blank" rel="noreferrer" aria-label={`Open ${file.originalName}`}>
                 <Button type="button" variant="secondary" size="sm">
                   <ExternalLink className="h-4 w-4" />
                 </Button>
               </a>
             ) : null}
-            <Button type="button" variant="danger" size="sm" onClick={() => onDelete(file)} disabled={isDeleting}>
+            {canDelete ? <Button type="button" variant="danger" size="sm" aria-label={`Delete ${file.originalName}`} onClick={() => onDelete(file)} disabled={isDeleting}>
               <Trash2 className="h-4 w-4" />
-            </Button>
+            </Button> : null}
           </div>
         </div>
       ))}

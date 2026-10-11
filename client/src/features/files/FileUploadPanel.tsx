@@ -20,6 +20,8 @@ export const FileUploadPanel = ({
   errorMessage,
   onUpload,
   onDelete,
+  canUpload = true,
+  canDelete = true,
 }: {
   files: ProjectFile[];
   isUploading: boolean;
@@ -27,6 +29,8 @@ export const FileUploadPanel = ({
   errorMessage?: string;
   onUpload: (payload: { file: File; documentType: DocumentType }) => Promise<void>;
   onDelete: (file: ProjectFile) => void;
+  canUpload?: boolean;
+  canDelete?: boolean;
 }) => {
   const [file, setFile] = useState<File | null>(null);
   const [documentType, setDocumentType] = useState<DocumentType>('scope_document');
@@ -41,14 +45,15 @@ export const FileUploadPanel = ({
 
   return (
     <div className="space-y-4">
-      <form onSubmit={handleSubmit} className="grid gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:grid-cols-[1fr_180px_auto]">
+      {canUpload ? <form onSubmit={handleSubmit} className="grid gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:grid-cols-[1fr_180px_auto]">
         <input
           type="file"
+          aria-label="Choose a project document"
           accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.webp"
           onChange={(event) => setFile(event.target.files?.[0] ?? null)}
           className="min-h-10 rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 text-sm text-[var(--color-text)]"
         />
-        <select value={documentType} onChange={(event) => setDocumentType(event.target.value as DocumentType)} className="h-10 rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 text-sm text-[var(--color-text)]">
+        <select aria-label="Document type" value={documentType} onChange={(event) => setDocumentType(event.target.value as DocumentType)} className="h-10 rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 text-sm text-[var(--color-text)]">
           {documentTypes.map((type) => (
             <option key={type.value} value={type.value}>
               {type.label}
@@ -59,9 +64,9 @@ export const FileUploadPanel = ({
           <Upload className="mr-2 h-4 w-4" />
           Upload
         </Button>
-      </form>
+      </form> : null}
       {errorMessage ? <p className="rounded-2xl border border-lime-400/20 bg-lime-400/10 px-4 py-3 text-sm text-lime-100">{errorMessage}</p> : null}
-      <FileList files={files} isDeleting={isDeleting} onDelete={onDelete} />
+      <FileList files={files} isDeleting={isDeleting} onDelete={onDelete} canDelete={canDelete} />
     </div>
   );
 };

@@ -3,11 +3,11 @@ import { DetectedChangeCard } from './DetectedChangeCard';
 import type { DetectedChange } from './drift.types';
 
 const groupedTypes: Array<{ label: string; changeType: DetectedChange['changeType'][] }> = [
-  { label: 'Added', changeType: ['added'] },
-  { label: 'Modified', changeType: ['modified'] },
-  { label: 'Removed', changeType: ['removed'] },
-  { label: 'Ambiguous', changeType: ['ambiguous'] },
-  { label: 'Contradictions', changeType: ['contradiction'] },
+  { label: 'New requirements', changeType: ['added'] },
+  { label: 'Changed requirements', changeType: ['modified'] },
+  { label: 'Requirements removed', changeType: ['removed'] },
+  { label: 'Needs clarification', changeType: ['ambiguous'] },
+  { label: 'Conflicts with agreement', changeType: ['contradiction'] },
 ];
 
 export const DetectedChangesList = ({ changes }: { changes: DetectedChange[] }) => {
@@ -16,8 +16,8 @@ export const DetectedChangesList = ({ changes }: { changes: DetectedChange[] }) 
   if (!visibleChanges.length) {
     return (
       <EmptyState
-        title="No significant drift detected."
-        description="The new input does not appear to introduce enough scope change to flag a meaningful drift issue yet."
+        title="No meaningful change proposed"
+        description="Review the input yourself before treating scope as unchanged."
         icon={<span className="text-lime-400">DRIFT</span>}
       />
     );

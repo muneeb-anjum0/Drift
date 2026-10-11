@@ -3,6 +3,10 @@ import type { ApiResponse } from '../types/api.types';
 import type { DriftAnalysis, DriftAnalysisPreview, DriftInputType, ModelPrediction } from '../features/drift/drift.types';
 
 export const driftApi = {
+  readiness: async () => {
+    const response = await api.get<ApiResponse<{ available: boolean; reason: 'ready' | 'disabled' | 'unavailable' }>>('/drift/readiness');
+    return response.data.data;
+  },
   analyzeDrift: async (payload: {
     projectId: string;
     baselineVersionId: string;

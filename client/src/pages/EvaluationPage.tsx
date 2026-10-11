@@ -7,6 +7,7 @@ import { Spinner } from '../components/common/Spinner';
 import { useEvaluationSummary, useStartEvaluationRun } from '../hooks/useEvaluation';
 import type { EvaluationRun } from '../features/evaluation/evaluation.types';
 import { formatDate } from '../utils/formatDate';
+import { ModelSandbox } from '../features/evaluation/ModelSandbox';
 
 const docsUrl = 'https://github.com/muneeb-anjum0/Drift/blob/main/docs/model-pipeline.md';
 
@@ -72,6 +73,7 @@ export const EvaluationPage = () => {
           onRun={() => startRun.mutate()}
         />
         {run ? <RunStatusCard run={run} progressPercent={progressPercent} /> : null}
+        <ModelSandbox />
         <EmptyState
           title="No benchmark run yet"
           description="Start the in-app benchmark to run 10 focused model checks against Q4_K_M."
@@ -96,6 +98,7 @@ export const EvaluationPage = () => {
       </div>
 
       {run ? <RunStatusCard run={run} progressPercent={progressPercent} /> : null}
+      <ModelSandbox />
 
       <Card className="p-3">
         <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">

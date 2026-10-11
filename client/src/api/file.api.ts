@@ -3,6 +3,10 @@ import type { ApiResponse } from '../types/api.types';
 import type { DocumentType, ProjectFile } from '../features/files/file.types';
 
 export const fileApi = {
+  capabilities: async () => {
+    const response = await api.get<ApiResponse<{ uploadEnabled: boolean }>>('/files/capabilities');
+    return response.data.data;
+  },
   upload: async (payload: { projectId: string; file: File; documentType: DocumentType }) => {
     const formData = new FormData();
     formData.append('projectId', payload.projectId);
