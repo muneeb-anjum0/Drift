@@ -10,7 +10,7 @@ cd Drift
 cp .env.example .env
 ```
 
-Put **different** cryptographically random values of at least 32 characters into `JWT_SECRET` and `DRIFT_INFERENCE_API_KEY` in `.env`. On a system with OpenSSL, `openssl rand -hex 32` generates one value; run it twice and paste each result into the corresponding line. Do not paste secrets into issue reports or commit `.env`. Set `DRIFT_FRONTEND_PORT` if 5173 is already occupied, and set a unique `COMPOSE_PROJECT_NAME` if another Drift installation runs on the same Docker host.
+Put **different** cryptographically random values of at least 32 characters into `JWT_SECRET` and `DRIFT_INFERENCE_API_KEY` in `.env`. On a system with OpenSSL, `openssl rand -hex 32` generates one value; run it twice and paste each result into the corresponding line. Do not paste secrets into issue reports or commit `.env`. Set `DRIFT_FRONTEND_PORT` and `DRIFT_BACKEND_PORT` if their defaults are occupied, and set a unique `COMPOSE_PROJECT_NAME` if another Drift installation runs on the same Docker host.
 
 ```sh
 docker compose config --quiet
