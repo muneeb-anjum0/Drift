@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, useId, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -23,17 +23,52 @@ const sizeClasses: Record<NonNullable<ModalProps['size']>, string> = {
 };
 
 export const Modal = ({ open, title, description, children, footer, onClose, size = 'xl', density = 'comfortable' }: ModalProps) => {
+  const titleId = useId();
+  const descriptionId = useId();
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
   useEffect(() => {
     if (!open) return;
 
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const previousBodyOverflow = document.body.style.overflow;
     const previousHtmlOverflow = document.documentElement.style.overflow;
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
 
+    const focusable = () => Array.from(dialogRef.current?.querySelectorAll<HTMLElement>('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])') ?? []);
+    const frame = requestAnimationFrame(() => (focusable()[0] ?? dialogRef.current)?.focus());
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeRef.current();
+      }
+      if (event.key !== 'Tab') return;
+      const elements = focusable();
+      if (!elements.length) {
+        event.preventDefault();
+        dialogRef.current?.focus();
+        return;
+      }
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+
     return () => {
+      cancelAnimationFrame(frame);
+      document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = previousBodyOverflow;
       document.documentElement.style.overflow = previousHtmlOverflow;
+      previousFocus?.focus();
     };
   }, [open]);
 
@@ -42,6 +77,12 @@ export const Modal = ({ open, title, description, children, footer, onClose, siz
   return createPortal(
     <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-[rgba(17,17,17,0.42)] px-4 py-4 backdrop-blur-sm">
       <motion.div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={description ? descriptionId : undefined}
+        tabIndex={-1}
         initial={{ opacity: 0, y: 18, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ type: 'spring', stiffness: 260, damping: 24 }}
@@ -52,10 +93,10 @@ export const Modal = ({ open, title, description, children, footer, onClose, siz
       >
         <div className={cn('flex shrink-0 items-start justify-between gap-4', density === 'compact' ? 'px-4 pt-4 sm:px-5 sm:pt-5' : 'px-6 pt-6')}>
           <div>
-            <h2 className={cn('font-semibold text-[var(--color-text)]', density === 'compact' ? 'text-lg' : 'text-xl')}>{title}</h2>
-            {description ? <p className={cn('mt-1.5 text-[var(--color-text-muted)]', density === 'compact' ? 'text-xs leading-5' : 'text-sm leading-6')}>{description}</p> : null}
+            <h2 id={titleId} className={cn('font-semibold text-[var(--color-text)]', density === 'compact' ? 'text-lg' : 'text-xl')}>{title}</h2>
+            {description ? <p id={descriptionId} className={cn('mt-1.5 text-[var(--color-text-muted)]', density === 'compact' ? 'text-xs leading-5' : 'text-sm leading-6')}>{description}</p> : null}
           </div>
-          <Button type="button" variant="ghost" size="sm" onClick={onClose} className="h-9 w-9 shrink-0 px-0">
+          <Button type="button" variant="ghost" size="sm" onClick={onClose} aria-label={`Close ${title}`} className="h-9 w-9 shrink-0 px-0">
             <X className="h-4 w-4" />
           </Button>
         </div>

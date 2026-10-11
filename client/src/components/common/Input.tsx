@@ -1,4 +1,4 @@
-import type { InputHTMLAttributes, ReactNode } from 'react';
+import { useId, type InputHTMLAttributes, type ReactNode } from 'react';
 import { cn } from '../../utils/cn';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -10,7 +10,8 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input = ({ label, error, helperText, trailing, className, labelClassName, id, ...props }: InputProps) => {
-  const inputId = id ?? props.name;
+  const generatedId = useId();
+  const inputId = id ?? props.name ?? generatedId;
 
   return (
     <label className="block space-y-2" htmlFor={inputId}>
@@ -18,6 +19,8 @@ export const Input = ({ label, error, helperText, trailing, className, labelClas
       <div className="relative">
         <input
           id={inputId}
+          aria-invalid={Boolean(error)}
+          aria-describedby={error || helperText ? `${inputId}-help` : undefined}
           className={cn(
             'h-12 w-full rounded-[var(--radius-control)] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 text-base text-[var(--color-text)] shadow-sm outline-none transition placeholder:text-[var(--color-text-soft)] focus:border-[var(--color-text)] focus:ring-2 focus:ring-[var(--color-focus)]',
             trailing ? 'pr-12' : null,
@@ -28,7 +31,7 @@ export const Input = ({ label, error, helperText, trailing, className, labelClas
         />
         {trailing ? <div className="absolute inset-y-0 right-3 flex items-center text-[var(--color-text-soft)]">{trailing}</div> : null}
       </div>
-      {error ? <p className="text-sm text-[var(--color-danger)]">{error}</p> : helperText ? <p className="text-sm text-[var(--color-text-muted)]">{helperText}</p> : null}
+      {error ? <p id={`${inputId}-help`} role="alert" className="text-sm text-[var(--color-danger)]">{error}</p> : helperText ? <p id={`${inputId}-help`} className="text-sm text-[var(--color-text-muted)]">{helperText}</p> : null}
     </label>
   );
 };

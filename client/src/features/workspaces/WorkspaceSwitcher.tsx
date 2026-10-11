@@ -8,7 +8,7 @@ interface WorkspaceSwitcherProps {
 }
 
 export const WorkspaceSwitcher = ({ workspaces, selectedWorkspaceId, onChange }: WorkspaceSwitcherProps) => {
-  const options = workspaces.map((workspace) => ({ label: workspace.name, value: workspace._id }));
+  const options = [{ label: 'All workspaces', value: '' }, ...workspaces.map((workspace) => ({ label: workspace.name, value: workspace._id }))];
 
   return (
     <ThemedSelect

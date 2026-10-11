@@ -16,6 +16,7 @@ export interface Workspace {
   description: string;
   createdAt: string;
   updatedAt: string;
+  role?: 'owner' | 'admin' | 'member' | 'viewer';
 }
 
 export interface Project {

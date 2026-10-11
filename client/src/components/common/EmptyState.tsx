@@ -1,5 +1,4 @@
-import { motion } from 'framer-motion';
-import { Card } from './Card';
+import type { ReactNode } from 'react';
 import { Button } from './Button';
 
 interface EmptyStateProps {
@@ -7,45 +6,12 @@ interface EmptyStateProps {
   description: string;
   actionLabel?: string;
   onAction?: () => void;
-  icon?: unknown;
+  icon?: ReactNode;
 }
 
-export const EmptyState = ({ title, description, actionLabel, onAction }: EmptyStateProps) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <Card className="border-[var(--color-border)] p-10 text-center">
-        <motion.h3 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.15 }}
-          className="text-2xl font-bold text-[var(--color-text)]"
-        >
-          {title}
-        </motion.h3>
-        <motion.p 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.25 }}
-          className="mx-auto mt-3 max-w-md text-[var(--color-text-muted)]"
-        >
-          {description}
-        </motion.p>
-        {actionLabel && onAction ? (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35 }}
-          >
-            <Button type="button" onClick={onAction} className="mt-6">
-              {actionLabel}
-            </Button>
-          </motion.div>
-        ) : null}
-      </Card>
-    </motion.div>
-  );
-};
+export const EmptyState = ({ title, description, actionLabel, onAction, icon }: EmptyStateProps) => <section className="rounded-xl border border-[var(--v-border)] bg-[var(--v-surface)] px-5 py-8 text-center sm:px-8">
+  {icon ? <div aria-hidden="true" className="mb-3 flex justify-center text-[var(--v-accent)]">{icon}</div> : null}
+  <h3 className="text-lg font-semibold text-[var(--v-text)]">{title}</h3>
+  <p className="v-muted mx-auto mt-2 max-w-md text-sm leading-6">{description}</p>
+  {actionLabel && onAction ? <Button type="button" className="mt-5" onClick={onAction}>{actionLabel}</Button> : null}
+</section>;

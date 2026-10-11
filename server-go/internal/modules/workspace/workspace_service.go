@@ -30,6 +30,7 @@ func (s Service) Create(ctx context.Context, userID primitive.ObjectID, payload 
 	now := time.Now().UTC()
 	id := utils.NewID()
 	ws := Workspace{ID: id, Name: payload.Name, Slug: fmt.Sprintf("%s-%s", utils.Slug(payload.Name), id.Hex()[18:]), Owner: userID, CreatedBy: userID, Description: payload.Description, CreatedAt: now, UpdatedAt: now}
+	ws.Role = "owner"
 	if _, err := s.db.Collection("workspaces").InsertOne(ctx, ws); err != nil {
 		return ws, err
 	}
@@ -48,10 +49,14 @@ func (s Service) List(ctx context.Context, userID primitive.ObjectID) ([]Workspa
 		return nil, err
 	}
 	var members []WorkspaceMember
-	_ = cursor.All(ctx, &members)
+	if err := cursor.All(ctx, &members); err != nil {
+		return nil, err
+	}
 	ids := make([]primitive.ObjectID, 0, len(members))
+	roles := make(map[primitive.ObjectID]string, len(members))
 	for _, member := range members {
 		ids = append(ids, member.Workspace)
+		roles[member.Workspace] = member.Role
 	}
 	cursor, err = s.db.Collection("workspaces").Find(ctx, bson.M{"_id": bson.M{"$in": ids}}, options.Find().SetSort(bson.D{{Key: "createdAt", Value: -1}}))
 	if err != nil {
@@ -59,18 +64,26 @@ func (s Service) List(ctx context.Context, userID primitive.ObjectID) ([]Workspa
 	}
 	var workspaces []Workspace
 	err = cursor.All(ctx, &workspaces)
-	return workspaces, err
+	if err != nil {
+		return nil, err
+	}
+	for i := range workspaces {
+		workspaces[i].Role = roles[workspaces[i].ID]
+	}
+	return workspaces, nil
 }
 
 func (s Service) Get(ctx context.Context, workspaceID, userID primitive.ObjectID) (Workspace, error) {
-	if err := authorization.RequireWorkspaceAccess(ctx, s.db, workspaceID, userID); err != nil {
+	role, err := authorization.WorkspaceRole(ctx, s.db, workspaceID, userID)
+	if err != nil {
 		return Workspace{}, err
 	}
 	var ws Workspace
-	err := s.db.Collection("workspaces").FindOne(ctx, bson.M{"_id": workspaceID}).Decode(&ws)
+	err = s.db.Collection("workspaces").FindOne(ctx, bson.M{"_id": workspaceID}).Decode(&ws)
 	if errors.Is(err, mongo.ErrNoDocuments) {
 		return ws, utils.ErrNotFound
 	}
+	ws.Role = role
 	return ws, err
 }
 
