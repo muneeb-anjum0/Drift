@@ -41,15 +41,16 @@ CPU mode:
 
 ```sh
 docker compose --profile model up -d llama
+docker compose restart inference
 ```
 
-Wait until `docker compose --profile model ps` shows llama running, then inspect `docker compose --profile model logs --tail=50 llama` and the in-app Evaluation model status. The CPU configuration uses zero GPU layers and a 7 GiB llama container memory limit; plan for substantially more host RAM for the whole stack. The artifact alone needs over 4 GiB disk, in addition to images, Mongo, logs, and backups. CPU inference may be slow. The optional NVIDIA route requires a supported GPU and NVIDIA Container Toolkit:
+Restart inference after adding the file: its first model-load attempt happened when the file was absent. Wait until llama reports ready, then inspect `docker compose --profile model logs --tail=50 llama` and the in-app Evaluation model status. The CPU configuration uses zero GPU layers and a 7 GiB llama container memory limit; plan for substantially more host RAM for the whole stack. The artifact alone needs over 4 GiB disk, in addition to images, Mongo, logs, and backups. CPU inference may be slow. The optional NVIDIA route requires a supported GPU and NVIDIA Container Toolkit:
 
 ```sh
 docker compose -f docker-compose.yml -f docker-compose.gpu.yml --profile model up -d llama
 ```
 
-GPU execution is not a requirement for local use and must be verified on the user's machine. To disable the model while keeping the core app, run `docker compose --profile model stop llama`.
+The GPU override uses `DRIFT_GPU_LAYERS` (default 16) and removes the CPU-only `--device none` flag. Adjust layers for available VRAM. GPU execution is not a requirement for local use and must be verified on the user's machine. To disable the model while keeping the core app, run `docker compose --profile model stop llama`.
 
 ## Stop, restart, and data safety
 

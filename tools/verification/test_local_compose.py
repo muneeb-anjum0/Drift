@@ -39,3 +39,31 @@ def test_local_compose_exposes_only_loopback_ui_and_api():
 
     assert services["frontend"]["ports"][0]["published"] == "5173"
     assert services["backend"]["ports"][0]["published"] == "5000"
+
+
+def test_gpu_override_does_not_keep_cpu_only_flags():
+    result = subprocess.run(
+        [
+            "docker",
+            "compose",
+            "--env-file",
+            ".env.example",
+            "-f",
+            "docker-compose.yml",
+            "-f",
+            "docker-compose.gpu.yml",
+            "--profile",
+            "model",
+            "config",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    command = json.loads(result.stdout)["services"]["llama"]["command"]
+    assert "--device" not in command
+    layers = command[command.index("--n-gpu-layers") + 1]
+    assert int(layers) > 0

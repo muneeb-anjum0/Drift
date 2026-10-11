@@ -1,6 +1,21 @@
 services:
   llama:
     image: ghcr.io/ggml-org/llama.cpp:server-cuda-b11151
+    command: !override
+      - --model
+      - ${DRIFT_GGUF_MODEL_PATH:-/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf}
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - --ctx-size
+      - ${DRIFT_LLAMA_CTX_SIZE:-768}
+      - --n-gpu-layers
+      - ${DRIFT_GPU_LAYERS:-16}
+      - --threads
+      - ${DRIFT_LLAMA_THREADS:-6}
+      - --parallel
+      - ${DRIFT_LLAMA_PARALLEL:-1}
     deploy:
       resources:
         reservations:

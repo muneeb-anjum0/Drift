@@ -37,9 +37,11 @@ CPU:
 
 ```bash
 docker compose --profile model up -d llama
+docker compose restart inference
 ```
 
 The effective CPU profile explicitly sets GPU layers to zero, disables device offload, uses one parallel slot, mounts model files read-only, and applies a 7 GiB container memory limit. Baseline V0 uses context 768 and six CPU threads.
+The inference adapter must be restarted if it was already running before the GGUF file was placed: its first load attempt is not automatically retried.
 
 NVIDIA GPU:
 
