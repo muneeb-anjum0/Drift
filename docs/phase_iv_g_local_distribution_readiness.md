@@ -4,7 +4,7 @@
 
 ## 1. Source
 
-The frozen starting `main` was `3fa0f61004cea771c116590516646a00589463c8`. A fresh GitHub clone resolved to that SHA with no `.env`, `node_modules`, virtualenv, or GGUF. It could render Compose but its hard-coded container names collided with another installation and its frontend published on all host interfaces. The Phase IV-G short-lived branch removes those defects. Candidate validation is not a substitute for exact-head PR CI and a final clean clone of merged `main`.
+The frozen starting `main` was `3fa0f61004cea771c116590516646a00589463c8`. A fresh GitHub clone resolved to that SHA with no `.env`, `node_modules`, virtualenv, or GGUF. It could render Compose but its hard-coded container names collided with another installation and its frontend published on all host interfaces. PR #26 merged normally at `92982bbbdff95d1b0bdb0ab644dac49b6f280e14` on 2026-10-11. Its exact-head software, integration, and E2E jobs passed, as did the post-merge jobs on that `main` SHA. Local `main` matched `origin/main` with a clean worktree. The rejected model and sealed holdout were not used.
 
 ## 2. Supported Runtime
 
@@ -13,6 +13,8 @@ The measured runtime is Linux x86-64, Docker Engine 29.8.1, Compose 5.5.1, 15 Gi
 ## 3. Clean Clone
 
 The candidate was cloned anew from GitHub into a temporary directory and checked at its exact branch SHA. No existing repository-local `.env`, dependencies, model, or Mongo volume was copied. An ignored mode-0600 `.env` was made from `.env.example` with two different 64-character random secrets, a unique Compose project, and alternate loopback UI/API ports. `docker compose up -d --build --wait db inference backend frontend` built three app images and reached all container health checks in **1m16s**. Docker base/build layers were warm, so this is not a cold-network download benchmark. The clone used no host Go/Node/Python installation for runtime. Browser test dependencies were installed only for verification.
+
+After merge, a second fresh GitHub clone resolved to `92982bbbdff95d1b0bdb0ab644dac49b6f280e14`, initially clean and without `.env`, `node_modules`, virtualenv, or GGUF. An independently generated ignored mode-0600 `.env` used a separate Compose project and loopback ports 5177/5007. The same Compose command built and reached healthy core services in **40 seconds** with warm Docker layers. Its model-free Chromium E2E suite passed **4/4**. The test stack was then stopped without deleting its Mongo volume. The original-GGUF CPU smoke was already completed in the first independent clone of the exact PR head later merged unchanged; it was not repeated on the laptop after the user's power-safety instruction.
 
 ## 4. Configuration
 
@@ -48,7 +50,7 @@ The candidate clone pulled branch revision `ec2d9a4` by `git pull --ff-only` and
 
 ## 12. CPU / GPU
 
-CPU model load and synthetic inference passed. At idle after inference, observed llama memory was about 3.59 GiB under its 7 GiB container limit, with inference about 41 MiB. These are measurements on this host, not universal minimums; model-enabled use needs materially more memory/disk than the core app. The host has an NVIDIA GTX 1060 Max-Q (6 GiB) and NVIDIA Docker runtime. The prior GPU override still passed `--device none` and zero GPU layers; the candidate override removes that CPU-only flag and defaults to 16 layers. A live GPU result must be recorded separately; CPU support does not depend on it.
+CPU model load and synthetic inference passed before the user's later power-safety instruction. At idle after inference, observed llama memory was about 3.59 GiB under its 7 GiB container limit, with inference about 41 MiB. These are measurements on this host, not universal minimums; model-enabled use needs materially more memory/disk than the core app. The host has an NVIDIA GTX 1060 Max-Q (6 GiB) and NVIDIA Docker runtime. The prior GPU override still passed `--device none` and zero GPU layers; the candidate override removes that CPU-only flag and defaults to 16 layers. The CUDA container image was pulled and the original model reported loaded, but **no GPU synthetic inference or offload verification was completed**. The user reported laptop power-delivery concerns and instructed us not to use the GPU. The GPU test and both synthetic test stacks were stopped without deleting volumes. GPU mode remains **NOT TESTED** as an end-to-end route and is not required for CPU/core local readiness.
 
 ## 13. Security
 
@@ -62,7 +64,7 @@ The root README now gives a short Docker-first quick start and points to [one lo
 
 | Local criterion | Status | Evidence / gap |
 | --- | --- | --- |
-| Clean reviewed `main` and required exact-head CI | NOT TESTED | PR/merge and post-merge CI pending. |
+| Clean reviewed `main` and required exact-head CI | PASS | PR #26 merged at `92982bbb…`; software, integration, and E2E passed on both PR head and resulting `main`; local main matched origin. |
 | Fresh clone without hidden host-language/runtime artifacts | PASS | Isolated GitHub clone and Compose build/start; base Docker layers warm. |
 | Safe local configuration and ignored secrets | PASS | Two independent random values, mode-0600 `.env`, no Git inclusion. |
 | Model-free core app and explicit model-unavailable behavior | PASS | Health split and Chromium E2E 4/4. |
@@ -71,13 +73,13 @@ The root README now gives a short Docker-first quick start and points to [one lo
 | Local backup and exact restore | PASS | Archive/checksum, deletion, 20-document/index restore, snapshot SHA match. |
 | Local network/auth/tenant boundaries | PASS | Only loopback UI/API; internal ports absent; cross-tenant 403; anonymous 401. |
 | Safe non-schema update and explicit reset boundary | PASS | Fast-forward update retained snapshot; destructive reset documented. |
-| Authoritative test suites | NOT TESTED | Full local/PR CI pending. |
-| Accurate clone/run documentation | PASS | README and consolidated local setup guide updated; final merged-main clone pending. |
+| Authoritative test suites | PASS | Local frontend, Go, inference, Compose, and browser checks passed; exact-head and post-merge CI software/integration/E2E passed. |
+| Accurate clone/run documentation | PASS | README and consolidated local setup guide matched a second fresh merged-main clone. |
 | Windows/macOS portability | NOT TESTED | Not claimed as supported; Linux x86-64 is measured. |
-| Optional NVIDIA GPU inference | NOT TESTED | Live GPU check pending; not a CPU/core gate. |
+| Optional NVIDIA GPU inference | NOT TESTED | Stopped at user's power-safety request before synthetic inference/offload verification; not a CPU/core gate. |
 
 Public-host-only DNS/TLS/firewall/VPS/ingress, off-host *staging* backup, and target-host rollback are `NOT_APPLICABLE_TO_LOCAL_RELEASE`. They remain unpassed in the historical staging record.
 
 ## 16. Decision
 
-**INCONCLUSIVE pending PR CI, merge, and an authoritative clean clone of the merged `main`.** Candidate evidence supports the Linux local path but does not authorize declaring a merged release ready. Do not promote the rejected model or access the sealed final holdout to close any gate.
+**LOCAL_DISTRIBUTION_READY for the verified Linux x86-64 Docker Compose path.** The merged source, post-merge CI, second fresh-clone model-free startup, first fresh-clone original-model CPU smoke, product workflow, persistence, backup/restore, local boundaries, and documentation satisfy the local gate. Windows/macOS and end-to-end NVIDIA GPU operation are **NOT TESTED** and are not claimed as supported. No further model test was run after the user's power-safety instruction. This decision does not authorize public deployment, rejected-model promotion, or final-holdout access.
