@@ -40,7 +40,7 @@ test('first-run path creates project, scope item and snapshot without claiming a
   await expect(page.getByText('Export monthly reports', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Create scope snapshot' }).first().click();
   await expect(page.getByRole('dialog').getByText(/not a formal approval/i)).toBeVisible();
-  await page.getByRole('dialog').getByRole('button', { name: 'Create scope snapshot' }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Create scope snapshot', exact: true }).click();
   await expect(page.getByText(/Scope snapshot #1 created/)).toBeVisible();
 });
 
@@ -53,7 +53,7 @@ test('model-unavailable state blocks comparison and does not fabricate saved res
   await page.getByRole('dialog').getByLabel('Description').fill('Provide monthly reports.');
   await page.getByRole('dialog').getByRole('button', { name: 'Add scope item' }).click();
   await page.getByRole('button', { name: 'Create scope snapshot' }).first().click();
-  await page.getByRole('dialog').getByRole('button', { name: 'Create scope snapshot' }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Create scope snapshot', exact: true }).click();
   await page.route('**/api/v1/drift/readiness', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'ok', data: { available: false, reason: 'unavailable' } }) }));
   await page.getByRole('button', { name: 'Changes', exact: true }).click();
   await expect(page.getByText(/Change analysis isn't available right now/)).toBeVisible();
