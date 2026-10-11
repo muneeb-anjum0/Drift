@@ -14,7 +14,7 @@ import { generatedByLabel } from './changeRequestDisplay';
 const selectClass =
   'h-9 w-full rounded-[0.9rem] border border-gray-700 bg-black px-3 text-sm text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30';
 
-const statusOptions: ChangeRequestStatus[] = ['draft', 'sent', 'approved', 'rejected', 'archived'];
+const statusOptions: ChangeRequestStatus[] = ['draft', 'sent', 'archived'];
 
 const ChangeRequestHistoryItem = ({
   changeRequest,
@@ -24,6 +24,8 @@ const ChangeRequestHistoryItem = ({
   isUpdating,
   isApprovalUpdating,
   isDeleting,
+  canEdit,
+  canApprove,
 }: {
   changeRequest: ChangeRequest;
   onUpdate: (changeRequest: ChangeRequest, status: ChangeRequestStatus) => void;
@@ -32,6 +34,8 @@ const ChangeRequestHistoryItem = ({
   isUpdating?: boolean;
   isApprovalUpdating?: boolean;
   isDeleting?: boolean;
+  canEdit: boolean;
+  canApprove: boolean;
 }) => {
   const [status, setStatus] = useState(changeRequest.status);
   const canSubmitForApproval = ['draft', 'needs_revision', 'rejected'].includes(normalizeApprovalStatus(changeRequest.approvalStatus));
@@ -51,8 +55,8 @@ const ChangeRequestHistoryItem = ({
           <span className="rounded-full border border-gray-700 bg-black/70 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.1em] text-gray-300">
             {typeof changeRequest.project === 'string' ? 'Project' : changeRequest.project.name}
           </span>
-          <ChangeRequestStatusBadge status={changeRequest.status} />
-          <ApprovalStatusBadge status={changeRequest.approvalStatus} />
+          <span className="text-xs text-gray-400">Request state</span><ChangeRequestStatusBadge status={changeRequest.status} />
+          <span className="text-xs text-gray-400">Decision</span><ApprovalStatusBadge status={changeRequest.approvalStatus} />
           <span className="rounded-full border border-gray-700 bg-black/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-gray-300">
             {generatedByLabel(changeRequest.generatedBy)}
           </span>
@@ -82,19 +86,18 @@ const ChangeRequestHistoryItem = ({
               {change.affectedModules?.length ? (
                 <p className="mt-2 text-xs text-gray-500">Affected modules: {change.affectedModules.join(', ')}</p>
               ) : null}
-              <p className="mt-2 text-xs uppercase tracking-[0.14em] text-gray-500">
-                {change.changeType} / {change.impact} / {change.estimatedEffort ?? 0}h
-              </p>
+              <p className="mt-2 text-xs uppercase tracking-[0.14em] text-gray-500">{change.changeType} / {change.impact}</p>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="mt-3 grid gap-3 lg:grid-cols-[minmax(180px,1fr)_auto_auto_auto_auto] lg:items-end">
+      <div className="mt-3 flex flex-wrap items-end gap-3">
+        {canEdit ? <>
         <label className="block space-y-1.5">
-          <span className="text-xs font-semibold text-gray-300">Status</span>
+          <span className="text-xs font-semibold text-gray-300">Request record state (not approval)</span>
           <select value={status} onChange={(event) => setStatus(event.target.value as ChangeRequestStatus)} className={selectClass}>
-            {statusOptions.map((option) => (
+            {[...new Set([...statusOptions, status])].map((option) => (
               <option key={option} value={option}>
                 {option}
               </option>
@@ -107,15 +110,17 @@ const ChangeRequestHistoryItem = ({
         <Button type="button" variant="secondary" size="sm" onClick={() => onSubmitApproval(changeRequest)} disabled={isApprovalUpdating || !canSubmitForApproval || !changeRequest._id}>
           Submit for approval
         </Button>
-        <Link to={`/approvals?requestId=${changeRequest._id ?? ''}`}>
+        </> : null}
+        {canApprove ? <Link to={`/approvals?requestId=${changeRequest._id ?? ''}`}>
           <Button type="button" variant="secondary" size="sm">
-            View in Approvals
+            Review decision
           </Button>
-        </Link>
+        </Link> : null}
+        {canEdit ?
         <Button type="button" variant="danger" size="sm" onClick={() => onDelete(changeRequest)} disabled={isDeleting}>
           <Trash2 className="mr-2 h-4 w-4" />
           Delete
-        </Button>
+        </Button> : null}
       </div>
         </div>
       </div>
@@ -131,6 +136,8 @@ export const ChangeRequestHistory = ({
   isUpdating = false,
   isApprovalUpdating = false,
   isDeleting = false,
+  canEdit = true,
+  canApprove = true,
 }: {
   changeRequests: ChangeRequest[];
   onUpdate: (changeRequest: ChangeRequest, status: ChangeRequestStatus) => void;
@@ -139,6 +146,8 @@ export const ChangeRequestHistory = ({
   isUpdating?: boolean;
   isApprovalUpdating?: boolean;
   isDeleting?: boolean;
+  canEdit?: boolean;
+  canApprove?: boolean;
 }) => {
   if (!changeRequests.length) {
     return (
@@ -162,6 +171,8 @@ export const ChangeRequestHistory = ({
           isUpdating={isUpdating}
           isApprovalUpdating={isApprovalUpdating}
           isDeleting={isDeleting}
+          canEdit={canEdit}
+          canApprove={canApprove}
         />
       ))}
     </div>

@@ -1,8 +1,7 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 const uniqueEmail = () => `e2e-${Date.now()}-${Math.random().toString(16).slice(2)}@example.com`;
-
-const register = async (page: import('@playwright/test').Page, name: string) => {
+const register = async (page: Page, name: string) => {
   await page.goto('/register');
   await page.getByPlaceholder('Alex Morgan').fill(name);
   await page.getByPlaceholder('you@company.com').fill(uniqueEmail());
@@ -11,6 +10,17 @@ const register = async (page: import('@playwright/test').Page, name: string) => 
   await page.getByRole('button', { name: /create account/i }).click();
   await expect(page).toHaveURL(/\/dashboard$/);
 };
+const createProject = async (page: Page, name: string) => {
+  await page.goto('/projects');
+  await page.getByRole('button', { name: 'Create project', exact: true }).first().click();
+  await page.getByLabel('Project name').fill(name);
+  await page.getByLabel('Client name').fill('Example client');
+  await page.getByLabel('Original agreement').fill('Admins can export monthly reports.');
+  await page.getByRole('dialog').getByRole('button', { name: 'Create project' }).click();
+  await expect(page.getByText(name, { exact: true })).toBeVisible();
+  await page.getByText(name, { exact: true }).click();
+  await expect(page.getByRole('heading', { name })).toBeVisible();
+};
 
 test('protects app routes when logged out', async ({ page }) => {
   await page.goto('/dashboard');
@@ -18,61 +28,61 @@ test('protects app routes when logged out', async ({ page }) => {
   await expect(page.getByRole('heading', { name: /sign in/i })).toBeVisible();
 });
 
-test('registers a user and loads dashboard data', async ({ page }) => {
-  await register(page, 'E2E User');
-
-  await expect(page.getByText('Command center')).toBeVisible();
-  await expect(page.getByText('Scope protection pipeline')).toBeVisible();
-});
-
-test('creates a project from the projects page', async ({ page }) => {
-  await register(page, 'Project E2E User');
-
-  await page.goto('/projects');
-  await page.getByRole('button', { name: /new project/i }).click();
-  await page.getByRole('button', { name: /select workspace/i }).click();
-  await page.getByRole('button', { name: /project e2e user's workspace/i }).click();
-  await page.getByLabel('Project name').fill('E2E Project');
-  await page.getByLabel('Client name').fill('E2E Client');
-  await page.getByPlaceholder('Describe the project in plain language').fill('Browser-created project');
-  await page.getByPlaceholder('Summarize what was originally promised').fill('Users can login and view reports.');
-  await page.getByRole('button', { name: 'Create project', exact: true }).click();
-
-  await expect(page.getByText('E2E Project')).toBeVisible();
-  await expect(page.getByText('E2E Client')).toBeVisible();
-});
-
-test('creates a requirement baseline and handles unavailable inference without saving', async ({ page }) => {
-  await register(page, 'Workflow E2E User');
-  const projectName = `Baseline Project ${Date.now()}`;
-
-  await page.goto('/projects');
-  await page.getByRole('button', { name: /new project/i }).click();
-  await page.getByRole('button', { name: /select workspace/i }).click();
-  await page.getByRole('button', { name: /workflow e2e user's workspace/i }).click();
-  await page.getByLabel('Project name').fill(projectName);
-  await page.getByLabel('Client name').fill('Baseline Client');
-  await page.getByPlaceholder('Describe the project in plain language').fill('Critical workflow verification');
-  await page.getByPlaceholder('Summarize what was originally promised').fill('Admins can export monthly reports.');
-  await page.getByRole('button', { name: 'Create project', exact: true }).click();
-  await page.getByText(projectName).click();
-
-  await page.getByRole('button', { name: /add requirement/i }).click();
-  await page.getByLabel('Title').fill('Export monthly reports');
-  await page.getByLabel('Description').fill('Admins can export monthly reports as CSV.');
-  await page.getByRole('button', { name: 'Create requirement', exact: true }).click();
+test('first-run path creates project, scope item and snapshot without claiming approval', async ({ page }) => {
+  await register(page, 'First Run User');
+  await expect(page.getByRole('heading', { name: /create your first project/i })).toBeVisible();
+  await createProject(page, `First Run ${Date.now()}`);
+  await page.getByRole('button', { name: 'Agreed scope', exact: true }).click();
+  await page.getByRole('button', { name: 'Add scope item' }).click();
+  await page.getByRole('dialog').getByLabel('Title').fill('Export monthly reports');
+  await page.getByRole('dialog').getByLabel('Description').fill('Admins can export reports as CSV.');
+  await page.getByRole('dialog').getByRole('button', { name: 'Add scope item' }).click();
   await expect(page.getByText('Export monthly reports', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Create scope snapshot' }).first().click();
+  await expect(page.getByRole('dialog').getByText(/not a formal approval/i)).toBeVisible();
+  await page.getByRole('dialog').getByRole('button', { name: 'Create scope snapshot', exact: true }).click();
+  await expect(page.getByText(/Scope snapshot #1 created/)).toBeVisible();
+});
 
-  page.once('dialog', (dialog) => dialog.accept());
-  await page.getByRole('button', { name: /create baseline/i }).click();
-  await expect(page.getByText('Version 1', { exact: true })).toBeVisible();
-  await expect(page.getByText('1 requirements')).toBeVisible();
+test('model-unavailable state blocks comparison and does not fabricate saved results', async ({ page }) => {
+  await register(page, 'Unavailable Model User');
+  await createProject(page, `Unavailable ${Date.now()}`);
+  await page.getByRole('button', { name: 'Agreed scope', exact: true }).click();
+  await page.getByRole('button', { name: 'Add scope item' }).click();
+  await page.getByRole('dialog').getByLabel('Title').fill('Monthly reports');
+  await page.getByRole('dialog').getByLabel('Description').fill('Provide monthly reports.');
+  await page.getByRole('dialog').getByRole('button', { name: 'Add scope item' }).click();
+  await page.getByRole('button', { name: 'Create scope snapshot' }).first().click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Create scope snapshot', exact: true }).click();
+  await page.route('**/api/v1/drift/readiness', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'ok', data: { available: false, reason: 'unavailable' } }) }));
+  await page.getByRole('button', { name: 'Changes', exact: true }).click();
+  await expect(page.getByText(/Change analysis isn't available right now/)).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Compare with scope' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: 'Save proposed analysis' })).toHaveCount(0);
+});
 
-  await page.getByRole('button', { name: /drift analysis/i }).click();
-  await page
-    .getByPlaceholder('Paste the latest client message, meeting note, or scope update here')
-    .fill('Please add PDF format to the monthly report exports.');
-  await page.getByRole('button', { name: /run drift analysis/i }).click();
-  await expect(page.getByText('Drift inference service is unavailable', { exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: /save analysis/i })).toHaveCount(0);
+test('API failure is not shown as an empty project list', async ({ page }) => {
+  await register(page, 'API Error User');
+  await page.route('**/api/v1/projects', (route) => route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ success: false, message: 'Service unavailable' }) }));
+  await page.goto('/projects');
+  await expect(page.getByRole('alert').getByText(/Projects couldn't be loaded/)).toBeVisible();
+  await expect(page.getByText('No projects yet')).toHaveCount(0);
+});
+
+test('viewer UI hides mutation controls; server remains the authority', async ({ page }) => {
+  await register(page, 'Viewer Fixture User');
+  const projectName = `Viewer ${Date.now()}`;
+  await createProject(page, projectName);
+  await page.route('**/api/v1/workspaces', async (route) => {
+    const response = await route.fetch();
+    const body = await response.json();
+    body.data.workspaces = body.data.workspaces.map((workspace: { role?: string }) => ({ ...workspace, role: 'viewer' }));
+    await route.fulfill({ response, json: body });
+  });
+  await page.reload();
+  await page.getByRole('button', { name: 'Agreed scope', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Add scope item' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Create scope snapshot' })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Changes', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Compare with scope' })).toHaveCount(0);
 });

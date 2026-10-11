@@ -4,7 +4,7 @@ import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { EmptyState } from '../../components/common/EmptyState';
 import { Spinner } from '../../components/common/Spinner';
-import type { ChangeRequest, ChangeRequestDraft } from './changeRequest.types';
+import type { ChangeRequestDraft } from './changeRequest.types';
 import type { DriftAnalysis } from '../drift/drift.types';
 import { driftAnalysisTitle } from '../drift/driftDisplay';
 import { useGenerateChangeRequest, useSaveChangeRequest } from '../../hooks/useChangeRequests';
@@ -13,8 +13,6 @@ import { generatedByLabel } from './changeRequestDisplay';
 
 const selectClass =
   'h-10 w-full rounded-[1rem] border border-gray-700 bg-black px-3 text-sm text-white shadow-sm outline-none transition focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30';
-
-const statusOptions: Array<ChangeRequest['status']> = ['draft', 'sent', 'approved', 'rejected', 'archived'];
 
 const defaultDraft: ChangeRequestDraft = {
   driftAnalysisId: '',
@@ -54,8 +52,8 @@ export const ChangeRequestPreview = ({ driftAnalyses }: { projectId: string; dri
   if (!driftAnalyses.length) {
     return (
       <EmptyState
-        title="Save a drift analysis before generating a change request."
-        description="Change requests are generated from reviewed drift analyses so the client-facing draft matches the approved analysis."
+        title="Save a comparison before preparing a change request."
+        description="The draft starts from a saved proposed analysis. Review the wording before submitting it for a decision."
         icon={<Sparkles className="h-5 w-5" />}
       />
     );
@@ -74,7 +72,7 @@ export const ChangeRequestPreview = ({ driftAnalyses }: { projectId: string; dri
     setError('');
     try {
       const changeRequest = await generateMutation.mutateAsync({ driftAnalysisId: selectedDriftAnalysisId });
-      setDraft(changeRequest);
+      setDraft({ ...changeRequest, status: 'draft' });
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : 'Unable to generate change request');
     }
@@ -84,19 +82,20 @@ export const ChangeRequestPreview = ({ driftAnalyses }: { projectId: string; dri
     if (!draft.driftAnalysisId) return;
 
     try {
-      await saveMutation.mutateAsync(draft);
+      await saveMutation.mutateAsync({ ...draft, status: 'draft' });
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : 'Unable to save change request');
     }
   };
+  const updateRequestedChange = (index: number, patch: Partial<ChangeRequestDraft['changesRequested'][number]>) => setDraft((current) => ({ ...current, changesRequested: current.changesRequested.map((change, currentIndex) => currentIndex === index ? { ...change, ...patch } : change) }));
 
   return (
     <Card className="border-lime-400/20 bg-black/60 p-4">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-lime-400">Change request preview</p>
-          <h3 className="mt-1 text-lg font-semibold text-white">Generate a client-friendly change request from drift analysis</h3>
-          <p className="mt-1.5 max-w-2xl text-xs leading-5 text-gray-400">Review and edit the draft before saving it as an official change request.</p>
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-lime-400">Prepare a decision</p>
+          <h3 className="mt-1 text-lg font-semibold text-white">Draft a change request</h3>
+          <p className="mt-1.5 max-w-2xl text-xs leading-5 text-gray-400">Generated wording is a proposal. Edit it before saving; saving a draft does not approve the change.</p>
         </div>
         <ChangeRequestStatusBadge status={draft.status} />
       </div>
@@ -108,21 +107,21 @@ export const ChangeRequestPreview = ({ driftAnalyses }: { projectId: string; dri
             <select value={selectedDriftAnalysisId} onChange={(event) => setSelectedDriftAnalysisId(event.target.value)} className={selectClass}>
               {driftAnalyses.map((analysis) => (
                 <option key={analysis._id} value={analysis._id}>
-                  {driftAnalysisTitle(analysis.inputText)} - {analysis.driftScore}/100
+                  {driftAnalysisTitle(analysis.inputText)}
                 </option>
               ))}
             </select>
           </label>
 
           <Button type="button" variant="secondary" onClick={handleGenerate} disabled={generateMutation.isPending || !hasMeaningfulDrift}>
-            {generateMutation.isPending ? <Spinner /> : 'Generate Change Request'}
+            {generateMutation.isPending ? <Spinner /> : 'Prepare draft'}
           </Button>
 
           {selectedAnalysis && !hasMeaningfulDrift ? (
             <p className="text-sm text-gray-400">This saved analysis has no detected changes, so no change request is needed.</p>
           ) : null}
 
-          {error ? <p className="text-sm text-red-400">{error}</p> : null}
+          {error ? <p role="alert" className="text-sm text-red-400">{error}</p> : null}
 
           {draft.driftAnalysisId ? (
             <div className="space-y-3 rounded-[1rem] border border-gray-800 bg-black/40 p-4">
@@ -137,26 +136,16 @@ export const ChangeRequestPreview = ({ driftAnalyses }: { projectId: string; dri
               </label>
 
               <TextAreaField label="Summary" value={draft.summary} onChange={(value) => setDraft((current) => ({ ...current, summary: value }))} rows={4} />
+              <div className="space-y-2"><p className="text-sm font-semibold">Changes described in this draft</p><p className="text-xs text-gray-400">Edit the wording below before saving. This does not confirm the model's interpretation.</p>{draft.changesRequested.map((change, index) => <details key={index} className="rounded-lg border border-[var(--v-border)] p-3"><summary className="cursor-pointer text-sm font-medium">{change.title || `Change ${index + 1}`}</summary><div className="mt-3 space-y-3"><label className="block text-xs font-medium">Change title<input className={selectClass} value={change.title} onChange={(event) => updateRequestedChange(index, { title: event.target.value })} /></label><TextAreaField label="Description" value={change.description} onChange={(value) => updateRequestedChange(index, { description: value })} rows={3} /><label className="block text-xs font-medium">Potential impact<select className={selectClass} value={change.impact} onChange={(event) => updateRequestedChange(index, { impact: event.target.value as typeof change.impact })}>{(['low', 'medium', 'high', 'critical'] as const).map((value) => <option key={value} value={value}>{value}</option>)}</select></label><label className="block text-xs font-medium">Affected areas<input className={selectClass} value={(change.affectedModules ?? []).join(', ')} onChange={(event) => updateRequestedChange(index, { affectedModules: event.target.value.split(',').map((part) => part.trim()).filter(Boolean) })} /></label></div></details>)}</div>
               <TextAreaField label="Business reason" value={draft.businessReason} onChange={(value) => setDraft((current) => ({ ...current, businessReason: value }))} rows={3} />
               <TextAreaField label="Timeline impact" value={draft.timelineImpact} onChange={(value) => setDraft((current) => ({ ...current, timelineImpact: value }))} rows={3} />
               <TextAreaField label="Cost impact" value={draft.costImpact} onChange={(value) => setDraft((current) => ({ ...current, costImpact: value }))} rows={3} />
               <TextAreaField label="Recommended action" value={draft.recommendedAction} onChange={(value) => setDraft((current) => ({ ...current, recommendedAction: value }))} rows={3} />
               <TextAreaField label="Approval note" value={draft.approvalNote} onChange={(value) => setDraft((current) => ({ ...current, approvalNote: value }))} rows={3} />
 
-              <label className="block space-y-1.5">
-                <span className="text-xs font-semibold text-gray-300">Status</span>
-                <select value={draft.status} onChange={(event) => setDraft((current) => ({ ...current, status: event.target.value as ChangeRequest['status'] }))} className={selectClass}>
-                  {statusOptions.map((status) => (
-                    <option key={status} value={status}>
-                      {status}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
               <Button type="button" onClick={handleSave} disabled={saveMutation.isPending}>
                 {saveMutation.isPending ? <Spinner /> : <CheckCircle2 className="mr-2 h-4 w-4" />}
-                Save Change Request
+                Save draft
               </Button>
             </div>
           ) : null}
@@ -180,7 +169,7 @@ export const ChangeRequestPreview = ({ driftAnalyses }: { projectId: string; dri
                           <p className="mt-2 text-xs text-gray-500">Affected modules: {change.affectedModules.join(', ')}</p>
                         ) : null}
                         <p className="mt-2 text-xs uppercase tracking-[0.14em] text-gray-500">
-                          {change.changeType} / {change.impact} / {change.estimatedEffort ?? 0}h
+                          {change.changeType} / {change.impact}
                         </p>
                       </div>
                     ))}

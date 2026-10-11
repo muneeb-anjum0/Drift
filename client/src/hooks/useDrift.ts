@@ -1,6 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { driftApi } from '../api/drift.api';
 
+export const useChangeReadiness = () => useQuery({
+  queryKey: ['change-readiness'],
+  queryFn: driftApi.readiness,
+  staleTime: 15_000,
+  retry: 1,
+});
+
 const invalidateDriftQueries = async (queryClient: ReturnType<typeof useQueryClient>, projectId: string) => {
   await queryClient.invalidateQueries({ queryKey: ['project-drift-analyses', projectId] });
   await queryClient.invalidateQueries({ queryKey: ['project', projectId] });

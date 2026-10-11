@@ -33,7 +33,7 @@ export const DriftScoreCard = ({ analysis }: { analysis: DriftScoreCardAnalysis 
     <Card className="h-full border-lime-400/20 bg-black/60 p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-lime-400">Drift score</p>
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-lime-400">Heuristic comparison score</p>
           <h3 className="mt-1 text-2xl font-semibold text-white">{analysis.driftScore}/100</h3>
           <p className="mt-1.5 text-xs leading-5 text-gray-400">{analysis.summary}</p>
         </div>
@@ -50,6 +50,7 @@ export const DriftScoreCard = ({ analysis }: { analysis: DriftScoreCardAnalysis 
         {statBlock('Baseline version', analysis.baselineVersionNumber)}
         {statBlock('Input type', analysis.inputType.replace(/_/g, ' '))}
       </div>
+      <p className="mt-3 text-xs text-[var(--v-muted)]">Scores and hours are generated planning aids, not verified contractual facts.</p>
     </Card>
   );
 };

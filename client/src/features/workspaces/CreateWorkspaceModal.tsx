@@ -52,7 +52,7 @@ export const CreateWorkspaceModal = ({
     <Modal
       open={open}
       title={mode === 'create' ? 'Create workspace' : 'Edit workspace'}
-      description="Organize projects, clients, and activities in a dedicated workspace."
+      description="A workspace separates projects and team access."
       onClose={onClose}
       size="md"
       density="compact"
@@ -60,16 +60,16 @@ export const CreateWorkspaceModal = ({
       <form className="space-y-3" onSubmit={handleSubmit}>
         <Input label="Workspace name" labelClassName="text-sm" className="h-10 text-sm" value={values.name} onChange={(event) => setValues((current) => ({ ...current, name: event.target.value }))} placeholder="Acme Design Studio" required />
         <label className="block space-y-1.5">
-          <span className="text-sm font-semibold text-gray-300">Description</span>
+          <span className="text-sm font-medium">Description</span>
           <textarea
             value={values.description}
             onChange={(event) => setValues((current) => ({ ...current, description: event.target.value }))}
             rows={2}
-            className="w-full rounded-[1rem] border border-gray-700 bg-black px-3 py-2 text-sm text-white shadow-sm outline-none transition placeholder:text-gray-500 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30"
+            className="w-full rounded-lg border border-[var(--v-border)] bg-white px-3 py-2 text-sm text-[var(--v-text)]"
             placeholder="A short description of this workspace"
           />
         </label>
-        {error ? <p className="text-sm text-lime-300">{error}</p> : null}
+        {error ? <p role="alert" className="text-sm text-[var(--color-danger)]">{error}</p> : null}
         <div className="flex justify-end gap-3">
           <Button type="button" variant="secondary" onClick={onClose}>
             Cancel

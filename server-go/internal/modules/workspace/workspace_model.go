@@ -15,6 +15,7 @@ type Workspace struct {
 	Description string             `bson:"description" json:"description"`
 	CreatedAt   time.Time          `bson:"createdAt" json:"createdAt"`
 	UpdatedAt   time.Time          `bson:"updatedAt" json:"updatedAt"`
+	Role        string             `bson:"-" json:"role,omitempty"`
 }
 
 type WorkspaceMember struct {

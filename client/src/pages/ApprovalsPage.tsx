@@ -8,6 +8,8 @@ import { EmptyState } from '../components/common/EmptyState';
 import { Modal } from '../components/common/Modal';
 import { Spinner } from '../components/common/Spinner';
 import { useApprovalDecision, useApprovals } from '../hooks/useChangeRequests';
+import { useWorkspaces } from '../hooks/useWorkspaces';
+import { canApprove } from '../utils/permissions';
 import { formatDate } from '../utils/formatDate';
 import type { ApprovalStatus, ChangeRequest } from '../features/change-requests/changeRequest.types';
 import { ApprovalStatusBadge } from '../features/approvals/ApprovalStatusBadge';
@@ -160,6 +162,7 @@ export const ApprovalsPage = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const approvalsQuery = useApprovals();
+  const workspacesQuery = useWorkspaces();
   const decisionMutation = useApprovalDecision();
   const [filter, setFilter] = useState<ApprovalFilter>('all');
   const [selectedRequest, setSelectedRequest] = useState<ChangeRequest | null>(null);
@@ -213,21 +216,23 @@ export const ApprovalsPage = () => {
     setDecisionAction(null);
   };
 
-  if (approvalsQuery.isLoading) {
+  if (approvalsQuery.isLoading || workspacesQuery.isPending) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
         <Spinner />
       </div>
     );
   }
+  if (approvalsQuery.isError || workspacesQuery.isError) return <div role="alert" className="v-panel p-6"><h1 className="v-section-title">Decisions couldn't be loaded</h1><p className="v-muted mt-2 text-sm">This is not an empty decision queue. Check the API and try again.</p><Button className="mt-4" onClick={() => { void approvalsQuery.refetch(); void workspacesQuery.refetch(); }}>Retry</Button></div>;
+  if (!workspacesQuery.workspaces.some((workspace) => canApprove(workspace.role))) return <div className="v-panel p-6"><h1 className="v-section-title">Decisions require an owner or admin</h1><p className="v-muted mt-2 text-sm">You can still review the project and its saved change requests.</p><Button className="mt-4" onClick={() => navigate('/projects')}>View projects</Button></div>;
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-5 text-[var(--color-text)]">
       <section className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[var(--shadow-card)]">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <p className="app-eyebrow">Approvals</p>
-            <h1 className="mt-2 text-2xl font-semibold">Client approval queue</h1>
+            <p className="app-eyebrow">Decisions</p>
+            <h1 className="mt-2 text-2xl font-semibold">Requests awaiting a decision</h1>
             <p className="mt-1.5 max-w-2xl text-sm leading-6 text-[var(--color-text-muted)]">
               Review submitted change requests, record decisions, and keep a clean approval history.
             </p>
@@ -273,7 +278,7 @@ export const ApprovalsPage = () => {
 
         <div className="mt-4">
           {!filteredApprovals.length ? (
-            <EmptyState title="No approvals here yet" description="Submit a saved change request for approval to populate this queue." />
+            <EmptyState title="No requests in this view" description="Submitted change requests appear here when a human decision is needed." />
           ) : (
             <div className="grid gap-3 xl:grid-cols-2">
               {filteredApprovals.map((changeRequest) => {
