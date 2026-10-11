@@ -47,6 +47,7 @@ jobs:
       - run: python -m pytest tools/verification/test_phase3j_audit_training.py tools/verification/test_phase3j_freeze_inputs.py
       - run: python -m pytest tools/verification/test_staging_env.py
       - run: python -m pytest tools/verification/test_staging_ingress.py
+      - run: python -m pytest tools/verification/test_local_compose.py
       - run: ruff check services/inference tools
       - run: npm audit --audit-level=high
       - run: pip-audit --requirement services/inference/requirements.txt
