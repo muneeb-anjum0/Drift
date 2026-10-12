@@ -139,6 +139,96 @@ func request(app http.Handler, method, path, bearer string, payload any) *httpte
 	return recorder
 }
 
+func TestChangeRequestStateWritesKeepApprovalServerControlled(t *testing.T) {
+	f := newFixture(t)
+	ctx := context.Background()
+	analysisID := primitive.NewObjectID()
+	if _, err := f.db.Collection("driftanalyses").InsertOne(ctx, bson.M{
+		"_id": analysisID, "project": f.projectA, "workspace": f.workspaceA, "analysisEngine": "rule_based",
+	}); err != nil {
+		t.Fatal(err)
+	}
+	cfg := config.Config{AppEnv: "test", JWTSecret: testJWTSecret, JWTExpiresInHours: 1,
+		AuthRateLimitRequests: 100, InferenceRateLimitRequests: 100,
+		RateLimitWindow: time.Minute, MaxUploadSizeMB: 1}
+	app := router.New(f.db, cfg, storageSvc.Service{})
+	owner := token(t, f.ownerA, "owner-a@example.test")
+	var savedID primitive.ObjectID
+	for _, status := range []string{change_request.RequestDraft, change_request.RequestSent, change_request.RequestArchived, ""} {
+		body := bson.M{"driftAnalysisId": analysisID.Hex(), "title": "Synthetic request", "status": status,
+			"approvalStatus": change_request.ApprovalApproved, "generatedBy": "fabricated-provider"}
+		got := request(app, http.MethodPost, "/api/v1/change-requests", owner, body)
+		if got.Code != http.StatusCreated {
+			t.Fatalf("create status %q: %d %s", status, got.Code, got.Body.String())
+		}
+		var response struct {
+			Data struct {
+				ChangeRequest change_request.ChangeRequest `json:"changeRequest"`
+			} `json:"data"`
+		}
+		if err := json.Unmarshal(got.Body.Bytes(), &response); err != nil {
+			t.Fatal(err)
+		}
+		created := response.Data.ChangeRequest
+		want := status
+		if want == "" {
+			want = change_request.RequestDraft
+		}
+		if created.Status != want || created.ApprovalStatus != change_request.ApprovalDraft || created.GeneratedBy != "rule_based" {
+			t.Fatalf("create status %q changed authority: %#v", status, created)
+		}
+		if status == change_request.RequestDraft {
+			savedID = created.ID
+		}
+	}
+	for _, status := range []string{"invented", change_request.ApprovalApproved, change_request.ApprovalRejected} {
+		body := bson.M{"driftAnalysisId": analysisID.Hex(), "status": status}
+		if got := request(app, http.MethodPost, "/api/v1/change-requests", owner, body); got.Code != http.StatusBadRequest {
+			t.Fatalf("create accepted invalid status %q: %d %s", status, got.Code, got.Body.String())
+		}
+		if got := request(app, http.MethodPatch, "/api/v1/change-requests/"+savedID.Hex(), owner, bson.M{"status": status, "approvalStatus": change_request.ApprovalApproved}); got.Code != http.StatusBadRequest {
+			t.Fatalf("update accepted invalid status %q: %d %s", status, got.Code, got.Body.String())
+		}
+	}
+	if got := request(app, http.MethodPatch, "/api/v1/change-requests/"+savedID.Hex(), owner, bson.M{"status": change_request.RequestSent, "approvalStatus": change_request.ApprovalApproved}); got.Code != http.StatusOK {
+		t.Fatalf("valid update failed: %d %s", got.Code, got.Body.String())
+	}
+	var stored change_request.ChangeRequest
+	if err := f.db.Collection("changerequests").FindOne(ctx, bson.M{"_id": savedID}).Decode(&stored); err != nil {
+		t.Fatal(err)
+	}
+	if stored.Status != change_request.RequestSent || stored.ApprovalStatus != change_request.ApprovalDraft {
+		t.Fatalf("update changed approval authority: %#v", stored)
+	}
+	for _, action := range []string{"submit", "approve"} {
+		if got := request(app, http.MethodPost, "/api/v1/change-requests/"+savedID.Hex()+"/"+action, owner, bson.M{}); got.Code != http.StatusOK {
+			t.Fatalf("%s failed: %d %s", action, got.Code, got.Body.String())
+		}
+	}
+	if err := f.db.Collection("changerequests").FindOne(ctx, bson.M{"_id": savedID}).Decode(&stored); err != nil {
+		t.Fatal(err)
+	}
+	if stored.ApprovalStatus != change_request.ApprovalApproved || stored.Status != change_request.RequestSent {
+		t.Fatalf("approval flow changed request state: %#v", stored)
+	}
+	legacyID := primitive.NewObjectID()
+	if _, err := f.db.Collection("changerequests").InsertOne(ctx, bson.M{
+		"_id": legacyID, "project": f.projectA, "workspace": f.workspaceA,
+		"status": "legacy_state", "approvalStatus": change_request.ApprovalDraft,
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if got := request(app, http.MethodPatch, "/api/v1/change-requests/"+legacyID.Hex(), owner, bson.M{"title": "Legacy request edited"}); got.Code != http.StatusOK {
+		t.Fatalf("non-status edit of historical record failed: %d %s", got.Code, got.Body.String())
+	}
+	if err := f.db.Collection("changerequests").FindOne(ctx, bson.M{"_id": legacyID}).Decode(&stored); err != nil {
+		t.Fatal(err)
+	}
+	if stored.Status != "legacy_state" || stored.Title != "Legacy request edited" {
+		t.Fatalf("historical request state rewritten: %#v", stored)
+	}
+}
+
 func TestAuthenticationAuthorizationAndTenantIsolation(t *testing.T) {
 	f := newFixture(t)
 	ctx := context.Background()
