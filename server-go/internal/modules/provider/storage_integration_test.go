@@ -6,6 +6,8 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"strings"
 	"testing"
@@ -58,12 +60,22 @@ func TestMongoCredentialLifecycleAndTenantIsolation(t *testing.T) {
 		t.Fatal(err)
 	}
 	tests := 0
-	manager.testConnection = func(_ context.Context, input WriteRequest) error {
-		tests++
-		if input.APIKey == "reject-token" {
-			return ErrProviderAuthentication
+	mock := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/chat/completions" || r.Method != http.MethodPost {
+			t.Error("connection test used the wrong mock route")
 		}
-		return nil
+		if r.Header.Get("Authorization") == "Bearer reject-token" {
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+		_, _ = w.Write([]byte(`{"choices":[{"message":{"content":"{\"label\":\"unchanged\",\"confidence\":0.9,\"reasoning\":\"No change\",\"changed_elements\":[]}"}}]}`))
+	}))
+	defer mock.Close()
+	manager.testConnection = func(ctx context.Context, input WriteRequest) error {
+		tests++
+		client := mockClient(mock)
+		client.key = input.APIKey
+		return client.Test(ctx)
 	}
 	input := WriteRequest{ProviderType: TypeExternal, DisplayName: "Mock", Endpoint: "https://api.example.com/v1", Model: "mock-model", APIKey: "first-token", PrivacyAcknowledged: true}
 	badDisplay := input
@@ -136,9 +148,11 @@ func TestMongoCredentialLifecycleAndTenantIsolation(t *testing.T) {
 		t.Fatal("replacement did not atomically become current")
 	}
 	var savedTestKey string
-	restarted.testConnection = func(_ context.Context, current WriteRequest) error {
+	restarted.testConnection = func(ctx context.Context, current WriteRequest) error {
 		savedTestKey = current.APIKey
-		return nil
+		client := mockClient(mock)
+		client.key = current.APIKey
+		return client.Test(ctx)
 	}
 	if err := restarted.Test(ctx, workspaceA, ownerA, WriteRequest{}); err != nil || savedTestKey != "second-token" {
 		t.Fatal("saved connection did not use only the replacement credential")
