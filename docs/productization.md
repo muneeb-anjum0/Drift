@@ -6,7 +6,7 @@ Drift remains a local-first system for Project → Agreed scope → New change �
 
 ## BYOK economics
 
-External provider credentials belong to the customer's workspace. The customer pays their provider directly for usage. Drift neither sells nor bundles AI tokens. The local model remains usable without an external key. External analysis sends selected project text to the configured provider, so it is an explicit privacy choice.
+External provider credentials belong to the customer's workspace. The customer pays their provider directly for usage. Drift neither sells nor bundles AI tokens. The local model remains usable without an external key. External analysis sends selected agreed requirements and the new client input to the configured provider, so it is an explicit privacy choice.
 
 ## Free and paid possibilities
 

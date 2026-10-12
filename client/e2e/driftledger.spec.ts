@@ -113,7 +113,7 @@ test('synthetic provider setup flows through a proposed change and human decisio
   await page.getByLabel('Model', { exact: true }).fill('mock-model');
   await page.getByLabel('HTTPS endpoint').fill('https://api.example.com/v1');
   await page.getByLabel('API key').fill(syntheticKey);
-  await page.getByLabel(/Scope text used for analysis/).check();
+  await page.getByLabel(/selected agreed requirement and new client input used for analysis/i).check();
   await page.getByRole('button', { name: 'Test connection' }).click();
   await expect(page.getByText(/Connected. No project text/)).toBeVisible();
   await page.getByRole('button', { name: 'Save provider' }).click();

@@ -58,7 +58,7 @@ The connection-time check and redirect ban address DNS rebinding and redirect by
 
 ## 9. Privacy
 
-Settings must warn: “Scope text used for analysis will be sent to this provider.” An owner/admin acknowledges this before first external save. Local mode remains the privacy-first default and requires no provider key.
+Settings must warn: “The selected agreed requirement and new client input used for analysis will be sent to this provider.” An owner/admin acknowledges this before first external save. Local mode remains the privacy-first default and requires no provider key.
 
 ## 10. Authorization
 

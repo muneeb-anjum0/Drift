@@ -20,7 +20,17 @@ var deniedIPv4 = prefixes(
 	"198.51.100.0/24", "203.0.113.0/24", "224.0.0.0/4", "240.0.0.0/4",
 )
 var globalIPv6 = netip.MustParsePrefix("2000::/3")
-var deniedIPv6 = prefixes("2001::/23", "2001:db8::/32", "2001:20::/28")
+
+// Exclude every IANA IPv6 special-purpose block within 2000::/3, including
+// globally reachable special services: they are not ordinary provider hosts.
+// Keep this list aligned with the IANA IPv6 Special-Purpose Address Registry.
+var deniedIPv6 = prefixes(
+	"2001::/23",         // IETF protocol assignments and transition mechanisms
+	"2001:db8::/32",     // documentation
+	"2002::/16",         // 6to4 transition
+	"2620:4f:8000::/48", // AS112 service
+	"3fff::/20",         // documentation
+)
 
 func prefixes(raw ...string) []netip.Prefix {
 	out := make([]netip.Prefix, 0, len(raw))
