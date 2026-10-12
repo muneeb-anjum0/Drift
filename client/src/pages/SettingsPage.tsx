@@ -4,6 +4,7 @@ import { Button } from '../components/common/Button';
 import { useAuth } from '../hooks/useAuth';
 import { SettingsAccordion } from '../features/settings/SettingsAccordion';
 import { getSettingsSections } from '../features/settings/settingsSections';
+import { ProviderSettings } from '../features/settings/ProviderSettings';
 
 export const SettingsPage = () => {
   const { user, logout } = useAuth();
@@ -21,7 +22,7 @@ export const SettingsPage = () => {
           <p className="app-eyebrow">About</p>
           <h2 className="mt-2 text-3xl font-semibold text-[var(--color-text)]">Account and runtime</h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--color-text-muted)]">
-            Read-only account and installation information. No settings can be changed on this page.
+            Configure analysis for a workspace below. Account and installation details remain read-only.
           </p>
         </div>
         <Button type="button" variant="secondary" onClick={confirmLogout}>
@@ -30,6 +31,7 @@ export const SettingsPage = () => {
         </Button>
       </section>
 
+      <ProviderSettings />
       <SettingsAccordion sections={sections} />
     </motion.div>
   );
