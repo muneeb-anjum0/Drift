@@ -26,6 +26,7 @@ var workspaceCollections = []string{
 	"projects",
 	"workspacemembers",
 	"activitylogs",
+	"workspaceproviderconfigs",
 }
 
 type storedFile struct {
