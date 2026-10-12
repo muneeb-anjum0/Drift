@@ -10,6 +10,7 @@ import (
 
 	"driftledger/server-go/internal/authorization"
 	"driftledger/server-go/internal/modules/activity"
+	"driftledger/server-go/internal/modules/provider"
 	"driftledger/server-go/internal/modules/requirement"
 	"driftledger/server-go/internal/utils"
 	"go.mongodb.org/mongo-driver/bson"
@@ -20,11 +21,48 @@ import (
 
 type Service struct {
 	db        *mongo.Database
-	inference InferenceClient
+	inference AnalysisProvider
+	providers ProviderResolver
 }
 
-func NewService(db *mongo.Database, inference InferenceClient) Service {
+type ProviderResolver interface {
+	Resolve(context.Context, primitive.ObjectID) (provider.Connection, error)
+}
+
+type AnalysisProvider interface {
+	Enabled() bool
+	Health(context.Context) error
+	Predict(context.Context, ModelAnalyzeRequest) (ModelPrediction, error)
+	RelevanceThreshold() float64
+	MaxAnalyzedRequirements() int
+	ProviderName() string
+	ModelName() string
+}
+
+func NewService(db *mongo.Database, inference AnalysisProvider) Service {
 	return Service{db: db, inference: inference}
+}
+
+func NewServiceWithProviders(db *mongo.Database, local AnalysisProvider, manager ProviderResolver) Service {
+	return Service{db: db, inference: local, providers: manager}
+}
+
+func (s Service) forWorkspace(ctx context.Context, workspace primitive.ObjectID) (AnalysisProvider, error) {
+	if s.providers == nil {
+		return s.inference, nil
+	}
+	selected, err := s.providers.Resolve(ctx, workspace)
+	if err != nil {
+		return nil, err
+	}
+	if selected.ProviderType == provider.TypeLocal {
+		return s.inference, nil
+	}
+	external, err := provider.NewClient(selected.Endpoint, selected.Model, selected.APIKey, s.inference.RelevanceThreshold(), s.inference.MaxAnalyzedRequirements())
+	if err != nil {
+		return nil, err
+	}
+	return external, nil
 }
 
 var addKeys = []string{"should", "must", "needs to", "allow", "support", "include", "add", "create", "implement", "integrate", "generate", "export", "import", "dashboard", "report", "analytics", "notification", "payment", "role", "permission", "login", "signup", "email", "api", "admin", "user"}
@@ -51,24 +89,27 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 		}
 		return AnalysisPreview{}, err
 	}
-	changes := detect(version.RequirementsSnapshot, p.InputText)
+	selected, err := s.forWorkspace(ctx, project.Workspace)
+	if err != nil {
+		return AnalysisPreview{}, err
+	}
+	if !selected.Enabled() {
+		return AnalysisPreview{}, ErrInferenceUnavailable
+	}
+	if len(version.RequirementsSnapshot) == 0 {
+		return AnalysisPreview{}, utils.ErrNotFound
+	}
+	changes, inferenceSummary, requirementResults, err := s.analyzeRequirements(ctx, selected, version.RequirementsSnapshot, p.InputText)
+	if err != nil {
+		return AnalysisPreview{}, err
+	}
 	changes, score, risk, counts, hours, summary := CleanAnalysis(changes, p.InputText)
-	engine := "rule_based"
-	requirementResults := []RequirementAnalysisResult{}
-	if s.inference.Enabled() {
-		if len(version.RequirementsSnapshot) == 0 {
-			return AnalysisPreview{}, utils.ErrNotFound
-		}
-		var inferenceSummary string
-		changes, inferenceSummary, requirementResults, err = s.analyzeRequirements(ctx, version.RequirementsSnapshot, p.InputText)
-		if err != nil {
-			return AnalysisPreview{}, err
-		}
-		changes, score, risk, counts, hours, summary = CleanAnalysis(changes, p.InputText)
-		if inferenceSummary != "" && len(changes) == 0 {
-			summary = CleanReasoning(summary + " " + inferenceSummary)
-		}
-		engine = "qwen_lora"
+	if inferenceSummary != "" && len(changes) == 0 {
+		summary = CleanReasoning(summary + " " + inferenceSummary)
+	}
+	engine := "qwen_lora"
+	if selected.ProviderName() == provider.TypeExternal {
+		engine = provider.TypeExternal
 	}
 	return AnalysisPreview{ProjectID: projectID.Hex(), WorkspaceID: project.Workspace.Hex(), BaselineVersionID: versionID.Hex(), BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: score, RiskLevel: risk, Summary: summary, DetectedChanges: changes, RequirementResults: requirementResults, AddedCount: counts["added"], ModifiedCount: counts["modified"], RemovedCount: counts["removed"], AmbiguousCount: counts["ambiguous"], ContradictionCount: counts["contradiction"], EstimatedExtraHours: hours, AnalysisEngine: engine}, nil
 }
@@ -85,9 +126,9 @@ type requirementPrediction struct {
 	selected    bool
 }
 
-func (s Service) analyzeRequirements(ctx context.Context, snapshot []requirement.RequirementSnapshot, inputText string) ([]DetectedChange, string, []RequirementAnalysisResult, error) {
+func (s Service) analyzeRequirements(ctx context.Context, selectedProvider AnalysisProvider, snapshot []requirement.RequirementSnapshot, inputText string) ([]DetectedChange, string, []RequirementAnalysisResult, error) {
 	results := make([]requirementPrediction, 0, len(snapshot))
-	threshold := s.inference.RelevanceThreshold()
+	threshold := selectedProvider.RelevanceThreshold()
 	for _, req := range snapshot {
 		text := singleRequirementText(req)
 		if text == "" {
@@ -122,7 +163,7 @@ func (s Service) analyzeRequirements(ctx context.Context, snapshot []requirement
 		results[index].result.Selected = true
 		results[index].result.Status = "analyzed"
 		selected = append(selected, results[index])
-		if len(selected) >= s.inference.MaxAnalyzedRequirements() {
+		if len(selected) >= selectedProvider.MaxAnalyzedRequirements() {
 			break
 		}
 	}
@@ -136,13 +177,13 @@ func (s Service) analyzeRequirements(ctx context.Context, snapshot []requirement
 		slog.Info("requirement_level_drift_analysis",
 			"requirementsAnalyzed", 0,
 			"requirementsIgnored", len(results),
-			"results", requirementResults,
+			"providerType", selectedProvider.ProviderName(),
 		)
 		return changes, summary, requirementResults, nil
 	}
 
 	for index := range selected {
-		prediction, err := s.inference.Predict(ctx, ModelAnalyzeRequest{BaselineRequirement: selected[index].text, NewClientMessage: inputText})
+		prediction, err := selectedProvider.Predict(ctx, ModelAnalyzeRequest{BaselineRequirement: selected[index].text, NewClientMessage: inputText})
 		if err != nil {
 			return nil, "", nil, err
 		}
@@ -179,7 +220,7 @@ func (s Service) analyzeRequirements(ctx context.Context, snapshot []requirement
 	slog.Info("requirement_level_drift_analysis",
 		"requirementsAnalyzed", len(selected),
 		"requirementsIgnored", len(results)-len(selected),
-		"results", requirementPredictionLog(results),
+		"providerType", selectedProvider.ProviderName(),
 	)
 
 	requirementResults := make([]RequirementAnalysisResult, 0, len(results))
@@ -244,23 +285,6 @@ func baselineRequirementText(snapshot []requirement.RequirementSnapshot) string 
 		}
 	}
 	return strings.Join(parts, "\n")
-}
-
-func requirementPredictionLog(results []requirementPrediction) []map[string]any {
-	out := make([]map[string]any, 0, len(results))
-	for _, result := range results {
-		out = append(out, map[string]any{
-			"title":          result.requirement.Title,
-			"status":         result.result.Status,
-			"label":          result.result.Label,
-			"confidence":     result.result.Confidence,
-			"relevanceScore": result.result.Relevance.Score,
-			"matchedTerms":   result.result.Relevance.MatchedTerms,
-			"matchedDomains": result.result.Relevance.MatchedDomains,
-			"selected":       result.result.Selected,
-		})
-	}
-	return out
 }
 
 func labelScore(label string) int {

@@ -6,7 +6,9 @@ import (
 	"net/http"
 	"time"
 
+	"driftledger/server-go/internal/authorization"
 	"driftledger/server-go/internal/middleware"
+	"driftledger/server-go/internal/modules/provider"
 	"driftledger/server-go/internal/requestctx"
 	"driftledger/server-go/internal/response"
 	"driftledger/server-go/internal/utils"
@@ -25,15 +27,32 @@ func NewHandler(service Service) Handler { return Handler{service: service, vali
 func (h Handler) Readiness(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 3*time.Second)
 	defer cancel()
-	available := h.service.inference.Health(ctx) == nil
+	selected := h.service.inference
+	if raw := c.Query("workspaceId"); raw != "" {
+		workspace, err := utils.ObjectID(raw)
+		if err != nil {
+			response.Error(c, http.StatusBadRequest, "Invalid workspace id", nil)
+			return
+		}
+		if err := authorization.RequireWorkspaceCapability(ctx, h.service.db, workspace, middleware.CurrentUserID(c), authorization.CapabilityRead); err != nil {
+			h.err(c, err)
+			return
+		}
+		selected, err = h.service.forWorkspace(ctx, workspace)
+		if err != nil {
+			response.Success(c, http.StatusOK, "Change analysis readiness checked", gin.H{"available": false, "reason": "unavailable", "providerType": provider.TypeExternal})
+			return
+		}
+	}
+	available := selected.Enabled() && selected.Health(ctx) == nil
 	reason := "ready"
 	if !available {
 		reason = "unavailable"
-		if !h.service.inference.Enabled() {
+		if !selected.Enabled() {
 			reason = "disabled"
 		}
 	}
-	response.Success(c, http.StatusOK, "Change analysis readiness checked", gin.H{"available": available, "reason": reason})
+	response.Success(c, http.StatusOK, "Change analysis readiness checked", gin.H{"available": available, "reason": reason, "providerType": selected.ProviderName(), "model": selected.ModelName()})
 }
 
 func (h Handler) AnalyzeDirect(c *gin.Context) {
@@ -167,6 +186,34 @@ func (h Handler) err(c *gin.Context, err error) {
 	}
 	if errors.Is(err, ErrInferenceBadResponse) {
 		response.Error(c, http.StatusBadGateway, "Drift inference service returned an invalid response", nil)
+		return
+	}
+	if errors.Is(err, provider.ErrMasterKeyUnavailable) || errors.Is(err, provider.ErrCredentialInvalid) {
+		response.Error(c, http.StatusServiceUnavailable, "External provider key service is unavailable", nil)
+		return
+	}
+	if errors.Is(err, provider.ErrProviderAuthentication) {
+		response.Error(c, http.StatusBadGateway, "Provider authentication failed", nil)
+		return
+	}
+	if errors.Is(err, provider.ErrProviderModel) {
+		response.Error(c, http.StatusBadGateway, "Selected provider model is unavailable", nil)
+		return
+	}
+	if errors.Is(err, provider.ErrProviderRateLimited) {
+		response.Error(c, http.StatusBadGateway, "Provider rate limit reached", nil)
+		return
+	}
+	if errors.Is(err, provider.ErrProviderInvalidResponse) {
+		response.Error(c, http.StatusBadGateway, "Provider returned an invalid response", nil)
+		return
+	}
+	if errors.Is(err, provider.ErrProviderTimedOut) {
+		response.Error(c, http.StatusGatewayTimeout, "Provider request timed out", nil)
+		return
+	}
+	if errors.Is(err, provider.ErrProviderUnavailable) || errors.Is(err, provider.ErrEndpointRejected) {
+		response.Error(c, http.StatusBadGateway, "Provider is unavailable", nil)
 		return
 	}
 	response.Error(c, http.StatusInternalServerError, "Drift request failed", nil)

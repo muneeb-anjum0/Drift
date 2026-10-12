@@ -3,12 +3,17 @@ package drift
 import (
 	"driftledger/server-go/internal/config"
 	"driftledger/server-go/internal/middleware"
+	"driftledger/server-go/internal/modules/provider"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func RegisterRoutes(group *gin.RouterGroup, db *mongo.Database, cfg config.Config, inferenceLimiter *middleware.RateLimiter) {
-	handler := NewHandler(NewService(db, NewInferenceClient(cfg)))
+	manager, err := provider.NewManager(db, cfg)
+	if err != nil {
+		panic("invalid provider master key")
+	}
+	handler := NewHandler(NewServiceWithProviders(db, NewInferenceClient(cfg), manager))
 	group.Use(middleware.Auth(db, cfg))
 	group.GET("/readiness", handler.Readiness)
 	group.POST("/analyze-direct", inferenceLimiter.Middleware(middleware.RateLimitByUser), handler.AnalyzeDirect)

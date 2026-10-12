@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"driftledger/server-go/internal/config"
+	"driftledger/server-go/internal/modules/provider"
 )
 
 var ErrInferenceUnavailable = errors.New("drift inference service unavailable")
@@ -33,17 +34,8 @@ type InferenceClient struct {
 	apiKey             string
 }
 
-type ModelAnalyzeRequest struct {
-	BaselineRequirement string `json:"baseline_requirement" validate:"required,max=12000"`
-	NewClientMessage    string `json:"new_client_message" validate:"required,max=12000"`
-}
-
-type ModelPrediction struct {
-	Label           string   `json:"label"`
-	Confidence      float64  `json:"confidence"`
-	Reasoning       string   `json:"reasoning"`
-	ChangedElements []string `json:"changed_elements"`
-}
+type ModelAnalyzeRequest = provider.AnalyzeRequest
+type ModelPrediction = provider.Prediction
 
 func NewInferenceClient(cfg config.Config) InferenceClient {
 	return InferenceClient{
@@ -59,6 +51,9 @@ func NewInferenceClient(cfg config.Config) InferenceClient {
 func (c InferenceClient) Enabled() bool {
 	return c.enabled
 }
+
+func (c InferenceClient) ProviderName() string { return "local" }
+func (c InferenceClient) ModelName() string    { return "Local model" }
 
 func (c InferenceClient) RelevanceThreshold() float64 {
 	if c.relevanceThreshold <= 0 {
