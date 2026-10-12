@@ -10,7 +10,7 @@ export const SettingsPage = () => {
   const { user, logout } = useAuth();
   const sections = getSettingsSections(user);
   const confirmLogout = () => {
-    if (window.confirm('Log out of DriftLedger?')) {
+    if (window.confirm('Log out of Drift?')) {
       void logout();
     }
   };
