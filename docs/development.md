@@ -25,7 +25,7 @@ The browser reaches only the frontend. The Go API is also bound to host loopback
 
 Local mode needs no provider master key. To let workspace owners/admins configure an external OpenAI-compatible HTTPS provider, generate an **independent** key with `openssl rand -base64 32`, set `DRIFT_PROVIDER_MASTER_KEY` in the ignored `.env`, and restart the backend. Keep this value stable across restarts and Mongo restores: losing it makes existing encrypted provider credentials unusable. Do not commit it, put it in a browser setting, or reuse the JWT/inference key. The key is 32 random bytes encoded as base64. A staging installation needs its own `STAGING_PROVIDER_MASTER_KEY` in its ignored staging env. Back up the master key separately from Mongo under operator-controlled secret custody.
 
-In **Account → Analysis provider**, select a workspace, enter a public HTTPS endpoint, model and API key, acknowledge that selected agreed requirements and new client input will leave the local machine for analysis, test, then save. Only owner/admin can manage credentials; members see metadata only. Saved keys cannot be revealed—enter a new key to replace one. Removing the external provider deletes its encrypted credential and returns the workspace to local mode without deleting projects or analysis history. If external analysis fails, Drift does not silently fall back to local inference. Public HTTPS endpoints are restricted by the [provider architecture](provider_architecture.md); private/loopback self-hosted endpoints are not supported in this first BYOK mode. BYOK provider usage is paid directly to the provider; Drift does not sell tokens.
+In **Account → Analysis provider**, select a workspace, enter a public HTTPS endpoint, model and API key, acknowledge that selected agreed requirements and new client input will leave the local machine for analysis, test, then save. Only owner/admin can manage credentials; members see metadata only. Saved keys cannot be revealed—enter a new key to replace one. Removing the external provider deletes its encrypted credential and returns the workspace to local mode without deleting projects or analysis history. If external analysis fails, Drift does not silently fall back to local inference. Public HTTPS endpoints are restricted by the [model/provider contract](model-and-providers.md); private/loopback self-hosted endpoints are not supported in this first BYOK mode. BYOK provider usage is paid directly to the provider; Drift does not sell tokens.
 
 ## Optional original model
 
@@ -97,7 +97,21 @@ If using the model, start its profile again and recheck its SHA and health. `.en
 
 ## Verification and troubleshooting
 
-Developers who want to run source-level checks also need Node.js 22, Go 1.26.9, Python 3.13+, and `make`. `make setup` installs those test dependencies, and `make verify` runs lint, unit tests, builds, audits, and Compose validation; Mongo integration and Playwright tests have separate setup. These are **developer verification** prerequisites, not runtime prerequisites.
+Developers who want to run source-level checks also need Node.js 22, Go 1.26.9, Python 3.13+, and `make`. `make setup` installs those test dependencies, and `make verify` runs lint, unit tests, builds, audits, and Compose validation; Mongo integration and Playwright tests have separate setup. These are **developer verification** prerequisites, not runtime prerequisites. `.github/workflows/verify.yml` is the authoritative job matrix; do not substitute model-free contract tests for model-quality evidence.
+
+Key source checks, after lockfile-based `npm ci` and Python dev-requirement installation, are:
+
+```sh
+npm run lint
+npm run typecheck
+npm run build
+test -z "$(cd server-go && gofmt -l .)"
+(cd server-go && go vet ./... && go test ./... && go build -o /tmp/driftledger-api-verify ./cmd/api)
+python -m pytest services/inference/test_app.py
+ruff check services/inference tools
+```
+
+CI also runs isolated Mongo-backed invariants with `MONGO_TEST_URI`, Playwright `npm run test:e2e` against a model-free Compose stack, Phase III historical verifier tests, dependency audits, and config-only validation of the base, GPU, test, and staging Compose overlays. Keep the authorization, tenant, BYOK, analysis-preview integrity, inference-auth, and E2E suites intact. The local core stack can be started without model weights; starting the optional original GGUF is a separate, resource-intensive action and is not a prerequisite for ordinary software checks.
 
 | Symptom | First check |
 | --- | --- |
@@ -110,4 +124,4 @@ Developers who want to run source-level checks also need Node.js 22, Go 1.26.9, 
 | NVIDIA runtime unavailable | Use CPU mode; check `docker info` and GPU toolkit separately. |
 | Stale containers or permissions | Check `docker compose ps`, project name, and `docker compose logs`; never use `down --volumes` as a troubleshooting shortcut. |
 
-The local-first distribution decision and evidence are in [Phase IV-G](phase_iv_g_local_distribution_readiness.md). Public DNS, TLS, ingress, and VPS checks in the historical [staging gate](staging_readiness_gate.md) are not local-release prerequisites.
+The local-first distribution decision and evidence are indexed in [research history](research-history.md). Public DNS, TLS, ingress, and VPS checks in [deployment](deployment.md) are not local-release prerequisites.

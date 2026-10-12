@@ -1,90 +1,102 @@
 # Drift
 
-## What Drift Is
+Drift tracks how project requirements move after scope is agreed. It turns a later client request into a proposed comparison against a saved scope snapshot, shows the likely impact, and keeps the decision with the people responsible for the project.
 
-Drift is a local-first workspace for comparing new client input with an approved requirements baseline. It helps a team identify possible requirement drift, review the evidence, and route material changes through an approval-tracked change-request workflow.
+The technically interesting boundary is deliberate: a local model or a workspace-owned external provider can suggest a classification, but the Go application owns authorization, scoring, persistence, and workflow state.
 
-## Why It Exists
+## What Drift Does
 
-Requirements often change in messages and documents before project scope is updated. Drift keeps the approved baseline and the later evidence distinct, so people can review a proposed change instead of silently treating model output as a decision.
+Teams capture requirements in a project, save a versioned scope snapshot, and compare new input with that snapshot. Drift retrieves relevant requirements, proposes one of six drift labels, presents affected scope with a heuristic impact score and additional-effort estimate, and supports an editable change request. Submission and an owner/admin decision are separate actions. Saved analyses, requests, and decisions provide a traceable history; a snapshot alone does **not** formally approve its contents.
 
-## System Architecture
+## The Problem
+
+Scope changes often arrive in messages long before anyone updates the original agreement. Without a stable reference, it is difficult to tell what changed, which requirements are affected, and whether the team actually accepted the change. Drift preserves the agreed-reference *snapshot* and makes the later interpretation and human decision explicit.
+
+## How Drift Works
+
+1. Record project requirements and save a scope snapshot.
+2. Enter a new client or project request against that snapshot.
+3. Review Drift's proposed labels, affected requirements, impact, and effort estimate.
+4. Save the analysis, edit a change-request draft, and submit it for a human decision.
+5. Revisit the resulting history without treating model output as an approval.
+
+## Architecture
 
 ```mermaid
-flowchart LR
-    Browser[Browser] --> UI[Nginx / React]
-    UI --> API[Go API: product authority]
-    API --> DB[(MongoDB: durable data)]
-    API --> Inference[FastAPI: inference adapter]
-    Inference --> Llama[llama.cpp: model execution]
-    Llama --> GGUF[Original DriftLedger GGUF: classifier]
-    API -. optional file storage .-> GCS[Firebase / Google Cloud Storage]
+flowchart TB
+    Browser --> Frontend["Nginx + React"]
+    Frontend --> API["Go API: product authority"]
+    API --> Mongo[(MongoDB)]
+    API --> Provider{Workspace analysis provider}
+    Provider -->|local| FastAPI[FastAPI inference]
+    FastAPI --> Llama[llama.cpp]
+    Llama --> GGUF[Original GGUF]
+    Provider -->|opt-in BYOK| External[Compatible HTTPS API]
+    API -. optional uploaded bytes .-> Storage[Google Cloud Storage]
 ```
 
-React owns presentation and temporary browser state. Go owns authorization, tenancy, persistence, and workflow transitions. MongoDB stores application data; FastAPI handles the prompt, response parsing, and normalization boundary; llama.cpp runs the model. The model does not own product state. See [architecture](docs/architecture.md).
+React owns presentation and temporary browser state. Go enforces tenancy, permissions, state transitions, and persistence; MongoDB holds durable product and preview records. Provider output is advisory. Optional cloud storage holds file bytes, while Go retains file metadata and access control. See [architecture](docs/architecture.md).
 
-## Core Components
+## Drift Analysis Pipeline
 
-- `client/`: React user interface and browser tests.
-- `server-go/`: Gin API, product rules, authentication, tenancy, and MongoDB access.
-- `services/inference/`: protected FastAPI adapter to an optional local model runtime.
-- `models/gguf/`: ignored local GGUF artifacts; the original model remains the selected production/default artifact.
+```mermaid
+flowchart TB
+    Requirements[Project requirements] --> Snapshot[Scope snapshot]
+    Snapshot --> Retrieval[Authorized requirement retrieval]
+    NewInput[New client or project input] --> Retrieval
+    Retrieval --> Classification[Provider proposes classification]
+    Classification --> Normalization[Go validates, scores, and estimates impact]
+    Normalization --> Preview[Expiring server-bound preview]
+    Preview --> Save[Explicit save by preview ID]
+    Save --> Draft[Editable change-request draft]
+    Draft --> Decision[Human submission and decision]
+    Decision --> History[Traceable history]
+```
 
-## Technology Stack
+The preview cannot be replaced with a browser-authored analysis at save time. The score and effort estimate are application heuristics, not guaranteed project forecasts; the classification is a proposed interpretation, not a confirmed change. Some results can also follow explicit rule-based/no-prediction paths. [Model and provider details](docs/model-and-providers.md) explain the current output contract.
 
-React, TypeScript, Vite, Playwright, Go, Gin, MongoDB, Python, FastAPI, llama.cpp, Docker Compose, and GitHub Actions. Google Cloud Storage is an optional file-storage integration.
+## Local Model + BYOK
 
-## Request / Data Flow
+The built-in option uses Drift's supported original Qwen-based GGUF through FastAPI and llama.cpp. The model file is supplied separately, verified by SHA-256, and not committed to this repository. The core project/scope workflow runs without it; local AI comparison requires the optional model profile.
 
-The browser calls the Go API through Nginx. Go validates identity, tenancy, and product transitions before reading or writing MongoDB. When classification is requested, Go calls the internally protected FastAPI service, which constructs the prompt, invokes llama.cpp when configured, parses its output, and returns a bounded result. Go remains responsible for applying product rules. Optional file operations pass through Go to cloud storage.
+Alternatively, a workspace owner/admin can configure an OpenAI-compatible public HTTPS provider with their own API key. Both options enter the same Go-owned analysis pipeline. The provider cannot choose the workspace, change permissions, save an analysis, approve a request, or alter project state. External mode uses encrypted server-side credential storage and intentionally does not fall back silently if the selected provider fails. See [model and providers](docs/model-and-providers.md) and [security](docs/security.md).
 
-## Requirement Drift Pipeline
+## Engineering Highlights
 
-An approved baseline and later client input form the comparison. The model supplies a proposed six-class label; parsing and validation occur at the inference boundary, while review, display, scoring, and change-request decisions remain application concerns. The current runtime still uses a historical four-field JSON response contract (`label`, `confidence`, `reasoning`, `changed_elements`); the label-only architectural conclusion has **not** been migrated into the production API. See [model research status](docs/model_research_status.md).
+- Server-side capability authorization and workspace/tenant isolation across project operations.
+- One-time, expiring analysis previews bind the saved result to its user, project, snapshot, input, and actual provider; replay and retargeting are rejected.
+- Encrypted BYOK credentials, public-endpoint/TLS restrictions, and connection-time address checks constrain the external-provider boundary.
+- Versioned scope snapshots, atomic decision transitions, Mongo-backed integration tests, and model-free browser workflows keep application state testable independently of model quality.
 
 ## Security Model
 
-Browser and model output are untrusted. The Go API is the authorization boundary; the inference API requires an internal key, and required JWT/key settings fail closed. Docker's default local stack is not a hardened public deployment. See [security](docs/security.md) and [configuration](docs/configuration.md).
+The browser and provider responses are untrusted. The Go API is the business and authorization boundary; the local inference API requires a separate internal key. JWT and key settings fail closed, while readiness distinguishes core application health from optional model availability. The localhost Compose stack is **not** a hardened public deployment. See [security](docs/security.md) for controls and known limitations.
 
-## Testing Strategy
+## Technology
 
-`make verify` is the local software check. Mongo-backed integration tests and Playwright E2E tests are separate commands; model smoke/evaluation runs are separate from ordinary verification. CI defines the authoritative job composition. A passing local subset is not a staging sign-off. See [verification](docs/verification.md) and the [staging gate](docs/staging_readiness_gate.md).
+| Layer | Technology |
+| --- | --- |
+| Frontend | React, TypeScript, Vite, Nginx |
+| Backend and data | Go, Gin, MongoDB |
+| Local inference | Python, FastAPI, llama.cpp, Qwen-based GGUF |
+| Runtime and verification | Docker Compose, Go tests, pytest, Playwright, GitHub Actions |
 
-## Model Strategy
-
-Phase III research is frozen. Keep the original GGUF as the selected production/default model. The Phase III-J label-only candidate failed its development screen and is a research artifact only; Phase III-K calls for new independent data before further tuning. The sealed final holdout remains unused. No retraining or model replacement is authorized by this README. See [model research status](docs/model_research_status.md).
-
-## Run Locally
-
-Drift is distributed as a **local-first** application, not a hosted service. The normal runtime needs Git, Docker Engine/Desktop, and Docker Compose v2. Copy `.env.example` to `.env` and set independent random `JWT_SECRET` and `DRIFT_INFERENCE_API_KEY` values of at least 32 characters. Never commit `.env`.
-
-```bash
-cp .env.example .env
-docker compose up -d --build --wait db inference backend frontend
-```
-
-Open `http://localhost:5173`. The core app starts without model weights; drift analysis is unavailable until the separately supplied, SHA-verified original GGUF is started. No model binary or public download link is bundled. The [local setup guide](docs/development.md) covers secret generation, optional CPU/GPU model startup, backups, restore, stopping, updating, and troubleshooting. Host Go/Node/Python are needed only for source-level development checks.
-
-## Repository Structure
-
-`client/`, `server-go/`, and `services/` are application code; `tools/` contains verification and model/research utilities; `evaluation/` holds tracked contracts and evidence metadata; `docs/` holds engineering guidance and historical decisions. `models/` and `archive/` also contain ignored local binaries and private evidence. Generated output, `.env`, local model weights, and private archives must stay out of Git and Docker build contexts.
-
-## Distribution and Deployment
-
-The supported direction is `LOCAL_FIRST_DISTRIBUTION`. Normal use is a private localhost Compose installation; it does not require a VPS, public DNS, or public TLS. A separate [proposed staging overlay](docs/staging_configuration.md) and historical server-readiness evidence are retained for a possible future hosted deployment, not as local-release gates.
+Google Cloud Storage is an optional uploaded-file backend.
 
 ## Project Status
 
-Model research is frozen; the original model is retained, and the Phase III-J candidate is rejected. Local-distribution readiness is tracked separately from the historical [server staging gate](docs/staging_readiness_gate.md). A local install is not a public deployment.
+Drift is a **local-first** application. Its Linux x86-64 Docker Compose path, model-free product workflow, and a bounded CPU smoke of the original GGUF have been validated. BYOK is supported. Windows/macOS and end-to-end NVIDIA GPU operation are not claimed verified, and public staging/production deployment is not claimed complete. The rejected Phase III-J candidate remains research-only; the selected local artifact is the original GGUF. The sealed final model holdout was not used for release engineering. See [deployment](docs/deployment.md) and [research history](docs/research-history.md).
 
-## Known Limitations
+## Run Locally
 
-The four-field inference contract predates the label-only research conclusion. Some historical research documents describe now-superseded proposals. Local Compose defaults are not a secured public deployment; users must protect their host, `.env`, model, and backups. See [known limitations](docs/known-limitations.md).
-
-## Engineering Decisions
-
-The Go API remains the product authority, while model output is advisory. The repository preserves frozen research evidence instead of rewriting history. See [architecture decisions](docs/decisions/), the [Phase IV-A baseline](docs/phase_iv_a_repository_and_release_readiness.md), the [Phase IV-B assessment](docs/phase_iv_b_release_candidate_readiness.md), and the current [Phase IV-C report](docs/phase_iv_c_release_blocker_remediation.md).
+The normal installation needs Docker and Compose, not host Go, Node, or Python. Start with the [local development guide](docs/development.md) for secret generation, the model-free core stack, optional model or BYOK setup, and data-safety instructions. Do not expose the default localhost stack to the Internet.
 
 ## Documentation
 
-Start with the [documentation index](docs/README.md) for architecture, setup, security, tests, operations, model status, and historical evidence.
+- [Architecture](docs/architecture.md) — system boundaries, tenancy, workflow, and data flow.
+- [Development](docs/development.md) — local setup, verification, model startup, and troubleshooting.
+- [Deployment](docs/deployment.md) — validated local distribution versus proposed staging.
+- [Security](docs/security.md) — trust boundaries, credentials, preview integrity, and limitations.
+- [Model and providers](docs/model-and-providers.md) — local inference contract and BYOK behavior.
+- [Operations](docs/operations.md) — health, backup/restore, monitoring, and rollback.
+- [Research history](docs/research-history.md) — frozen evidence, model decisions, and historical custody.
