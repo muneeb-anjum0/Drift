@@ -64,8 +64,7 @@ def main() -> int:
             for path in [
                 "README.md",
                 "docs/development.md",
-                "docs/model-pipeline.md",
-                "docs/verification.md",
+                "docs/model-and-providers.md",
             ]
         )
         require("Q4_K_M" in docs, "docs do not mention Q4_K_M")

@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Frozen document hashes are verified against the pre-compression commit.
       - uses: actions/setup-node@v4
         with:
           node-version: 22
