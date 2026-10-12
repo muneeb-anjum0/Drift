@@ -171,5 +171,9 @@ func (h Handler) err(c *gin.Context, err error) {
 		response.Error(c, http.StatusBadRequest, "Invalid approval action", nil)
 		return
 	}
+	if errors.Is(err, ErrInvalidRequestStatus) {
+		response.Error(c, http.StatusBadRequest, "Invalid change-request status", nil)
+		return
+	}
 	response.Error(c, http.StatusInternalServerError, "Change request failed", nil)
 }

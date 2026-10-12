@@ -110,3 +110,16 @@ func TestNeedsRevisionCanBeResubmitted(t *testing.T) {
 		t.Fatalf("expected revision request to resubmit: %v", err)
 	}
 }
+
+func TestRequestStatusVocabularyIsDistinctFromApproval(t *testing.T) {
+	for _, status := range []string{RequestDraft, RequestSent, RequestArchived} {
+		if !validRequestStatus(status) {
+			t.Fatalf("supported request state %q rejected", status)
+		}
+	}
+	for _, status := range []string{"approved", "rejected", "pending_approval", "made_up", "DRAFT", ""} {
+		if validRequestStatus(status) {
+			t.Fatalf("unsupported request state %q accepted", status)
+		}
+	}
+}

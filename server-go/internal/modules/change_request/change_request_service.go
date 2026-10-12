@@ -22,6 +22,9 @@ type Service struct {
 }
 
 const (
+	RequestDraft          = "draft"
+	RequestSent           = "sent"
+	RequestArchived       = "archived"
 	ApprovalDraft         = "draft"
 	ApprovalPending       = "pending_approval"
 	ApprovalApproved      = "approved"
@@ -31,6 +34,16 @@ const (
 )
 
 var ErrInvalidApprovalAction = errors.New("invalid approval action")
+var ErrInvalidRequestStatus = errors.New("invalid change-request status")
+
+func validRequestStatus(status string) bool {
+	switch status {
+	case RequestDraft, RequestSent, RequestArchived:
+		return true
+	default:
+		return false
+	}
+}
 
 func NewService(db *mongo.Database) Service {
 	return Service{db: db}
@@ -196,6 +209,10 @@ func impactWeight(impact string) int {
 }
 
 func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequest) (ChangeRequest, error) {
+	status := def(p.Status, RequestDraft)
+	if !validRequestStatus(status) {
+		return ChangeRequest{}, ErrInvalidRequestStatus
+	}
 	driftID, err := utils.ObjectID(p.DriftAnalysisID)
 	if err != nil {
 		return ChangeRequest{}, err
@@ -208,7 +225,7 @@ func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequ
 		return ChangeRequest{}, err
 	}
 	now := time.Now().UTC()
-	cr := ChangeRequest{ID: utils.NewID(), Project: analysis.Project, Workspace: analysis.Workspace, DriftAnalysis: driftID, Title: p.Title, ClientName: p.ClientName, Summary: p.Summary, ChangesRequested: p.ChangesRequested, BusinessReason: p.BusinessReason, TimelineImpact: p.TimelineImpact, CostImpact: p.CostImpact, RecommendedAction: p.RecommendedAction, ApprovalNote: p.ApprovalNote, Status: def(p.Status, "draft"), ApprovalStatus: ApprovalDraft, GeneratedBy: analysis.AnalysisEngine, CreatedBy: userID, CreatedAt: now, UpdatedAt: now}
+	cr := ChangeRequest{ID: utils.NewID(), Project: analysis.Project, Workspace: analysis.Workspace, DriftAnalysis: driftID, Title: p.Title, ClientName: p.ClientName, Summary: p.Summary, ChangesRequested: p.ChangesRequested, BusinessReason: p.BusinessReason, TimelineImpact: p.TimelineImpact, CostImpact: p.CostImpact, RecommendedAction: p.RecommendedAction, ApprovalNote: p.ApprovalNote, Status: status, ApprovalStatus: ApprovalDraft, GeneratedBy: analysis.AnalysisEngine, CreatedBy: userID, CreatedAt: now, UpdatedAt: now}
 	_, err = s.db.Collection("changerequests").InsertOne(ctx, cr)
 	if err == nil {
 		activity.Log(ctx, s.db, analysis.Workspace, userID, "CHANGE_REQUEST_CREATED", "ChangeRequest", cr.ID.Hex(), bson.M{
@@ -270,6 +287,9 @@ func (s Service) ListApprovals(ctx context.Context, userID primitive.ObjectID) (
 }
 
 func (s Service) Update(ctx context.Context, id, userID primitive.ObjectID, p UpdateRequest) (ChangeRequest, error) {
+	if p.Status != "" && !validRequestStatus(p.Status) {
+		return ChangeRequest{}, ErrInvalidRequestStatus
+	}
 	cr, err := s.Get(ctx, id, userID)
 	if err != nil {
 		return cr, err
