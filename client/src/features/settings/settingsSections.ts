@@ -1,5 +1,6 @@
 import type { User } from '../../types';
-import { userHandle } from '../../components/layout/appNavigation';
+
+const userHandle = (user?: User | null) => user?.email?.split('@')[0] || user?.name || 'user';
 
 export type SettingsSection = {
   id: string;
