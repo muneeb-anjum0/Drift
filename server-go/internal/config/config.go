@@ -1,6 +1,7 @@
 package config
 
 import (
+	"encoding/base64"
 	"fmt"
 	"net/netip"
 	"os"
@@ -29,6 +30,7 @@ type Config struct {
 	DriftInferenceTimeout        time.Duration
 	DriftRelevanceThreshold      float64
 	DriftMaxAnalyzedRequirements int
+	ProviderMasterKey            string
 	FirebaseStorageEnabled       bool
 	FirebaseStorageBucket        string
 	MaxUploadSizeMB              int64
@@ -54,6 +56,7 @@ func Load() Config {
 		DriftInferenceTimeout:        time.Duration(getInt("DRIFT_INFERENCE_TIMEOUT_MS", 65000)) * time.Millisecond,
 		DriftRelevanceThreshold:      getFloat("DRIFT_RELEVANCE_THRESHOLD", 0.25),
 		DriftMaxAnalyzedRequirements: getInt("DRIFT_MAX_ANALYZED_REQUIREMENTS", 3),
+		ProviderMasterKey:            strings.TrimSpace(os.Getenv("DRIFT_PROVIDER_MASTER_KEY")),
 		FirebaseStorageEnabled:       getBool("FIREBASE_STORAGE_ENABLED", false),
 		FirebaseStorageBucket:        get("FIREBASE_STORAGE_BUCKET", ""),
 		MaxUploadSizeMB:              int64(getInt("MAX_UPLOAD_SIZE_MB", 10)),
@@ -88,6 +91,12 @@ func (c Config) Validate() error {
 		}
 		if len(c.DriftInferenceAPIKey) < 32 || isKnownInsecureSecret(c.DriftInferenceAPIKey) {
 			return fmt.Errorf("DRIFT_INFERENCE_API_KEY must be set to a non-default value of at least 32 characters when inference is enabled")
+		}
+	}
+	if c.ProviderMasterKey != "" {
+		key, err := base64.StdEncoding.DecodeString(c.ProviderMasterKey)
+		if err != nil || len(key) != 32 {
+			return fmt.Errorf("DRIFT_PROVIDER_MASTER_KEY must be base64-encoded 32-byte key material")
 		}
 	}
 	return nil

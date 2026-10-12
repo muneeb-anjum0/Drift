@@ -3,7 +3,7 @@ import type { Project, User, Workspace } from '../../types';
 export type DriftInputType = 'client_message' | 'meeting_note' | 'scope_update' | 'document_text' | 'other';
 export type ChangeType = 'added' | 'modified' | 'removed' | 'ambiguous' | 'contradiction' | 'unchanged';
 export type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
-export type AnalysisEngine = 'rule_based' | 'qwen_lora';
+export type AnalysisEngine = 'rule_based' | 'qwen_lora' | 'openai_compatible';
 
 export interface DetectedChange {
   changeType: ChangeType;

@@ -113,7 +113,7 @@ export const ProjectDetailsPage = () => {
     </LocalState> : null}
 
     {section === 'compare' ? <LocalState loading={versionsQuery.isPending || requirementsQuery.isPending || analysesQuery.isPending || workspacesQuery.isPending} error={versionsQuery.isError || requirementsQuery.isError || analysesQuery.isError || workspacesQuery.isError} retry={retryCore}>
-      <div className="space-y-6"><DriftAnalysisPanel projectId={projectId} versions={versions} canAnalyze={writable} onPrepareDecision={() => setSection('decisions')} /><details className="v-panel p-5"><summary className="cursor-pointer font-semibold">Previously saved analyses ({analyses.length})</summary><div className="mt-4"><DriftHistory analyses={analyses} canDelete={writable} onDelete={(item) => void removeAnalysis(item)} isDeleting={deleteAnalysis.isPending} /></div></details></div>
+      <div className="space-y-6"><DriftAnalysisPanel projectId={projectId} workspaceId={workspaceId} versions={versions} canAnalyze={writable} onPrepareDecision={() => setSection('decisions')} /><details className="v-panel p-5"><summary className="cursor-pointer font-semibold">Previously saved analyses ({analyses.length})</summary><div className="mt-4"><DriftHistory analyses={analyses} canDelete={writable} onDelete={(item) => void removeAnalysis(item)} isDeleting={deleteAnalysis.isPending} /></div></details></div>
     </LocalState> : null}
 
     {section === 'decisions' ? <LocalState loading={requestsQuery.isPending || analysesQuery.isPending || workspacesQuery.isPending} error={requestsQuery.isError || analysesQuery.isError || workspacesQuery.isError} retry={() => { void requestsQuery.refetch(); void analysesQuery.refetch(); void workspacesQuery.refetch(); }}>

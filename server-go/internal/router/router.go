@@ -17,6 +17,7 @@ import (
 	"driftledger/server-go/internal/modules/evaluation"
 	filemodule "driftledger/server-go/internal/modules/file"
 	"driftledger/server-go/internal/modules/project"
+	"driftledger/server-go/internal/modules/provider"
 	"driftledger/server-go/internal/modules/requirement"
 	"driftledger/server-go/internal/modules/workspace"
 	"driftledger/server-go/internal/response"
@@ -60,6 +61,7 @@ func New(db *mongo.Database, cfg config.Config, storage storageSvc.Backend) *gin
 	inferenceLimiter := middleware.NewRateLimiter(cfg.InferenceRateLimitRequests, cfg.RateLimitWindow)
 	auth.RegisterRoutes(api.Group("/auth"), db, cfg)
 	workspace.RegisterRoutes(api.Group("/workspaces"), db, cfg, storage)
+	provider.RegisterRoutes(api.Group("/workspaces"), db, cfg, inferenceLimiter)
 	project.RegisterRoutes(api.Group("/projects"), db, cfg, storage)
 	activity.RegisterRoutes(api.Group("/activities"), db, cfg)
 	requirement.RegisterRoutes(api.Group("/requirements"), db, cfg)

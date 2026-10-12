@@ -186,7 +186,7 @@ func TestAuthenticationAuthorizationAndTenantIsolation(t *testing.T) {
 		{"nonexistent user", http.MethodGet, "/api/v1/projects", deletedUserToken, nil, http.StatusUnauthorized},
 		{"unauthenticated inference", http.MethodPost, "/api/v1/drift/analyze", "", bson.M{}, http.StatusUnauthorized},
 		{"viewer cannot analyze", http.MethodPost, "/api/v1/drift/analyze", viewerToken, bson.M{"projectId": f.projectA.Hex(), "baselineVersionId": baselineAID.Hex(), "inputText": "Use a password."}, http.StatusForbidden},
-		{"owner can analyze own baseline", http.MethodPost, "/api/v1/drift/analyze", ownerAToken, bson.M{"projectId": f.projectA.Hex(), "baselineVersionId": baselineAID.Hex(), "inputText": "Use a password."}, http.StatusOK},
+		{"owner gets unavailable without a configured model, not fabricated analysis", http.MethodPost, "/api/v1/drift/analyze", ownerAToken, bson.M{"projectId": f.projectA.Hex(), "baselineVersionId": baselineAID.Hex(), "inputText": "Use a password."}, http.StatusBadGateway},
 		{"cross-tenant baseline cannot be selected", http.MethodPost, "/api/v1/drift/analyze", ownerAToken, bson.M{"projectId": f.projectA.Hex(), "baselineVersionId": baselineBID.Hex(), "inputText": "Export confidential audit records."}, http.StatusNotFound},
 		{"viewer can read workspace", http.MethodGet, "/api/v1/workspaces/" + f.workspaceA.Hex(), viewerToken, nil, http.StatusOK},
 		{"viewer cannot update workspace", http.MethodPatch, "/api/v1/workspaces/" + f.workspaceA.Hex(), viewerToken, bson.M{"name": "Forbidden"}, http.StatusForbidden},
@@ -224,6 +224,10 @@ func TestAuthenticationAuthorizationAndTenantIsolation(t *testing.T) {
 				t.Fatalf("expected %d, got %d: %s", tt.want, result.Code, result.Body.String())
 			}
 		})
+	}
+	analysisCount, err := f.db.Collection("driftanalyses").CountDocuments(ctx, bson.M{"workspace": f.workspaceA})
+	if err != nil || analysisCount != 1 {
+		t.Fatalf("unavailable analysis created a fabricated result: count=%d err=%v", analysisCount, err)
 	}
 }
 

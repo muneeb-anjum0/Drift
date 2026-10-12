@@ -1,6 +1,7 @@
 package config
 
 import (
+	"encoding/base64"
 	"strings"
 	"testing"
 	"time"
@@ -14,6 +15,23 @@ func validConfig() Config {
 		InferenceRateLimitRequests: 20,
 		RateLimitWindow:            time.Minute,
 		MaxUploadSizeMB:            10,
+	}
+}
+
+func TestProviderMasterKeyOptionalButValidated(t *testing.T) {
+	cfg := validConfig()
+	if err := cfg.Validate(); err != nil {
+		t.Fatalf("local-only config should not require provider key: %v", err)
+	}
+	for _, raw := range []string{"not-base64", base64.StdEncoding.EncodeToString([]byte("short"))} {
+		cfg.ProviderMasterKey = raw
+		if err := cfg.Validate(); err == nil {
+			t.Fatal("invalid provider key accepted")
+		}
+	}
+	cfg.ProviderMasterKey = base64.StdEncoding.EncodeToString([]byte(strings.Repeat("k", 32)))
+	if err := cfg.Validate(); err != nil {
+		t.Fatalf("valid provider key rejected: %v", err)
 	}
 }
 

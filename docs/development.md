@@ -21,6 +21,12 @@ Open `http://localhost:5173` (or the selected port). `http://127.0.0.1:5000/heal
 
 The browser reaches only the frontend. The Go API is also bound to host loopback at `127.0.0.1:5000` for local diagnostics; Mongo, inference, and llama.cpp have no published host ports. Local JWT, inference-key, tenant, and rate-limit boundaries still apply. A user with full control of the host or Docker socket can read local application data and secrets; Drift does not defend against that attacker.
 
+## Optional workspace BYOK provider
+
+Local mode needs no provider master key. To let workspace owners/admins configure an external OpenAI-compatible HTTPS provider, generate an **independent** key with `openssl rand -base64 32`, set `DRIFT_PROVIDER_MASTER_KEY` in the ignored `.env`, and restart the backend. Keep this value stable across restarts and Mongo restores: losing it makes existing encrypted provider credentials unusable. Do not commit it, put it in a browser setting, or reuse the JWT/inference key. The key is 32 random bytes encoded as base64. A staging installation needs its own `STAGING_PROVIDER_MASTER_KEY` in its ignored staging env. Back up the master key separately from Mongo under operator-controlled secret custody.
+
+In **Account → Analysis provider**, select a workspace, enter a public HTTPS endpoint, model and API key, acknowledge that selected agreed requirements and new client input will leave the local machine for analysis, test, then save. Only owner/admin can manage credentials; members see metadata only. Saved keys cannot be revealed—enter a new key to replace one. Removing the external provider deletes its encrypted credential and returns the workspace to local mode without deleting projects or analysis history. If external analysis fails, Drift does not silently fall back to local inference. Public HTTPS endpoints are restricted by the [provider architecture](provider_architecture.md); private/loopback self-hosted endpoints are not supported in this first BYOK mode. BYOK provider usage is paid directly to the provider; Drift does not sell tokens.
+
 ## Optional original model
 
 The model is **optional** for the core app and is not included in Git. No authorized public download URL is provided. Obtain the original artifact through its authorized custody channel, then place it at:

@@ -34,6 +34,7 @@ export const AppLayout = ({ children }: { children?: ReactNode }) => {
             <div className="v-account-popover">
               <Link to="/workspaces">Workspaces</Link>
               <Link to="/settings">About & runtime</Link>
+              <Link to="/settings#analysis-provider">Analysis provider</Link>
               <Link to="/evaluation">Advanced diagnostics</Link>
               <Link to="/billing">Billing demo</Link>
               <button type="button" onClick={() => void handleLogout()}>Log out</button>

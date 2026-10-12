@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { driftApi } from '../api/drift.api';
 
-export const useChangeReadiness = () => useQuery({
-  queryKey: ['change-readiness'],
-  queryFn: driftApi.readiness,
+export const useChangeReadiness = (workspaceId?: string) => useQuery({
+  queryKey: ['change-readiness', workspaceId ?? 'local-diagnostic'],
+  queryFn: () => driftApi.readiness(workspaceId),
   staleTime: 15_000,
   retry: 1,
 });

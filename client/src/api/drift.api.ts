@@ -3,8 +3,8 @@ import type { ApiResponse } from '../types/api.types';
 import type { DriftAnalysis, DriftAnalysisPreview, DriftInputType, ModelPrediction } from '../features/drift/drift.types';
 
 export const driftApi = {
-  readiness: async () => {
-    const response = await api.get<ApiResponse<{ available: boolean; reason: 'ready' | 'disabled' | 'unavailable' }>>('/drift/readiness');
+  readiness: async (workspaceId?: string) => {
+    const response = await api.get<ApiResponse<{ available: boolean; reason: 'ready' | 'disabled' | 'unavailable'; providerType: 'local' | 'openai_compatible'; model?: string }>>('/drift/readiness', { params: workspaceId ? { workspaceId } : undefined });
     return response.data.data;
   },
   analyzeDrift: async (payload: {
