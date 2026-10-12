@@ -100,6 +100,10 @@ func TestSchemaCompatibilityWithIsolatedMongo(t *testing.T) {
 			model: mongo.IndexModel{Keys: bson.D{{Key: "user", Value: 1}}, Options: options.Index().SetName("user_1").SetExpireAfterSeconds(60)},
 		},
 		{
+			name: "wrong preview TTL", collection: "analysispreviews", want: "expireAfterSeconds",
+			model: mongo.IndexModel{Keys: bson.D{{Key: "expiresAt", Value: 1}}, Options: options.Index().SetName("expiresAt_1").SetExpireAfterSeconds(60)},
+		},
+		{
 			name: "hidden", collection: "users", want: "hidden",
 			model: mongo.IndexModel{Keys: bson.D{{Key: "email", Value: 1}}, Options: options.Index().SetName("email_1").SetUnique(true).SetHidden(true)},
 		},
@@ -181,6 +185,15 @@ func TestIndexMetadataNormalization(t *testing.T) {
 		}
 		if _, err := parseIndexMetadata(raw); err == nil {
 			t.Fatal("malformed unique option was accepted")
+		}
+	})
+	t.Run("malformed TTL fails closed", func(t *testing.T) {
+		raw, err := bson.Marshal(bson.D{{Key: "key", Value: expected.keys}, {Key: "name", Value: expected.name}, {Key: "expireAfterSeconds", Value: "zero"}})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, err := parseIndexMetadata(raw); err == nil {
+			t.Fatal("malformed TTL option was accepted")
 		}
 	})
 	t.Run("duplicate metadata field fails closed", func(t *testing.T) {

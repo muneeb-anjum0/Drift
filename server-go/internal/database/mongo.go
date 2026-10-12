@@ -48,24 +48,28 @@ type indexDefinition struct {
 	name       string
 	keys       bson.D
 	unique     bool
+	ttlSeconds *int32
 }
 
+var previewExpirySeconds int32 // expiresAt is an absolute timestamp
+
 var expectedIndexes = []indexDefinition{
-	{"users", "email_1", bson.D{{Key: "email", Value: 1}}, true},
-	{"workspacemembers", "workspace_1_user_1", bson.D{{Key: "workspace", Value: 1}, {Key: "user", Value: 1}}, true},
-	{"workspacemembers", "user_1", bson.D{{Key: "user", Value: 1}}, false},
-	{"workspaces", "owner_1", bson.D{{Key: "owner", Value: 1}}, false},
-	{"workspaces", "slug_1", bson.D{{Key: "slug", Value: 1}}, true},
-	{"projects", "workspace_1", bson.D{{Key: "workspace", Value: 1}}, false},
-	{"projects", "createdBy_1", bson.D{{Key: "createdBy", Value: 1}}, false},
-	{"activitylogs", "workspace_1_createdAt_-1", bson.D{{Key: "workspace", Value: 1}, {Key: "createdAt", Value: -1}}, false},
-	{"requirements", "project_1", bson.D{{Key: "project", Value: 1}}, false},
-	{"requirements", "workspace_1", bson.D{{Key: "workspace", Value: 1}}, false},
-	{"requirementversions", "project_1_versionNumber_-1", bson.D{{Key: "project", Value: 1}, {Key: "versionNumber", Value: -1}}, false},
-	{"requirementversions", "project_version_unique", bson.D{{Key: "project", Value: 1}, {Key: "versionNumber", Value: 1}}, true},
-	{"driftanalyses", "project_1_createdAt_-1", bson.D{{Key: "project", Value: 1}, {Key: "createdAt", Value: -1}}, false},
-	{"changerequests", "project_1_createdAt_-1", bson.D{{Key: "project", Value: 1}, {Key: "createdAt", Value: -1}}, false},
-	{"files", "project_1_createdAt_-1", bson.D{{Key: "project", Value: 1}, {Key: "createdAt", Value: -1}}, false},
+	{"users", "email_1", bson.D{{Key: "email", Value: 1}}, true, nil},
+	{"workspacemembers", "workspace_1_user_1", bson.D{{Key: "workspace", Value: 1}, {Key: "user", Value: 1}}, true, nil},
+	{"workspacemembers", "user_1", bson.D{{Key: "user", Value: 1}}, false, nil},
+	{"workspaces", "owner_1", bson.D{{Key: "owner", Value: 1}}, false, nil},
+	{"workspaces", "slug_1", bson.D{{Key: "slug", Value: 1}}, true, nil},
+	{"projects", "workspace_1", bson.D{{Key: "workspace", Value: 1}}, false, nil},
+	{"projects", "createdBy_1", bson.D{{Key: "createdBy", Value: 1}}, false, nil},
+	{"activitylogs", "workspace_1_createdAt_-1", bson.D{{Key: "workspace", Value: 1}, {Key: "createdAt", Value: -1}}, false, nil},
+	{"requirements", "project_1", bson.D{{Key: "project", Value: 1}}, false, nil},
+	{"requirements", "workspace_1", bson.D{{Key: "workspace", Value: 1}}, false, nil},
+	{"requirementversions", "project_1_versionNumber_-1", bson.D{{Key: "project", Value: 1}, {Key: "versionNumber", Value: -1}}, false, nil},
+	{"requirementversions", "project_version_unique", bson.D{{Key: "project", Value: 1}, {Key: "versionNumber", Value: 1}}, true, nil},
+	{"analysispreviews", "expiresAt_1", bson.D{{Key: "expiresAt", Value: 1}}, false, &previewExpirySeconds},
+	{"driftanalyses", "project_1_createdAt_-1", bson.D{{Key: "project", Value: 1}, {Key: "createdAt", Value: -1}}, false, nil},
+	{"changerequests", "project_1_createdAt_-1", bson.D{{Key: "project", Value: 1}, {Key: "createdAt", Value: -1}}, false, nil},
+	{"files", "project_1_createdAt_-1", bson.D{{Key: "project", Value: 1}, {Key: "createdAt", Value: -1}}, false, nil},
 }
 
 type IndexReport struct {
@@ -83,6 +87,7 @@ type indexMetadata struct {
 	sparse               bool
 	hidden               bool
 	hasTTL               bool
+	ttlSeconds           int32
 	hasPartialFilter     bool
 	hasCollation         bool
 	otherSemanticOptions []string
@@ -121,6 +126,13 @@ func parseIndexMetadata(document bson.Raw) (indexMetadata, error) {
 			metadata.hidden, err = boolIndexOption(value, key)
 		case "expireAfterSeconds":
 			metadata.hasTTL = true
+			if seconds, ok := value.Int32OK(); ok {
+				metadata.ttlSeconds = seconds
+			} else if seconds, ok := value.Int64OK(); ok && seconds >= 0 && seconds <= 2147483647 {
+				metadata.ttlSeconds = int32(seconds)
+			} else {
+				err = fmt.Errorf("index metadata %q must be a nonnegative integer", key)
+			}
 		case "partialFilterExpression":
 			metadata.hasPartialFilter = true
 		case "collation":
@@ -170,8 +182,11 @@ func incompatibleIndex(expected indexDefinition, existing indexMetadata, expecte
 	if existing.sparse {
 		return "unexpected sparse setting"
 	}
-	if existing.hasTTL {
+	if expected.ttlSeconds == nil && existing.hasTTL {
 		return "unexpected expireAfterSeconds"
+	}
+	if expected.ttlSeconds != nil && (!existing.hasTTL || existing.ttlSeconds != *expected.ttlSeconds) {
+		return "wrong expireAfterSeconds"
 	}
 	if existing.hasPartialFilter {
 		return "unexpected partialFilterExpression"
@@ -192,6 +207,9 @@ func (d indexDefinition) model() mongo.IndexModel {
 	indexOptions := options.Index().SetName(d.name)
 	if d.unique {
 		indexOptions.SetUnique(true)
+	}
+	if d.ttlSeconds != nil {
+		indexOptions.SetExpireAfterSeconds(*d.ttlSeconds)
 	}
 	return mongo.IndexModel{Keys: d.keys, Options: indexOptions}
 }

@@ -23,25 +23,7 @@ export const driftApi = {
     const response = await api.post<ApiResponse<{ prediction: ModelPrediction }>>('/drift/analyze-direct', payload);
     return response.data.data.prediction;
   },
-  saveDriftAnalysis: async (payload: {
-    projectId: string;
-    baselineVersionId: string;
-    inputText: string;
-    inputType?: DriftInputType;
-    detectedChanges: DriftAnalysisPreview['detectedChanges'];
-    requirementResults?: DriftAnalysisPreview['requirementResults'];
-    driftScore: number;
-    riskLevel: DriftAnalysisPreview['riskLevel'];
-    summary: string;
-    addedCount: number;
-    modifiedCount: number;
-    removedCount: number;
-    ambiguousCount: number;
-    contradictionCount: number;
-    estimatedExtraHours: number;
-    analysisEngine: DriftAnalysisPreview['analysisEngine'];
-    status?: DriftAnalysis['status'];
-  }) => {
+  saveDriftAnalysis: async (payload: { previewId: string }) => {
     const response = await api.post<ApiResponse<{ analysis: DriftAnalysis }>>('/drift/save', payload);
     return response.data.data.analysis;
   },

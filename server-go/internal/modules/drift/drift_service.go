@@ -6,7 +6,6 @@ import (
 	"log/slog"
 	"sort"
 	"strings"
-	"time"
 
 	"driftledger/server-go/internal/authorization"
 	"driftledger/server-go/internal/modules/activity"
@@ -83,7 +82,7 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 		return AnalysisPreview{}, err
 	}
 	var version requirement.RequirementVersion
-	if err := s.db.Collection("requirementversions").FindOne(ctx, bson.M{"_id": versionID, "project": projectID}).Decode(&version); err != nil {
+	if err := s.db.Collection("requirementversions").FindOne(ctx, bson.M{"_id": versionID, "project": projectID, "workspace": project.Workspace}).Decode(&version); err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
 			return AnalysisPreview{}, utils.ErrNotFound
 		}
@@ -99,7 +98,7 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 	if len(version.RequirementsSnapshot) == 0 {
 		return AnalysisPreview{}, utils.ErrNotFound
 	}
-	changes, inferenceSummary, requirementResults, err := s.analyzeRequirements(ctx, selected, version.RequirementsSnapshot, p.InputText)
+	changes, inferenceSummary, requirementResults, providerCalled, err := s.analyzeRequirements(ctx, selected, version.RequirementsSnapshot, p.InputText)
 	if err != nil {
 		return AnalysisPreview{}, err
 	}
@@ -107,11 +106,22 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 	if inferenceSummary != "" && len(changes) == 0 {
 		summary = CleanReasoning(summary + " " + inferenceSummary)
 	}
-	engine := "qwen_lora"
-	if selected.ProviderName() == provider.TypeExternal {
-		engine = provider.TypeExternal
+	engine := "rule_based" // no relevant requirement means no provider prediction ran
+	if providerCalled {
+		switch selected.ProviderName() {
+		case provider.TypeLocal:
+			engine = "qwen_lora"
+		case provider.TypeExternal:
+			engine = provider.TypeExternal
+		default:
+			return AnalysisPreview{}, ErrInferenceBadResponse
+		}
 	}
-	return AnalysisPreview{ProjectID: projectID.Hex(), WorkspaceID: project.Workspace.Hex(), BaselineVersionID: versionID.Hex(), BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: score, RiskLevel: risk, Summary: summary, DetectedChanges: changes, RequirementResults: requirementResults, AddedCount: counts["added"], ModifiedCount: counts["modified"], RemovedCount: counts["removed"], AmbiguousCount: counts["ambiguous"], ContradictionCount: counts["contradiction"], EstimatedExtraHours: hours, AnalysisEngine: engine}, nil
+	preview := AnalysisPreview{ProjectID: projectID.Hex(), WorkspaceID: project.Workspace.Hex(), BaselineVersionID: versionID.Hex(), BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: score, RiskLevel: risk, Summary: summary, DetectedChanges: changes, RequirementResults: requirementResults, AddedCount: counts["added"], ModifiedCount: counts["modified"], RemovedCount: counts["removed"], AmbiguousCount: counts["ambiguous"], ContradictionCount: counts["contradiction"], EstimatedExtraHours: hours, AnalysisEngine: engine}
+	if err := s.storePreview(ctx, userID, projectID, project.Workspace, versionID, &preview); err != nil {
+		return AnalysisPreview{}, err
+	}
+	return preview, nil
 }
 
 func (s Service) AnalyzeDirect(ctx context.Context, p ModelAnalyzeRequest) (ModelPrediction, error) {
@@ -126,7 +136,7 @@ type requirementPrediction struct {
 	selected    bool
 }
 
-func (s Service) analyzeRequirements(ctx context.Context, selectedProvider AnalysisProvider, snapshot []requirement.RequirementSnapshot, inputText string) ([]DetectedChange, string, []RequirementAnalysisResult, error) {
+func (s Service) analyzeRequirements(ctx context.Context, selectedProvider AnalysisProvider, snapshot []requirement.RequirementSnapshot, inputText string) ([]DetectedChange, string, []RequirementAnalysisResult, bool, error) {
 	results := make([]requirementPrediction, 0, len(snapshot))
 	threshold := selectedProvider.RelevanceThreshold()
 	for _, req := range snapshot {
@@ -149,7 +159,7 @@ func (s Service) analyzeRequirements(ctx context.Context, selectedProvider Analy
 		})
 	}
 	if len(results) == 0 {
-		return nil, "", nil, utils.ErrNotFound
+		return nil, "", nil, false, utils.ErrNotFound
 	}
 
 	rankRequirementPredictions(results)
@@ -179,13 +189,13 @@ func (s Service) analyzeRequirements(ctx context.Context, selectedProvider Analy
 			"requirementsIgnored", len(results),
 			"providerType", selectedProvider.ProviderName(),
 		)
-		return changes, summary, requirementResults, nil
+		return changes, summary, requirementResults, false, nil
 	}
 
 	for index := range selected {
 		prediction, err := selectedProvider.Predict(ctx, ModelAnalyzeRequest{BaselineRequirement: selected[index].text, NewClientMessage: inputText})
 		if err != nil {
-			return nil, "", nil, err
+			return nil, "", nil, false, err
 		}
 		prediction = normalizePredictionForRelevantRequirement(prediction, selected[index].result.Relevance, selected[index].text, inputText)
 		selected[index].prediction = prediction
@@ -234,9 +244,9 @@ func (s Service) analyzeRequirements(ctx context.Context, selectedProvider Analy
 				parts = append(parts, change.Description)
 			}
 		}
-		return changes, strings.Join(parts, " "), requirementResults, nil
+		return changes, strings.Join(parts, " "), requirementResults, true, nil
 	}
-	return changes, selected[0].prediction.Reasoning, requirementResults, nil
+	return changes, selected[0].prediction.Reasoning, requirementResults, true, nil
 }
 
 func rankRequirementPredictions(results []requirementPrediction) {
@@ -597,41 +607,6 @@ func detect(baseline []requirement.RequirementSnapshot, text string) []DetectedC
 		changes = append(changes, change)
 	}
 	return changes
-}
-
-func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequest) (DriftAnalysis, error) {
-	projectID, err := utils.ObjectID(p.ProjectID)
-	if err != nil {
-		return DriftAnalysis{}, err
-	}
-	versionID, err := utils.ObjectID(p.BaselineVersionID)
-	if err != nil {
-		return DriftAnalysis{}, err
-	}
-	project, err := authorization.RequireProjectCapability(ctx, s.db, projectID, userID, authorization.CapabilityWrite)
-	if err != nil {
-		return DriftAnalysis{}, err
-	}
-	var version requirement.RequirementVersion
-	if err := s.db.Collection("requirementversions").FindOne(ctx, bson.M{"_id": versionID, "project": projectID}).Decode(&version); err != nil {
-		return DriftAnalysis{}, utils.ErrNotFound
-	}
-	now := time.Now().UTC()
-	changes, score, risk, counts, hours, summary := CleanAnalysis(p.DetectedChanges, p.InputText)
-	analysis := DriftAnalysis{ID: utils.NewID(), Project: projectID, Workspace: project.Workspace, BaselineVersion: versionID, BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: score, RiskLevel: risk, Summary: summary, DetectedChanges: changes, RequirementResults: p.RequirementResults, AddedCount: counts["added"], ModifiedCount: counts["modified"], RemovedCount: counts["removed"], AmbiguousCount: counts["ambiguous"], ContradictionCount: counts["contradiction"], EstimatedExtraHours: hours, AnalysisEngine: def(p.AnalysisEngine, "qwen_lora"), Status: def(p.Status, "saved"), CreatedBy: userID, CreatedAt: now, UpdatedAt: now}
-	_, err = s.db.Collection("driftanalyses").InsertOne(ctx, analysis)
-	if err == nil {
-		activity.Log(ctx, s.db, project.Workspace, userID, "DRIFT_ANALYSIS_CREATED", "DriftAnalysis", analysis.ID.Hex(), bson.M{
-			"projectId":   projectID.Hex(),
-			"projectName": project.Name,
-			"inputType":   analysis.InputType,
-			"inputText":   activitySnippet(analysis.InputText),
-			"summary":     activitySnippet(analysis.Summary),
-			"driftScore":  analysis.DriftScore,
-			"riskLevel":   analysis.RiskLevel,
-		})
-	}
-	return analysis, err
 }
 
 func (s Service) Get(ctx context.Context, id, userID primitive.ObjectID) (DriftAnalysis, error) {

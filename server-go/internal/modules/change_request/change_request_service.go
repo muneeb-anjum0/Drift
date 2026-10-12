@@ -208,7 +208,7 @@ func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequ
 		return ChangeRequest{}, err
 	}
 	now := time.Now().UTC()
-	cr := ChangeRequest{ID: utils.NewID(), Project: analysis.Project, Workspace: analysis.Workspace, DriftAnalysis: driftID, Title: p.Title, ClientName: p.ClientName, Summary: p.Summary, ChangesRequested: p.ChangesRequested, BusinessReason: p.BusinessReason, TimelineImpact: p.TimelineImpact, CostImpact: p.CostImpact, RecommendedAction: p.RecommendedAction, ApprovalNote: p.ApprovalNote, Status: def(p.Status, "draft"), ApprovalStatus: ApprovalDraft, GeneratedBy: def(p.GeneratedBy, analysis.AnalysisEngine), CreatedBy: userID, CreatedAt: now, UpdatedAt: now}
+	cr := ChangeRequest{ID: utils.NewID(), Project: analysis.Project, Workspace: analysis.Workspace, DriftAnalysis: driftID, Title: p.Title, ClientName: p.ClientName, Summary: p.Summary, ChangesRequested: p.ChangesRequested, BusinessReason: p.BusinessReason, TimelineImpact: p.TimelineImpact, CostImpact: p.CostImpact, RecommendedAction: p.RecommendedAction, ApprovalNote: p.ApprovalNote, Status: def(p.Status, "draft"), ApprovalStatus: ApprovalDraft, GeneratedBy: analysis.AnalysisEngine, CreatedBy: userID, CreatedAt: now, UpdatedAt: now}
 	_, err = s.db.Collection("changerequests").InsertOne(ctx, cr)
 	if err == nil {
 		activity.Log(ctx, s.db, analysis.Workspace, userID, "CHANGE_REQUEST_CREATED", "ChangeRequest", cr.ID.Hex(), bson.M{
