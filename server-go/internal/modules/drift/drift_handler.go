@@ -2,7 +2,9 @@ package drift
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"io"
 	"net/http"
 	"time"
 
@@ -109,7 +111,10 @@ func (h Handler) Analyze(c *gin.Context) {
 }
 func (h Handler) Save(c *gin.Context) {
 	var p SaveRequest
-	if c.ShouldBindJSON(&p) != nil || h.validate.Struct(p) != nil {
+	c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, 1024)
+	decoder := json.NewDecoder(c.Request.Body)
+	decoder.DisallowUnknownFields()
+	if decoder.Decode(&p) != nil || h.validate.Struct(p) != nil || decoder.Decode(new(any)) != io.EOF {
 		response.Error(c, http.StatusBadRequest, "Validation failed", nil)
 		return
 	}
@@ -172,6 +177,18 @@ func parseID(c *gin.Context, key string) (primitive.ObjectID, bool) {
 	return id, true
 }
 func (h Handler) err(c *gin.Context, err error) {
+	if errors.Is(err, ErrPreviewUnavailable) {
+		response.Error(c, http.StatusNotFound, "Analysis preview is unavailable or already saved. Compare the change again.", nil)
+		return
+	}
+	if errors.Is(err, ErrPreviewExpired) {
+		response.Error(c, http.StatusGone, "This analysis preview expired. Compare the change again before saving.", nil)
+		return
+	}
+	if errors.Is(err, ErrPreviewCorrupt) {
+		response.Error(c, http.StatusConflict, "Analysis preview is invalid. Compare the change again.", nil)
+		return
+	}
 	if errors.Is(err, utils.ErrNotFound) {
 		response.Error(c, http.StatusNotFound, "Resource not found", nil)
 		return

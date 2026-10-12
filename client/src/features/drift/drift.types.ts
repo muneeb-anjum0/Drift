@@ -60,6 +60,7 @@ export interface DriftAnalysis {
   contradictionCount: number;
   estimatedExtraHours: number;
   analysisEngine: AnalysisEngine;
+  provenanceVersion?: 'server_bound_v1';
   status: 'draft' | 'saved' | 'reviewed';
   createdBy: string | Pick<User, '_id' | 'name' | 'email'>;
   createdAt: string;
@@ -67,6 +68,7 @@ export interface DriftAnalysis {
 }
 
 export interface DriftAnalysisPreview {
+  previewId: string;
   projectId: string;
   baselineVersionId: string;
   baselineVersionNumber: number;

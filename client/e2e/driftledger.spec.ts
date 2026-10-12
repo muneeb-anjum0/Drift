@@ -133,17 +133,53 @@ test('synthetic provider setup flows through a proposed change and human decisio
 
   await page.route('**/api/v1/drift/readiness*', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'ok', data: { available: true, reason: 'ready', providerType: 'openai_compatible', model: 'mock-model' } }) }));
   let mockAnalyzed = false;
+  const previewId = 'a'.repeat(64);
+  const analysisId = 'b'.repeat(24);
+  const changeRequestId = 'c'.repeat(24);
+  let preview: Record<string, unknown> | null = null;
+  let savedAnalysis: Record<string, unknown> | null = null;
+  let approvalStatus = 'draft';
+  let savedRequest: Record<string, unknown> | null = null;
   await page.route('**/api/v1/drift/analyze', (route) => {
     const input = route.request().postDataJSON();
     mockAnalyzed = true;
-    return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'ok', data: { analysis: {
-      projectId: input.projectId, baselineVersionId: input.baselineVersionId, baselineVersionNumber: 1,
+    preview = {
+      previewId, projectId: input.projectId, baselineVersionId: input.baselineVersionId, baselineVersionNumber: 1,
       inputType: 'client_message', inputText: input.inputText, driftScore: 45, riskLevel: 'medium',
       summary: 'The client requested an additional report format.',
       detectedChanges: [{ changeType: 'modified', title: 'Monthly reports', description: 'Add a PDF export option.', newText: input.inputText, oldText: 'Admins can export monthly reports.', impact: 'medium', confidence: 90, recommendation: 'Review the revised export format.' }],
       requirementResults: [], addedCount: 0, modifiedCount: 1, removedCount: 0, ambiguousCount: 0, contradictionCount: 0,
       estimatedExtraHours: 4, analysisEngine: 'openai_compatible',
-    } } }) });
+    };
+    return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'ok', data: { analysis: preview } }) });
+  });
+  await page.route('**/api/v1/drift/save', (route) => {
+    expect(route.request().postDataJSON()).toEqual({ previewId });
+    if (!preview || savedAnalysis) return route.fulfill({ status: 404, contentType: 'application/json', body: JSON.stringify({ message: 'Analysis preview is unavailable or already saved.' }) });
+    savedAnalysis = { ...preview, _id: analysisId, project: preview.projectId, workspace: 'fixture-workspace', baselineVersion: preview.baselineVersionId, status: 'saved', provenanceVersion: 'server_bound_v1', createdBy: 'fixture-user', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+    return route.fulfill({ status: 201, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'ok', data: { analysis: savedAnalysis } }) });
+  });
+  await page.route('**/api/v1/drift/project/*', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'ok', data: { analyses: savedAnalysis ? [savedAnalysis] : [] } }) }));
+  await page.route('**/api/v1/change-requests**', (route) => {
+    const path = new URL(route.request().url()).pathname;
+    const method = route.request().method();
+    if (path.endsWith('/generate') && method === 'POST') {
+      expect(route.request().postDataJSON()).toEqual({ driftAnalysisId: analysisId });
+      const draft = { driftAnalysisId: analysisId, title: 'Monthly reports', clientName: 'Example client', summary: 'Add PDF export.', changesRequested: [{ title: 'Monthly reports', description: 'Add a PDF export option.', changeType: 'modified', impact: 'medium' }], businessReason: 'Client request', timelineImpact: 'Review effort', costImpact: 'Review cost', recommendedAction: 'Review the change', approvalNote: '', status: 'draft', generatedBy: 'openai_compatible' };
+      return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'ok', data: { changeRequest: draft } }) });
+    }
+    if (path.endsWith('/change-requests') && method === 'POST') {
+      const draft = route.request().postDataJSON();
+      savedRequest = { ...draft, _id: changeRequestId, project: savedAnalysis?.project, workspace: 'fixture-workspace', driftAnalysis: analysisId, approvalStatus, createdBy: 'fixture-user', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+      return route.fulfill({ status: 201, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'ok', data: { changeRequest: savedRequest } }) });
+    }
+    if (path.endsWith('/submit') || path.endsWith('/approve')) {
+      approvalStatus = path.endsWith('/submit') ? 'pending_approval' : 'approved';
+      savedRequest = { ...savedRequest, approvalStatus };
+      return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'ok', data: { changeRequest: savedRequest } }) });
+    }
+    const data = path.endsWith('/approvals') ? { changeRequests: savedRequest ? [savedRequest] : [] } : { changeRequests: savedRequest ? [savedRequest] : [] };
+    return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'ok', data }) });
   });
   await page.getByRole('button', { name: 'Changes', exact: true }).click();
   await expect(page.getByText(/Analysis provider:/)).toBeVisible();

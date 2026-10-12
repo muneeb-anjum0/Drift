@@ -61,6 +61,7 @@ type RequirementAnalysisResult struct {
 }
 
 type AnalysisPreview struct {
+	PreviewID             string                      `bson:"-" json:"previewId"`
 	ProjectID             string                      `json:"projectId"`
 	WorkspaceID           string                      `json:"workspaceId,omitempty"`
 	BaselineVersionID     string                      `json:"baselineVersionId"`
@@ -101,6 +102,7 @@ type DriftAnalysis struct {
 	ContradictionCount    int                         `bson:"contradictionCount" json:"contradictionCount"`
 	EstimatedExtraHours   float64                     `bson:"estimatedExtraHours" json:"estimatedExtraHours"`
 	AnalysisEngine        string                      `bson:"analysisEngine" json:"analysisEngine"`
+	ProvenanceVersion     string                      `bson:"provenanceVersion,omitempty" json:"provenanceVersion,omitempty"`
 	Status                string                      `bson:"status" json:"status"`
 	CreatedBy             primitive.ObjectID          `bson:"createdBy" json:"createdBy"`
 	CreatedAt             time.Time                   `bson:"createdAt" json:"createdAt"`

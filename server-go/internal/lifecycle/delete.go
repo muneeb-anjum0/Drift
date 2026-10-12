@@ -10,6 +10,7 @@ import (
 )
 
 var projectCollections = []string{
+	"analysispreviews",
 	"changerequests",
 	"driftanalyses",
 	"requirementversions",
@@ -18,6 +19,7 @@ var projectCollections = []string{
 }
 
 var workspaceCollections = []string{
+	"analysispreviews",
 	"changerequests",
 	"driftanalyses",
 	"requirementversions",

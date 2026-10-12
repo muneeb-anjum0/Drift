@@ -36,8 +36,9 @@ export const useSaveDriftAnalysis = () => {
 
   return useMutation({
     mutationFn: (payload: Parameters<typeof driftApi.saveDriftAnalysis>[0]) => driftApi.saveDriftAnalysis(payload),
-    onSuccess: async (_analysis, payload) => {
-      await invalidateDriftQueries(queryClient, payload.projectId);
+    onSuccess: async (analysis) => {
+      const projectId = typeof analysis.project === 'string' ? analysis.project : analysis.project._id;
+      await invalidateDriftQueries(queryClient, projectId);
     },
   });
 };
