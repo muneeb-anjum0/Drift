@@ -17,9 +17,9 @@ from phase3h_contracts import ROOT, p1_prompt, validate_raw
 SERVER = "http://127.0.0.1:8080"
 DATASET = ROOT / "evaluation/phase_iii_i/decision_reviewed_v1.json"
 REVIEW = ROOT / "evaluation/phase_iii_i/human_review_self_attested_v1.json"
-MODEL = ROOT / "models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf"
+MODEL = ROOT / "ai_model/artifacts/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf"
 P1 = ROOT / "evaluation/prompts/P1.json"
-PP1 = ROOT / "server-go/internal/modules/drift/drift_postprocess.go"
+PP1 = ROOT / "backend/internal/modules/drift/drift_postprocess.go"
 SHA = {
     "dataset": "d0fae87de5a9413e3ffd61104e3ca4478c742399f9d49fb36be12231478a12b5",
     "review": "5f757fe76797530aadd2237c50a4a98cc0c67840d1d43e8c9a27d7e587612f90",

@@ -18,14 +18,14 @@ flowchart LR
 
 | Component | Responsibility | Does not own |
 | --- | --- | --- |
-| `client/` | Pages, domain UI, hooks, typed HTTP clients | Authorization or workflow truth |
-| `server-go/` | REST contract, tenant policy, provider selection, state transitions, drift orchestration, preview binding, persistence | Model loading |
-| `services/inference/` | Model configuration, prompt/runtime adaptation, output validation | Product decisions or persistence |
+| `frontend/` | Pages, domain UI, hooks, typed HTTP clients | Authorization or workflow truth |
+| `backend/` | REST contract, tenant policy, provider selection, state transitions, drift orchestration, preview binding, persistence | Model loading |
+| `ai_model/inference/` | Model configuration, prompt/runtime adaptation, output validation | Product decisions or persistence |
 | MongoDB | Workspaces, projects, requirements, baselines, analyses, change requests, activity | Uploaded document bytes |
 | llama.cpp | GGUF execution when the model profile is explicitly started | Validation or product authority |
 | Cloud Storage | Optional uploaded object bytes | Tenant metadata or permissions |
 
-The normal request direction is `pages -> features -> hooks -> api` in the client and `routes -> handlers -> services -> MongoDB/external boundary` in the backend. Go packages under `internal/` are intentionally not public libraries.
+The normal request direction is `pages -> features -> hooks -> api` in the frontend and `routes -> handlers -> services -> MongoDB/external boundary` in the backend. Go packages under `internal/` are intentionally not public libraries.
 
 ## Product request flow
 

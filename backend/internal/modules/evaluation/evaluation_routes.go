@@ -1,0 +1,18 @@
+package evaluation
+
+import (
+	"driftledger/backend/internal/config"
+	"driftledger/backend/internal/middleware"
+	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/mongo"
+)
+
+func RegisterRoutes(r *gin.RouterGroup, db *mongo.Database, cfg config.Config, inferenceLimiter *middleware.RateLimiter) {
+	handler := NewHandler(NewServiceWithConfig(db, cfg))
+	protected := r.Group("", middleware.Auth(db, cfg))
+	protected.GET("/summary", handler.Summary)
+	protected.POST("/runs", inferenceLimiter.Middleware(middleware.RateLimitByUser), handler.StartRun)
+	protected.GET("/runs/current", handler.CurrentRun)
+	protected.GET("/reports", handler.Reports)
+	protected.GET("/reports/latest", handler.Latest)
+}

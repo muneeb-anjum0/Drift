@@ -92,7 +92,7 @@ def audit(draft: dict) -> dict:
         known_requirements.extend((name, normalize(text)) for text in source_requirements(data))
 
     historical_paths = (
-        ROOT / "server-go/internal/modules/evaluation/evaluation_benchmark.go",
+        ROOT / "backend/internal/modules/evaluation/evaluation_benchmark.go",
         ROOT / "tools/verification/evaluate_q4_quality.py",
     )
     historical_exact_count = 0

@@ -13,7 +13,7 @@ from phase3g_model_free import fits_context, tokens
 
 ROOT = Path(__file__).resolve().parents[2]
 EXPECTED_MODEL_SHA = "11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9"
-MODEL = ROOT / "models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf"
+MODEL = ROOT / "ai_model/artifacts/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf"
 
 
 def request_json(url, payload, timeout):

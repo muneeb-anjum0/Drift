@@ -1,4 +1,5 @@
 node_modules
+.local/
 .venv/
 dist
 build
@@ -16,27 +17,26 @@ playwright-report
 .vscode/settings.json
 .vscode/launch.json
 .vscode/tasks.json
-client/node_modules
-client/dist
-client/test-results
-client/playwright-report
+frontend/node_modules
+frontend/dist
+frontend/test-results
+frontend/playwright-report
 *.tsbuildinfo
 server/node_modules
 server/dist
 firebase-service-account.json
 *.firebase-service-account.json
-server-go/firebase-service-account.json
-server-go/*.firebase-service-account.json
+backend/firebase-service-account.json
+backend/*.firebase-service-account.json
 
 # DriftLedger model artifacts and caches
 Model/
 DriftLedger_v5_qwen2.5_7b_LoRA.zip
-models/base/
-models/merged/
-models/gguf/
-models/adapters/*.zip
-models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA/
-models/huggingface/
+ai_model/artifacts/**
+!ai_model/artifacts/.gitkeep
+!ai_model/artifacts/adapters/
+ai_model/artifacts/adapters/**
+!ai_model/artifacts/adapters/.gitkeep
 .cache/
 .cache/huggingface/
 __pycache__/
@@ -48,8 +48,8 @@ reports/evaluation/
 # Docker/build artifacts
 *.tar
 docker-compose.override.yml
-tools/model/vendor/llama.cpp/build/
-tools/model/vendor/llama.cpp/
+ai_model/tooling/vendor/llama.cpp/build/
+ai_model/tooling/vendor/llama.cpp/
 
 # User-supplied Phase III-I training provenance archive; keep large source data local.
 archive/drift-dataset-kaggle-v5-cumulative/
@@ -60,3 +60,6 @@ archive/phase_iii_k/
 
 # Retained synthetic Phase IV-C local rehearsal artifacts; never ship in Git.
 archive/phase_iv_c_local_backup/
+
+# New label-only review data and frozen local partitions; keep source and test rows out of Git.
+evaluation/label_only_new/local_review/

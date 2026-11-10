@@ -4,7 +4,7 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: client/Dockerfile
+      dockerfile: frontend/Dockerfile
       args:
         VITE_API_BASE_URL: /api/v1
         VITE_DRIFT_MODEL_LABEL: ${VITE_DRIFT_MODEL_LABEL:-Qwen2.5-7B + DriftLedger LoRA (GGUF Q4_K_M)}
@@ -25,7 +25,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: server-go/Dockerfile
+      dockerfile: backend/Dockerfile
     environment:
       APP_ENV: production
       PORT: 5000
@@ -50,7 +50,7 @@ services:
       MAX_UPLOAD_SIZE_MB: ${MAX_UPLOAD_SIZE_MB:-10}
       DRIFT_EVALUATION_REPORT_DIR: /app/reports/evaluation
     volumes:
-      - ./reports:/app/reports
+      - ./.local/reports:/app/reports
     depends_on:
       db:
         condition: service_healthy
@@ -75,7 +75,7 @@ services:
   inference:
     build:
       context: .
-      dockerfile: services/inference/Dockerfile
+      dockerfile: ai_model/inference/Dockerfile
     environment:
       DRIFT_MODEL_MODE: local
       DRIFT_LOCAL_ENGINE: ${DRIFT_LOCAL_ENGINE:-gguf}
@@ -91,7 +91,7 @@ services:
       DRIFT_ALLOW_CPU: ${DRIFT_ALLOW_CPU:-false}
       DRIFT_INFERENCE_API_KEY: ${DRIFT_INFERENCE_API_KEY:-}
     volumes:
-      - ./models:/app/models
+      - ./ai_model/artifacts:/app/models
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS -H 'X-Drift-Inference-Key: '$${DRIFT_INFERENCE_API_KEY} http://localhost:8000/live >/dev/null"]
       interval: 10s
@@ -127,7 +127,7 @@ services:
       - --parallel
       - ${DRIFT_LLAMA_PARALLEL:-1}
     volumes:
-      - ./models:/app/models:ro
+      - ./ai_model/artifacts:/app/models:ro
     read_only: true
     tmpfs:
       - /tmp

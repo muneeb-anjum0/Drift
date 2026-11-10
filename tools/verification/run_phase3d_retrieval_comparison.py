@@ -42,7 +42,7 @@ def validate(dataset_path: Path, trail_path: Path, output_dir: Path) -> str:
         raise ValueError("review is missing or too few cases remain")
     if any(item["decision"] not in {"CONFIRMED", "REVISED", "AMBIGUOUS", "EXCLUDE"} for item in trail["cases"]):
         raise ValueError("invalid review decision")
-    if sha256((ROOT / "server-go/internal/modules/drift/drift_service.go").read_bytes()) != R5_SOURCE_SHA256:
+    if sha256((ROOT / "backend/internal/modules/drift/drift_service.go").read_bytes()) != R5_SOURCE_SHA256:
         raise ValueError("R5 source differs from the Phase III-C freeze")
     if data.get("threshold") != 0.25 or data.get("max_selected") != 3:
         raise ValueError("retrieval threshold or cap differs from the freeze")
@@ -57,7 +57,7 @@ def evaluate(checkout: Path, dataset_path: Path, output_dir: Path, identity: str
         "--mount", f"type=bind,src={output_dir},dst=/output",
         "--mount", "type=volume,src=drift_go_mod_cache,dst=/go/pkg/mod",
         "--mount", "type=volume,src=drift_go_build_cache,dst=/root/.cache/go-build",
-        "--workdir", "/repo/server-go",
+        "--workdir", "/repo/backend",
         GO_IMAGE,
         "/usr/local/go/bin/go", "run", "./cmd/eval-retrieval",
         "--input", "/input/dataset.json",

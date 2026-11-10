@@ -73,7 +73,7 @@ def main():
     prompt_text = [text for path in (ROOT / "evaluation/prompts").glob("*.json")
                    for text in strings(json.loads(path.read_bytes())) if len(text.split()) >= 4]
     results["prompt_examples"] = compare(left, [words(text) for text in prompt_text])
-    test_text = [text for path in list((ROOT / "server-go").rglob("*_test.go")) + list((ROOT / "tools").rglob("test_*.py"))
+    test_text = [text for path in list((ROOT / "backend").rglob("*_test.go")) + list((ROOT / "tools").rglob("test_*.py"))
                  for text in re.findall(r'"([^"\n]{20,})"', path.read_text())]
     results["repository_tests"] = compare(left, [words(text) for text in test_text])
     report = {"role": "DEVELOPMENT_AGGREGATE_CONTAMINATION_AUDIT", "dataset_sha256": hashlib.sha256(raw).hexdigest(),
