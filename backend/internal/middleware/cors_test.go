@@ -69,3 +69,24 @@ func TestCORSPreflightIncludesProviderPUTWithoutGrantingOtherOrigins(t *testing.
 		})
 	}
 }
+
+func TestCORSAllowsMatchingLoopbackAliasOnly(t *testing.T) {
+	engine := gin.New()
+	engine.Use(CORS(config.Config{AppEnv: "production", ClientURL: "http://localhost:5173"}))
+	for _, tc := range []struct {
+		origin  string
+		allowed bool
+	}{
+		{"http://127.0.0.1:5173", true},
+		{"http://127.0.0.1:5174", false},
+		{"http://192.0.2.1:5173", false},
+	} {
+		request := httptest.NewRequest(http.MethodOptions, "/api/v1/auth/register", nil)
+		request.Header.Set("Origin", tc.origin)
+		response := httptest.NewRecorder()
+		engine.ServeHTTP(response, request)
+		if got := response.Header().Get("Access-Control-Allow-Origin"); (got == tc.origin) != tc.allowed {
+			t.Errorf("origin=%q: allow origin=%q, allowed=%t", tc.origin, got, tc.allowed)
+		}
+	}
+}

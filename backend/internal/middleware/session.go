@@ -2,9 +2,11 @@ package middleware
 
 import (
 	"net/http"
+	"net/url"
 	"strings"
 
 	"driftledger/backend/internal/config"
+	"driftledger/backend/internal/response"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,7 +30,26 @@ func ClearSessionCookie(c *gin.Context, cfg config.Config) {
 }
 
 func allowedBrowserOrigin(cfg config.Config, origin string) bool {
-	return origin != "" && (origin == cfg.ClientURL || (cfg.AppEnv == "development" && origin == localViteOrigin))
+	if origin == "" {
+		return false
+	}
+	if origin == cfg.ClientURL || (cfg.AppEnv == "development" && origin == localViteOrigin) {
+		return true
+	}
+	// Local Docker installs are reachable through either loopback name. Keep
+	// the configured scheme and port; other hosts and ports stay disallowed.
+	configured, configuredErr := url.Parse(cfg.ClientURL)
+	requested, requestedErr := url.Parse(origin)
+	if configuredErr != nil || requestedErr != nil || configured.Scheme != "http" || requested.Scheme != "http" ||
+		configured.Port() != requested.Port() || configured.Port() == "" || requested.Path != "" ||
+		requested.RawQuery != "" || requested.Fragment != "" || requested.User != nil {
+		return false
+	}
+	return localLoopbackHost(configured.Hostname()) && localLoopbackHost(requested.Hostname())
+}
+
+func localLoopbackHost(host string) bool {
+	return host == "localhost" || host == "127.0.0.1"
 }
 
 // Browsers send Origin on writes. Reject cross-origin attempts before they can
@@ -38,7 +59,8 @@ func BrowserOrigin(cfg config.Config) gin.HandlerFunc {
 		if c.Request.Method != http.MethodGet && c.Request.Method != http.MethodHead && c.Request.Method != http.MethodOptions {
 			origin := c.GetHeader("Origin")
 			if (origin != "" && !allowedBrowserOrigin(cfg, origin)) || c.GetHeader("Sec-Fetch-Site") == "cross-site" {
-				c.AbortWithStatus(http.StatusForbidden)
+				response.Error(c, http.StatusForbidden, "This browser address is not allowed. Open Drift at the configured app address and try again.", nil)
+				c.Abort()
 				return
 			}
 		}
