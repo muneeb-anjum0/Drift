@@ -97,7 +97,7 @@ jobs:
 
   e2e:
     # Playwright 1.60's browser/dependency installer does not support the
-    ubuntu-26.04 image currently selected by ubuntu-latest.
+    # ubuntu-26.04 image currently selected by ubuntu-latest.
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
