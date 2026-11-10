@@ -1,6 +1,6 @@
 # Label-Only 600-Case Kaggle Runbook
 
-**Status: development baseline package prepared; no model calls or training have occurred.** The new 150-case locked test and old Phase III final are outside this workflow. Keep the Kaggle dataset and notebook **private**. A Kaggle upload awaits confirmation that the reviewed text may be sent there.
+**Status: development baseline package prepared; no model calls or training have occurred.** The new 150-case locked test and old Phase III final are outside this workflow. Keep the Kaggle dataset and notebook **private**. On 10 November 2026, the user confirmed they can use the 600 reviewed cases; this authorizes the private Kaggle workflow, not public dataset publication.
 
 ## Why this model
 
@@ -83,4 +83,4 @@ Before using a resulting adapter on the laptop, load the merged float16 model on
 
 ## Custody and reporting
 
-The source review record says Muhammad Malik reviewed all 600, but the available final-only CSVs cannot establish who authored them or whether any proposed labels changed. Do not invent that history. Before uploading, record the owner's confirmation that the text may be used on private Kaggle, and any clarification about revisions. The synthetic, balanced 600-case set is useful for a controlled experiment but does not demonstrate performance on real customer traffic. Do not put private data, tokens, raw Kaggle outputs, or trained weights into Git.
+The source review record says Muhammad Malik reviewed all 600, but the available final-only CSVs cannot establish who authored them or whether any proposed labels changed. Do not invent that history. The user confirmed the cases may be used on private Kaggle; the revision-history discrepancy remains unresolved. The synthetic, balanced 600-case set is useful for a controlled experiment but does not demonstrate performance on real customer traffic. Do not put private data, tokens, raw Kaggle outputs, or trained weights into Git.
