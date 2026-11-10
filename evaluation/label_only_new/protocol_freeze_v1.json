@@ -1,0 +1,34 @@
+{
+  "id": "label-only-600-protocol-freeze-v1",
+  "status": "FROZEN_PROTOCOL_NOT_EXECUTED",
+  "prompt": {
+    "path": "evaluation/label_only_new/prompt_v1.json",
+    "sha256": "3d9dbdd30769eb2e2b9eb0dbac5b79fba14f99d48c5d90fdc265886bd51df21f"
+  },
+  "gate": {
+    "path": "evaluation/label_only_new/gate_v1.json",
+    "sha256": "cd45cd09ea22b86c2425488d658c9be43501f67e59dbfd908e0aa3ece87342d5"
+  },
+  "parser_and_scorer": {
+    "path": "tools/verification/label_only_600_contract.py",
+    "sha256": "5b6d02edd4711685aab06870dc3478724f6c335bab30cbe0462b6fe1ad98ef2c"
+  },
+  "private_data": {
+    "reviewed_sha256": "4f2d7f2a5abc40c2cfe834f7775fa8a6b46784d752d852923ed5371597e2ac8b",
+    "development_sha256": "0df31b20da23b2c5a9e1701e4f12f107a61501c1390b2a6eed9649f06f2458c6",
+    "train_sha256": "568975bcf2eecb5a6f429825b7ad5d35c8e554c8f624d09780a76cbcee474509",
+    "locked_test_sha256": "42d37efd943564c8441c6dd712cc25bf26a1e6a417b8b80b93503d6b6ee4187b"
+  },
+  "repeat_selection": {
+    "count": 30,
+    "ordered_ids_newline_sha256": "c73d97d822bf389c3b8de581587babf2d63c47ea949e9306a68c6e8d82d34795"
+  },
+  "execution_prerequisites": [
+    "Select and freeze the unmodified small model and tokenizer identities before inference.",
+    "Record the exact chat template, runtime build, hardware, generation request, and data hashes.",
+    "Resolve data publication/custody and document the reviewer-provenance discrepancy without inventing a revision history.",
+    "Keep the new locked test out of development runs and the old Phase III-J final holdout sealed."
+  ],
+  "model_calls": 0,
+  "old_phase_iii_j_final_holdout": "SEALED_NOT_USED"
+}
