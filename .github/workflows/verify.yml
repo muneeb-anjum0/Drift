@@ -52,6 +52,7 @@ jobs:
       - run: python -m pytest tools/verification/test_staging_ingress.py
       - run: python -m pytest tools/verification/test_local_compose.py
       - run: python -m pytest tools/verification/test_local_setup.py
+      - run: python -m pytest tools/verification/test_label_only_baseline_bundle.py
       - run: ruff check ai_model/inference ai_model/tooling tools
       - run: cd frontend && npm audit --audit-level=high
       - run: pip-audit --requirement ai_model/inference/requirements.txt
