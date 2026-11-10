@@ -63,3 +63,31 @@ func TestBrowserOriginBlocksCrossSiteWritesButAllowsSameOriginAndCLI(t *testing.
 		}
 	}
 }
+
+func TestBrowserOriginAllowsOnlyMatchingLoopbackAlias(t *testing.T) {
+	cfg := config.Config{ClientURL: "http://localhost:5173", AppEnv: "production"}
+	router := gin.New()
+	router.Use(BrowserOrigin(cfg))
+	router.POST("/auth/register", func(c *gin.Context) { c.Status(http.StatusNoContent) })
+	for _, tc := range []struct {
+		origin string
+		want   int
+	}{
+		{"http://localhost:5173", http.StatusNoContent},
+		{"http://127.0.0.1:5173", http.StatusNoContent},
+		{"http://127.0.0.1:5174", http.StatusForbidden},
+		{"http://192.0.2.1:5173", http.StatusForbidden},
+		{"https://127.0.0.1:5173", http.StatusForbidden},
+	} {
+		request := httptest.NewRequest(http.MethodPost, "/auth/register", strings.NewReader("{}"))
+		request.Header.Set("Origin", tc.origin)
+		response := httptest.NewRecorder()
+		router.ServeHTTP(response, request)
+		if response.Code != tc.want {
+			t.Errorf("origin=%q: status=%d, want=%d", tc.origin, response.Code, tc.want)
+		}
+		if tc.want == http.StatusForbidden && !strings.Contains(response.Body.String(), "browser address is not allowed") {
+			t.Errorf("origin=%q: missing readable reason: %s", tc.origin, response.Body.String())
+		}
+	}
+}

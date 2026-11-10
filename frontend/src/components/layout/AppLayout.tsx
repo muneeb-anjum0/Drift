@@ -33,7 +33,7 @@ export const AppLayout = ({ children }: { children?: ReactNode }) => {
             <summary aria-label="Account and more options">{user?.name?.trim() || 'Account'} <span aria-hidden="true">⌄</span></summary>
             <div className="v-account-popover">
               <Link to="/workspaces">Workspaces</Link>
-              <Link to="/settings">Account & analysis</Link>
+              <Link to="/settings">Settings</Link>
               <Link to="/evaluation">Advanced diagnostics</Link>
               <button type="button" onClick={() => void handleLogout()}>Log out</button>
             </div>

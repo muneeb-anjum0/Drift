@@ -21,17 +21,6 @@ export const getSettingsSections = (user?: User | null): SettingsSection[] => [
     ],
   },
   {
-    id: 'model',
-    title: 'Local model runtime',
-    description: 'The drift engine currently used by analysis routes.',
-    rows: [
-      { label: 'Provider', value: 'llama.cpp' },
-      { label: 'Model', value: 'Qwen2.5-7B + DriftLedger LoRA' },
-      { label: 'Quantization', value: 'GGUF Q4_K_M' },
-      { label: 'Drift mode', value: 'Model first' },
-    ],
-  },
-  {
     id: 'security',
     title: 'Security',
     description: 'Production safety posture for app data and runtime secrets.',
