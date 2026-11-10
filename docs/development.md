@@ -4,6 +4,10 @@ Drift is a local-first application. The normal runtime needs Git, Docker Engine 
 
 ## First run without a model
 
+The shortest path is `./scripts/setup-local.sh` from a fresh clone. It generates independent JWT, inference, and provider-encryption keys, keeps `.env` private, checks Compose, and starts only the core services. It does not overwrite an existing `.env` or delete a Mongo volume. If Docker requires elevated access, the script requests sudo for Docker commands while creating `.env` as your own user. Its model-free path is the supported first run. Keep the generated provider key backed up separately from Mongo; losing it makes saved BYOK credentials unreadable.
+
+For manual setup, use the commands below:
+
 ```sh
 git clone https://github.com/muneeb-anjum0/Drift.git
 cd Drift
@@ -32,7 +36,7 @@ In **Account → Analysis provider**, select a workspace, enter a public HTTPS e
 The model is **optional** for the core app and is not included in Git. No authorized public download URL is provided. Obtain the original artifact through its authorized custody channel, then place it at:
 
 ```text
-models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf
+ai_model/artifacts/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf
 ```
 
 It is 4,683,074,112 bytes (4.36 GiB). Its SHA-256 **must** be:
@@ -41,7 +45,9 @@ It is 4,683,074,112 bytes (4.36 GiB). Its SHA-256 **must** be:
 11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9
 ```
 
-Check it before startup with `sha256sum models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf` (or `shasum -a 256` on macOS). Do not start the model on a mismatch. The default in-container path in `.env` is `/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf`; the filename matters because both inference and llama.cpp use that path. The ignored `models/` directory is bind-mounted read-only in llama.cpp. Do not use the rejected Phase III-J adapter.
+Check it before startup with `sha256sum ai_model/artifacts/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf` (or `shasum -a 256` on macOS). Do not start the model on a mismatch. The default in-container path in `.env` is `/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf`; the filename matters because both inference and llama.cpp use that path. The ignored `ai_model/artifacts/` directory is bind-mounted read-only in llama.cpp. Do not use the rejected Phase III-J adapter.
+
+On Linux, if the authorized original is elsewhere on your machine, `./scripts/install-original-model.sh /absolute/path/to/original.gguf` verifies its SHA-256, copies it into the ignored mount, verifies the copy, starts llama.cpp, and restarts inference. Add `--gpu` only after configuring NVIDIA Container Toolkit and confirming the host has enough VRAM. This script never downloads a model or accepts a different hash.
 
 CPU mode:
 
@@ -53,14 +59,14 @@ docker compose restart inference
 Restart inference after adding the file: its first model-load attempt happened when the file was absent. Wait until llama reports ready, then inspect `docker compose --profile model logs --tail=50 llama` and the in-app Evaluation model status. The CPU configuration uses zero GPU layers and a 7 GiB llama container memory limit; plan for substantially more host RAM for the whole stack. The artifact alone needs over 4 GiB disk, in addition to images, Mongo, logs, and backups. CPU inference may be slow. The optional NVIDIA route requires a supported GPU and NVIDIA Container Toolkit:
 
 ```sh
-docker compose -f docker-compose.yml -f docker-compose.gpu.yml --profile model up -d llama
+docker compose -f docker-compose.yml -f deploy/compose/gpu.yml --profile model up -d llama
 ```
 
 The GPU override uses `DRIFT_GPU_LAYERS` (default 16) and removes the CPU-only `--device none` flag. Adjust layers for available VRAM. GPU execution is not a requirement for local use and must be verified on the user's machine. To disable the model while keeping the core app, run `docker compose --profile model stop llama`.
 
 ## Stop, restart, and data safety
 
-`docker compose down` stops the stack but **preserves** the `mongo-data` named volume and the `.env` file. Restart with `docker compose up -d --wait db inference backend frontend`, then optionally start llama. An ordinary Docker/host restart followed by the same command should reuse the volume; verify with your own test data. `docker compose down --volumes`, `docker volume rm`, and deleting the project volume are **destructive resets**, not normal cleanup. Uploaded-file storage is disabled by default. Application reports under `reports/` are a separate bind mount and are not in the Mongo backup below.
+`docker compose down` stops the stack but **preserves** the `mongo-data` named volume and the `.env` file. Restart with `docker compose up -d --wait db inference backend frontend`, then optionally start llama. An ordinary Docker/host restart followed by the same command should reuse the volume; verify with your own test data. `docker compose down --volumes`, `docker volume rm`, and deleting the project volume are **destructive resets**, not normal cleanup. Uploaded-file storage is disabled by default. Application reports under `.local/reports/` are a separate bind mount and are not in the Mongo backup below.
 
 ## Local Mongo backup and restore
 
@@ -97,21 +103,21 @@ If using the model, start its profile again and recheck its SHA and health. `.en
 
 ## Verification and troubleshooting
 
-Developers who want to run source-level checks also need Node.js 22, Go 1.26.9, Python 3.13+, and `make`. `make setup` installs those test dependencies, and `make verify` runs lint, unit tests, builds, audits, and Compose validation; Mongo integration and Playwright tests have separate setup. These are **developer verification** prerequisites, not runtime prerequisites. `.github/workflows/verify.yml` is the authoritative job matrix; do not substitute model-free contract tests for model-quality evidence.
+Developers who want to run source-level checks also need Node.js 22, Go 1.26.10, Python 3.13+, and `make`. `make setup` installs those test dependencies, and `make verify` runs lint, unit tests, builds, audits, and Compose validation; Mongo integration and Playwright tests have separate setup. These are **developer verification** prerequisites, not runtime prerequisites. `.github/workflows/verify.yml` is the authoritative job matrix; do not substitute model-free contract tests for model-quality evidence.
 
-Key source checks, after lockfile-based `npm ci` and Python dev-requirement installation, are:
+Key source checks, after `npm ci --prefix frontend` and Python dev-requirement installation, are:
 
 ```sh
-npm run lint
-npm run typecheck
-npm run build
-test -z "$(cd server-go && gofmt -l .)"
-(cd server-go && go vet ./... && go test ./... && go build -o /tmp/driftledger-api-verify ./cmd/api)
-python -m pytest services/inference/test_app.py
-ruff check services/inference tools
+npm --prefix frontend run lint
+npm --prefix frontend run typecheck
+npm --prefix frontend run build
+test -z "$(cd backend && gofmt -l .)"
+(cd backend && go vet ./... && go test ./... && go build -o /tmp/driftledger-api-verify ./cmd/api)
+python -m pytest ai_model/inference/test_app.py
+ruff check ai_model/inference ai_model/tooling tools
 ```
 
-CI also runs isolated Mongo-backed invariants with `MONGO_TEST_URI`, Playwright `npm run test:e2e` against a model-free Compose stack, Phase III historical verifier tests, dependency audits, and config-only validation of the base, GPU, test, and staging Compose overlays. Keep the authorization, tenant, BYOK, analysis-preview integrity, inference-auth, and E2E suites intact. The local core stack can be started without model weights; starting the optional original GGUF is a separate, resource-intensive action and is not a prerequisite for ordinary software checks.
+CI also runs isolated Mongo-backed invariants with `MONGO_TEST_URI`, Playwright `npm --prefix frontend run test:e2e` against a model-free Compose stack, Phase III historical verifier tests, dependency audits, and config-only validation of the base, GPU, test, and staging Compose overlays. Keep the authorization, tenant, BYOK, analysis-preview integrity, inference-auth, and E2E suites intact. The local core stack can be started without model weights; starting the optional original GGUF is a separate, resource-intensive action and is not a prerequisite for ordinary software checks.
 
 | Symptom | First check |
 | --- | --- |

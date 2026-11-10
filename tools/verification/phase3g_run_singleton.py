@@ -12,7 +12,7 @@ from phase3g_model_free import fits_context, tokens
 from phase3g_run_pilot import EXPECTED_MODEL_SHA, MODEL, ROOT, request_json
 
 sys.path.insert(0, str(ROOT))
-from services.inference.contracts import parse_prediction
+from ai_model.inference.contracts import parse_prediction
 
 
 def main():

@@ -1,0 +1,65 @@
+{
+  "id": "label-only-600-development-baseline-gate-v1",
+  "purpose": "Decide whether a bounded label-only fine-tuning experiment is justified for an unmodified small-model baseline. This is not a promotion or production gate.",
+  "dataset": {
+    "development_sha256": "0df31b20da23b2c5a9e1701e4f12f107a61501c1390b2a6eed9649f06f2458c6",
+    "development_rows": 150,
+    "development_support_per_class": 25,
+    "train_sha256": "568975bcf2eecb5a6f429825b7ad5d35c8e554c8f624d09780a76cbcee474509",
+    "locked_test_sha256": "42d37efd943564c8441c6dd712cc25bf26a1e6a417b8b80b93503d6b6ee4187b"
+  },
+  "labels": ["added", "ambiguous", "contradiction", "modified", "removed", "unchanged"],
+  "output_contract": "Exactly one complete JSON object with one key label and a canonical lowercase label string; duplicate keys, extra fields, Markdown, trailing text, aliases, and repair are invalid.",
+  "generation": {
+    "mode": "greedy_no_sampling",
+    "max_new_tokens": 32,
+    "assistant_prefix": "empty",
+    "grammar_or_json_mode": false,
+    "retry_or_repair": false,
+    "batch_size": 1,
+    "execution_order": "development CSV row order",
+    "model_chat_template": "record exact tokenizer and template in pre-run manifest",
+    "model_identity": "freeze exact weights and tokenizer hashes before execution"
+  },
+  "repeatability": {
+    "selection_seed": "label-only-600-repeat-v1",
+    "selection": "first five SHA-256-ranked case IDs within each reviewed class",
+    "cases": 30,
+    "additional_passes": 1,
+    "required_valid": 30,
+    "required_label_agreement": 30,
+    "raw_string_agreement": "report but not a gate"
+  },
+  "metric_conventions": {
+    "primary_pass_only": true,
+    "invalid_counts_as_wrong": true,
+    "macro_f1": "unweighted mean of all six class F1 values; zero denominator yields zero",
+    "confusion_columns": ["added", "ambiguous", "contradiction", "modified", "removed", "unchanged", "INVALID"]
+  },
+  "prerequisites": {
+    "primary_structurally_valid": 150,
+    "repeat_subset_structurally_valid": 30,
+    "repeat_subset_label_agreement": 30,
+    "identity_and_protocol_hashes_match": true,
+    "complete_raw_evidence": true
+  },
+  "decision_order": ["INCONCLUSIVE_ON_PREREQUISITE", "TRAINING_EXPERIMENT_JUSTIFIED", "NO_TRAINING_JUSTIFIED", "INCONCLUSIVE_GRAY_ZONE"],
+  "training_experiment_justified_if_any": {
+    "accuracy_correct_at_most": 112,
+    "macro_f1_below": 0.75,
+    "removed_to_modified_at_least": 6,
+    "contradiction_to_modified_at_least": 6,
+    "added_to_modified_at_least": 6,
+    "ambiguous_correct_at_most": 12
+  },
+  "no_training_justified_if_all": {
+    "accuracy_correct_at_least": 123,
+    "macro_f1_at_least": 0.8,
+    "each_class_correct_at_least": 18,
+    "removed_to_modified_at_most": 3,
+    "contradiction_to_modified_at_most": 3,
+    "added_to_modified_at_most": 3
+  },
+  "historical_comparison": "Only matched runs on this development split with this prompt, parser, and runtime are directly comparable. Closed Phase III numbers are context, not paired scores.",
+  "old_phase_iii_j_final_holdout": "SEALED_NOT_USED"
+}

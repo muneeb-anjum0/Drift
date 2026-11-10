@@ -51,7 +51,7 @@ def test_gpu_override_does_not_keep_cpu_only_flags():
             "-f",
             "docker-compose.yml",
             "-f",
-            "docker-compose.gpu.yml",
+            "deploy/compose/gpu.yml",
             "--profile",
             "model",
             "config",

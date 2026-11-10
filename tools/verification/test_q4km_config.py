@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 Q4_CONTAINER_PATH = "/app/models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf"
-Q4_HOST_PATH = "models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf"
+Q4_HOST_PATH = "ai_model/artifacts/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf"
 
 
 def read(path: str) -> str:
@@ -25,9 +25,9 @@ def require(condition: bool, message: str) -> None:
 def main() -> int:
     try:
         for path, needle in [
-            ("tools/model/quantize_gguf_q4km.py", "Q4_K_M"),
-            ("tools/model/build_q4km_model.py", "quantize_gguf_q4km.py"),
-            ("tools/model/local_model_utils.py", "GGUF_Q4KM_RELATIVE"),
+            ("ai_model/tooling/quantize_gguf_q4km.py", "Q4_K_M"),
+            ("ai_model/tooling/build_q4km_model.py", "quantize_gguf_q4km.py"),
+            ("ai_model/tooling/local_model_utils.py", "GGUF_Q4KM_RELATIVE"),
             ("tools/verification/evaluate_q4_quality.py", "Q4_K_M"),
         ]:
             require((ROOT / path).exists(), f"{path} is missing")
@@ -35,16 +35,17 @@ def main() -> int:
 
         compose = read("docker-compose.yml")
         require(Q4_CONTAINER_PATH in compose, "docker-compose.yml does not default to Q4_K_M")
+        require("./ai_model/artifacts:/app/models" in compose, "docker-compose.yml does not mount the local artifact directory")
         require("--n-gpu-layers" in compose and "DRIFT_LLAMA_GPU_LAYERS:-0" in compose, "llama GPU layers are not pinned to zero")
         require("--device" in compose and "- none" in compose, "llama device offloading is not explicitly disabled")
         require("--parallel" in compose and "DRIFT_LLAMA_PARALLEL:-1" in compose, "llama concurrency is not pinned to one")
 
         env_example = read(".env.example")
         require(Q4_CONTAINER_PATH in env_example, ".env.example does not point Docker model path at Q4_K_M")
-        require(Q4_HOST_PATH in env_example, ".env.example does not expose Q4_K_M host path")
+        require(Q4_HOST_PATH in read("scripts/install-original-model.sh"), "model installer does not use the Q4_K_M host path")
         require("DRIFT_LLAMA_PARALLEL=1" in env_example, ".env.example does not pin llama concurrency to one")
 
-        inference = read("services/inference/app.py") + read("services/inference/config.py")
+        inference = read("ai_model/inference/app.py") + read("ai_model/inference/config.py")
         require("model_label" in inference and "quantization_label" in inference, "inference health lacks model metadata")
         require("Q4_K_M" in inference, "inference default does not mention Q4_K_M")
         require("base_model_required" in inference, "inference health does not clarify base model runtime requirement")
@@ -52,9 +53,9 @@ def main() -> int:
         frontend = "\n".join(
             read(path)
             for path in [
-                "client/src/features/drift/DriftAnalysisPanel.tsx",
-                "client/src/features/settings/settingsSections.ts",
-                "client/src/pages/LandingPage.tsx",
+                "frontend/src/features/drift/DriftAnalysisPanel.tsx",
+                "frontend/src/features/settings/settingsSections.ts",
+                "frontend/src/pages/LandingPage.tsx",
             ]
         )
         require("Q4_K_M" in frontend, "frontend does not present the Q4_K_M runtime")

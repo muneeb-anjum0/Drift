@@ -79,7 +79,7 @@ def main():
     extra = {
         "prompt_examples": [text for path in Path("evaluation/prompts").glob("*.json")
                             for text in strings(json.loads(path.read_text())) if len(text.split()) >= 4],
-        "repository_tests": [text for path in list(Path("server-go").rglob("*_test.go")) + list(Path("tools").rglob("test_*.py"))
+        "repository_tests": [text for path in list(Path("backend").rglob("*_test.go")) + list(Path("tools").rglob("test_*.py"))
                              for text in re.findall(r'"([^"\n]{20,})"', path.read_text())],
     }
     for label, path in corpus_paths.items():

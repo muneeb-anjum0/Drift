@@ -17,7 +17,7 @@ from typing import Any
 
 BACKEND_URL = "http://localhost:5000"
 INFERENCE_URL = "http://localhost:8000"
-REPORT_DIR = Path("reports/evaluation")
+REPORT_DIR = Path(".local/reports/evaluation")
 
 REQUIREMENTS = [
     ("Patient email login", "The system shall allow patients to log in using their registered email and password."),

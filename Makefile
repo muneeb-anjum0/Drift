@@ -4,49 +4,49 @@ PYTHON ?= python3
 VENV ?= .venv
 
 setup:
-	npm ci
-	cd server-go && go mod download
+	cd frontend && npm ci
+	cd backend && go mod download
 	$(PYTHON) -m venv $(VENV)
-	$(VENV)/bin/pip install --requirement services/inference/requirements-dev.txt
+	$(VENV)/bin/pip install --requirement ai_model/inference/requirements-dev.txt
 
 run:
 	docker compose up -d --build db inference backend frontend
 
 test:
-	cd server-go && go test ./...
-	$(VENV)/bin/python -m pytest services/inference/test_app.py
+	cd backend && go test ./...
+	$(VENV)/bin/python -m pytest ai_model/inference/test_app.py
 
 test-integration:
 	@test -n "$(MONGO_TEST_URI)" || (echo "MONGO_TEST_URI is required" >&2; exit 2)
-	cd server-go && go test -count=1 ./internal/integration
+	cd backend && go test -count=1 ./internal/integration
 
 test-e2e:
-	npm run test:e2e
+	cd frontend && npm run test:e2e
 
 lint:
-	npm run lint
-	@test -z "$$(cd server-go && gofmt -l .)" || (cd server-go && gofmt -l .; exit 1)
-	cd server-go && go vet ./...
-	$(VENV)/bin/ruff check --exclude tools/model/vendor services/inference tools
+	cd frontend && npm run lint
+	@test -z "$$(cd backend && gofmt -l .)" || (cd backend && gofmt -l .; exit 1)
+	cd backend && go vet ./...
+	$(VENV)/bin/ruff check --exclude ai_model/tooling/vendor ai_model/inference ai_model/tooling tools
 
 format:
-	cd server-go && gofmt -w .
-	$(VENV)/bin/ruff check --exclude tools/model/vendor --fix services/inference tools
+	cd backend && gofmt -w .
+	$(VENV)/bin/ruff check --exclude ai_model/tooling/vendor --fix ai_model/inference ai_model/tooling tools
 
 build:
-	npm run build
-	cd server-go && go build -o /tmp/driftledger-api-verify ./cmd/api
-	$(VENV)/bin/python -m compileall -q services/inference tools
+	cd frontend && npm run build
+	cd backend && go build -o /tmp/driftledger-api-verify ./cmd/api
+	$(VENV)/bin/python -m compileall -q ai_model/inference ai_model/tooling tools
 	docker compose config --quiet
-	docker compose -f docker-compose.yml -f docker-compose.gpu.yml config --quiet
+	docker compose -f docker-compose.yml -f deploy/compose/gpu.yml config --quiet
 
 verify: lint test build
-	npm audit --audit-level=high
-	$(VENV)/bin/pip-audit --requirement services/inference/requirements.txt
-	cd server-go && go run golang.org/x/vuln/cmd/govulncheck@v1.1.4 ./...
+	cd frontend && npm audit --audit-level=high
+	$(VENV)/bin/pip-audit --requirement ai_model/inference/requirements.txt
+	cd backend && go run golang.org/x/vuln/cmd/govulncheck@v1.1.4 ./...
 
 model-build:
-	$(PYTHON) tools/model/build_q4km_model.py
+	$(PYTHON) ai_model/tooling/build_q4km_model.py
 
 model-check:
 	$(PYTHON) tools/verification/check_local_drift_setup.py

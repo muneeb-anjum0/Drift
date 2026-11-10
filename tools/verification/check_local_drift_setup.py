@@ -18,7 +18,7 @@ FORBIDDEN_STRINGS = [
 
 
 def gguf_q4km_path() -> Path:
-    return ROOT / "models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf"
+    return ROOT / "ai_model/artifacts/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf"
 
 
 def file_size_gb(path: Path) -> float:
@@ -53,10 +53,8 @@ def check_env_paths(failures: list[str]) -> None:
             continue
         text = path.read_text(encoding="utf-8", errors="ignore")
         for required in [
-            "DRIFT_MODEL_MODE=local",
-            "DRIFT_LOCAL_ENGINE=gguf",
-            "DRIFT_GGUF_Q4KM_PATH=models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf",
             f"DRIFT_GGUF_MODEL_PATH={Q4_CONTAINER_PATH}",
+            "DRIFT_LLAMA_PARALLEL=1",
         ]:
             if required not in text:
                 fail(f"{env_file} does not contain {required}", failures)
@@ -67,21 +65,18 @@ def check_env_paths(failures: list[str]) -> None:
 
 
 def check_forbidden_project_strings(failures: list[str]) -> None:
-    ignored_parts = {"node_modules", ".git", "__pycache__", "Model", "models", "dist"}
-    ignored_files = {"package-lock.json", "check_local_drift_setup.py"}
+    active_paths = [ROOT / "backend", ROOT / "frontend/src", ROOT / "ai_model/inference"]
+    active_paths += [ROOT / "docker-compose.yml", ROOT / ".env.example"]
     offenders: list[str] = []
-    for path in ROOT.rglob("*"):
-        if not path.is_file() or path.name in ignored_files or any(part in ignored_parts for part in path.parts):
-            continue
-        if path.suffix.lower() in {".png", ".jpg", ".jpeg", ".gif", ".ico", ".lock"}:
-            continue
-        try:
+    for entry in active_paths:
+        paths = entry.rglob("*") if entry.is_dir() else (entry,)
+        for path in paths:
+            if not path.is_file() or path.suffix.lower() in {".png", ".jpg", ".jpeg", ".gif", ".ico", ".lock"}:
+                continue
             text = path.read_text(encoding="utf-8", errors="ignore")
-        except Exception:
-            continue
-        for forbidden in FORBIDDEN_STRINGS:
-            if forbidden in text:
-                offenders.append(f"{path.relative_to(ROOT)} contains {forbidden}")
+            for forbidden in FORBIDDEN_STRINGS:
+                if forbidden in text:
+                    offenders.append(f"{path.relative_to(ROOT)} contains {forbidden}")
     if offenders:
         for offender in offenders:
             fail(offender, failures)
@@ -93,16 +88,16 @@ def main() -> None:
     failures: list[str] = []
     q4_path = gguf_q4km_path()
     q4_exists = q4_path.exists() and q4_path.stat().st_size > 0
-    base_exists = (ROOT / "models/base/Qwen2.5-7B-Instruct").exists()
+    base_exists = (ROOT / "ai_model/artifacts/base/Qwen2.5-7B-Instruct").exists()
     print(f"Q4_K_M GGUF exists: {str(q4_exists).lower()}")
     print(f"Q4_K_M file size: {file_size_gb(q4_path)} GB")
     print(f"Base model folder exists: {str(base_exists).lower()} (not required for runtime)")
     if not q4_exists:
-        fail("Q4_K_M GGUF is missing. Restore models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf before starting Docker.", failures)
+        fail("Q4_K_M GGUF is missing. Restore ai_model/artifacts/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf before starting Docker.", failures)
 
     for path in [
-        "services/inference/app.py",
-        "services/inference/requirements.txt",
+        "ai_model/inference/app.py",
+        "ai_model/inference/requirements.txt",
         "docker-compose.yml",
         ".env",
         ".env.example",
@@ -114,12 +109,12 @@ def main() -> None:
             fail(f"{path} missing", failures)
 
     check_env_paths(failures)
-    contains("server-go/internal/modules/drift/drift_routes.go", "analyze", failures)
-    contains("server-go/internal/modules/drift/inference_client.go", "predict-drift", failures)
-    contains("client/src/features/drift/DriftAnalysisPanel.tsx", "Model sandbox", failures)
-    contains("docker-compose.yml", "name: Drift", failures)
-    contains("docker-compose.yml", "./models:/app/models", failures)
-    contains("services/inference/app.py", "local_engine", failures)
+    contains("backend/internal/modules/drift/drift_routes.go", "analyze", failures)
+    contains("backend/internal/modules/drift/inference_client.go", "predict-drift", failures)
+    contains("frontend/src/features/settings/settingsSections.ts", "GGUF Q4_K_M", failures)
+    contains("docker-compose.yml", "name: ${COMPOSE_PROJECT_NAME:-drift}", failures)
+    contains("docker-compose.yml", "./ai_model/artifacts:/app/models", failures)
+    contains("ai_model/inference/app.py", "local_engine", failures)
     check_forbidden_project_strings(failures)
 
     if failures:

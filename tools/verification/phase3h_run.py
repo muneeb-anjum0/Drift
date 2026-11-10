@@ -56,7 +56,7 @@ def available_kib():
 
 def verify_environment():
     checks = {
-        "model_sha256": sha(ROOT / "models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf"),
+        "model_sha256": sha(ROOT / "ai_model/artifacts/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf"),
         "p1_sha256": sha(ROOT / "evaluation/prompts/P1.json"),
         "selection_sha256": sha(ROOT / "evaluation/phase_iii_h/diagnostic_selection_v1.json"),
     }

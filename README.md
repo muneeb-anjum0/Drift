@@ -4,6 +4,24 @@ Drift tracks how project requirements move after scope is agreed. It turns a lat
 
 The technically interesting boundary is deliberate: a local model or a workspace-owned external provider can suggest a classification, but the Go application owns authorization, scoring, persistence, and workflow state.
 
+## Why I Built It This Way
+
+A new request can sound small until someone compares it with what the team actually agreed to deliver. I wanted that comparison to be easy to make without letting a model quietly turn a suggestion into a decision. That is why Drift asks for a saved scope snapshot, shows the proposed impact, and keeps submission and approval as separate human steps. The extra step is intentional: it leaves a record the team can revisit when the conversation has moved on.
+
+## Get Started
+
+On Linux, install Git and Docker with Compose v2, then run:
+
+```sh
+git clone https://github.com/muneeb-anjum0/Drift.git
+cd Drift
+./scripts/setup-local.sh
+```
+
+Open **http://localhost:5173**. The script creates a private, ignored `.env` with independent keys and a unique Compose project name. It preserves an existing `.env` and Mongo volume. Docker may ask for sudo. The first build needs network access and may take several minutes. Keep the default localhost stack off the public Internet.
+
+The repository does **not** contain the original 4.36 GiB GGUF or provider credentials. Projects, scope snapshots, and decisions work immediately. For AI comparison, either configure a workspace-owned BYOK provider in **Account → Analysis provider**, or install an authorized copy of the original model with `./scripts/install-original-model.sh /path/to/original.gguf` (add `--gpu` only on a configured NVIDIA host). The installer verifies the exact SHA-256 before starting llama.cpp. See [development](docs/development.md) for backup, updates, and platform limits.
+
 ## What Drift Does
 
 Teams capture requirements in a project, save a versioned scope snapshot, and compare new input with that snapshot. Drift retrieves relevant requirements, proposes one of six drift labels, presents affected scope with a heuristic impact score and additional-effort estimate, and supports an editable change request. Submission and an owner/admin decision are separate actions. Saved analyses, requests, and decisions provide a traceable history; a snapshot alone does **not** formally approve its contents.
@@ -21,6 +39,21 @@ Scope changes often arrive in messages long before anyone updates the original a
 5. Revisit the resulting history without treating model output as an approval.
 
 ## Architecture
+
+The source is grouped by responsibility:
+
+| Folder | Contents |
+| --- | --- |
+| [`frontend/`](frontend/) | React app, browser tests, and Nginx image |
+| [`backend/`](backend/) | Go API, domain services, and integration tests |
+| [`ai_model/inference/`](ai_model/inference/) | Keyed FastAPI service and model runtime adapter |
+| [`ai_model/artifacts/`](ai_model/artifacts/) | Local model files; weights are ignored by Git and mounted into containers at `/app/models` |
+| [`ai_model/tooling/`](ai_model/tooling/) | Model download and conversion utilities |
+| [`evaluation/`](evaluation/) | Research datasets, frozen protocols, and historical evidence |
+| [`deploy/compose/`](deploy/compose/) | Optional GPU, staging, test, and rehearsal Compose overlays |
+| [`tools/`](tools/) | Operational and verification scripts |
+
+The main Compose file, Makefile, and first-run scripts stay at the repository root so setup still begins with one command. Frontend dependencies and their lockfile live under `frontend/`. Generated reports live in ignored `.local/reports/`.
 
 ```mermaid
 flowchart TB
@@ -59,7 +92,7 @@ The preview cannot be replaced with a browser-authored analysis at save time. Th
 
 The built-in option uses Drift's supported original Qwen-based GGUF through FastAPI and llama.cpp. The model file is supplied separately, verified by SHA-256, and not committed to this repository. The core project/scope workflow runs without it; local AI comparison requires the optional model profile.
 
-Alternatively, a workspace owner/admin can configure an OpenAI-compatible public HTTPS provider with their own API key. Both options enter the same Go-owned analysis pipeline. The provider cannot choose the workspace, change permissions, save an analysis, approve a request, or alter project state. External mode uses encrypted server-side credential storage and intentionally does not fall back silently if the selected provider fails. See [model and providers](docs/model-and-providers.md) and [security](docs/security.md).
+Alternatively, a workspace owner/admin can configure an OpenAI-compatible public HTTPS provider with their own API key. External providers return only a six-class label; Drift builds the advisory presentation from that label and the saved project input. The original local model still uses its legacy four-field response. Both options enter the same Go-owned analysis pipeline. The provider cannot choose the workspace, change permissions, save an analysis, approve a request, or alter project state. External mode uses encrypted server-side credential storage and intentionally does not fall back silently if the selected provider fails. See [model and providers](docs/model-and-providers.md) and [security](docs/security.md).
 
 ## Engineering Highlights
 
@@ -87,9 +120,7 @@ Google Cloud Storage is an optional uploaded-file backend.
 
 Drift is a **local-first** application. Its Linux x86-64 Docker Compose path, model-free product workflow, and a bounded CPU smoke of the original GGUF have been validated. BYOK is supported. Windows/macOS and end-to-end NVIDIA GPU operation are not claimed verified, and public staging/production deployment is not claimed complete. The rejected Phase III-J candidate remains research-only; the selected local artifact is the original GGUF. The sealed final model holdout was not used for release engineering. See [deployment](docs/deployment.md) and [research history](docs/research-history.md).
 
-## Run Locally
-
-The normal installation needs Docker and Compose, not host Go, Node, or Python. Start with the [local development guide](docs/development.md) for secret generation, the model-free core stack, optional model or BYOK setup, and data-safety instructions. Do not expose the default localhost stack to the Internet.
+Drift's source is licensed under the existing [Apache License 2.0](LICENSE). That license does not supply rights to separately distributed model weights or third-party provider services.
 
 ## Documentation
 

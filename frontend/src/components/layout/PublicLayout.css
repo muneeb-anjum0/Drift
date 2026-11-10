@@ -1,0 +1,45 @@
+.public-layout {
+  --public-ink: #1a2522;
+  --public-green: #1f6752;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 100vh;
+  min-height: 100svh;
+  background: radial-gradient(circle at 83% 55%, #e5f1e8 0, transparent 37%), #f6f5f1;
+  color: var(--public-ink);
+}
+
+.public-header, .public-content {
+  width: min(100% - 64px, 1220px);
+  margin-inline: auto;
+}
+
+.public-header {
+  min-height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.public-logo { font-size: 28px; font-weight: 750; letter-spacing: -.06em; }
+.public-logo span { color: var(--public-green); }
+.public-header nav { display: flex; align-items: center; }
+.public-nav-link { color: var(--public-ink); font-size: 14px; font-weight: 650; }
+.public-nav-link:hover { color: var(--public-green); }
+
+@media (max-width: 850px) {
+  .public-header, .public-content { width: min(100% - 40px, 680px); }
+  .public-header { min-height: 68px; }
+}
+
+@media (max-width: 560px) {
+  .public-header, .public-content { width: calc(100% - 36px); }
+  .public-header { min-height: 60px; }
+  .public-logo { font-size: 25px; }
+  .public-nav-link { font-size: 12px; }
+}
+
+@media (max-height: 720px) and (min-width: 851px) {
+  .public-header { min-height: 68px; }
+}
