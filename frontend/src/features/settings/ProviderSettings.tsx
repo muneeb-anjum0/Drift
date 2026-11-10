@@ -68,8 +68,8 @@ export const ProviderSettings = () => {
 
   return <section id="analysis-provider" className="v-panel p-6">
     <p className="v-kicker">Workspace setting</p>
-    <h2 className="v-section-title mt-2">Analysis provider</h2>
-    <p className="v-muted mt-2 text-sm">Choose the local model or an external provider you pay directly. Analysis remains a proposal; people make decisions.</p>
+    <h2 className="v-section-title mt-2">Analysis provider and runtime</h2>
+    <p className="v-muted mt-2 text-sm">See what runs analysis for this workspace and choose the local model or an external provider you pay directly. Analysis remains a proposal; people make decisions.</p>
     {workspacesPending ? <p role="status" className="v-muted mt-5 text-sm">Loading workspaces…</p> : !workspaces.length ? <p className="v-muted mt-5 text-sm">Create a workspace before configuring analysis.</p> : <>
       <label className="mt-5 block text-sm font-medium">Workspace<select className={inputClass} value={workspaceId} onChange={(event) => { setWorkspaceId(event.target.value); resetFeedback(); }}>{workspaces.map((item) => <option key={item._id} value={item._id}>{item.name}</option>)}</select></label>
       {providerQuery.isPending ? <p role="status" className="v-muted mt-4 text-sm">Loading provider…</p> : providerQuery.isError ? <p role="alert" className="mt-4 text-sm">Provider settings could not be loaded. <button className="v-link" type="button" onClick={() => void providerQuery.refetch()}>Retry</button></p> : <>
