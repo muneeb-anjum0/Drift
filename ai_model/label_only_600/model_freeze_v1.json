@@ -1,0 +1,24 @@
+{
+  "id": "label-only-600-small-model-v1",
+  "purpose": "Unmodified development baseline before any fine-tuning",
+  "repository": "Qwen/Qwen3-1.7B",
+  "revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e",
+  "license": "apache-2.0",
+  "architecture": "Qwen3ForCausalLM",
+  "dtype": "float16",
+  "chat_template_kwargs": {"enable_thinking": false},
+  "expected_model_shards_sha256": {
+    "model-00001-of-00002.safetensors": "169ad53ec313c3a34b06c0809216e4fc072cce444a5d4ff2b59690d064130ed5",
+    "model-00002-of-00002.safetensors": "912becff8d60672aa8628ef08c05898d9adf17c2ad4ae3caf99b065622fdeff9"
+  },
+  "expected_config_sha256": "1ddb5b89ebc90dcb417a45c213d818577e65976454d29385c8f6140771d95197",
+  "expected_tokenizer_config_sha256": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101",
+  "baseline_generation": {
+    "do_sample": false,
+    "max_new_tokens": 32,
+    "batch_size": 1,
+    "no_grammar_or_repair": true
+  },
+  "source": "https://huggingface.co/Qwen/Qwen3-1.7B",
+  "status": "MODEL_SELECTED_RUNTIME_PREFLIGHT_PENDING"
+}
