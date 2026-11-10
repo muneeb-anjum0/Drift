@@ -103,7 +103,7 @@ If using the model, start its profile again and recheck its SHA and health. `.en
 
 ## Verification and troubleshooting
 
-Developers who want to run source-level checks also need Node.js 22, Go 1.26.9, Python 3.13+, and `make`. `make setup` installs those test dependencies, and `make verify` runs lint, unit tests, builds, audits, and Compose validation; Mongo integration and Playwright tests have separate setup. These are **developer verification** prerequisites, not runtime prerequisites. `.github/workflows/verify.yml` is the authoritative job matrix; do not substitute model-free contract tests for model-quality evidence.
+Developers who want to run source-level checks also need Node.js 22, Go 1.26.10, Python 3.13+, and `make`. `make setup` installs those test dependencies, and `make verify` runs lint, unit tests, builds, audits, and Compose validation; Mongo integration and Playwright tests have separate setup. These are **developer verification** prerequisites, not runtime prerequisites. `.github/workflows/verify.yml` is the authoritative job matrix; do not substitute model-free contract tests for model-quality evidence.
 
 Key source checks, after `npm ci --prefix frontend` and Python dev-requirement installation, are:
 
