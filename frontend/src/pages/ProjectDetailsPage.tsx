@@ -14,8 +14,8 @@ import { nextProjectAction } from '../features/dashboard/attention';
 import { formatDate } from '../utils/formatDate';
 import { RequirementFormModal } from '../features/requirements/RequirementFormModal';
 import { RequirementTable } from '../features/requirements/RequirementTable';
+import { ScopeSearch, useScopeSearch } from '../features/requirements/ScopeSearch';
 import { RequirementVersionHistory } from '../features/requirements/RequirementVersionHistory';
-import { RequirementExtractionPanel } from '../features/requirements/RequirementExtractionPanel';
 import { BaselineButton } from '../features/requirements/BaselineButton';
 import { DriftAnalysisPanel } from '../features/drift/DriftAnalysisPanel';
 import { DriftHistory } from '../features/drift/DriftHistory';
@@ -44,10 +44,10 @@ export const ProjectDetailsPage = () => {
   const setSection = (next: Section) => setParams((current) => { const updated = new URLSearchParams(current); updated.set('section', next); return updated; });
   const [editing, setEditing] = useState<Requirement | null>(null);
   const [adding, setAdding] = useState(false);
-  const [search, setSearch] = useState('');
   const projectQuery = useQuery({ queryKey: ['project', projectId], queryFn: () => projectApi.getById(projectId), enabled: Boolean(projectId) });
   const workspacesQuery = useWorkspaces();
   const requirementsQuery = useProjectRequirements(projectId);
+  const scopeSearch = useScopeSearch(requirementsQuery.data ?? []);
   const versionsQuery = useRequirementVersions(projectId);
   const analysesQuery = useProjectDriftAnalyses(projectId);
   const requestsQuery = useProjectChangeRequests(projectId);
@@ -77,7 +77,7 @@ export const ProjectDetailsPage = () => {
   const analyses = analysesQuery.data ?? [];
   const requests = requestsQuery.data ?? [];
   const files = filesQuery.data ?? [];
-  const scopeItems = requirements.filter((item) => `${item.title} ${item.description}`.toLowerCase().includes(search.toLowerCase()));
+  const scopeItems = scopeSearch.filtered;
   const coreLoading = requirementsQuery.isPending || versionsQuery.isPending || analysesQuery.isPending || requestsQuery.isPending || workspacesQuery.isPending;
   const coreError = requirementsQuery.isError || versionsQuery.isError || analysesQuery.isError || requestsQuery.isError || workspacesQuery.isError;
   const retryCore = () => { void requirementsQuery.refetch(); void versionsQuery.refetch(); void analysesQuery.refetch(); void requestsQuery.refetch(); void workspacesQuery.refetch(); };
@@ -108,7 +108,7 @@ export const ProjectDetailsPage = () => {
 
     {section === 'scope' ? <LocalState loading={requirementsQuery.isPending || versionsQuery.isPending || workspacesQuery.isPending} error={requirementsQuery.isError || versionsQuery.isError || workspacesQuery.isError} retry={() => { void requirementsQuery.refetch(); void versionsQuery.refetch(); void workspacesQuery.refetch(); }}>
       <div className="space-y-6"><div className="flex flex-wrap items-end justify-between gap-3"><div><p className="v-kicker">The agreement</p><h2 className="v-section-title mt-1">What this project is expected to deliver</h2><p className="v-muted mt-1 text-sm">Current scope items are editable; snapshots preserve earlier comparison points.</p></div>{writable ? <Button onClick={() => setAdding(true)}>Add scope item</Button> : null}</div>
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,1.6fr)_minmax(280px,1fr)]"><div className="space-y-4"><label className="block text-sm font-medium">Search scope<input className="mt-2 block h-11 w-full rounded-lg border border-[var(--v-border)] bg-white px-3 font-normal" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search title or description" /></label>{!scopeItems.length && requirements.length ? <p className="v-muted">No items match that search.</p> : <RequirementTable requirements={scopeItems} canEdit={writable} onEdit={setEditing} onDelete={(item) => void removeRequirement(item)} />}</div><aside className="space-y-4"><BaselineButton requirements={requirements} canCreate={approver} isLoading={createBaseline.isPending} onCreateBaseline={() => createBaseline.mutateAsync({ projectId })} onCompare={() => setSection('compare')} /><RequirementVersionHistory versions={versions} />{writable ? <details className="v-panel p-5"><summary className="cursor-pointer font-semibold">Suggest items from scope text</summary><div className="mt-4"><RequirementExtractionPanel projectId={projectId} workspaceId={workspaceId} defaultSourceText={project.originalScope} /></div></details> : null}</aside></div>
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1.6fr)_minmax(280px,1fr)]"><div className="space-y-4"><ScopeSearch search={scopeSearch} />{!scopeItems.length && requirements.length ? <p className="v-muted">No items match these search terms or filters.</p> : <RequirementTable requirements={scopeItems} canEdit={writable} onEdit={setEditing} onDelete={(item) => void removeRequirement(item)} />}</div><aside className="space-y-4"><BaselineButton requirements={requirements} canCreate={approver} isLoading={createBaseline.isPending} onCreateBaseline={() => createBaseline.mutateAsync({ projectId })} onCompare={() => setSection('compare')} /><RequirementVersionHistory versions={versions} /></aside></div>
       </div>
     </LocalState> : null}
 

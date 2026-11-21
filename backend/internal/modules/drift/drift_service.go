@@ -107,16 +107,18 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 	var counts map[string]int
 	var hours float64
 	var summary string
-	if providerCalled && selected.ProviderName() == provider.TypeExternal {
-		// Label-only predictions have no generated explanation or confidence. Keep
-		// the selected requirement and label; legacy canonical prose must not
-		// replace them with a different, unsupported interpretation.
+	if hasScopeReview(changes) {
+		// Review prompts are not established scope changes. Score only the
+		// remaining proposals and keep the uncertainty visible in the summary.
+		score, risk, counts, hours, summary = scoreWithScopeReview(changes)
+	} else {
+		// Each request has already been reconciled against the full snapshot.
+		// Legacy canonical postprocessing can merge distinct requests or invent
+		// a domain-specific explanation, so score the supported proposals only.
 		score, risk, counts, hours, summary = Score(changes)
 		if len(changes) == 0 {
-			summary = "No change was proposed for the selected requirements. Review the wording before deciding."
+			summary = "No scope difference was proposed after checking the saved requirements."
 		}
-	} else {
-		changes, score, risk, counts, hours, summary = CleanAnalysis(changes, p.InputText)
 	}
 	if inferenceSummary != "" && len(changes) == 0 {
 		summary = CleanReasoning(summary + " " + inferenceSummary)
@@ -152,6 +154,32 @@ type requirementPrediction struct {
 }
 
 func (s Service) analyzeRequirements(ctx context.Context, selectedProvider AnalysisProvider, snapshot []requirement.RequirementSnapshot, inputText string) ([]DetectedChange, string, []RequirementAnalysisResult, bool, error) {
+	statements := utils.SplitStatements(inputText)
+	if len(statements) == 0 {
+		return nil, "", nil, false, ErrInferenceBadResponse
+	}
+	if len(statements) > 5 {
+		return nil, "", nil, false, ErrTooManyClientRequests
+	}
+	allChanges := make([]DetectedChange, 0, len(statements))
+	allResults := make([]RequirementAnalysisResult, 0, len(snapshot)*len(statements))
+	called := false
+	for _, statement := range statements {
+		changes, results, didCall, err := s.analyzeOneRequest(ctx, selectedProvider, snapshot, statement)
+		if err != nil {
+			return nil, "", nil, false, err
+		}
+		allChanges = append(allChanges, changes...)
+		allResults = append(allResults, results...)
+		called = called || didCall
+	}
+	return allChanges, "", allResults, called, nil
+}
+
+// analyzeOneRequest checks every requirement in the frozen snapshot. Retrieval
+// orders the calls and supplies evidence; it no longer defines the search
+// boundary. A new capability is proposed only after the complete pass.
+func (s Service) analyzeOneRequest(ctx context.Context, selectedProvider AnalysisProvider, snapshot []requirement.RequirementSnapshot, inputText string) ([]DetectedChange, []RequirementAnalysisResult, bool, error) {
 	results := make([]requirementPrediction, 0, len(snapshot))
 	threshold := selectedProvider.RelevanceThreshold()
 	for _, req := range snapshot {
@@ -167,106 +195,111 @@ func (s Service) analyzeRequirements(ctx context.Context, selectedProvider Analy
 				RequirementID: req.RequirementID,
 				Title:         req.Title,
 				Text:          text,
+				RequestText:   inputText,
 				Status:        "ignored",
-				Selected:      false,
 				Relevance:     relevance,
 			},
 		})
 	}
 	if len(results) == 0 {
-		return nil, "", nil, false, utils.ErrNotFound
+		return nil, nil, false, utils.ErrNotFound
+	}
+	rankRequirementPredictions(results)
+	if err := ctx.Err(); err != nil {
+		return nil, nil, false, err
 	}
 
-	rankRequirementPredictions(results)
-
-	selected := make([]requirementPrediction, 0, len(results))
+	changes := make([]DetectedChange, 0, len(results))
+	hasAdded := false
+	hasCoverage := false
+	weakNonAddition := false
 	for index := range results {
-		if !results[index].result.Relevance.IsRelevant {
-			continue
+		prediction, err := selectedProvider.Predict(ctx, ModelAnalyzeRequest{BaselineRequirement: results[index].text, NewClientMessage: inputText})
+		if err != nil {
+			return nil, nil, true, err
 		}
+		prediction = normalizePredictionForRelevantRequirement(prediction, results[index].result.Relevance, results[index].text, inputText)
+		label := strings.ToLower(strings.TrimSpace(prediction.Label))
 		results[index].selected = true
+		results[index].prediction = prediction
 		results[index].result.Selected = true
 		results[index].result.Status = "analyzed"
-		selected = append(selected, results[index])
-		if len(selected) >= selectedProvider.MaxAnalyzedRequirements() {
-			break
-		}
-	}
-	if len(selected) == 0 {
-		changes := []DetectedChange{newRequirementChange(inputText)}
-		_, _, _, _, summary := Score(changes)
-		requirementResults := make([]RequirementAnalysisResult, 0, len(results))
-		for _, result := range results {
-			requirementResults = append(requirementResults, result.result)
-		}
-		slog.Info("requirement_level_drift_analysis",
-			"requirementsAnalyzed", 0,
-			"requirementsIgnored", len(results),
-			"providerType", selectedProvider.ProviderName(),
-		)
-		return changes, summary, requirementResults, false, nil
-	}
-
-	for index := range selected {
-		prediction, err := selectedProvider.Predict(ctx, ModelAnalyzeRequest{BaselineRequirement: selected[index].text, NewClientMessage: inputText})
-		if err != nil {
-			return nil, "", nil, false, err
-		}
-		prediction = normalizePredictionForRelevantRequirement(prediction, selected[index].result.Relevance, selected[index].text, inputText)
-		selected[index].prediction = prediction
-		selected[index].result.Label = strings.ToLower(strings.TrimSpace(prediction.Label))
+		results[index].result.Label = label
 		if !prediction.LabelOnly {
-			selected[index].result.Confidence = prediction.Confidence
-			selected[index].result.Reasoning = prediction.Reasoning
+			results[index].result.Confidence = prediction.Confidence
+			results[index].result.Reasoning = prediction.Reasoning
 		}
-		for resultIndex := range results {
-			if results[resultIndex].requirement.RequirementID == selected[index].requirement.RequirementID {
-				results[resultIndex] = selected[index]
-				break
-			}
+		if !validModelLabel(label) {
+			return nil, nil, true, ErrInferenceBadResponse
 		}
-	}
-
-	changes := make([]DetectedChange, 0, len(selected))
-	for _, result := range selected {
-		if strings.EqualFold(result.prediction.Label, "unchanged") || (!result.prediction.LabelOnly && result.prediction.Confidence < 0.35) {
+		if label == "added" {
+			hasAdded = true
 			continue
 		}
-		predictedChanges := predictionToChanges(result.prediction, inputText)
-		for _, change := range predictedChanges {
-			change.BaselineRequirementID = result.requirement.RequirementID
-			change.BaselineRequirementTitle = result.requirement.Title
-			change.OldText = result.text
-			if change.Title == "" {
-				change.Title = result.requirement.Title
+		if label == "unchanged" {
+			if results[index].result.Relevance.IsRelevant {
+				hasCoverage = true
 			}
+			continue
+		}
+		if !results[index].result.Relevance.IsRelevant {
+			weakNonAddition = true
+			continue
+		}
+		if !prediction.LabelOnly && prediction.Confidence < 0.35 {
+			weakNonAddition = true
+			continue
+		}
+		for _, change := range predictionToChanges(prediction, inputText) {
+			change.BaselineRequirementID = results[index].requirement.RequirementID
+			change.BaselineRequirementTitle = results[index].requirement.Title
+			change.OldText = results[index].text
 			changes = append(changes, change)
 		}
 	}
 
-	slog.Info("requirement_level_drift_analysis",
-		"requirementsAnalyzed", len(selected),
-		"requirementsIgnored", len(results)-len(selected),
-		"providerType", selectedProvider.ProviderName(),
-	)
-
-	requirementResults := make([]RequirementAnalysisResult, 0, len(results))
-	for _, result := range results {
-		requirementResults = append(requirementResults, result.result)
-	}
-	if len(changes) > 0 {
-		parts := make([]string, 0, len(changes))
-		for _, change := range changes {
-			if change.Description != "" {
-				parts = append(parts, change.Description)
-			}
+	if len(changes) == 0 && !hasCoverage {
+		if weakNonAddition || likelyCoveredInSnapshot(snapshot, inputText) || !hasAdded {
+			changes = append(changes, scopeReviewChange(inputText, "The full snapshot was checked, but the model and scope wording do not establish a reliable new-versus-existing decision."))
+		} else if hasAdded {
+			changes = append(changes, proposedScopeAddition(inputText))
 		}
-		return changes, strings.Join(parts, " "), requirementResults, true, nil
 	}
-	if selected[0].prediction.LabelOnly {
-		return changes, "No change was proposed for the selected requirement. Review the wording yourself before deciding.", requirementResults, true, nil
+	out := make([]RequirementAnalysisResult, 0, len(results))
+	for _, result := range results {
+		out = append(out, result.result)
 	}
-	return changes, selected[0].prediction.Reasoning, requirementResults, true, nil
+	slog.Info("requirement_level_drift_analysis", "requirementsAnalyzed", len(results), "requirementsIgnored", 0, "providerType", selectedProvider.ProviderName())
+	return changes, out, true, nil
+}
+
+func proposedScopeAddition(inputText string) DetectedChange {
+	level := impact("added", strings.ToLower(inputText))
+	hours := effort(level)
+	return DetectedChange{
+		ChangeType:      "added",
+		Title:           title(inputText),
+		Description:     "No requirement in the saved snapshot was classified as covering this request. Confirm the proposed addition before changing the agreement.",
+		NewText:         inputText,
+		Impact:          level,
+		EstimatedEffort: &hours,
+		Recommendation:  recommendation("added", title(inputText)),
+	}
+}
+
+// High lexical coverage paired with an 'added' model label is a conflict,
+// not evidence of novelty. This catches near-restatements such as an existing
+// invoice PDF download requested again from the same client portal.
+func likelyCoveredInSnapshot(snapshot []requirement.RequirementSnapshot, inputText string) bool {
+	inputTokens := requirementTokens(inputText)
+	for _, req := range snapshot {
+		baselineTokens := requirementTokens(req.Title + " " + req.Description)
+		matched := intersection(inputTokens, baselineTokens)
+		if len(matched) >= 3 && len(inputTokens) > 0 && float64(len(matched))/float64(len(inputTokens)) >= 0.5 {
+			return true
+		}
+	}
+	return false
 }
 
 func rankRequirementPredictions(results []requirementPrediction) {
@@ -303,10 +336,15 @@ func normalizePredictionForRelevantRequirement(prediction ModelPrediction, relev
 }
 
 func singleRequirementText(req requirement.RequirementSnapshot) string {
-	if text := strings.TrimSpace(req.Description); text != "" {
-		return text
+	title := strings.TrimSpace(req.Title)
+	description := strings.TrimSpace(req.Description)
+	if title == "" {
+		return description
 	}
-	return strings.TrimSpace(req.Title)
+	if description == "" {
+		return title
+	}
+	return title + ": " + description
 }
 
 func baselineRequirementText(snapshot []requirement.RequirementSnapshot) string {
@@ -573,18 +611,40 @@ func containsString(values []string, expected string) bool {
 	return false
 }
 
-func newRequirementChange(inputText string) DetectedChange {
-	effort := 2.0
+func scopeReviewChange(inputText, explanation string) DetectedChange {
 	return DetectedChange{
-		ChangeType:      "added",
-		Title:           title(inputText),
-		Description:     "No relevant baseline requirement matched this client message, so it is treated as a possible new requirement.",
-		NewText:         inputText,
-		Impact:          "low",
-		EstimatedEffort: &effort,
-		Confidence:      70,
-		Recommendation:  "Confirm whether this should be added as a new baseline requirement before implementation.",
+		ChangeType:     "ambiguous",
+		Title:          title(inputText),
+		Description:    explanation,
+		NewText:        inputText,
+		Impact:         "low",
+		Recommendation: "Compare this request with the full saved scope before recording it as new or unchanged.",
+		ReviewRequired: true,
 	}
+}
+
+func hasScopeReview(changes []DetectedChange) bool {
+	for _, change := range changes {
+		if change.ReviewRequired {
+			return true
+		}
+	}
+	return false
+}
+
+func scoreWithScopeReview(changes []DetectedChange) (int, string, map[string]int, float64, string) {
+	scoreable := make([]DetectedChange, 0, len(changes))
+	reviewCount := 0
+	for _, change := range changes {
+		if change.ReviewRequired {
+			reviewCount++
+		} else {
+			scoreable = append(scoreable, change)
+		}
+	}
+	score, risk, counts, hours, _ := Score(scoreable)
+	counts["ambiguous"] += reviewCount
+	return score, risk, counts, hours, "Scope review required before deciding whether the request changes the agreement."
 }
 
 func detect(baseline []requirement.RequirementSnapshot, text string) []DetectedChange {

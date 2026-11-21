@@ -56,7 +56,7 @@ export const EvaluationPage = () => {
     return (
       <EmptyState
         title="Evaluation dashboard unavailable"
-        description="The backend could not read Q4 evaluation reports right now."
+        description="The backend could not read local model evaluation reports right now."
         actionLabel="Try again"
         onAction={() => void refetch()}
       />
@@ -76,7 +76,7 @@ export const EvaluationPage = () => {
         <ModelSandbox />
         <EmptyState
           title="No benchmark run yet"
-          description="Start the in-app benchmark to run 10 focused model checks against Q4_K_M."
+          description="Start the in-app benchmark to run 10 focused checks against the active local model."
           actionLabel={runActive ? 'Evaluation running' : 'Run evaluation'}
           onAction={() => !runActive && startRun.mutate()}
         />
@@ -104,27 +104,27 @@ export const EvaluationPage = () => {
         <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="app-eyebrow text-[0.6rem]">Model</p>
-            <h2 className="mt-1 text-base font-semibold">{summary.model.label || 'Qwen2.5-7B + DriftLedger LoRA'}</h2>
+            <h2 className="mt-1 text-base font-semibold">{summary.model.label || 'Local model'}</h2>
             <p className="mt-1 text-xs text-[var(--color-text-muted)]">
-              {summary.model.runtime || 'Local GGUF / llama.cpp'} - {summary.model.quantization || 'Q4_K_M'}
+              {summary.model.runtime || 'Local GGUF / llama.cpp'}{summary.model.quantization ? ` - ${summary.model.quantization}` : ''}
             </p>
           </div>
           <div className="flex flex-wrap gap-1.5 text-[0.65rem] opacity-80">
             <span className="app-badge">{summary.model.modelLoaded ? 'loaded' : 'not loaded'}</span>
             <span className="app-badge">{summary.model.health || 'unknown'}</span>
-            <span className="app-badge">{summary.model.quantization || 'Q4_K_M'}</span>
+            {summary.model.quantization ? <span className="app-badge">{summary.model.quantization}</span> : null}
           </div>
         </div>
       </Card>
 
       <div className="grid gap-3 xl:grid-cols-3">
         {metricGroup(
-          'Model quality',
+          'Focused checks',
           <>
-            {metric('Pass rate', `${Math.round(summary.passRate)}%`)}
+            {metric('Case match', `${Math.round(summary.passRate)}%`)}
             {metric('Cases passed', `${summary.passCount}/${summary.caseCount}`)}
             {metric('Failed cases', failedCases)}
-            {metric('Avg confidence', `${Math.round((summary.averageConfidence || 0) * 100)}%`)}
+            {metric('Model-reported confidence', `${Math.round((summary.averageConfidence || 0) * 100)}%`)}
           </>
         )}
         {metricGroup(
@@ -133,7 +133,7 @@ export const EvaluationPage = () => {
             {metric('Average latency', formatLatency(summary.averageLatencyMs))}
             {metric('Slowest case', formatLatency(summary.maxLatencyMs || 0))}
             {metric('Model calls', summary.caseCount)}
-            {metric('Quantization', summary.model.quantization || 'Q4_K_M')}
+            {metric('Weight format', summary.model.quantization || 'Unknown')}
           </>
         )}
         {metricGroup(
@@ -151,7 +151,7 @@ export const EvaluationPage = () => {
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="app-eyebrow">Benchmark</p>
-            <h2 className="mt-1.5 text-lg font-semibold">Latest Q4 evaluation</h2>
+            <h2 className="mt-1.5 text-lg font-semibold">Latest local model check</h2>
             {summary.generatedAt ? <p className="mt-1 text-xs text-[var(--color-text-muted)]">Last run {formatDate(summary.generatedAt)}</p> : null}
           </div>
           <span className="app-badge">{failedCases === 0 ? 'All cases passed' : `${failedCases} case(s) need review`}</span>
@@ -193,6 +193,9 @@ export const EvaluationPage = () => {
             </tbody>
           </table>
         </div>
+        <p className="mt-3 text-xs leading-5 text-[var(--color-text-muted)]">
+          These 10 fixed examples are a local smoke check. Their expected labels have not been independently adjudicated, and model-reported confidence is not calibrated.
+        </p>
       </Card>
     </section>
   );
@@ -214,7 +217,7 @@ const EvaluationHeader = ({
       <p className="app-eyebrow">Evaluation</p>
       <h1 className="mt-2 text-2xl font-semibold">Evaluation Dashboard</h1>
       <p className="mt-1.5 max-w-2xl text-sm leading-6 text-[var(--color-text-muted)]">
-        Run 10 focused Q4_K_M checks from inside Drift and review model quality, latency, labels, and confidence.
+        Run 10 focused checks against the active local model. These examples are a smoke check, not a validated quality score.
       </p>
     </div>
     <div className="flex flex-wrap gap-3">

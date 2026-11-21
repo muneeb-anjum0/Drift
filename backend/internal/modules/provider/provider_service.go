@@ -18,12 +18,36 @@ import (
 const TypeLocal = "local"
 const TypeExternal = "openai_compatible"
 
+const (
+	ProviderOpenAI   = "openai"
+	ProviderGemini   = "gemini"
+	ProviderDeepSeek = "deepseek"
+	ProviderCustom   = "custom"
+)
+
+var providerEndpoints = map[string]string{
+	ProviderOpenAI:   "https://api.openai.com/v1",
+	ProviderGemini:   "https://generativelanguage.googleapis.com/v1beta/openai",
+	ProviderDeepSeek: "https://api.deepseek.com",
+}
+
+func providerIDForEndpoint(endpoint string) string {
+	for id, known := range providerEndpoints {
+		if endpoint == known {
+			return id
+		}
+	}
+	return ProviderCustom
+}
+
 var ErrInvalidConfig = errors.New("invalid provider configuration")
 
 type ConfigRecord struct {
 	ID                    primitive.ObjectID `bson:"_id"`
 	Workspace             primitive.ObjectID `bson:"workspace"`
 	ProviderType          string             `bson:"providerType"`
+	ActiveMode            string             `bson:"activeMode,omitempty"`
+	ProviderID            string             `bson:"providerId,omitempty"`
 	DisplayName           string             `bson:"displayName"`
 	Endpoint              string             `bson:"endpoint"`
 	Model                 string             `bson:"model"`
@@ -41,6 +65,8 @@ type ConfigRecord struct {
 
 type Metadata struct {
 	ProviderType         string     `json:"providerType"`
+	ActiveMode           string     `json:"activeMode"`
+	ProviderID           string     `json:"providerId,omitempty"`
 	DisplayName          string     `json:"displayName"`
 	Endpoint             string     `json:"endpoint,omitempty"`
 	Model                string     `json:"model,omitempty"`
@@ -51,6 +77,7 @@ type Metadata struct {
 
 type WriteRequest struct {
 	ProviderType        string `json:"providerType"`
+	ProviderID          string `json:"providerId"`
 	DisplayName         string `json:"displayName"`
 	Endpoint            string `json:"endpoint"`
 	Model               string `json:"model"`
@@ -92,7 +119,7 @@ func (m Manager) Metadata(ctx context.Context, workspace, user primitive.ObjectI
 	var record ConfigRecord
 	err := m.collection().FindOne(ctx, bson.M{"_id": workspace}).Decode(&record)
 	if errors.Is(err, mongo.ErrNoDocuments) {
-		return Metadata{ProviderType: TypeLocal, DisplayName: "Local model"}, nil
+		return Metadata{ProviderType: TypeLocal, ActiveMode: TypeLocal, DisplayName: "Local model"}, nil
 	}
 	if err != nil {
 		return Metadata{}, err
@@ -105,7 +132,15 @@ func (m Manager) Metadata(ctx context.Context, workspace, user primitive.ObjectI
 
 func safeMetadata(record ConfigRecord) Metadata {
 	last := record.LastValidatedAt
-	return Metadata{ProviderType: record.ProviderType, DisplayName: record.DisplayName, Endpoint: record.Endpoint, Model: record.Model, CredentialConfigured: len(record.EncryptedCredential) > 0, LastValidatedAt: &last, LastValidationStatus: record.LastValidationStatus}
+	id := record.ProviderID
+	if id == "" {
+		id = providerIDForEndpoint(record.Endpoint)
+	}
+	mode := record.ActiveMode
+	if mode == "" {
+		mode = TypeExternal // Existing records predate the mode field.
+	}
+	return Metadata{ProviderType: mode, ActiveMode: mode, ProviderID: id, DisplayName: record.DisplayName, Endpoint: record.Endpoint, Model: record.Model, CredentialConfigured: len(record.EncryptedCredential) > 0, LastValidatedAt: &last, LastValidationStatus: record.LastValidationStatus}
 }
 
 // Resolve must be called only after the project and user have been authorized.
@@ -122,6 +157,13 @@ func (m Manager) Resolve(ctx context.Context, workspace primitive.ObjectID) (Con
 	if record.Workspace != workspace || record.ProviderType != TypeExternal {
 		return Connection{}, ErrInvalidConfig
 	}
+	if record.ActiveMode == TypeLocal {
+		return Connection{ProviderType: TypeLocal, DisplayName: "Local model"}, nil
+	}
+	return m.connectionFromRecord(workspace, record)
+}
+
+func (m Manager) connectionFromRecord(workspace primitive.ObjectID, record ConfigRecord) (Connection, error) {
 	key, err := m.cipher.decrypt(workspace, record.ID, record.ProviderType, record.EncryptedCredential, record.CredentialNonce, record.CredentialKeyVersion)
 	if err != nil {
 		return Connection{}, err
@@ -137,14 +179,19 @@ func (m Manager) Test(ctx context.Context, workspace, user primitive.ObjectID, i
 		if input.ProviderType != "" || input.Endpoint != "" || input.Model != "" {
 			return ErrInvalidConfig
 		}
-		saved, err := m.Resolve(ctx, workspace)
+		var record ConfigRecord
+		err := m.collection().FindOne(ctx, bson.M{"_id": workspace}).Decode(&record)
 		if err != nil {
 			return err
 		}
-		if saved.ProviderType != TypeExternal {
+		if record.Workspace != workspace || record.ProviderType != TypeExternal {
 			return ErrInvalidConfig
 		}
-		input = WriteRequest{ProviderType: TypeExternal, Endpoint: saved.Endpoint, Model: saved.Model, APIKey: saved.APIKey}
+		saved, err := m.connectionFromRecord(workspace, record)
+		if err != nil {
+			return err
+		}
+		input = WriteRequest{ProviderType: TypeExternal, ProviderID: providerIDForEndpoint(saved.Endpoint), Endpoint: saved.Endpoint, Model: saved.Model, APIKey: saved.APIKey}
 	}
 	if err := validateExternalInput(input); err != nil {
 		return err
@@ -164,6 +211,12 @@ func validateExternalInput(input WriteRequest) error {
 	if _, err := ValidateEndpoint(input.Endpoint); err != nil {
 		return ErrInvalidConfig
 	}
+	if input.ProviderID != "" && input.ProviderID != ProviderCustom {
+		known, ok := providerEndpoints[input.ProviderID]
+		if !ok || input.Endpoint != known {
+			return ErrInvalidConfig
+		}
+	}
 	return nil
 }
 
@@ -172,10 +225,7 @@ func (m Manager) Save(ctx context.Context, workspace, user primitive.ObjectID, i
 		return Metadata{}, err
 	}
 	if input.ProviderType == TypeLocal {
-		if err := m.Remove(ctx, workspace, user); err != nil {
-			return Metadata{}, err
-		}
-		return Metadata{ProviderType: TypeLocal, DisplayName: "Local model"}, nil
+		return m.SetMode(ctx, workspace, user, TypeLocal)
 	}
 	if !input.PrivacyAcknowledged {
 		return Metadata{}, ErrInvalidConfig
@@ -194,6 +244,10 @@ func (m Manager) Save(ctx context.Context, workspace, user primitive.ObjectID, i
 		return Metadata{}, err
 	}
 	endpoint, _ := ValidateEndpoint(input.Endpoint)
+	providerID := input.ProviderID
+	if providerID == "" {
+		providerID = providerIDForEndpoint(endpoint)
+	}
 	if strings.TrimSpace(input.DisplayName) == "" {
 		input.DisplayName = "OpenAI-compatible"
 	}
@@ -203,7 +257,7 @@ func (m Manager) Save(ctx context.Context, workspace, user primitive.ObjectID, i
 	}
 	now := time.Now().UTC()
 	update := bson.M{"$set": bson.M{
-		"workspace": workspace, "providerType": TypeExternal, "displayName": input.DisplayName,
+		"workspace": workspace, "providerType": TypeExternal, "activeMode": TypeExternal, "providerId": providerID, "displayName": input.DisplayName,
 		"endpoint": endpoint, "model": input.Model, "encryptedCredential": ciphertext,
 		"credentialNonce": nonce, "credentialKeyVersion": credentialKeyVersion,
 		"updatedBy": user, "updatedAt": now, "lastValidatedAt": now, "lastValidationStatus": "valid", "privacyAcknowledgedAt": now,
@@ -211,7 +265,62 @@ func (m Manager) Save(ctx context.Context, workspace, user primitive.ObjectID, i
 	if _, err := m.collection().UpdateOne(ctx, bson.M{"_id": workspace}, update, options.Update().SetUpsert(true)); err != nil {
 		return Metadata{}, err
 	}
-	return Metadata{ProviderType: TypeExternal, DisplayName: input.DisplayName, Endpoint: endpoint, Model: input.Model, CredentialConfigured: true, LastValidatedAt: &now, LastValidationStatus: "valid"}, nil
+	return Metadata{ProviderType: TypeExternal, ActiveMode: TypeExternal, ProviderID: providerID, DisplayName: input.DisplayName, Endpoint: endpoint, Model: input.Model, CredentialConfigured: true, LastValidatedAt: &now, LastValidationStatus: "valid"}, nil
+}
+
+// SetMode changes routing while retaining the encrypted online configuration.
+// Reactivating online mode tests the saved credential before changing routing.
+func (m Manager) SetMode(ctx context.Context, workspace, user primitive.ObjectID, mode string) (Metadata, error) {
+	if mode != TypeLocal && mode != TypeExternal {
+		return Metadata{}, ErrInvalidConfig
+	}
+	if err := authorization.RequireWorkspaceCapability(ctx, m.db, workspace, user, authorization.CapabilityManageWorkspace); err != nil {
+		return Metadata{}, err
+	}
+	var record ConfigRecord
+	err := m.collection().FindOne(ctx, bson.M{"_id": workspace}).Decode(&record)
+	if errors.Is(err, mongo.ErrNoDocuments) && mode == TypeLocal {
+		return Metadata{ProviderType: TypeLocal, ActiveMode: TypeLocal, DisplayName: "Local model"}, nil
+	}
+	if err != nil {
+		return Metadata{}, err
+	}
+	if record.Workspace != workspace || record.ProviderType != TypeExternal {
+		return Metadata{}, ErrInvalidConfig
+	}
+	if mode == TypeExternal {
+		if err := m.Test(ctx, workspace, user, WriteRequest{}); err != nil {
+			return Metadata{}, err
+		}
+	}
+	if err := authorization.RequireWorkspaceCapability(ctx, m.db, workspace, user, authorization.CapabilityManageWorkspace); err != nil {
+		return Metadata{}, err
+	}
+	update := bson.M{"activeMode": mode, "updatedBy": user, "updatedAt": time.Now().UTC()}
+	if mode == TypeExternal {
+		update["lastValidatedAt"] = time.Now().UTC()
+		update["lastValidationStatus"] = "valid"
+	}
+	filter := bson.M{"_id": workspace, "workspace": workspace, "providerType": TypeExternal}
+	if mode == TypeExternal {
+		// Do not activate a different credential if another manager replaced it
+		// after the connection test completed.
+		filter["credentialNonce"] = record.CredentialNonce
+		filter["encryptedCredential"] = record.EncryptedCredential
+	}
+	result, err := m.collection().UpdateOne(ctx, filter, bson.M{"$set": update})
+	if err != nil {
+		return Metadata{}, err
+	}
+	if result.MatchedCount != 1 {
+		return Metadata{}, ErrInvalidConfig
+	}
+	record.ActiveMode = mode
+	if mode == TypeExternal {
+		record.LastValidatedAt = update["lastValidatedAt"].(time.Time)
+		record.LastValidationStatus = "valid"
+	}
+	return safeMetadata(record), nil
 }
 
 func (m Manager) Remove(ctx context.Context, workspace, user primitive.ObjectID) error {

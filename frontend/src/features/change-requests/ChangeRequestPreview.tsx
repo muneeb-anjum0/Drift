@@ -41,7 +41,8 @@ export const ChangeRequestPreview = ({ driftAnalyses }: { projectId: string; dri
     () => driftAnalyses.find((analysis) => analysis._id === selectedDriftAnalysisId),
     [driftAnalyses, selectedDriftAnalysisId]
   );
-  const hasMeaningfulDrift = Boolean(selectedAnalysis?.detectedChanges.length);
+  const needsScopeReview = Boolean(selectedAnalysis?.detectedChanges.some((change) => change.reviewRequired));
+  const hasMeaningfulDrift = Boolean(selectedAnalysis?.detectedChanges.length) && !needsScopeReview;
 
   useEffect(() => {
     if (!selectedDriftAnalysisId && latestDriftAnalysisId) {
@@ -118,7 +119,7 @@ export const ChangeRequestPreview = ({ driftAnalyses }: { projectId: string; dri
           </Button>
 
           {selectedAnalysis && !hasMeaningfulDrift ? (
-            <p className="text-sm text-gray-400">This saved analysis has no detected changes, so no change request is needed.</p>
+            <p className="text-sm text-gray-400">{needsScopeReview ? 'This analysis needs a human scope review before a change request can be prepared.' : 'This saved analysis has no detected changes, so no change request is needed.'}</p>
           ) : null}
 
           {error ? <p role="alert" className="text-sm text-red-400">{error}</p> : null}

@@ -16,7 +16,7 @@ export const AnalysisSetupNotice = ({ workspaceId, canManage }: { workspaceId: s
   if (provider.data.providerType === 'openai_compatible') return (
     <p className="v-muted text-sm">Analysis provider: {provider.data.displayName} · {provider.data.model}. {readiness.data?.available ? 'Configured; live availability is checked when you compare.' : 'The saved provider is unavailable.'} <Link className="v-link" to={settingsUrl}>Test the connection</Link>.</p>
   );
-  if (readiness.data?.available) return <p className="v-muted text-sm">Local analysis is available. You can also <Link className="v-link" to={settingsUrl}>choose an external provider</Link> for this workspace.</p>;
+  if (readiness.data?.available) return <p className="v-muted text-sm">Local analysis is available. You can also <Link className="v-link" to={settingsUrl}>choose an online provider</Link> for this workspace.</p>;
   return (
     <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-[var(--v-border)] bg-white p-5">
       <div>

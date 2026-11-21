@@ -1,8 +1,11 @@
 import { api } from './axios';
 import type { ApiResponse } from '../types/api.types';
+import type { ProviderID } from '../features/settings/providerPresets';
 
 export type ProviderMetadata = {
   providerType: 'local' | 'openai_compatible';
+  activeMode: 'local' | 'openai_compatible';
+  providerId?: ProviderID;
   displayName: string;
   endpoint?: string;
   model?: string;
@@ -13,6 +16,7 @@ export type ProviderMetadata = {
 
 export type ProviderWrite = {
   providerType: 'openai_compatible';
+  providerId: ProviderID;
   displayName: string;
   endpoint: string;
   model: string;
@@ -30,6 +34,10 @@ export const providerApi = {
   },
   save: async (workspaceId: string, payload: ProviderWrite) => {
     const response = await api.put<ApiResponse<{ provider: ProviderMetadata }>>(`/workspaces/${workspaceId}/provider`, payload);
+    return response.data.data.provider;
+  },
+  setMode: async (workspaceId: string, mode: 'local' | 'openai_compatible') => {
+    const response = await api.put<ApiResponse<{ provider: ProviderMetadata }>>(`/workspaces/${workspaceId}/provider/mode`, { mode });
     return response.data.data.provider;
   },
   remove: async (workspaceId: string) => {

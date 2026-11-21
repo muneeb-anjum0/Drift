@@ -12,18 +12,6 @@ const REQUIREMENTS_PAGE_SIZE = 10;
 
 const valueLabel = (value: Requirement['status'] | Requirement['type'] | Requirement['source']) => value.replace(/_/g, ' ');
 
-const MetaPill = ({ children, tone = 'muted' }: { children: string; tone?: 'lime' | 'muted' }) => (
-  <span
-    className={
-      tone === 'lime'
-        ? 'rounded-full border border-lime-400/20 bg-lime-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.1em] text-lime-300'
-        : 'rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs font-semibold uppercase tracking-[0.1em] text-gray-300'
-    }
-  >
-    {children}
-  </span>
-);
-
 export const RequirementTable = ({
   requirements,
   onEdit,
@@ -85,27 +73,16 @@ export const RequirementTable = ({
                     transition={{ duration: 0.18, ease: 'easeOut' }}
                     className="overflow-hidden"
                   >
-                    <div className="bg-[var(--color-bg-soft)] px-4 pb-4">
-                      <div className="flex flex-wrap items-center gap-2 pt-1">
-                        <MetaPill tone="lime">{valueLabel(requirement.type)}</MetaPill>
-                        <MetaPill>{valueLabel(requirement.status)}</MetaPill>
-                        <MetaPill>{valueLabel(requirement.source)}</MetaPill>
-                      </div>
-                      <p className="mt-3 text-sm leading-6 text-[var(--color-text-muted)]">{requirement.description}</p>
-                      <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <div className="border-t border-[var(--color-border)] bg-[var(--color-bg-soft)] px-4 py-4">
+                      <p className="text-sm leading-6 text-[var(--color-text-muted)]">{requirement.description}</p>
+                      <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
                         <RequirementBadges requirement={requirement} />
-                        {requirement.estimatedEffort !== null && requirement.estimatedEffort !== undefined ? <span className="text-xs text-[var(--color-text-muted)]">Planning effort: {requirement.estimatedEffort} (unit unspecified)</span> : null}
+                        {canEdit ? <div className="flex shrink-0 flex-wrap gap-2">
+                          <Button type="button" variant="secondary" size="sm" onClick={() => onEdit(requirement)}><Pencil className="mr-2 h-3.5 w-3.5" />Edit</Button>
+                          <Button type="button" variant="danger" size="sm" onClick={() => onDelete(requirement)}><Trash2 className="mr-2 h-3.5 w-3.5" />Delete</Button>
+                        </div> : null}
                       </div>
-                      {canEdit ? <div className="mt-4 flex flex-wrap justify-end gap-2">
-                        <Button type="button" variant="secondary" size="sm" onClick={() => onEdit(requirement)}>
-                          <Pencil className="mr-2 h-3.5 w-3.5" />
-                          Edit
-                        </Button>
-                        <Button type="button" variant="danger" size="sm" onClick={() => onDelete(requirement)}>
-                          <Trash2 className="mr-2 h-3.5 w-3.5" />
-                          Delete
-                        </Button>
-                      </div> : null}
+                      {requirement.tags?.length || requirement.estimatedEffort !== null && requirement.estimatedEffort !== undefined ? <div className="mt-3 flex flex-wrap gap-2 text-xs text-[var(--color-text-muted)]">{requirement.tags?.map((tag) => <span key={tag} className="rounded-full border border-[var(--color-border)] px-2 py-1">#{tag}</span>)}{requirement.estimatedEffort !== null && requirement.estimatedEffort !== undefined ? <span className="py-1">Planning effort: {requirement.estimatedEffort}</span> : null}</div> : null}
                     </div>
                   </motion.div>
                 ) : null}

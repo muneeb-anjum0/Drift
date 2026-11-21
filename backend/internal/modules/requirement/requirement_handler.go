@@ -4,15 +4,12 @@ import (
 	"errors"
 	"net/http"
 
-	"driftledger/backend/internal/authorization"
 	"driftledger/backend/internal/middleware"
-	"driftledger/backend/internal/modules/activity"
 	"driftledger/backend/internal/requestctx"
 	"driftledger/backend/internal/response"
 	"driftledger/backend/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -94,28 +91,6 @@ func (h Handler) Delete(c *gin.Context) {
 		return
 	}
 	response.Success(c, http.StatusOK, "Requirement deleted", gin.H{})
-}
-func (h Handler) Extract(c *gin.Context) {
-	var p ExtractRequest
-	if c.ShouldBindJSON(&p) != nil || h.validate.Struct(p) != nil {
-		response.Error(c, http.StatusBadRequest, "Validation failed", nil)
-		return
-	}
-	projectID, err := utils.ObjectID(p.ProjectID)
-	if err != nil {
-		response.Error(c, http.StatusBadRequest, "Invalid project id", nil)
-		return
-	}
-	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
-	defer cancel()
-	project, err := authorization.RequireProjectAccess(ctx, h.service.db, projectID, middleware.CurrentUserID(c))
-	if err != nil {
-		h.err(c, err)
-		return
-	}
-	suggestions := Extract(p.SourceText, p.Source)
-	activity.Log(ctx, h.service.db, project.Workspace, middleware.CurrentUserID(c), "REQUIREMENTS_EXTRACTED", "Requirement", projectID.Hex(), bson.M{"suggestionCount": len(suggestions)})
-	response.Success(c, http.StatusOK, "Requirements extracted", gin.H{"suggestions": suggestions})
 }
 func (h Handler) Baseline(c *gin.Context) {
 	var p BaselineRequest

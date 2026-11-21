@@ -19,6 +19,7 @@ type DetectedChange struct {
 	EstimatedEffort          *float64 `bson:"estimatedEffort,omitempty" json:"estimatedEffort,omitempty"`
 	Confidence               int      `bson:"confidence,omitempty" json:"confidence,omitempty"`
 	Recommendation           string   `bson:"recommendation" json:"recommendation"`
+	ReviewRequired           bool     `bson:"reviewRequired,omitempty" json:"reviewRequired,omitempty"`
 }
 
 type RelevanceResult struct {
@@ -50,6 +51,7 @@ type RelevanceTrace struct {
 
 type RequirementAnalysisResult struct {
 	RequirementID string          `bson:"requirementId" json:"requirementId"`
+	RequestText   string          `bson:"requestText,omitempty" json:"requestText,omitempty"`
 	Title         string          `bson:"title" json:"title"`
 	Text          string          `bson:"text" json:"text"`
 	Status        string          `bson:"status" json:"status"`

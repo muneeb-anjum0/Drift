@@ -1,0 +1,36 @@
+# Optional, unquantized SmolLM3 local experiment. Set DRIFT_SMOLLM3_MODEL_DIR
+# to the absolute path of the folder containing the F16 GGUF.
+services:
+  frontend:
+    build:
+      args:
+        VITE_DRIFT_MODEL_LABEL: SmolLM3-3B (F16, experimental)
+
+  inference:
+    environment:
+      DRIFT_GGUF_MODEL_PATH: /app/smollm3/SmolLM3-3B-F16.gguf
+      DRIFT_GGUF_PROMPT_FORMAT: smollm3
+      DRIFT_LLAMA_MAX_TOKENS: 224
+    volumes:
+      - ${DRIFT_SMOLLM3_MODEL_DIR:?Set DRIFT_SMOLLM3_MODEL_DIR to the model folder}:/app/smollm3:ro
+
+  llama:
+    command: !override
+      - --model
+      - /app/smollm3/SmolLM3-3B-F16.gguf
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - --ctx-size
+      - "1024"
+      - --n-gpu-layers
+      - "99"
+      - --threads
+      - "4"
+      - --parallel
+      - "1"
+      - --cache-ram
+      - "0"
+    volumes:
+      - ${DRIFT_SMOLLM3_MODEL_DIR:?Set DRIFT_SMOLLM3_MODEL_DIR to the model folder}:/app/smollm3:ro

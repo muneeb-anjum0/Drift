@@ -3,7 +3,6 @@ import { requirementApi } from '../api/requirement.api';
 import type {
   RequirementBaselinePayload,
   RequirementCreatePayload,
-  RequirementExtractionSuggestion,
   RequirementUpdatePayload,
 } from '../features/requirements/requirement.types';
 
@@ -58,19 +57,6 @@ export const useDeleteRequirement = () => {
     mutationFn: (variables: { requirementId: string; projectId: string }) => requirementApi.deleteRequirement(variables.requirementId),
     onSuccess: async (_data, variables) => {
       await invalidateRequirementQueries(queryClient, variables.projectId);
-    },
-  });
-};
-
-export const useExtractRequirements = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (payload: { projectId: string; sourceText: string; source?: RequirementExtractionSuggestion['source'] }) =>
-      requirementApi.extractRequirements(payload),
-    onSuccess: async (_suggestions, variables) => {
-      await queryClient.invalidateQueries({ queryKey: ['activities'] });
-      await queryClient.invalidateQueries({ queryKey: ['project', variables.projectId] });
     },
   });
 };

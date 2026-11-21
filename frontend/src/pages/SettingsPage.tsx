@@ -22,7 +22,7 @@ export const SettingsPage = () => {
           <p className="app-eyebrow">Settings</p>
           <h1 className="mt-2 text-3xl font-semibold text-[var(--color-text)]">Account and analysis</h1>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--color-text-muted)]">
-            See your current analysis provider, configure a workspace, and review your account details.
+            Choose a local model or connect your own online provider for each workspace, then review your account details.
           </p>
         </div>
         <Button type="button" variant="secondary" onClick={confirmLogout}>

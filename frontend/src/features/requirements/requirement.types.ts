@@ -85,8 +85,6 @@ export interface RequirementCreatePayload extends RequirementFormSubmitValues {
 
 export type RequirementUpdatePayload = Partial<RequirementFormSubmitValues>;
 
-export type RequirementExtractionSuggestion = RequirementFormSubmitValues;
-
 export interface RequirementBaselinePayload {
   projectId: string;
   label?: string;

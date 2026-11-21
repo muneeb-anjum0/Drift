@@ -19,6 +19,13 @@ runtime_module = importlib.import_module("ai_model.inference.runtime")
 
 
 class PredictionContractTests(unittest.TestCase):
+    def test_unquantized_smollm3_metadata(self) -> None:
+        from pathlib import Path
+
+        path = Path("SmolLM3-3B-F16.gguf")
+        self.assertEqual(config_module.model_label(path), "SmolLM3-3B (F16, experimental)")
+        self.assertEqual(config_module.quantization_label(path), "F16")
+
     def valid_payload(self, **overrides: object) -> dict[str, object]:
         payload: dict[str, object] = {
             "label": "modified",
@@ -111,6 +118,38 @@ class APITests(unittest.TestCase):
 
 
 class LlamaBoundaryTests(unittest.IsolatedAsyncioTestCase):
+    async def test_smollm3_chat_response_uses_its_template_and_parses(self) -> None:
+        settings = config_module.Settings(
+            inference_api_key="test-inference-key-32-characters-minimum",
+            llama_server_url="http://llama.test",
+            gguf_prompt_format="smollm3",
+        )
+        runtime = runtime_module.ModelRuntime(settings)
+
+        def respond(request: httpx.Request) -> httpx.Response:
+            self.assertEqual(request.url.path, "/v1/chat/completions")
+            body = json.loads(request.content)
+            self.assertEqual(body["chat_template_kwargs"], {"enable_thinking": False})
+            self.assertIn("/no_think", body["messages"][0]["content"])
+            return httpx.Response(200, json={"choices": [{"message": {"content": json.dumps({
+                "label": "removed", "confidence": 0.8,
+                "reasoning": "PDF export was removed.", "changed_elements": ["PDF export"],
+            })}}]})
+
+        transport = httpx.MockTransport(respond)
+        original_client = httpx.AsyncClient
+
+        def client_factory(*args: object, **kwargs: object) -> httpx.AsyncClient:
+            kwargs["transport"] = transport
+            return original_client(*args, **kwargs)
+
+        with patch.object(runtime_module.httpx, "AsyncClient", side_effect=client_factory):
+            result = await runtime._predict_gguf(contracts_module.PredictRequest(
+                baseline_requirement="Users can export PDF reports.",
+                new_client_message="Remove PDF export.",
+            ))
+        self.assertEqual(result.label, "removed")
+
     def test_candidate_prompt_encodes_label_and_instruction_boundaries(self) -> None:
         prompt = runtime_module.qwen_prompt(
             contracts_module.PredictRequest(

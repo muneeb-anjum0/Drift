@@ -28,12 +28,6 @@ type UpdateRequirementRequest struct {
 	EstimatedEffort    *float64 `json:"estimatedEffort"`
 }
 
-type ExtractRequest struct {
-	ProjectID  string `json:"projectId" validate:"required"`
-	SourceText string `json:"sourceText" validate:"required"`
-	Source     string `json:"source"`
-}
-
 type BaselineRequest struct {
 	ProjectID   string `json:"projectId" validate:"required"`
 	Label       string `json:"label"`
