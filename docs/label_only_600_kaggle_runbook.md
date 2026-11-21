@@ -25,18 +25,23 @@ The existing local ZIP is `.local/label_only_600/baseline_bundle_v1.zip`, SHA-25
 
 1. On Kaggle, create a **private** dataset named, for example, `drift-label-only-600-dev-baseline`. Upload only `baseline_bundle_v1.zip`. Check that the dataset visibility says Private before saving. Do not upload the source review sheets, the 300 training rows, or the locked-test file at this stage.
 2. Create a **private** notebook, attach that private dataset as Input, select one GPU accelerator, and enable Internet for the Hugging Face model download. Do not put tokens in code or output cells. If Kaggle asks for Hugging Face credentials, use its private Secrets facility; this public model should not require a token.
-3. In a notebook cell, locate the ZIP and extract it. Expect exactly one match:
+3. In a notebook cell, locate the attached dataset. Kaggle may unpack an uploaded ZIP automatically; use the preserved folder if it did. Otherwise extract the ZIP. Expect exactly one bundle:
 
    ```python
    from pathlib import Path
    import zipfile
 
-   matches = list(Path('/kaggle/input').rglob('baseline_bundle_v1.zip'))
-   assert len(matches) == 1, matches
-   with zipfile.ZipFile(matches[0]) as archive:
-       assert archive.testzip() is None
-       archive.extractall('/kaggle/working')
-   bundle = Path('/kaggle/working/label_only_600_baseline')
+   unpacked = [p for p in Path('/kaggle/input').rglob('protocol_freeze_v1.json')
+               if p.parent.name == 'label_only_600_baseline']
+   if len(unpacked) == 1:
+       bundle = unpacked[0].parent
+   else:
+       matches = list(Path('/kaggle/input').rglob('baseline_bundle_v1.zip'))
+       assert len(matches) == 1, (unpacked, matches)
+       with zipfile.ZipFile(matches[0]) as archive:
+           assert archive.testzip() is None
+           archive.extractall('/kaggle/working')
+       bundle = Path('/kaggle/working/label_only_600_baseline')
    print('Bundle ready:', bundle)
    ```
 
