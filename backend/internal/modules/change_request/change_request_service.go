@@ -35,6 +35,7 @@ const (
 
 var ErrInvalidApprovalAction = errors.New("invalid approval action")
 var ErrInvalidRequestStatus = errors.New("invalid change-request status")
+var ErrScopeReviewRequired = errors.New("scope review required before preparing a change request")
 
 func validRequestStatus(status string) bool {
 	switch status {
@@ -67,6 +68,9 @@ func (s Service) Generate(ctx context.Context, userID primitive.ObjectID, p Gene
 	}
 	if len(analysis.DetectedChanges) == 0 {
 		return Draft{}, errors.New("no change request is needed for an unchanged drift analysis")
+	}
+	if analysisNeedsScopeReview(analysis) {
+		return Draft{}, ErrScopeReviewRequired
 	}
 	grouped := drift.CleanDetectedChanges(analysis.DetectedChanges, analysis.InputText)
 	if len(grouped) == 0 {
@@ -224,6 +228,9 @@ func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequ
 	if _, err := authorization.RequireProjectCapability(ctx, s.db, analysis.Project, userID, authorization.CapabilityWrite); err != nil {
 		return ChangeRequest{}, err
 	}
+	if analysisNeedsScopeReview(analysis) {
+		return ChangeRequest{}, ErrScopeReviewRequired
+	}
 	now := time.Now().UTC()
 	cr := ChangeRequest{ID: utils.NewID(), Project: analysis.Project, Workspace: analysis.Workspace, DriftAnalysis: driftID, Title: p.Title, ClientName: p.ClientName, Summary: p.Summary, ChangesRequested: p.ChangesRequested, BusinessReason: p.BusinessReason, TimelineImpact: p.TimelineImpact, CostImpact: p.CostImpact, RecommendedAction: p.RecommendedAction, ApprovalNote: p.ApprovalNote, Status: status, ApprovalStatus: ApprovalDraft, GeneratedBy: analysis.AnalysisEngine, CreatedBy: userID, CreatedAt: now, UpdatedAt: now}
 	_, err = s.db.Collection("changerequests").InsertOne(ctx, cr)
@@ -236,6 +243,15 @@ func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequ
 		})
 	}
 	return cr, err
+}
+
+func analysisNeedsScopeReview(analysis drift.DriftAnalysis) bool {
+	for _, change := range analysis.DetectedChanges {
+		if change.ReviewRequired {
+			return true
+		}
+	}
+	return false
 }
 
 func (s Service) Get(ctx context.Context, id, userID primitive.ObjectID) (ChangeRequest, error) {

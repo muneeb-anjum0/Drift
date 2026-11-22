@@ -18,6 +18,7 @@ export interface DetectedChange {
   estimatedEffort?: number;
   confidence?: number;
   recommendation: string;
+  reviewRequired?: boolean;
 }
 
 export interface RelevanceResult {
@@ -30,6 +31,7 @@ export interface RelevanceResult {
 
 export interface RequirementAnalysisResult {
   requirementId: string;
+  requestText?: string;
   title: string;
   text: string;
   status: 'analyzed' | 'ignored';

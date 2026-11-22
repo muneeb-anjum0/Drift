@@ -4,7 +4,6 @@ import type {
   Requirement,
   RequirementBaselinePayload,
   RequirementCreatePayload,
-  RequirementExtractionSuggestion,
   RequirementUpdatePayload,
   RequirementVersion,
 } from '../features/requirements/requirement.types';
@@ -29,10 +28,6 @@ export const requirementApi = {
   deleteRequirement: async (requirementId: string) => {
     const response = await api.delete<ApiResponse<Record<string, never>>>(`/requirements/${requirementId}`);
     return response.data.data;
-  },
-  extractRequirements: async (payload: { projectId: string; sourceText: string; source?: RequirementExtractionSuggestion['source'] }) => {
-    const response = await api.post<ApiResponse<{ suggestions: RequirementExtractionSuggestion[] }>>('/requirements/extract', payload);
-    return response.data.data.suggestions;
   },
   createRequirementBaseline: async (payload: RequirementBaselinePayload) => {
     const response = await api.post<ApiResponse<{ version: RequirementVersion }>>('/requirements/baseline', payload);

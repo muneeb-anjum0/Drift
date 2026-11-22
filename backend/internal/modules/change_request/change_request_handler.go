@@ -175,5 +175,9 @@ func (h Handler) err(c *gin.Context, err error) {
 		response.Error(c, http.StatusBadRequest, "Invalid change-request status", nil)
 		return
 	}
+	if errors.Is(err, ErrScopeReviewRequired) {
+		response.Error(c, http.StatusConflict, "Review this request against the agreed scope before preparing a change request", nil)
+		return
+	}
 	response.Error(c, http.StatusInternalServerError, "Change request failed", nil)
 }

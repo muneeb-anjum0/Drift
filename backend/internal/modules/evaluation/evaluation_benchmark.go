@@ -197,7 +197,7 @@ func (s Service) runBenchmark(ctx context.Context, userID primitive.ObjectID) (R
 	return Report{
 		SchemaVersion:     1,
 		GeneratedAt:       time.Now().UTC().Format(time.RFC3339),
-		Mode:              "q4",
+		Mode:              "local",
 		Model:             modelInfoFromHealth(health),
 		PassCount:         passCount,
 		CaseCount:         caseCount,
@@ -283,8 +283,8 @@ func validateBenchmarkCase(item benchmarkCase, prediction drift.ModelPrediction,
 
 func modelInfoFromHealth(health map[string]any) ModelInfo {
 	return ModelInfo{
-		Label:         stringAt(health, "model_label", "Qwen2.5-7B + DriftLedger LoRA (GGUF Q4_K_M)"),
-		Quantization:  stringAt(health, "quantization_label", "Q4_K_M"),
+		Label:         stringAt(health, "model_label", "Local model"),
+		Quantization:  stringAt(health, "quantization_label", "Unknown"),
 		Runtime:       "Local GGUF / llama.cpp",
 		Health:        stringAt(health, "status", "unknown"),
 		ModelLoaded:   boolAt(health, "model_loaded"),
@@ -348,7 +348,7 @@ func evalTitle(item benchmarkCase, prediction drift.ModelPrediction) string {
 
 func recommendationFor(passCount, caseCount int) string {
 	if passCount == caseCount {
-		return "All focused Q4_K_M benchmark cases passed."
+		return "All focused local model checks passed."
 	}
 	return "Review failed cases before using this runtime in a polished demo."
 }

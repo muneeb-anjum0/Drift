@@ -105,6 +105,14 @@ func TestMongoCredentialLifecycleAndTenantIsolation(t *testing.T) {
 	if strings.Contains(string(serialized), "first-token") || strings.Contains(string(serialized), "encryptedCredential") {
 		t.Fatal("secret leaked in metadata")
 	}
+	readMetadata, err := manager.Metadata(ctx, workspaceA, memberA)
+	if err != nil {
+		t.Fatal(err)
+	}
+	serialized, _ = json.Marshal(readMetadata)
+	if strings.Contains(string(serialized), "first-token") || strings.Contains(string(serialized), "encryptedCredential") || !readMetadata.CredentialConfigured {
+		t.Fatal("provider settings read leaked the saved secret")
+	}
 	var stored ConfigRecord
 	if err := db.Collection("workspaceproviderconfigs").FindOne(ctx, bson.M{"_id": workspaceA}).Decode(&stored); err != nil {
 		t.Fatal(err)
@@ -165,6 +173,30 @@ func TestMongoCredentialLifecycleAndTenantIsolation(t *testing.T) {
 	}
 	if err := manager.Remove(ctx, workspaceB, ownerA); !errors.Is(err, utils.ErrForbidden) {
 		t.Fatal("cross-tenant delete succeeded")
+	}
+	localMetadata, err := manager.SetMode(ctx, workspaceA, ownerA, TypeLocal)
+	if err != nil || localMetadata.ProviderType != TypeLocal || !localMetadata.CredentialConfigured || localMetadata.Model != input.Model {
+		t.Fatal("local mode did not retain the saved online settings")
+	}
+	localConnection, err := manager.Resolve(ctx, workspaceA)
+	if err != nil || localConnection.ProviderType != TypeLocal || localConnection.APIKey != "" {
+		t.Fatal("local mode routed through the saved online key")
+	}
+	restarted.testConnection = func(context.Context, WriteRequest) error { return ErrProviderAuthentication }
+	if _, err := restarted.SetMode(ctx, workspaceA, ownerA, TypeExternal); !errors.Is(err, ErrProviderAuthentication) {
+		t.Fatal("failed reconnection activated the online provider")
+	}
+	localConnection, err = manager.Resolve(ctx, workspaceA)
+	if err != nil || localConnection.ProviderType != TypeLocal {
+		t.Fatal("failed reconnection changed the active mode")
+	}
+	onlineMetadata, err := manager.SetMode(ctx, workspaceA, ownerA, TypeExternal)
+	if err != nil || onlineMetadata.ProviderType != TypeExternal {
+		t.Fatalf("saved provider could not be reactivated: %v", err)
+	}
+	connected, err = manager.Resolve(ctx, workspaceA)
+	if err != nil || connected.APIKey != "second-token" {
+		t.Fatal("reactivated provider did not use the retained encrypted key")
 	}
 	if err := manager.Remove(ctx, workspaceA, ownerA); err != nil {
 		t.Fatal(err)

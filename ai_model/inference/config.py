@@ -13,10 +13,14 @@ DEFAULT_GGUF_MODEL_PATH = Path("models/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf")
 def quantization_label(path: Path) -> str:
     if "Q4_K_M" in path.name.upper():
         return "Q4_K_M"
+    if "F16" in path.name.upper():
+        return "F16"
     return "GGUF"
 
 
 def model_label(path: Path) -> str:
+    if "SMOLLM3" in path.name.upper():
+        return "SmolLM3-3B (F16, experimental)"
     quantization = quantization_label(path)
     if quantization == "GGUF":
         return "Qwen2.5-7B + DriftLedger LoRA (GGUF)"
@@ -26,6 +30,7 @@ def model_label(path: Path) -> str:
 class Settings(BaseModel):
     model_mode: Literal["local"] = Field(default="local")
     local_engine: Literal["gguf", "peft"] = Field(default="gguf")
+    gguf_prompt_format: Literal["qwen", "smollm3"] = Field(default="qwen")
     base_model_path: Path = Field(default=Path("models/base/Qwen2.5-7B-Instruct"))
     adapter_zip_path: Path = Field(default=Path("models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA.zip"))
     adapter_dir: Path = Field(default=Path("models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA"))
@@ -45,6 +50,7 @@ class Settings(BaseModel):
         return cls(
             model_mode=os.getenv("DRIFT_MODEL_MODE", "local"),
             local_engine=os.getenv("DRIFT_LOCAL_ENGINE", "gguf"),
+            gguf_prompt_format=os.getenv("DRIFT_GGUF_PROMPT_FORMAT", "qwen"),
             base_model_path=Path(os.getenv("DRIFT_BASE_MODEL_PATH", "models/base/Qwen2.5-7B-Instruct")),
             adapter_zip_path=Path(os.getenv("DRIFT_ADAPTER_ZIP_PATH", "models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA.zip")),
             adapter_dir=Path(os.getenv("DRIFT_ADAPTER_DIR", "models/adapters/DriftLedger_v5_qwen2.5_7b_LoRA")),

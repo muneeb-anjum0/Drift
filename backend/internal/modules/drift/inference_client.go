@@ -17,6 +17,7 @@ import (
 
 var ErrInferenceUnavailable = errors.New("drift inference service unavailable")
 var ErrInferenceBadResponse = errors.New("drift inference service returned an invalid response")
+var ErrTooManyClientRequests = errors.New("too many client requests in one comparison")
 
 const (
 	maxInferenceResponseBytes = 64 << 10

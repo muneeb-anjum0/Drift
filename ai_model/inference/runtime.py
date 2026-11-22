@@ -289,6 +289,8 @@ class ModelRuntime:
         return parse_prediction(raw)
 
     async def _predict_gguf(self, request: PredictRequest) -> DriftPrediction:
+        if self.settings.gguf_prompt_format == "smollm3":
+            return await self._predict_smollm3(request)
         payload = {
             "prompt": qwen_prompt(request),
             "n_predict": self.settings.llama_max_tokens,
@@ -309,3 +311,27 @@ class ModelRuntime:
             raise HTTPException(status_code=502, detail="llama.cpp returned a non-JSON response.") from exc
         raw = data.get("content") or data.get("response") or data.get("text") or ""
         return parse_prediction(str(raw))
+
+    async def _predict_smollm3(self, request: PredictRequest) -> DriftPrediction:
+        payload = {
+            "messages": [
+                {"role": "system", "content": SYSTEM_PROMPT + " /no_think"},
+                {"role": "user", "content": user_prompt(request)},
+            ],
+            "max_tokens": self.settings.llama_max_tokens,
+            "temperature": 0,
+            "chat_template_kwargs": {"enable_thinking": False},
+        }
+        url = self.settings.llama_server_url.rstrip("/") + "/v1/chat/completions"
+        async with httpx.AsyncClient(timeout=self.settings.llama_timeout_seconds) as client:
+            try:
+                response = await client.post(url, json=payload)
+                response.raise_for_status()
+            except httpx.HTTPError as exc:
+                raise HTTPException(status_code=502, detail=f"llama.cpp inference request failed: {exc}") from exc
+        try:
+            data = response.json()
+            raw = data["choices"][0]["message"]["content"]
+        except (ValueError, KeyError, IndexError, TypeError) as exc:
+            raise HTTPException(status_code=502, detail="llama.cpp returned an invalid chat response.") from exc
+        return parse_prediction(raw)

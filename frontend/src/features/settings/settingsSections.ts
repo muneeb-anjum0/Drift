@@ -23,10 +23,10 @@ export const getSettingsSections = (user?: User | null): SettingsSection[] => [
   {
     id: 'security',
     title: 'Security',
-    description: 'Production safety posture for app data and runtime secrets.',
+    description: 'How Drift protects workspace data and provider keys.',
     rows: [
       { label: 'Workspace data', value: 'Authenticated routes' },
-      { label: 'Runtime secrets', value: 'Server-side env vars' },
+      { label: 'Provider keys', value: 'Encrypted in the workspace database' },
     ],
   },
 ];

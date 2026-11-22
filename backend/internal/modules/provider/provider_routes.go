@@ -17,5 +17,6 @@ func RegisterRoutes(group *gin.RouterGroup, db *mongo.Database, cfg config.Confi
 	group.GET("/:workspaceId/provider", handler.Get)
 	group.POST("/:workspaceId/provider/test", limiter.Middleware(middleware.RateLimitByUser), handler.Test)
 	group.PUT("/:workspaceId/provider", limiter.Middleware(middleware.RateLimitByUser), handler.Save)
+	group.PUT("/:workspaceId/provider/mode", limiter.Middleware(middleware.RateLimitByUser), handler.SetMode)
 	group.DELETE("/:workspaceId/provider", handler.Delete)
 }

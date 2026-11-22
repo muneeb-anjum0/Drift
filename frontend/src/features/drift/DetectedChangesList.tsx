@@ -26,7 +26,7 @@ export const DetectedChangesList = ({ changes }: { changes: DetectedChange[] }) 
   return (
     <div className="space-y-4">
       {groupedTypes.map((group) => {
-        const groupedChanges = visibleChanges.filter((change) => group.changeType.includes(change.changeType));
+        const groupedChanges = visibleChanges.filter((change) => group.changeType.includes(change.changeType) && !change.reviewRequired);
         if (!groupedChanges.length) return null;
 
         return (
@@ -45,6 +45,7 @@ export const DetectedChangesList = ({ changes }: { changes: DetectedChange[] }) 
           </section>
         );
       })}
+      {visibleChanges.some((change) => change.reviewRequired) ? <section className="space-y-2.5"><h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-lime-400">Needs scope review</h4>{visibleChanges.filter((change) => change.reviewRequired).map((change, index) => <DetectedChangeCard key={`${change.title}-${index}`} change={change} />)}</section> : null}
     </div>
   );
 };

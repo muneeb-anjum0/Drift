@@ -88,6 +88,29 @@ func (h Handler) Save(c *gin.Context) {
 	response.Success(c, http.StatusOK, "Analysis provider saved", gin.H{"provider": metadata})
 }
 
+func (h Handler) SetMode(c *gin.Context) {
+	id, ok := h.workspace(c)
+	if !ok {
+		return
+	}
+	c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, 1<<10)
+	var input struct {
+		Mode string `json:"mode" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&input); err != nil {
+		response.Error(c, http.StatusBadRequest, "Invalid analysis mode", nil)
+		return
+	}
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 25*time.Second)
+	defer cancel()
+	metadata, err := h.manager.SetMode(ctx, id, middleware.CurrentUserID(c), input.Mode)
+	if err != nil {
+		providerError(c, err)
+		return
+	}
+	response.Success(c, http.StatusOK, "Analysis mode saved", gin.H{"provider": metadata})
+}
+
 func (h Handler) Delete(c *gin.Context) {
 	id, ok := h.workspace(c)
 	if !ok {
@@ -114,6 +137,8 @@ func providerError(c *gin.Context, err error) {
 		response.Error(c, http.StatusBadGateway, "Provider authentication failed", nil)
 	case errors.Is(err, ErrProviderModel):
 		response.Error(c, http.StatusBadGateway, "Selected provider model is unavailable", nil)
+	case errors.Is(err, ErrProviderRequestRejected):
+		response.Error(c, http.StatusBadGateway, "Provider rejected the selected model or required JSON output format", nil)
 	case errors.Is(err, ErrProviderRateLimited):
 		response.Error(c, http.StatusBadGateway, "Provider rate limit reached", nil)
 	case errors.Is(err, ErrProviderInvalidResponse):

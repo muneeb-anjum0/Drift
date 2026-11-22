@@ -177,6 +177,10 @@ func parseID(c *gin.Context, key string) (primitive.ObjectID, bool) {
 	return id, true
 }
 func (h Handler) err(c *gin.Context, err error) {
+	if errors.Is(err, ErrTooManyClientRequests) {
+		response.Error(c, http.StatusBadRequest, "Compare up to five client requests at a time", nil)
+		return
+	}
 	if errors.Is(err, ErrPreviewUnavailable) {
 		response.Error(c, http.StatusNotFound, "Analysis preview is unavailable or already saved. Compare the change again.", nil)
 		return
@@ -215,6 +219,10 @@ func (h Handler) err(c *gin.Context, err error) {
 	}
 	if errors.Is(err, provider.ErrProviderModel) {
 		response.Error(c, http.StatusBadGateway, "Selected provider model is unavailable", nil)
+		return
+	}
+	if errors.Is(err, provider.ErrProviderRequestRejected) {
+		response.Error(c, http.StatusBadGateway, "Provider rejected the selected model or required JSON output format", nil)
 		return
 	}
 	if errors.Is(err, provider.ErrProviderRateLimited) {

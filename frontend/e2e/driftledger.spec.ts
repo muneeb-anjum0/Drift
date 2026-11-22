@@ -87,7 +87,7 @@ test('viewer UI hides mutation controls; server remains the authority', async ({
   await expect(page.getByRole('button', { name: 'Compare with scope' })).toHaveCount(0);
   await page.route('**/api/v1/workspaces/*/provider', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'ok', data: { provider: { providerType: 'local', displayName: 'Local model', credentialConfigured: false } } }) }));
   await page.goto('/settings');
-  await expect(page.getByText('Current:', { exact: false })).toBeVisible();
+  await expect(page.getByText('Currently using:', { exact: false })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Save provider' })).toHaveCount(0);
   await expect(page.getByLabel('API key')).toHaveCount(0);
 });
@@ -109,17 +109,17 @@ test('synthetic provider setup flows through a proposed change and human decisio
   await page.route('**/api/v1/workspaces/*/provider/test', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'ok', data: { status: 'connected' } }) }));
   await page.goto('/settings');
   await expect(page.getByRole('heading', { name: 'Analysis provider' })).toBeVisible();
+  await page.getByRole('radio', { name: 'Online provider' }).check();
+  await page.getByRole('combobox', { name: 'Provider', exact: true }).selectOption('custom');
   await page.getByLabel('Provider name').fill('Fixture provider');
-  await page.getByLabel('Model', { exact: true }).fill('mock-model');
-  await page.getByLabel('HTTPS endpoint').fill('https://api.example.com/v1');
+  await page.getByLabel('Public HTTPS base URL').fill('https://api.example.com/v1');
+  await page.getByLabel('Model ID').fill('mock-model');
   await page.getByLabel('API key').fill(syntheticKey);
   await page.getByLabel(/selected agreed requirement and new client input used for analysis/i).check();
-  await page.getByRole('button', { name: 'Test connection' }).click();
-  await expect(page.getByText(/Connected. No project text/)).toBeVisible();
   await page.getByRole('button', { name: 'Save provider' }).click();
-  await expect(page.getByText(/External provider saved/)).toBeVisible();
-  await expect(page.getByText(/API key configured/)).toBeVisible();
-  await expect(page.getByLabel('Replace API key')).toHaveValue('');
+  await expect(page.getByRole('button', { name: 'Connected and saved' })).toBeVisible();
+  await expect(page.getByText(/API key saved securely/)).toBeVisible();
+  await expect(page.getByLabel(/Replace saved API key/)).toHaveValue('');
   await expect(page.getByText(syntheticKey)).toHaveCount(0);
 
   await createProject(page, `Provider Journey ${Date.now()}`);

@@ -12,7 +12,6 @@ func RegisterRoutes(group *gin.RouterGroup, db *mongo.Database, cfg config.Confi
 	group.Use(middleware.Auth(db, cfg))
 	group.GET("/project/:projectId", handler.ListByProject)
 	group.POST("", handler.Create)
-	group.POST("/extract", handler.Extract)
 	group.POST("/baseline", handler.Baseline)
 	group.GET("/versions/:projectId", handler.Versions)
 	group.GET("/:requirementId", handler.Get)
