@@ -85,11 +85,15 @@ func TestProviderMetadataAuthorizationAndRemoval(t *testing.T) {
 		t.Fatalf("admin could not switch to local: %d", result.Code)
 	}
 	count, err := f.db.Collection("workspaceproviderconfigs").CountDocuments(ctx, bson.M{"_id": f.workspaceA})
-	if err != nil || count != 0 {
-		t.Fatal("external credential was not removed")
+	if err != nil || count != 1 {
+		t.Fatal("switching to local did not retain the saved online credential")
 	}
 	if result := request(app, http.MethodDelete, base, ownerToken, nil); result.Code != http.StatusOK {
 		t.Fatalf("owner could not remove provider: %d", result.Code)
+	}
+	count, err = f.db.Collection("workspaceproviderconfigs").CountDocuments(ctx, bson.M{"_id": f.workspaceA})
+	if err != nil || count != 0 {
+		t.Fatal("provider removal did not delete the saved online credential")
 	}
 	projects, err := f.db.Collection("projects").CountDocuments(ctx, bson.M{"workspace": f.workspaceA})
 	if err != nil || projects != 1 {
