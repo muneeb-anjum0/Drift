@@ -110,7 +110,7 @@ test('synthetic provider setup flows through a proposed change and human decisio
   await page.goto('/settings');
   await expect(page.getByRole('heading', { name: 'Analysis provider' })).toBeVisible();
   await page.getByRole('radio', { name: 'Online provider' }).check();
-  await page.getByLabel('Provider', { exact: true }).selectOption('custom');
+  await page.getByRole('combobox', { name: 'Provider', exact: true }).selectOption('custom');
   await page.getByLabel('Provider name').fill('Fixture provider');
   await page.getByLabel('Public HTTPS base URL').fill('https://api.example.com/v1');
   await page.getByLabel('Model ID').fill('mock-model');
