@@ -29,7 +29,7 @@ services:
       - --ctx-size
       - "8192"
       - --n-gpu-layers
-      - ${DRIFT_GPU_LAYERS:-24}
+      - ${DRIFT_SMOLLM3_GPU_LAYERS:-36}
       - --threads
       - "4"
       - --parallel
