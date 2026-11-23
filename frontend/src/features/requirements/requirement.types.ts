@@ -48,6 +48,8 @@ export interface RequirementVersion {
   label: string;
   description?: string;
   requirementsSnapshot: RequirementSnapshot[];
+  parentVersion?: string;
+  sourceChangeRequest?: string;
   createdBy: string | Pick<User, '_id' | 'name' | 'email'>;
   createdAt: string;
 }

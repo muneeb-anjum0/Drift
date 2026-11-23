@@ -111,6 +111,21 @@ func (h Handler) Baseline(c *gin.Context) {
 	}
 	response.Success(c, http.StatusCreated, "Requirement baseline created", gin.H{"version": version})
 }
+func (h Handler) IncludeApproved(c *gin.Context) {
+	var p IncludeChangeRequest
+	if c.ShouldBindJSON(&p) != nil || h.validate.Struct(p) != nil {
+		response.Error(c, http.StatusBadRequest, "Project, current scope revision, and approved change request are required", nil)
+		return
+	}
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
+	defer cancel()
+	version, err := h.service.IncludeApproved(ctx, middleware.CurrentUserID(c), p)
+	if err != nil {
+		h.err(c, err)
+		return
+	}
+	response.Success(c, http.StatusCreated, "Approved change included in comparison scope", gin.H{"version": version})
+}
 func (h Handler) Versions(c *gin.Context) {
 	id, ok := parseIDParam(c, "projectId")
 	if !ok {
@@ -135,6 +150,18 @@ func parseIDParam(c *gin.Context, name string) (primitive.ObjectID, bool) {
 	return id, true
 }
 func (h Handler) err(c *gin.Context, err error) {
+	if errors.Is(err, ErrScopeFrozen) {
+		response.Error(c, http.StatusConflict, "The original scope is frozen. Submit and approve a change request to update the comparison scope.", nil)
+		return
+	}
+	if errors.Is(err, ErrScopeRevisionConflict) {
+		response.Error(c, http.StatusConflict, "Scope has changed. Compare this request against the current scope again.", nil)
+		return
+	}
+	if errors.Is(err, ErrScopeChangeNotApproved) || errors.Is(err, ErrScopeChangeInvalid) {
+		response.Error(c, http.StatusConflict, "This change request cannot be included in scope", nil)
+		return
+	}
 	if errors.Is(err, utils.ErrInvalidID) {
 		response.Error(c, http.StatusBadRequest, "Invalid id", nil)
 		return

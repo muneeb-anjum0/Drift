@@ -71,7 +71,7 @@ func validPreview(record previewRecord, version requirement.RequirementVersion) 
 		a.ProjectID == record.Project.Hex() && a.WorkspaceID == record.Workspace.Hex() &&
 		a.BaselineVersionID == record.BaselineVersion.Hex() && a.BaselineVersionNumber == version.VersionNumber &&
 		a.InputText != "" && inputSHA256(a.InputText) == record.InputSHA256 &&
-		a.AnalysisEngine == record.ProviderType && (a.AnalysisEngine == "qwen_lora" || a.AnalysisEngine == "openai_compatible" || a.AnalysisEngine == "rule_based")
+		a.AnalysisEngine == record.ProviderType && (a.AnalysisEngine == "local_model" || a.AnalysisEngine == "qwen_lora" || a.AnalysisEngine == "openai_compatible" || a.AnalysisEngine == "rule_based")
 }
 
 func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequest) (DriftAnalysis, error) {
@@ -89,6 +89,9 @@ func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequ
 	}
 	if project.Workspace != record.Workspace {
 		return DriftAnalysis{}, ErrPreviewCorrupt
+	}
+	if project.CurrentScopeVersion != nil && *project.CurrentScopeVersion != record.BaselineVersion {
+		return DriftAnalysis{}, ErrScopeRevisionStale
 	}
 	var version requirement.RequirementVersion
 	if err := s.db.Collection("requirementversions").FindOne(ctx, bson.M{
@@ -126,13 +129,19 @@ func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequ
 		ID: utils.NewID(), Project: consumed.Project, Workspace: consumed.Workspace,
 		BaselineVersion: consumed.BaselineVersion, BaselineVersionNumber: version.VersionNumber,
 		InputType: a.InputType, InputText: a.InputText, DriftScore: a.DriftScore,
+		CumulativeDriftScore: a.CumulativeDriftScore, NeedsReview: a.NeedsReview,
+		ReviewReason: a.ReviewReason, Effort: a.Effort, ScopePairs: a.ScopePairs,
 		RiskLevel: a.RiskLevel, Summary: a.Summary, DetectedChanges: a.DetectedChanges,
 		RequirementResults: a.RequirementResults, AddedCount: a.AddedCount,
 		ModifiedCount: a.ModifiedCount, RemovedCount: a.RemovedCount,
 		AmbiguousCount: a.AmbiguousCount, ContradictionCount: a.ContradictionCount,
-		EstimatedExtraHours: a.EstimatedExtraHours, AnalysisEngine: a.AnalysisEngine,
+		EstimatedExtraHours: a.EstimatedExtraHours, AnalysisEngine: a.AnalysisEngine, ModelName: a.ModelName,
+		ScopeSchemaVersion: a.ScopeSchemaVersion, ScopePromptVersion: a.ScopePromptVersion,
 		ProvenanceVersion: provenanceVersion(a.AnalysisEngine), Status: "saved", CreatedBy: userID,
 		CreatedAt: now, UpdatedAt: now,
+	}
+	if len(a.ScopePairs) > 0 {
+		analysis.ProvenanceVersion = "server_bound_ai_scope_v1"
 	}
 	if _, err := s.db.Collection("driftanalyses").InsertOne(ctx, analysis); err != nil {
 		return DriftAnalysis{}, err

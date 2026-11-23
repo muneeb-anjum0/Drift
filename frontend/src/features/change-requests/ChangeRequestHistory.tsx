@@ -21,6 +21,9 @@ const ChangeRequestHistoryItem = ({
   onUpdate,
   onSubmitApproval,
   onDelete,
+  onIncludeApproved,
+  includedInScope,
+  isIncluding,
   isUpdating,
   isApprovalUpdating,
   isDeleting,
@@ -31,6 +34,9 @@ const ChangeRequestHistoryItem = ({
   onUpdate: (changeRequest: ChangeRequest, status: ChangeRequestStatus) => void;
   onSubmitApproval: (changeRequest: ChangeRequest) => void;
   onDelete: (changeRequest: ChangeRequest) => void;
+  onIncludeApproved: (changeRequest: ChangeRequest) => void;
+  includedInScope: boolean;
+  isIncluding?: boolean;
   isUpdating?: boolean;
   isApprovalUpdating?: boolean;
   isDeleting?: boolean;
@@ -93,6 +99,7 @@ const ChangeRequestHistoryItem = ({
       </div>
 
       <div className="mt-3 flex flex-wrap items-end gap-3">
+        {includedInScope ? <span className="text-xs font-semibold text-lime-600">Included in current scope history</span> : changeRequest.approvalStatus === 'approved' && canApprove && changeRequest.changesRequested.every((change) => ['added', 'modified', 'removed'].includes(change.changeType) && Boolean(change.proposedText)) ? <Button type="button" size="sm" onClick={() => onIncludeApproved(changeRequest)} disabled={isIncluding}>Include approved change in scope</Button> : null}
         {canEdit ? <>
         <label className="block space-y-1.5">
           <span className="text-xs font-semibold text-gray-300">Request record state (not approval)</span>
@@ -133,6 +140,9 @@ export const ChangeRequestHistory = ({
   onUpdate,
   onSubmitApproval,
   onDelete,
+  onIncludeApproved,
+  includedRequestIds = [],
+  isIncluding = false,
   isUpdating = false,
   isApprovalUpdating = false,
   isDeleting = false,
@@ -143,6 +153,9 @@ export const ChangeRequestHistory = ({
   onUpdate: (changeRequest: ChangeRequest, status: ChangeRequestStatus) => void;
   onSubmitApproval: (changeRequest: ChangeRequest) => void;
   onDelete: (changeRequest: ChangeRequest) => void;
+  onIncludeApproved: (changeRequest: ChangeRequest) => void;
+  includedRequestIds?: string[];
+  isIncluding?: boolean;
   isUpdating?: boolean;
   isApprovalUpdating?: boolean;
   isDeleting?: boolean;
@@ -168,6 +181,9 @@ export const ChangeRequestHistory = ({
           onUpdate={onUpdate}
           onSubmitApproval={onSubmitApproval}
           onDelete={onDelete}
+          onIncludeApproved={onIncludeApproved}
+          includedInScope={includedRequestIds.includes(changeRequest._id ?? '')}
+          isIncluding={isIncluding}
           isUpdating={isUpdating}
           isApprovalUpdating={isApprovalUpdating}
           isDeleting={isDeleting}

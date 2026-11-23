@@ -2,7 +2,7 @@
 
 Drift tracks how project requirements move after scope is agreed. It turns a later client request into a proposed comparison against a saved scope snapshot, shows the likely impact, and keeps the decision with the people responsible for the project.
 
-The technically interesting boundary is deliberate: a local model or a workspace-owned external provider can suggest a classification, but the Go application owns authorization, scoring, persistence, and workflow state.
+The technically interesting boundary is deliberate: the selected local or workspace-owned online model proposes the scope relationship, drift scores, and work estimate. The Go application verifies complete evidence and owns authorization, persistence, and workflow state.
 
 ## Why I Built It This Way
 
@@ -24,7 +24,7 @@ The repository does **not** contain the original 4.36 GiB GGUF or provider crede
 
 ## What Drift Does
 
-Teams capture requirements in a project, save a versioned scope snapshot, and compare new input with that snapshot. Drift retrieves relevant requirements, proposes one of six drift labels, presents affected scope with a heuristic impact score and additional-effort estimate, and supports an editable change request. Submission and an owner/admin decision are separate actions. Saved analyses, requests, and decisions provide a traceable history; a snapshot alone does **not** formally approve its contents.
+Teams capture initial requirements, freeze the first scope snapshot, then compare one new request with every item in the current accepted revision. The selected AI provider proposes affected scope, marginal and cumulative drift, and an effort range or a clear “not estimable” result. A person reviews the proposal, edits a change request, and makes an approval decision. An owner/admin separately includes the approved wording in the next comparison revision. The original snapshot stays intact; a snapshot alone does **not** prove client approval.
 
 ## The Problem
 
@@ -32,11 +32,11 @@ Scope changes often arrive in messages long before anyone updates the original a
 
 ## How Drift Works
 
-1. Record project requirements and save a scope snapshot.
-2. Enter a new client or project request against that snapshot.
-3. Review Drift's proposed labels, affected requirements, impact, and effort estimate.
-4. Save the analysis, edit a change-request draft, and submit it for a human decision.
-5. Revisit the resulting history without treating model output as an approval.
+1. Record the initial requirements and freeze the first scope snapshot.
+2. Enter one new client request. Drift checks it against **every** item in the current accepted revision; a durable job shows progress.
+3. Review the model's proposed relationships, affected requirements, two drift scores, and effort range or unanswered questions.
+4. Save the proposal, edit the change-request wording, and submit it for a human decision.
+5. Include an approved change in the next scope revision. The following request is checked against that expanded or changed revision.
 
 ## Architecture
 
@@ -75,24 +75,25 @@ React owns presentation and temporary browser state. Go enforces tenancy, permis
 ```mermaid
 flowchart TB
     Requirements[Project requirements] --> Snapshot[Scope snapshot]
-    Snapshot --> Retrieval[Authorized requirement retrieval]
-    NewInput[New client or project input] --> Retrieval
-    Retrieval --> Classification[Provider proposes classification]
-    Classification --> Normalization[Go validates, scores, and estimates impact]
-    Normalization --> Preview[Expiring server-bound preview]
+    Snapshot --> FullCheck[AI checks every current requirement]
+    NewInput[One new client request] --> FullCheck
+    FullCheck --> Synthesis[AI reconciles evidence, scores drift, and assesses effort]
+    Synthesis --> Validation[Go checks coverage, citations, and schema]
+    Validation --> Preview[Expiring server-bound preview]
     Preview --> Save[Explicit save by preview ID]
     Save --> Draft[Editable change-request draft]
     Draft --> Decision[Human submission and decision]
-    Decision --> History[Traceable history]
+    Decision --> Inclusion[Owner/admin includes approved wording]
+    Inclusion --> Snapshot
 ```
 
-The preview cannot be replaced with a browser-authored analysis at save time. The score and effort estimate are application heuristics, not guaranteed project forecasts; the classification is a proposed interpretation, not a confirmed change. Some results can also follow explicit rule-based/no-prediction paths. [Model and provider details](docs/model-and-providers.md) explain the current output contract.
+The preview cannot be replaced with a browser-authored analysis at save time. The score and effort range are model claims, not guaranteed project forecasts; classification is a proposed interpretation, not a confirmed change. An incomplete full-scope check fails rather than declaring the request absent. [Rolling scope pipeline](docs/rolling_scope_pipeline_design.md) records the implementation and evaluation limits.
 
 ## Local Model + BYOK
 
-The built-in option uses Drift's supported original Qwen-based GGUF through FastAPI and llama.cpp. The model file is supplied separately, verified by SHA-256, and not committed to this repository. The core project/scope workflow runs without it; local AI comparison requires the optional model profile.
+The historical built-in option uses Drift's original Qwen-based GGUF through FastAPI and llama.cpp. The file is supplied separately, verified by SHA-256, and not committed. A separate SmolLM3-3B F16 Compose overlay provides an experimental 8 GB GPU route. Neither local model has yet been shown reliable for the new full-scope assessment. The core project/scope workflow runs without a model.
 
-Alternatively, a workspace owner/admin can configure an OpenAI-compatible public HTTPS provider with their own API key. External providers return only a six-class label; Drift builds the advisory presentation from that label and the saved project input. The original local model still uses its legacy four-field response. Both options enter the same Go-owned analysis pipeline. The provider cannot choose the workspace, change permissions, save an analysis, approve a request, or alter project state. External mode uses encrypted server-side credential storage and intentionally does not fall back silently if the selected provider fails. See [model and providers](docs/model-and-providers.md) and [security](docs/security.md).
+Alternatively, a workspace owner/admin can configure an OpenAI-compatible public HTTPS provider with their own API key. Both options now receive the same structured full-scope task. Historical label-only and four-field paths remain for diagnostics and old records. The provider cannot choose the workspace, change permissions, save an analysis, approve a request, or alter project state. External mode uses encrypted server-side credential storage and does not fall back silently if the selected provider fails. See [model and providers](docs/model-and-providers.md) and [security](docs/security.md).
 
 ## Engineering Highlights
 

@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 from typing import Any
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Response, status
+from pydantic import BaseModel, Field
 
 from ai_model.inference.config import Settings, model_label, quantization_label
 from ai_model.inference.contracts import DriftPrediction, PredictRequest
@@ -108,3 +109,14 @@ async def predict_drift(request: PredictRequest) -> DriftPrediction:
     if runtime.load_error and not runtime.loaded:
         raise HTTPException(status_code=503, detail=runtime.load_error)
     return await runtime.predict(request)
+
+class ScopeAssessmentRequest(BaseModel):
+    system: str = Field(min_length=1, max_length=12000)
+    data: str = Field(min_length=1, max_length=262144)
+
+
+@app.post("/assess-scope", dependencies=[Depends(require_internal_api_key)])
+async def assess_scope(request: ScopeAssessmentRequest) -> dict[str, Any]:
+    if runtime.loading and not runtime.loaded:
+        raise HTTPException(status_code=503, detail="Model is still loading.")
+    return {"assessment": await runtime.assess_scope(request.system, request.data)}

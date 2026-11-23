@@ -102,6 +102,12 @@ class APITests(unittest.TestCase):
         )
         self.assertEqual(self.client.get("/live", headers=self.headers).status_code, 200)
 
+    def test_scope_assessment_requires_internal_credential(self) -> None:
+        payload = {"system": "Return JSON", "data": '{"requestText":"Example"}'}
+        self.assertEqual(self.client.post("/assess-scope", json=payload).status_code, 401)
+        with patch.object(app_module.runtime, "assess_scope", return_value={"schemaVersion": "scope-assessment-v1"}):
+            self.assertEqual(self.client.post("/assess-scope", headers=self.headers, json=payload).json()["assessment"]["schemaVersion"], "scope-assessment-v1")
+
     def test_request_validation_rejects_empty_and_oversized_input(self) -> None:
         empty = self.client.post(
             "/predict-drift",
@@ -118,6 +124,47 @@ class APITests(unittest.TestCase):
 
 
 class LlamaBoundaryTests(unittest.IsolatedAsyncioTestCase):
+    async def test_scope_assessment_uses_json_only_model_response(self) -> None:
+        settings = config_module.Settings(inference_api_key="test-inference-key-32-characters-minimum", llama_server_url="http://llama.test", gguf_prompt_format="smollm3")
+        runtime = runtime_module.ModelRuntime(settings)
+        runtime.loaded = True
+        def respond(request: httpx.Request) -> httpx.Response:
+            self.assertEqual(request.url.path, "/v1/chat/completions")
+            body = json.loads(request.content)
+            self.assertEqual(body["temperature"], 0)
+            self.assertEqual(body["response_format"], {"type": "json_object"})
+            self.assertIn("/no_think", body["messages"][0]["content"])
+            return httpx.Response(200, json={"choices": [{"message": {"content": '{"schemaVersion":"scope-pairs-v1"}'}}]})
+        transport = httpx.MockTransport(respond)
+        original_client = httpx.AsyncClient
+        def client_factory(*args: object, **kwargs: object) -> httpx.AsyncClient:
+            kwargs["transport"] = transport
+            return original_client(*args, **kwargs)
+        with patch.object(runtime_module.httpx, "AsyncClient", side_effect=client_factory):
+            result = await runtime.assess_scope("You compare scope", '{"requestText":"Example"}')
+        self.assertEqual(result["schemaVersion"], "scope-pairs-v1")
+
+    async def test_final_scope_assessment_requires_complete_json_shape(self) -> None:
+        settings = config_module.Settings(inference_api_key="test-inference-key-32-characters-minimum", llama_server_url="http://llama.test", gguf_prompt_format="smollm3")
+        runtime = runtime_module.ModelRuntime(settings)
+        runtime.loaded = True
+        def respond(request: httpx.Request) -> httpx.Response:
+            body = json.loads(request.content)
+            schema = body["response_format"]["schema"]
+            self.assertEqual(body["response_format"]["type"], "json_schema")
+            self.assertIn("proposedText", schema["properties"]["changes"]["items"]["required"])
+            self.assertEqual(schema["properties"]["changes"]["items"]["properties"]["evidenceIds"]["minItems"], 1)
+            self.assertFalse(schema["properties"]["changes"]["items"]["additionalProperties"])
+            return httpx.Response(200, json={"choices": [{"message": {"content": '{"schemaVersion":"scope-assessment-v1"}'}}]})
+        transport = httpx.MockTransport(respond)
+        original_client = httpx.AsyncClient
+        def client_factory(*args: object, **kwargs: object) -> httpx.AsyncClient:
+            kwargs["transport"] = transport
+            return original_client(*args, **kwargs)
+        with patch.object(runtime_module.httpx, "AsyncClient", side_effect=client_factory):
+            result = await runtime.assess_scope("You reconcile scope", '{"requestText":"Example"}')
+        self.assertEqual(result["schemaVersion"], "scope-assessment-v1")
+
     async def test_smollm3_chat_response_uses_its_template_and_parses(self) -> None:
         settings = config_module.Settings(
             inference_api_key="test-inference-key-32-characters-minimum",

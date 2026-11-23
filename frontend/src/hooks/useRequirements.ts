@@ -72,3 +72,11 @@ export const useCreateBaseline = () => {
     },
   });
 };
+
+export const useIncludeApprovedChange = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: { projectId: string; baseVersionId: string; changeRequestId: string }) => requirementApi.includeApprovedChange(payload),
+    onSuccess: async (_version, payload) => invalidateRequirementQueries(queryClient, payload.projectId),
+  });
+};

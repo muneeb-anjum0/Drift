@@ -1,6 +1,6 @@
 # Architecture
 
-Drift is a local-first requirement-change management application. Its central design rule is that the Go API owns product authority; the browser presents workflows and the inference service supplies an untrusted classification input.
+Drift is a local-first requirement-change management application. Its central design rule is that the Go API owns product authority; the browser presents workflows and the selected AI provider supplies untrusted scope assessments.
 
 ## System boundaries
 
@@ -11,7 +11,7 @@ flowchart LR
   Go --> Mongo[(MongoDB: product and preview state)]
   Go --> Provider{Workspace analysis provider}
   Provider -->|default local| FastAPI[Keyed FastAPI inference]
-  FastAPI --> Llama[llama.cpp / original GGUF]
+  FastAPI --> Llama[llama.cpp / configured GGUF]
   Provider -->|opt-in BYOK| External[OpenAI-compatible HTTPS API]
   Go -. optional file bytes .-> GCS[Google Cloud Storage]
 ```
@@ -41,25 +41,26 @@ Every project belongs to a workspace. Workspace membership supplies one of four 
 
 ## Requirements and scope snapshots
 
-Requirements are mutable working records. Creating a baseline stores a historical **scope snapshot** rather than a live reference. The snapshot includes the current requirements, including any proposed/rejected statuses; its creation is **not** formal approval of the agreement. Baseline version allocation is protected by a unique index and retry behavior so concurrent requests cannot create duplicate versions. The saved snapshot is the selected comparison reference for later analysis.
+Requirements are editable while the initial agreement is being assembled. The first freeze stores an immutable **original scope snapshot** and makes it the project's current comparison revision. It includes the entered statuses, even proposed or rejected ones; freezing does **not** prove client approval. After the freeze, direct requirement edits are blocked. An owner/admin can include an approved change request to publish a new immutable revision; the project pointer advances only if the analyzed revision is still current. The original stays available for cumulative comparison. A unique index prevents duplicate version numbers, and concurrent original freezes have one winner.
 
 ## Drift pipeline
 
 ```text
 client message
-  -> baseline snapshot lookup
-  -> requirement relevance scoring
-  -> selected workspace provider and bounded per-requirement calls (when enabled)
-  -> response contract validation
-  -> normalization and post-processing
-  -> deterministic score/risk/effort aggregation
+  -> current immutable scope revision + original snapshot lookup
+  -> durable job and selected workspace provider
+  -> AI pair assessment for every active requirement, in batches
+  -> AI synthesis of proposed changes, two drift scores and effort range/unknown
+  -> Go validates complete IDs, citations, schema and numerical bounds
   -> server-generated, expiring preview ID
   -> explicit save by preview ID
+  -> human-edited change request and approval
+  -> explicit inclusion publishes the next comparison revision
 ```
 
-`drift_service.go` owns orchestration; `provider/` selects the authorized workspace provider; `inference_client.go` owns the authenticated Go-to-FastAPI boundary; `drift_postprocess.go` owns tested output cleanup and model compensation; `drift_scoring.go` owns aggregation; and `preview.go` binds analyze output to a short-lived Mongo preview consumed by save. The browser cannot repost or edit the analysis body at save. Analysis is preview-first: generated output is not durable until the user explicitly saves it.
+`drift_service.go` owns orchestration; `scope_job.go` persists progress and resumes interrupted batches; `full_scope_assessment.go` builds model calls; `scope_assessment.go` checks structural integrity; `provider/` selects the authorized workspace provider; `inference_client.go` owns the authenticated Go-to-FastAPI boundary; and `preview.go` binds analyze output to a short-lived Mongo preview consumed by save. The browser cannot repost or edit the analysis body at save. Analysis is preview-first: generated output is not durable until the user explicitly saves it.
 
-The canonical rules in `drift_postprocess.go` include general normalization plus model-compensation rules for the evaluation/demo domains. They are intentionally retained because tests and current behavior depend on them. Treat them as untrusted-model containment and known debt, not as a second source of product authorization.
+Historical label-only evaluation and postprocessing code remains for old records and diagnostics. The new product comparison does not call the lexical relevance, fixed-weight scoring, effort tables, or model-compensation helpers. Their continued presence is legacy debt; they are not an alternative semantic path when the selected provider fails.
 
 ## Inference boundary
 
@@ -79,10 +80,10 @@ Change requests have an explicit approval state machine:
 ```text
 draft -> pending_approval -> approved
                           -> rejected
-                          -> needs_revision -> pending_approval
+  -> needs_revision -> pending_approval
 ```
 
-Transitions and history updates remain atomic at the MongoDB document boundary. Competing decisions cannot both win. A change-request draft remains human-editable, but its `generatedBy` provenance is derived from the persisted analysis, not browser input.
+Transitions and history updates remain atomic at the MongoDB document boundary. Competing decisions cannot both win. A change-request draft remains human-editable, but its `generatedBy` provenance is derived from the persisted analysis, not browser input. Approval records a human decision; a separate inclusion action advances the current scope. Neither a saved analysis nor an approved but unincluded request changes the next comparison point.
 
 ## Documents and deletion
 

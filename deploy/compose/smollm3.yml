@@ -1,6 +1,9 @@
 # Optional, unquantized SmolLM3 local experiment. Set DRIFT_SMOLLM3_MODEL_DIR
 # to the absolute path of the folder containing the F16 GGUF.
 services:
+  backend:
+    environment:
+      DRIFT_LOCAL_MODEL_LABEL: SmolLM3-3B (F16, experimental)
   frontend:
     build:
       args:
@@ -11,6 +14,7 @@ services:
       DRIFT_GGUF_MODEL_PATH: /app/smollm3/SmolLM3-3B-F16.gguf
       DRIFT_GGUF_PROMPT_FORMAT: smollm3
       DRIFT_LLAMA_MAX_TOKENS: 224
+      DRIFT_LLAMA_TIMEOUT_SECONDS: 180
     volumes:
       - ${DRIFT_SMOLLM3_MODEL_DIR:?Set DRIFT_SMOLLM3_MODEL_DIR to the model folder}:/app/smollm3:ro
 
@@ -23,9 +27,9 @@ services:
       - --port
       - "8080"
       - --ctx-size
-      - "1024"
+      - "8192"
       - --n-gpu-layers
-      - "99"
+      - ${DRIFT_SMOLLM3_GPU_LAYERS:-36}
       - --threads
       - "4"
       - --parallel

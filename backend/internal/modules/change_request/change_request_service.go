@@ -72,22 +72,53 @@ func (s Service) Generate(ctx context.Context, userID primitive.ObjectID, p Gene
 	if analysisNeedsScopeReview(analysis) {
 		return Draft{}, ErrScopeReviewRequired
 	}
-	grouped := drift.CleanDetectedChanges(analysis.DetectedChanges, analysis.InputText)
+	grouped := analysis.DetectedChanges
+	if analysis.ScopePairs == nil {
+		grouped = drift.CleanDetectedChanges(grouped, analysis.InputText)
+	}
 	if len(grouped) == 0 {
 		return Draft{}, errors.New("no change request is needed for an unchanged drift analysis")
 	}
 	changes := changeRequestChanges(grouped)
-	hours := groupedHours(grouped)
 	title := changeRequestTitle(project.Name, grouped)
 	summary := changeRequestSummary(analysis, grouped)
-	draft := Draft{DriftAnalysisID: id.Hex(), Title: title, ClientName: project.Client, Summary: summary, ChangesRequested: changes, BusinessReason: businessReason(grouped), TimelineImpact: timelineImpact(hours), CostImpact: costImpact(grouped, hours), RecommendedAction: recommendedAction(grouped), ApprovalNote: approvalNote(grouped), Status: "draft", GeneratedBy: analysis.AnalysisEngine}
+	var business, timeline, cost, action, note string
+	if analysis.ScopePairs != nil {
+		business, timeline, cost, action, note = aiScopeDraftText(analysis)
+	} else {
+		hours := groupedHours(grouped)
+		business, timeline, cost, action, note = businessReason(grouped), timelineImpact(hours), costImpact(grouped, hours), recommendedAction(grouped), approvalNote(grouped)
+	}
+	draft := Draft{DriftAnalysisID: id.Hex(), Title: title, ClientName: project.Client, Summary: summary, ChangesRequested: changes, BusinessReason: business, TimelineImpact: timeline, CostImpact: cost, RecommendedAction: action, ApprovalNote: note, Status: "draft", GeneratedBy: analysis.AnalysisEngine}
 	return draft, nil
+}
+
+// The AI scope contract has no price or business intent field. Preserve its
+// actual assessment and leave those decisions for the person editing the draft.
+func aiScopeDraftText(analysis drift.DriftAnalysis) (business, timeline, cost, action, note string) {
+	business = "Confirm the client's business reason before sending this request."
+	timeline = "Delivery time has not been agreed."
+	if analysis.Effort != nil {
+		if analysis.Effort.Status == "estimated" && analysis.Effort.MinimumHours != nil && analysis.Effort.MaximumHours != nil {
+			timeline = fmt.Sprintf("AI planning estimate: %.1f–%.1f additional hours. Assumptions: %s. Confirm with the delivery team.", *analysis.Effort.MinimumHours, *analysis.Effort.MaximumHours, strings.Join(analysis.Effort.Assumptions, "; "))
+		} else if analysis.Effort.Status == "not_estimable" {
+			timeline = "Additional hours cannot be estimated yet. Clarify: " + strings.Join(analysis.Effort.Questions, "; ")
+		}
+	}
+	cost = "Cost has not been estimated. Confirm rates and scope with the project owner."
+	action = "Review the AI evidence and proposed wording, then decide whether to send this request for approval."
+	note = "Approval accepts the edited scope wording. Include the approved request in current scope as a separate action."
+	return
 }
 
 func changeRequestChanges(changes []drift.DetectedChange) []ChangeRequestChange {
 	out := make([]ChangeRequestChange, 0, len(changes))
 	for _, c := range changes {
-		out = append(out, ChangeRequestChange{Title: c.Title, Description: drift.CleanReasoning(c.Description), ChangeType: c.ChangeType, Impact: c.Impact, AffectedModules: drift.AffectedModules(c), EstimatedEffort: c.EstimatedEffort})
+		proposedText := c.ProposedText
+		if proposedText == "" { // historical analyses predate separate request and proposal fields
+			proposedText = c.NewText
+		}
+		out = append(out, ChangeRequestChange{BaselineRequirementID: c.BaselineRequirementID, Title: c.Title, Description: drift.CleanReasoning(c.Description), ProposedText: proposedText, ChangeType: c.ChangeType, Impact: c.Impact, AffectedModules: drift.AffectedModules(c), EstimatedEffort: c.EstimatedEffort})
 	}
 	return out
 }
@@ -246,6 +277,9 @@ func (s Service) Save(ctx context.Context, userID primitive.ObjectID, p SaveRequ
 }
 
 func analysisNeedsScopeReview(analysis drift.DriftAnalysis) bool {
+	if analysis.NeedsReview {
+		return true
+	}
 	for _, change := range analysis.DetectedChanges {
 		if change.ReviewRequired {
 			return true

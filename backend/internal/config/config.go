@@ -29,6 +29,7 @@ type Config struct {
 	DriftInferenceURL            string
 	DriftInferenceAPIKey         string
 	DriftInferenceTimeout        time.Duration
+	DriftLocalModelLabel         string
 	DriftRelevanceThreshold      float64
 	DriftMaxAnalyzedRequirements int
 	ProviderMasterKey            string
@@ -55,6 +56,7 @@ func Load() Config {
 		DriftInferenceURL:            get("DRIFT_INFERENCE_URL", "http://localhost:8000"),
 		DriftInferenceAPIKey:         strings.TrimSpace(os.Getenv("DRIFT_INFERENCE_API_KEY")),
 		DriftInferenceTimeout:        time.Duration(getInt("DRIFT_INFERENCE_TIMEOUT_MS", 65000)) * time.Millisecond,
+		DriftLocalModelLabel:         get("DRIFT_LOCAL_MODEL_LABEL", "Local model"),
 		DriftRelevanceThreshold:      getFloat("DRIFT_RELEVANCE_THRESHOLD", 0.25),
 		DriftMaxAnalyzedRequirements: getInt("DRIFT_MAX_ANALYZED_REQUIREMENTS", 3),
 		ProviderMasterKey:            strings.TrimSpace(os.Getenv("DRIFT_PROVIDER_MASTER_KEY")),

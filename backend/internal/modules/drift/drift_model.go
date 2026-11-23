@@ -14,6 +14,7 @@ type DetectedChange struct {
 	BaselineRequirementID    string   `bson:"baselineRequirementId,omitempty" json:"baselineRequirementId,omitempty"`
 	BaselineRequirementTitle string   `bson:"baselineRequirementTitle,omitempty" json:"baselineRequirementTitle,omitempty"`
 	NewText                  string   `bson:"newText,omitempty" json:"newText,omitempty"`
+	ProposedText             string   `bson:"proposedText,omitempty" json:"proposedText,omitempty"`
 	OldText                  string   `bson:"oldText,omitempty" json:"oldText,omitempty"`
 	Impact                   string   `bson:"impact" json:"impact"`
 	EstimatedEffort          *float64 `bson:"estimatedEffort,omitempty" json:"estimatedEffort,omitempty"`
@@ -71,6 +72,11 @@ type AnalysisPreview struct {
 	InputType             string                      `json:"inputType"`
 	InputText             string                      `json:"inputText"`
 	DriftScore            int                         `json:"driftScore"`
+	CumulativeDriftScore  float64                     `json:"cumulativeDriftScore,omitempty"`
+	NeedsReview           bool                        `json:"needsReview,omitempty"`
+	ReviewReason          string                      `json:"reviewReason,omitempty"`
+	Effort                *ScopeEffortAssessment      `json:"effort,omitempty"`
+	ScopePairs            []ScopePairAssessment       `json:"scopePairs,omitempty"`
 	RiskLevel             string                      `json:"riskLevel"`
 	Summary               string                      `json:"summary"`
 	DetectedChanges       []DetectedChange            `json:"detectedChanges"`
@@ -82,6 +88,9 @@ type AnalysisPreview struct {
 	ContradictionCount    int                         `json:"contradictionCount"`
 	EstimatedExtraHours   float64                     `json:"estimatedExtraHours"`
 	AnalysisEngine        string                      `json:"analysisEngine"`
+	ModelName             string                      `json:"modelName,omitempty"`
+	ScopeSchemaVersion    string                      `json:"scopeSchemaVersion,omitempty"`
+	ScopePromptVersion    string                      `json:"scopePromptVersion,omitempty"`
 }
 
 type DriftAnalysis struct {
@@ -93,6 +102,11 @@ type DriftAnalysis struct {
 	InputType             string                      `bson:"inputType" json:"inputType"`
 	InputText             string                      `bson:"inputText" json:"inputText"`
 	DriftScore            int                         `bson:"driftScore" json:"driftScore"`
+	CumulativeDriftScore  float64                     `bson:"cumulativeDriftScore,omitempty" json:"cumulativeDriftScore,omitempty"`
+	NeedsReview           bool                        `bson:"needsReview,omitempty" json:"needsReview,omitempty"`
+	ReviewReason          string                      `bson:"reviewReason,omitempty" json:"reviewReason,omitempty"`
+	Effort                *ScopeEffortAssessment      `bson:"effort,omitempty" json:"effort,omitempty"`
+	ScopePairs            []ScopePairAssessment       `bson:"scopePairs,omitempty" json:"scopePairs,omitempty"`
 	RiskLevel             string                      `bson:"riskLevel" json:"riskLevel"`
 	Summary               string                      `bson:"summary" json:"summary"`
 	DetectedChanges       []DetectedChange            `bson:"detectedChanges" json:"detectedChanges"`
@@ -104,6 +118,9 @@ type DriftAnalysis struct {
 	ContradictionCount    int                         `bson:"contradictionCount" json:"contradictionCount"`
 	EstimatedExtraHours   float64                     `bson:"estimatedExtraHours" json:"estimatedExtraHours"`
 	AnalysisEngine        string                      `bson:"analysisEngine" json:"analysisEngine"`
+	ModelName             string                      `bson:"modelName,omitempty" json:"modelName,omitempty"`
+	ScopeSchemaVersion    string                      `bson:"scopeSchemaVersion,omitempty" json:"scopeSchemaVersion,omitempty"`
+	ScopePromptVersion    string                      `bson:"scopePromptVersion,omitempty" json:"scopePromptVersion,omitempty"`
 	ProvenanceVersion     string                      `bson:"provenanceVersion,omitempty" json:"provenanceVersion,omitempty"`
 	Status                string                      `bson:"status" json:"status"`
 	CreatedBy             primitive.ObjectID          `bson:"createdBy" json:"createdBy"`

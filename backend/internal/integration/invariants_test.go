@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"sort"
 	"sync"
 	"testing"
 	"time"
@@ -321,7 +320,7 @@ func TestAuthenticationAuthorizationAndTenantIsolation(t *testing.T) {
 	}
 }
 
-func TestConcurrentBaselinesAreUniqueAndComplete(t *testing.T) {
+func TestConcurrentOriginalFreezeHasOneCompleteWinner(t *testing.T) {
 	f := newFixture(t)
 	ctx := context.Background()
 	now := time.Now().UTC()
@@ -355,25 +354,28 @@ func TestConcurrentBaselinesAreUniqueAndComplete(t *testing.T) {
 	wait.Wait()
 	close(versions)
 	close(errorsFound)
+	conflicts := 0
 	for err := range errorsFound {
-		t.Fatalf("concurrent baseline failed: %v", err)
+		if !errors.Is(err, requirement.ErrScopeFrozen) {
+			t.Fatalf("unexpected concurrent freeze error: %v", err)
+		}
+		conflicts++
 	}
 	got := make([]int, 0, attempts)
 	for version := range versions {
 		got = append(got, version)
 	}
-	sort.Ints(got)
-	for i, version := range got {
-		if version != i+1 {
-			t.Fatalf("expected sequential unique versions 1..%d, got %v", attempts, got)
-		}
+	if len(got) != 1 || conflicts != attempts-1 {
+		t.Fatalf("expected one original freeze and %d conflicts, got versions=%v conflicts=%d", attempts-1, got, conflicts)
 	}
 	cursor, err := f.db.Collection("requirementversions").Find(ctx, bson.M{"project": f.projectA})
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer cursor.Close(ctx)
+	count := 0
 	for cursor.Next(ctx) {
+		count++
 		var version requirement.RequirementVersion
 		if err := cursor.Decode(&version); err != nil {
 			t.Fatal(err)
@@ -381,6 +383,9 @@ func TestConcurrentBaselinesAreUniqueAndComplete(t *testing.T) {
 		if len(version.RequirementsSnapshot) != 3 {
 			t.Fatalf("baseline %d has incomplete snapshot: %d", version.VersionNumber, len(version.RequirementsSnapshot))
 		}
+	}
+	if count != 1 {
+		t.Fatalf("expected only one stored original snapshot, got %d", count)
 	}
 }
 

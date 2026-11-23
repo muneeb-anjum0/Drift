@@ -51,4 +51,6 @@ type RequirementVersion struct {
 	RequirementsSnapshot []RequirementSnapshot `bson:"requirementsSnapshot" json:"requirementsSnapshot"`
 	CreatedBy            primitive.ObjectID    `bson:"createdBy" json:"createdBy"`
 	CreatedAt            time.Time             `bson:"createdAt" json:"createdAt"`
+	ParentVersion        *primitive.ObjectID   `bson:"parentVersion,omitempty" json:"parentVersion,omitempty"`
+	SourceChangeRequest  *primitive.ObjectID   `bson:"sourceChangeRequest,omitempty" json:"sourceChangeRequest,omitempty"`
 }

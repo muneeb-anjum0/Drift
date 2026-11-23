@@ -5,8 +5,10 @@ export type ChangeRequestStatus = 'draft' | 'sent' | 'approved' | 'rejected' | '
 export type ApprovalStatus = 'draft' | 'pending_approval' | 'approved' | 'rejected' | 'needs_revision';
 
 export interface ChangeRequestChange {
+  baselineRequirementId?: string;
   title: string;
   description: string;
+  proposedText?: string;
   changeType: 'added' | 'modified' | 'removed' | 'ambiguous' | 'contradiction';
   impact: 'low' | 'medium' | 'high' | 'critical';
   affectedModules?: string[];
@@ -43,7 +45,7 @@ export interface ChangeRequest {
   decisionAt?: string;
   decisionNote?: string;
   approvalHistory?: ApprovalEvent[];
-  generatedBy: 'rule_based' | 'qwen_lora' | 'openai_compatible';
+  generatedBy: 'rule_based' | 'qwen_lora' | 'local_model' | 'openai_compatible';
   createdBy: string | Pick<User, '_id' | 'name' | 'email'>;
   createdAt: string;
   updatedAt: string;
@@ -61,7 +63,7 @@ export interface ChangeRequestDraft {
   recommendedAction: string;
   approvalNote: string;
   status: ChangeRequestStatus;
-  generatedBy: 'rule_based' | 'qwen_lora' | 'openai_compatible';
+  generatedBy: 'rule_based' | 'qwen_lora' | 'local_model' | 'openai_compatible';
 }
 
 export interface ChangeRequestFormValues {

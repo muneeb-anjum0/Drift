@@ -69,6 +69,10 @@ var contradictionKeys = []string{"instead of", "no longer", "remove", "replace",
 var ambiguityKeys = []string{"maybe", "if possible", "something like", "etc", "and more", "make it better", "improve this", "user-friendly", "modern", "fast", "scalable", "simple", "advanced", "premium", "beautiful", "professional", "optimize"}
 
 func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p AnalyzeRequest) (AnalysisPreview, error) {
+	return s.analyzeWithProgress(ctx, userID, p, nil, nil, nil, nil)
+}
+
+func (s Service) analyzeWithProgress(ctx context.Context, userID primitive.ObjectID, p AnalyzeRequest, completed []ScopePairAssessment, summaries []string, onBatch func([]ScopePairAssessment, []string) error, pinned AnalysisProvider) (AnalysisPreview, error) {
 	projectID, err := utils.ObjectID(p.ProjectID)
 	if err != nil {
 		return AnalysisPreview{}, err
@@ -88,9 +92,12 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 		}
 		return AnalysisPreview{}, err
 	}
-	selected, err := s.forWorkspace(ctx, project.Workspace)
-	if err != nil {
-		return AnalysisPreview{}, err
+	selected := pinned
+	if selected == nil {
+		selected, err = s.forWorkspace(ctx, project.Workspace)
+		if err != nil {
+			return AnalysisPreview{}, err
+		}
 	}
 	if !selected.Enabled() {
 		return AnalysisPreview{}, ErrInferenceUnavailable
@@ -98,43 +105,49 @@ func (s Service) Analyze(ctx context.Context, userID primitive.ObjectID, p Analy
 	if len(version.RequirementsSnapshot) == 0 {
 		return AnalysisPreview{}, utils.ErrNotFound
 	}
-	changes, inferenceSummary, requirementResults, providerCalled, err := s.analyzeRequirements(ctx, selected, version.RequirementsSnapshot, p.InputText)
+	if project.CurrentScopeVersion != nil && *project.CurrentScopeVersion != versionID {
+		return AnalysisPreview{}, ErrScopeRevisionStale
+	}
+	var original requirement.RequirementVersion
+	if err := s.db.Collection("requirementversions").FindOne(ctx, bson.M{"project": projectID, "workspace": project.Workspace}, options.FindOne().SetSort(bson.D{{Key: "versionNumber", Value: 1}})).Decode(&original); err != nil {
+		return AnalysisPreview{}, err
+	}
+	assessment, err := assessFullScopeFrom(ctx, selected, original.RequirementsSnapshot, version.RequirementsSnapshot, p.InputText, completed, summaries, onBatch)
 	if err != nil {
 		return AnalysisPreview{}, err
 	}
-	var score int
-	var risk string
-	var counts map[string]int
+	if err := ctx.Err(); err != nil {
+		return AnalysisPreview{}, err
+	}
+	if onBatch != nil {
+		if err := onBatch(nil, nil); err != nil {
+			return AnalysisPreview{}, err
+		}
+	}
+	changes := make([]DetectedChange, 0, len(assessment.Changes))
+	counts := map[string]int{"added": 0, "modified": 0, "removed": 0, "contradiction": 0, "ambiguous": 0}
+	byID := make(map[string]requirement.RequirementSnapshot, len(version.RequirementsSnapshot))
+	for _, item := range version.RequirementsSnapshot {
+		byID[item.RequirementID] = item
+	}
+	for _, proposed := range assessment.Changes {
+		change := DetectedChange{ChangeType: proposed.ChangeType, Title: proposed.Title, Description: proposed.Explanation, NewText: p.InputText, ProposedText: proposed.ProposedText, BaselineRequirementID: proposed.RequirementID, Recommendation: "Review the AI assessment and original wording before a decision.", Impact: proposed.Impact, ReviewRequired: assessment.NeedsReview || proposed.ChangeType == "ambiguous"}
+		if item, ok := byID[proposed.RequirementID]; ok {
+			change.BaselineRequirementTitle = item.Title
+			change.OldText = singleRequirementText(item)
+		}
+		changes = append(changes, change)
+		counts[proposed.ChangeType]++
+	}
 	var hours float64
-	var summary string
-	if hasScopeReview(changes) {
-		// Review prompts are not established scope changes. Score only the
-		// remaining proposals and keep the uncertainty visible in the summary.
-		score, risk, counts, hours, summary = scoreWithScopeReview(changes)
-	} else {
-		// Each request has already been reconciled against the full snapshot.
-		// Legacy canonical postprocessing can merge distinct requests or invent
-		// a domain-specific explanation, so score the supported proposals only.
-		score, risk, counts, hours, summary = Score(changes)
-		if len(changes) == 0 {
-			summary = "No scope difference was proposed after checking the saved requirements."
-		}
+	if assessment.Effort.Status == "estimated" {
+		hours = (*assessment.Effort.MinimumHours + *assessment.Effort.MaximumHours) / 2
 	}
-	if inferenceSummary != "" && len(changes) == 0 {
-		summary = CleanReasoning(summary + " " + inferenceSummary)
+	engine := "local_model"
+	if selected.ProviderName() == provider.TypeExternal {
+		engine = provider.TypeExternal
 	}
-	engine := "rule_based" // no relevant requirement means no provider prediction ran
-	if providerCalled {
-		switch selected.ProviderName() {
-		case provider.TypeLocal:
-			engine = "qwen_lora"
-		case provider.TypeExternal:
-			engine = provider.TypeExternal
-		default:
-			return AnalysisPreview{}, ErrInferenceBadResponse
-		}
-	}
-	preview := AnalysisPreview{ProjectID: projectID.Hex(), WorkspaceID: project.Workspace.Hex(), BaselineVersionID: versionID.Hex(), BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: score, RiskLevel: risk, Summary: summary, DetectedChanges: changes, RequirementResults: requirementResults, AddedCount: counts["added"], ModifiedCount: counts["modified"], RemovedCount: counts["removed"], AmbiguousCount: counts["ambiguous"], ContradictionCount: counts["contradiction"], EstimatedExtraHours: hours, AnalysisEngine: engine}
+	preview := AnalysisPreview{ProjectID: projectID.Hex(), WorkspaceID: project.Workspace.Hex(), BaselineVersionID: versionID.Hex(), BaselineVersionNumber: version.VersionNumber, InputType: def(p.InputType, "client_message"), InputText: p.InputText, DriftScore: int(*assessment.MarginalDriftScore), CumulativeDriftScore: *assessment.CumulativeDriftScore, NeedsReview: assessment.NeedsReview, ReviewReason: assessment.ReviewReason, Effort: &assessment.Effort, ScopePairs: assessment.Pairs, RiskLevel: assessment.RiskLevel, Summary: assessment.ScoreExplanation, DetectedChanges: changes, AddedCount: counts["added"], ModifiedCount: counts["modified"], RemovedCount: counts["removed"], AmbiguousCount: counts["ambiguous"], ContradictionCount: counts["contradiction"], EstimatedExtraHours: hours, AnalysisEngine: engine, ModelName: selected.ModelName(), ScopeSchemaVersion: "scope-assessment-v1", ScopePromptVersion: "scope-pipeline-v1"}
 	if err := s.storePreview(ctx, userID, projectID, project.Workspace, versionID, &preview); err != nil {
 		return AnalysisPreview{}, err
 	}

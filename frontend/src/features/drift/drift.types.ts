@@ -3,7 +3,7 @@ import type { Project, User, Workspace } from '../../types';
 export type DriftInputType = 'client_message' | 'meeting_note' | 'scope_update' | 'document_text' | 'other';
 export type ChangeType = 'added' | 'modified' | 'removed' | 'ambiguous' | 'contradiction' | 'unchanged';
 export type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
-export type AnalysisEngine = 'rule_based' | 'qwen_lora' | 'openai_compatible';
+export type AnalysisEngine = 'rule_based' | 'qwen_lora' | 'local_model' | 'openai_compatible';
 
 export interface DetectedChange {
   changeType: ChangeType;
@@ -13,6 +13,7 @@ export interface DetectedChange {
   baselineRequirementId?: string;
   baselineRequirementTitle?: string;
   newText?: string;
+  proposedText?: string;
   oldText?: string;
   impact: 'low' | 'medium' | 'high' | 'critical';
   estimatedEffort?: number;
@@ -51,6 +52,11 @@ export interface DriftAnalysis {
   inputType: DriftInputType;
   inputText: string;
   driftScore: number;
+  cumulativeDriftScore?: number;
+  needsReview?: boolean;
+  reviewReason?: string;
+  effort?: ScopeEffort;
+  scopePairs?: ScopePair[];
   riskLevel: RiskLevel;
   summary: string;
   detectedChanges: DetectedChange[];
@@ -62,7 +68,10 @@ export interface DriftAnalysis {
   contradictionCount: number;
   estimatedExtraHours: number;
   analysisEngine: AnalysisEngine;
-  provenanceVersion?: 'server_bound_v1' | 'server_bound_label_only_v2';
+  modelName?: string;
+  scopeSchemaVersion?: string;
+  scopePromptVersion?: string;
+  provenanceVersion?: 'server_bound_v1' | 'server_bound_label_only_v2' | 'server_bound_ai_scope_v1';
   status: 'draft' | 'saved' | 'reviewed';
   createdBy: string | Pick<User, '_id' | 'name' | 'email'>;
   createdAt: string;
@@ -77,6 +86,11 @@ export interface DriftAnalysisPreview {
   inputType: DriftInputType;
   inputText: string;
   driftScore: number;
+  cumulativeDriftScore?: number;
+  needsReview?: boolean;
+  reviewReason?: string;
+  effort?: ScopeEffort;
+  scopePairs?: ScopePair[];
   riskLevel: RiskLevel;
   summary: string;
   detectedChanges: DetectedChange[];
@@ -88,6 +102,25 @@ export interface DriftAnalysisPreview {
   contradictionCount: number;
   estimatedExtraHours: number;
   analysisEngine: AnalysisEngine;
+  modelName?: string;
+  scopeSchemaVersion?: string;
+  scopePromptVersion?: string;
+}
+
+export interface ScopeEffort {
+  status: 'estimated' | 'not_estimable';
+  minimumHours?: number;
+  maximumHours?: number;
+  assumptions: string[];
+  questions: string[];
+}
+
+export interface ScopePair {
+  requirementId: string;
+  relation: 'covered' | 'unrelated' | 'modifies' | 'removes' | 'contradicts' | 'unclear';
+  oldQuote?: string;
+  newQuote?: string;
+  explanation: string;
 }
 
 export interface DriftAnalysisFormValues {

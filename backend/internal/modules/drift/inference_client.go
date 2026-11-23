@@ -33,6 +33,7 @@ type InferenceClient struct {
 	relevanceThreshold float64
 	maxAnalyzed        int
 	apiKey             string
+	modelLabel         string
 }
 
 type ModelAnalyzeRequest = provider.AnalyzeRequest
@@ -46,6 +47,7 @@ func NewInferenceClient(cfg config.Config) InferenceClient {
 		relevanceThreshold: cfg.DriftRelevanceThreshold,
 		maxAnalyzed:        cfg.DriftMaxAnalyzedRequirements,
 		apiKey:             cfg.DriftInferenceAPIKey,
+		modelLabel:         cfg.DriftLocalModelLabel,
 	}
 }
 
@@ -54,7 +56,12 @@ func (c InferenceClient) Enabled() bool {
 }
 
 func (c InferenceClient) ProviderName() string { return "local" }
-func (c InferenceClient) ModelName() string    { return "Local model" }
+func (c InferenceClient) ModelName() string {
+	if c.modelLabel == "" {
+		return "Local model"
+	}
+	return c.modelLabel
+}
 
 func (c InferenceClient) RelevanceThreshold() float64 {
 	if c.relevanceThreshold <= 0 {

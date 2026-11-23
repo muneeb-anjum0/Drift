@@ -8,15 +8,14 @@ const riskClassName = (riskLevel: RiskLevel) => {
 };
 
 const engineLabel = (analysisEngine: AnalysisEngine) => {
-  if (analysisEngine === 'qwen_lora') return 'Qwen GGUF';
-  if (analysisEngine === 'rule_based') return 'Fallback mode';
-  return 'Legacy engine';
+  if (analysisEngine === 'qwen_lora' || analysisEngine === 'local_model') return 'Local AI';
+  if (analysisEngine === 'rule_based') return 'Legacy rules';
+  return 'Online provider';
 };
 
 const runtimeLabel = (analysisEngine: AnalysisEngine) => {
-  if (analysisEngine === 'rule_based') return 'Fallback mode';
-  if (analysisEngine === 'qwen_lora') return 'Fallback not used';
-  return 'Legacy analysis';
+  if (analysisEngine === 'rule_based') return 'Historical result';
+  return 'Provider output';
 };
 
 export const DriftBadges = ({ riskLevel, analysisEngine }: { riskLevel: RiskLevel; analysisEngine: AnalysisEngine }) => {

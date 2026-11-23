@@ -3,6 +3,15 @@ import type { ApiResponse } from '../types/api.types';
 import type { DriftAnalysis, DriftAnalysisPreview, DriftInputType, ModelPrediction } from '../features/drift/drift.types';
 
 export const driftApi = {
+  startScopeJob: async (payload: { projectId: string; baselineVersionId: string; inputText: string; inputType?: DriftInputType }) => {
+    const response = await api.post<ApiResponse<{ job: ScopeJob }>>('/drift/scope-jobs', payload);
+    return response.data.data.job;
+  },
+  getScopeJob: async (jobId: string) => {
+    const response = await api.get<ApiResponse<{ job: ScopeJob }>>(`/drift/scope-jobs/${jobId}`);
+    return response.data.data.job;
+  },
+  cancelScopeJob: async (jobId: string) => { await api.delete(`/drift/scope-jobs/${jobId}`); },
   readiness: async (workspaceId?: string) => {
     const response = await api.get<ApiResponse<{ available: boolean; reason: 'ready' | 'disabled' | 'unavailable'; providerType: 'local' | 'openai_compatible'; model?: string }>>('/drift/readiness', { params: workspaceId ? { workspaceId } : undefined });
     return response.data.data;
@@ -40,3 +49,14 @@ export const driftApi = {
     return response.data.data;
   },
 };
+
+export interface ScopeJob {
+  id: string;
+  status: 'queued' | 'running' | 'complete' | 'failed' | 'canceled';
+  processed: number;
+  total: number;
+  providerType: string;
+  modelName: string;
+  result?: DriftAnalysisPreview;
+  error?: string;
+}
