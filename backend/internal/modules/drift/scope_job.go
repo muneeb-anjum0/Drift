@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"driftledger/backend/internal/authorization"
+	"driftledger/backend/internal/modules/provider"
 	"driftledger/backend/internal/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -237,11 +238,31 @@ func (s Service) runScopeJob(parent context.Context, job ScopeJob) {
 			_, _ = s.db.Collection("analysispreviews").DeleteOne(writeCtx, bson.M{"_id": result.PreviewID, "user": job.User})
 		}
 		slog.Warn("scope_job_failed", "jobId", job.ID.Hex(), "error", err)
-		_, _ = s.db.Collection("scopejobs").UpdateOne(writeCtx, bson.M{"_id": job.ID, "status": "running", "attempts": job.Attempts}, bson.M{"$set": bson.M{"status": "failed", "error": "The model could not complete a verified comparison. Retry the request; no partial result was saved.", "updatedAt": time.Now().UTC()}})
+		_, _ = s.db.Collection("scopejobs").UpdateOne(writeCtx, bson.M{"_id": job.ID, "status": "running", "attempts": job.Attempts}, bson.M{"$set": bson.M{"status": "failed", "error": publicScopeJobError(err), "updatedAt": time.Now().UTC()}})
 		return
 	}
 	updated, updateErr := s.db.Collection("scopejobs").UpdateOne(writeCtx, bson.M{"_id": job.ID, "status": "running", "attempts": job.Attempts}, bson.M{"$set": bson.M{"status": "complete", "result": result, "previewId": result.PreviewID, "processed": job.Total, "pairs": []ScopePairAssessment{}, "updatedAt": time.Now().UTC()}})
 	if updateErr != nil || updated.MatchedCount != 1 {
 		_, _ = s.db.Collection("analysispreviews").DeleteOne(writeCtx, bson.M{"_id": result.PreviewID, "user": job.User})
+	}
+}
+
+func publicScopeJobError(err error) string {
+	suffix := " No partial result was saved."
+	switch {
+	case errors.Is(err, provider.ErrProviderTimedOut):
+		return "The online provider took too long to answer. Retry the comparison or choose a faster model." + suffix
+	case errors.Is(err, provider.ErrProviderRateLimited):
+		return "The online provider rate limit was reached. Wait for the provider quota to reset, then retry." + suffix
+	case errors.Is(err, provider.ErrProviderAuthentication):
+		return "The online provider rejected the saved API key. Check it in workspace settings, then retry." + suffix
+	case errors.Is(err, provider.ErrProviderModel):
+		return "The online provider could not find the configured model. Check its model ID in workspace settings." + suffix
+	case errors.Is(err, provider.ErrProviderRequestRejected):
+		return "The online provider rejected this scope request. Check that the selected model supports JSON responses." + suffix
+	case errors.Is(err, provider.ErrProviderUnavailable):
+		return "The online provider did not respond successfully. Check its service status and retry." + suffix
+	default:
+		return "The model could not complete a verified comparison. Retry the request; no partial result was saved."
 	}
 }

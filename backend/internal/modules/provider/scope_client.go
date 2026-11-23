@@ -4,10 +4,28 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"strings"
+	"time"
 )
+
+// Scope responses are larger than the one-label credential check. Clone the
+// existing restricted transport so DNS validation, TLS, and redirect policy
+// stay identical while allowing the model enough time to finish.
+func (c *Client) scopeHTTPClient() *http.Client {
+	client := *c.http
+	client.Timeout = 120 * time.Second
+	if transport, ok := c.http.Transport.(*http.Transport); ok {
+		copy := transport.Clone()
+		copy.ResponseHeaderTimeout = 110 * time.Second
+		client.Transport = copy
+	}
+	return &client
+}
 
 // AssessScope sends a server-authored instruction and untrusted scope data to
 // the selected online model. Only JSON is returned; the caller validates it.
@@ -28,8 +46,12 @@ func (c *Client) AssessScope(ctx context.Context, system string, data []byte) (j
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+c.key)
-	resp, err := c.http.Do(req)
+	resp, err := c.scopeHTTPClient().Do(req)
 	if err != nil {
+		var networkError net.Error
+		if errors.Is(err, context.DeadlineExceeded) || errors.As(err, &networkError) && networkError.Timeout() {
+			return nil, ErrProviderTimedOut
+		}
 		return nil, ErrProviderUnavailable
 	}
 	defer resp.Body.Close()
@@ -44,7 +66,7 @@ func (c *Client) AssessScope(ctx context.Context, system string, data []byte) (j
 		return nil, ErrProviderRequestRejected
 	}
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return nil, ErrProviderUnavailable
+		return nil, fmt.Errorf("%w: upstream HTTP %d", ErrProviderUnavailable, resp.StatusCode)
 	}
 	raw, err := io.ReadAll(io.LimitReader(resp.Body, (256<<10)+1))
 	if err != nil || len(raw) > 256<<10 {
