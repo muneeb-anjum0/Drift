@@ -14,8 +14,12 @@ type DriftScoreCardAnalysis = Pick<
   | 'contradictionCount'
   | 'estimatedExtraHours'
   | 'analysisEngine'
+  | 'modelName'
   | 'inputType'
   | 'baselineVersionNumber'
+  | 'scopePairs'
+  | 'cumulativeDriftScore'
+  | 'effort'
 > &
   Pick<DriftAnalysisPreview, 'inputType'>;
 
@@ -33,9 +37,10 @@ export const DriftScoreCard = ({ analysis }: { analysis: DriftScoreCardAnalysis 
     <Card className="h-full border-lime-400/20 bg-black/60 p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-lime-400">Heuristic comparison score</p>
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-lime-400">{analysis.scopePairs?.length ? 'AI assessed change from current scope' : 'Legacy comparison score'}</p>
           <h3 className="mt-1 text-2xl font-semibold text-white">{analysis.driftScore}/100</h3>
           <p className="mt-1.5 text-xs leading-5 text-gray-400">{analysis.summary}</p>
+          {analysis.modelName ? <p className="mt-1 text-xs text-gray-500">{analysis.modelName}</p> : null}
         </div>
         <DriftBadges riskLevel={analysis.riskLevel} analysisEngine={analysis.analysisEngine} />
       </div>
@@ -46,7 +51,8 @@ export const DriftScoreCard = ({ analysis }: { analysis: DriftScoreCardAnalysis 
         {statBlock('Removed', analysis.removedCount)}
         {statBlock('Ambiguous', analysis.ambiguousCount)}
         {statBlock('Contradictions', analysis.contradictionCount)}
-        {statBlock('Extra hours', `${analysis.estimatedExtraHours}h`)}
+        {analysis.scopePairs?.length ? statBlock('Cumulative from original', `${analysis.cumulativeDriftScore ?? '—'}/100`) : null}
+        {statBlock('Extra hours', analysis.effort?.status === 'not_estimable' ? 'Needs context' : analysis.effort?.status === 'estimated' ? `${analysis.effort.minimumHours}–${analysis.effort.maximumHours}h` : `${analysis.estimatedExtraHours}h`)}
         {statBlock('Baseline version', analysis.baselineVersionNumber)}
         {statBlock('Input type', analysis.inputType.replace(/_/g, ' '))}
       </div>

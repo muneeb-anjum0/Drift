@@ -1,26 +1,26 @@
 # Model and Analysis Providers
 
-Drift's Go pipeline owns authorization, full-snapshot comparison orchestration, normalization, impact presentation, and persistence. The inference-provider abstraction supplies a **proposed** six-class relationship for a selected requirement and new client text. Neither a local model nor an external provider can decide permissions, baseline ownership, change-request state, or any business mutation.
+Drift's Go pipeline owns authorization, full-scope orchestration, structural validation, and persistence. The selected AI provider proposes pair relationships, request-level changes, marginal and cumulative drift scores, and an effort range or questions. Neither provider can decide permissions, change-request approval, or whether an approved change enters current scope.
 
 ```mermaid
 flowchart LR
   Input[New client input] --> Go[Go: authorize project and select scope snapshot]
-  Go --> Retrieval[Score and order every saved requirement]
-  Retrieval --> Provider{Compare each requirement with workspace provider}
+  Go --> Job[Durable job checks every active requirement]
+  Job --> Provider{Workspace provider: pair batches + synthesis}
   Provider -->|default local| FastAPI[Keyed FastAPI]
-  FastAPI --> Llama[llama.cpp / original GGUF]
+  FastAPI --> Llama[llama.cpp / configured GGUF]
   Provider -->|opt-in external| HTTPS[OpenAI-compatible HTTPS adapter]
-  Llama --> Normalize[Go validation and normalization]
-  HTTPS --> Normalize
-  Normalize --> Preview[Server-bound advisory preview]
-  Preview --> Human[Explicit human save / later decision]
+  Llama --> Validate[Go checks complete IDs, evidence and schema]
+  HTTPS --> Validate
+  Validate --> Preview[Server-bound advisory preview]
+  Preview --> Human[Explicit save, approval, then inclusion]
 ```
 
 ## Supported model and current contract
 
-The only supported local artifact is `ai_model/artifacts/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf`, 4,683,074,112 bytes, SHA-256 `11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9`. It is ignored by Git and must come from authorized custody; no public download URL is promised. The normal Compose stack starts **without** llama.cpp. Model operation is optional for project/scope workflows but necessary for local AI comparison. CPU startup and optional GPU overlay are in [development](development.md). The rejected Phase III-J candidate must never be mounted under the original path.
+The historical production local artifact is `ai_model/artifacts/gguf/DriftLedger-Qwen2.5-7B-Q4_K_M.gguf`, 4,683,074,112 bytes, SHA-256 `11e2ca8d10f6b52693256addca9b8f0d5bb01eebc53594b531586ea992419ac9`. It is ignored by Git and must come from authorized custody. The optional `deploy/compose/smollm3.yml` overlay mounts a separately supplied SmolLM3-3B F16 GGUF as an **experimental** local alternative for this new scope contract. Neither model has passed a quality gate for this new multi-step task. The normal Compose stack starts without llama.cpp; core project/scope workflows work without a model. The rejected Phase III-J candidate must never be mounted under the original path.
 
-The semantic task is one of `added`, `modified`, `removed`, `contradiction`, `ambiguous`, `unchanged`. New external BYOK calls request and strictly parse only `{"label":"<canonical>"}`. The model supplies no confidence, reasoning, or changed elements. Go uses the stored requirement and input to construct an advisory preview; impact and effort remain explicit application heuristics. New saved external analyses carry `server_bound_label_only_v2` provenance. Previously saved analyses remain readable with their original fields and provenance. The original local FastAPI/Go path still uses its four-field contract until a separately validated local-model migration. No result implies automatic approval or that every displayed label came from a model.
+The new product comparison calls the same `scope-assessment-v1` contract for local and BYOK providers. The model returns a relationship for every active requirement, then reconciles the complete ledger into proposed changes, scores, risk, and effort. Go rejects missing IDs, invalid quotes, invalid scores, and incomplete output; it does not fill semantic fields with rules. Saved results carry `server_bound_ai_scope_v1` provenance. Historical label-only and four-field diagnostic/evaluation routes remain, and old analyses remain readable. No model result implies approval.
 
 ## Workspace selection and credential lifecycle
 
@@ -38,12 +38,12 @@ The independent base64-encoded 32-byte `DRIFT_PROVIDER_MASTER_KEY` enables exter
 
 The adapter accepts only canonical public-domain HTTPS URLs on port 443, without userinfo, query, fragment, redirects, or IP-literal host. It appends only the fixed `/chat/completions` path. Proxy environment variables and insecure TLS are not honored. Every connection re-resolves A/AAAA, rejects special-use/private/loopback/link-local/metadata addresses, and dials an approved resolved IP while retaining the hostname for SNI and certificate verification. This protects test and inference against redirect/DNS-rebinding SSRF. Private self-hosted endpoints are intentionally unsupported in this initial BYOK mode.
 
-Provider responses are size/schema/label bounded, normalized, and validated before reaching Go's advisory preview. Prompt text is untrusted data, not instructions with authority over HTTP targets, tools, files, or workflow. The selected provider's failure returns a sanitized error and **never silently falls back** to local or rule-based inference. No failed provider response becomes a saved analysis. Analysis provenance records the provider that actually executed, even if workspace selection later changes; no-prediction retrieval is marked `rule_based`. Direct diagnostic routes remain local-only. Secrets and raw provider request/response bodies must not enter logs or preview records.
+Provider responses are size/schema bounded and validated before reaching Go's advisory preview. Prompt text is untrusted data, not instructions with authority over HTTP targets, tools, files, or workflow. The selected provider's failure returns a sanitized error and **never silently falls back** to local or rule-based inference. No failed provider response becomes a saved analysis. The job records provider type, model label, and configuration revision so a changed connection fails instead of silently switching. Direct diagnostic routes remain local-only. Secrets and raw provider request/response bodies must not enter logs or preview records.
 
 ## Scope-level comparison and uncertainty
 
-Drift splits a client message into requests and checks each request against **every** requirement in the selected saved snapshot. Deterministic relevance orders those calls and helps reject weak pairwise claims, but does not omit requirements. An existing requirement classified as changed, removed, or contradicted remains linked to that exact baseline item. If no existing item accounts for the request and the full pass yields an `added` relationship, Drift proposes **one** unanchored new requirement for that request. The drift score is a transparent heuristic over those proposed changes and their impact; it is not a measure of contractual truth.
+Drift takes **one request at a time** and checks it against **every** requirement in the project's current accepted revision. It batches model calls without omitting IDs. The model reconciles the complete ledger; one unrelated pair cannot by itself prove a new feature. The model, not Go, assigns marginal drift relative to current scope and cumulative drift relative to the original snapshot. The resulting score is a proposed assessment, not contractual truth. Approved additions enter a new immutable revision, so the following request checks the expanded scope.
 
-Pairwise labels cannot mathematically prove absence from a natural-language agreement. A near-restatement of saved wording that conflicts with an `added` label, or otherwise inconsistent evidence, becomes **Needs scope review** instead of a fabricated addition. Review-required results have no model confidence, added effort, or drift-score contribution and cannot generate a change request. Users should review proposed additions and affected existing requirements before deciding. There is still no formal per-change confirm/dismiss workflow.
+Pairwise labels cannot mathematically prove absence from a natural-language agreement. The complete ledger, exact cited text, and request-level explanation are presented for review. If the model marks a result uncertain, it cannot become a change request without a clarified comparison. If the implementation context is insufficient, effort is `not_estimable` with questions; Go does not invent zero hours. Users should check proposed additions and affected existing requirements before deciding. Independent semantic evaluation of both providers is still required; see [rolling scope pipeline](rolling_scope_pipeline_design.md).
 
 Read [security](security.md) for preview binding, replay prevention, and authorization; [research history](research-history.md) for why the rejected label-only candidate does not replace the original; and [architecture](architecture.md) for the full workflow.

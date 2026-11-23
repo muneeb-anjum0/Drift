@@ -11,6 +11,7 @@ import (
 
 var projectCollections = []string{
 	"analysispreviews",
+	"scopejobs",
 	"changerequests",
 	"driftanalyses",
 	"requirementversions",
@@ -20,6 +21,7 @@ var projectCollections = []string{
 
 var workspaceCollections = []string{
 	"analysispreviews",
+	"scopejobs",
 	"changerequests",
 	"driftanalyses",
 	"requirementversions",

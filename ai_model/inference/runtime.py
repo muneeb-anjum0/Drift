@@ -64,6 +64,51 @@ USER_PROMPT_TEMPLATE = (
     "Classify their semantic relationship. Return only the required JSON object."
 )
 
+SCOPE_FINAL_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "additionalProperties": False,
+    "properties": {
+        "schemaVersion": {"enum": ["scope-assessment-v1"]},
+        "requestText": {"type": "string"},
+        "changes": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "properties": {
+                    "changeType": {"enum": ["added", "modified", "removed", "contradiction", "ambiguous"]},
+                    "impact": {"enum": ["low", "medium", "high", "critical"]},
+                    "requirementId": {"type": "string"},
+                    "title": {"type": "string", "minLength": 1, "maxLength": 120},
+                    "proposedText": {"type": "string", "minLength": 1, "maxLength": 400},
+                    "evidenceIds": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+                    "explanation": {"type": "string", "minLength": 1, "maxLength": 300},
+                },
+                "required": ["changeType", "impact", "requirementId", "title", "proposedText", "evidenceIds", "explanation"],
+            },
+        },
+        "marginalDriftScore": {"type": "number"},
+        "cumulativeDriftScore": {"type": "number"},
+        "scoreExplanation": {"type": "string", "minLength": 1, "maxLength": 300},
+        "riskLevel": {"enum": ["low", "medium", "high", "critical"]},
+        "effort": {
+            "type": "object",
+            "additionalProperties": False,
+            "properties": {
+                "status": {"enum": ["estimated", "not_estimable"]},
+                "minimumHours": {"type": "number"},
+                "maximumHours": {"type": "number"},
+                "assumptions": {"type": "array", "items": {"type": "string", "maxLength": 160}, "maxItems": 6},
+                "questions": {"type": "array", "items": {"type": "string", "maxLength": 160}, "maxItems": 6},
+            },
+            "required": ["status", "assumptions", "questions"],
+        },
+        "needsReview": {"type": "boolean"},
+        "reviewReason": {"type": "string", "maxLength": 300},
+    },
+    "required": ["schemaVersion", "requestText", "changes", "marginalDriftScore", "cumulativeDriftScore", "scoreExplanation", "riskLevel", "effort", "needsReview", "reviewReason"],
+}
+
 
 def user_prompt(request: PredictRequest) -> str:
     return USER_PROMPT_TEMPLATE.format(
@@ -335,3 +380,46 @@ class ModelRuntime:
         except (ValueError, KeyError, IndexError, TypeError) as exc:
             raise HTTPException(status_code=502, detail="llama.cpp returned an invalid chat response.") from exc
         return parse_prediction(raw)
+
+    async def assess_scope(self, system: str, data: str) -> dict[str, Any]:
+        """Run the versioned scope assessment without legacy label postprocessing."""
+        if not self.loaded:
+            raise HTTPException(status_code=503, detail="Model is not loaded.")
+        if self.settings.local_engine != "gguf":
+            raise HTTPException(status_code=503, detail="Scope assessment requires the GGUF runtime.")
+        if self.settings.gguf_prompt_format == "smollm3":
+            payload = {
+                "messages": [
+                    {"role": "system", "content": system + " /no_think"},
+                    {"role": "user", "content": data},
+                ],
+                "max_tokens": 2048 if system.startswith("You reconcile") else 1024,
+                "temperature": 0,
+                "response_format": (
+                    {"type": "json_schema", "schema": SCOPE_FINAL_SCHEMA}
+                    if system.startswith("You reconcile")
+                    else {"type": "json_object"}
+                ),
+                "chat_template_kwargs": {"enable_thinking": False},
+            }
+            url = self.settings.llama_server_url.rstrip("/") + "/v1/chat/completions"
+        else:
+            payload = {
+                "prompt": "<|im_start|>system\n" + system + "\n<|im_end|>\n<|im_start|>user\n" + data + "\n<|im_end|>\n<|im_start|>assistant\n",
+                "n_predict": 2048 if system.startswith("You reconcile") else 1024,
+                "temperature": 0,
+                "stop": ["<|im_end|>", "<|im_start|>"],
+            }
+            url = self.settings.llama_server_url.rstrip("/") + "/completion"
+        async with httpx.AsyncClient(timeout=self.settings.llama_timeout_seconds) as client:
+            try:
+                response = await client.post(url, json=payload)
+                response.raise_for_status()
+                envelope = response.json()
+                raw = (envelope["choices"][0]["message"]["content"] if self.settings.gguf_prompt_format == "smollm3" else envelope.get("content", ""))
+                assessment = json.loads(raw)
+            except (httpx.HTTPError, ValueError, KeyError, IndexError, TypeError) as exc:
+                raise HTTPException(status_code=502, detail="Local model did not return a valid scope assessment.") from exc
+        if not isinstance(assessment, dict):
+            raise HTTPException(status_code=502, detail="Local model returned an invalid scope assessment.")
+        return assessment

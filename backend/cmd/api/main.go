@@ -13,6 +13,8 @@ import (
 
 	"driftledger/backend/internal/config"
 	"driftledger/backend/internal/database"
+	"driftledger/backend/internal/modules/drift"
+	"driftledger/backend/internal/modules/provider"
 	"driftledger/backend/internal/router"
 	storageSvc "driftledger/backend/internal/storage"
 )
@@ -41,6 +43,14 @@ func main() {
 		os.Exit(1)
 	}
 	app := router.New(mongoDB.DB, cfg, storage)
+	providerManager, err := provider.NewManager(mongoDB.DB, cfg)
+	if err != nil {
+		logger.Error("provider_setup_failed", slog.String("error", err.Error()))
+		os.Exit(1)
+	}
+	workerCtx, stopWorker := context.WithCancel(context.Background())
+	defer stopWorker()
+	go drift.NewServiceWithProviders(mongoDB.DB, drift.NewInferenceClient(cfg), providerManager).RunScopeJobs(workerCtx)
 	server := &http.Server{
 		Addr:              ":" + cfg.Port,
 		Handler:           app,
@@ -74,6 +84,7 @@ func main() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
+	stopWorker()
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	_ = server.Shutdown(ctx)

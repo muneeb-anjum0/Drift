@@ -12,11 +12,12 @@ import (
 )
 
 type ProjectAccess struct {
-	ID        primitive.ObjectID `bson:"_id"`
-	Workspace primitive.ObjectID `bson:"workspace"`
-	Name      string             `bson:"name"`
-	Client    string             `bson:"clientName"`
-	Role      string             `bson:"-"`
+	ID                  primitive.ObjectID  `bson:"_id"`
+	Workspace           primitive.ObjectID  `bson:"workspace"`
+	Name                string              `bson:"name"`
+	Client              string              `bson:"clientName"`
+	CurrentScopeVersion *primitive.ObjectID `bson:"currentScopeVersion"`
+	Role                string              `bson:"-"`
 }
 
 type Capability string

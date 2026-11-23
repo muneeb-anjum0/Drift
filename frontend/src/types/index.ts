@@ -28,6 +28,7 @@ export interface Project {
   status: 'planning' | 'active' | 'paused' | 'completed' | 'archived';
   priority: 'low' | 'medium' | 'high' | 'urgent';
   originalScope: string;
+  currentScopeVersion?: string;
   deadline?: string | null;
   createdBy: string | Pick<User, '_id' | 'name' | 'email'>;
   createdAt: string;

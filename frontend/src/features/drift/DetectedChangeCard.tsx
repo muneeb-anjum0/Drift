@@ -7,5 +7,6 @@ export const DetectedChangeCard = ({ change }: { change: DetectedChange }) => <a
   <h4 className="mt-3 font-semibold">{change.title}</h4><p className="mt-1 leading-6">{change.description}</p>
   {change.oldText ? <p className="v-muted mt-2"><strong>Originally:</strong> {change.oldText}</p> : null}
   {change.newText ? <p className="v-muted mt-1"><strong>New request:</strong> {change.newText}</p> : null}
-  <details className="mt-2"><summary className="v-link cursor-pointer">{change.reviewRequired ? 'What to check' : 'Planning details'}</summary><div className="v-muted mt-2 space-y-1"><p>{change.recommendation}</p>{!change.reviewRequired ? <p>{change.confidence != null ? `Model-reported confidence: ${change.confidence}% · ` : ''}Heuristic effort: {change.estimatedEffort ?? 'not estimated'}</p> : null}</div></details>
+  {change.proposedText && ['added', 'modified'].includes(change.changeType) ? <p className="v-muted mt-1"><strong>Proposed scope wording:</strong> {change.proposedText}</p> : null}
+  <details className="mt-2"><summary className="v-link cursor-pointer">{change.reviewRequired ? 'What to check' : 'Planning details'}</summary><div className="v-muted mt-2 space-y-1"><p>{change.recommendation}</p>{!change.reviewRequired ? <p>{change.confidence != null ? `Model-reported confidence: ${change.confidence}% · ` : ''}Per-change effort: {change.estimatedEffort == null ? 'not estimated separately' : `${change.estimatedEffort}h`}</p> : null}</div></details>
 </article>;

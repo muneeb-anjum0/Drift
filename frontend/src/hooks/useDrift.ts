@@ -26,6 +26,19 @@ export const useAnalyzeDrift = () =>
     mutationFn: (payload: Parameters<typeof driftApi.analyzeDrift>[0]) => driftApi.analyzeDrift(payload),
   });
 
+export const useStartScopeJob = () => useMutation({
+  mutationFn: (payload: Parameters<typeof driftApi.startScopeJob>[0]) => driftApi.startScopeJob(payload),
+});
+
+export const useCancelScopeJob = () => useMutation({ mutationFn: (jobId: string) => driftApi.cancelScopeJob(jobId) });
+
+export const useScopeJob = (jobId: string) => useQuery({
+  queryKey: ['scope-job', jobId],
+  queryFn: () => driftApi.getScopeJob(jobId),
+  enabled: Boolean(jobId),
+  refetchInterval: (query) => ['complete', 'failed', 'canceled'].includes(query.state.data?.status ?? '') ? false : 2000,
+});
+
 export const useAnalyzeDirectDrift = () =>
   useMutation({
     mutationFn: (payload: Parameters<typeof driftApi.analyzeDirect>[0]) => driftApi.analyzeDirect(payload),

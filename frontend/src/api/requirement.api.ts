@@ -33,6 +33,10 @@ export const requirementApi = {
     const response = await api.post<ApiResponse<{ version: RequirementVersion }>>('/requirements/baseline', payload);
     return response.data.data.version;
   },
+  includeApprovedChange: async (payload: { projectId: string; baseVersionId: string; changeRequestId: string }) => {
+    const response = await api.post<ApiResponse<{ version: RequirementVersion }>>('/requirements/include-approved', payload);
+    return response.data.data.version;
+  },
   getRequirementVersions: async (projectId: string) => {
     const response = await api.get<ApiResponse<{ versions: RequirementVersion[] }>>(`/requirements/versions/${projectId}`);
     return response.data.data.versions;

@@ -37,6 +37,17 @@ func TestChangeRequestDraftUsesGroupedParentChange(t *testing.T) {
 	}
 }
 
+func TestAIScopeDraftPreservesUnknownEffort(t *testing.T) {
+	a := drift.DriftAnalysis{Effort: &drift.ScopeEffortAssessment{Status: "not_estimable", Questions: []string{"Which billing system is used?"}}}
+	_, timeline, cost, _, _ := aiScopeDraftText(a)
+	if !strings.Contains(timeline, "cannot be estimated") || !strings.Contains(timeline, "billing system") || strings.Contains(timeline, "0 hour") {
+		t.Fatalf("unknown effort was turned into an estimate: %q", timeline)
+	}
+	if !strings.Contains(cost, "has not been estimated") {
+		t.Fatalf("cost should remain unknown: %q", cost)
+	}
+}
+
 func TestChangeRequestDraftFramesAmbiguousAsClarification(t *testing.T) {
 	hours := 4.0
 	changes := []drift.DetectedChange{{

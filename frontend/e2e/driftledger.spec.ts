@@ -41,7 +41,7 @@ test('first-run path creates project, scope item and snapshot without claiming a
   await page.getByRole('button', { name: 'Create scope snapshot' }).first().click();
   await expect(page.getByRole('dialog').getByText(/not a formal approval/i)).toBeVisible();
   await page.getByRole('dialog').getByRole('button', { name: 'Create scope snapshot', exact: true }).click();
-  await expect(page.getByText(/Scope snapshot #1 created/)).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Current scope · revision 1' })).toBeVisible();
 });
 
 test('model-unavailable state blocks comparison and does not fabricate saved results', async ({ page }) => {
@@ -140,19 +140,22 @@ test('synthetic provider setup flows through a proposed change and human decisio
   let savedAnalysis: Record<string, unknown> | null = null;
   let approvalStatus = 'draft';
   let savedRequest: Record<string, unknown> | null = null;
-  await page.route('**/api/v1/drift/analyze', (route) => {
-    const input = route.request().postDataJSON();
-    mockAnalyzed = true;
-    preview = {
-      previewId, projectId: input.projectId, baselineVersionId: input.baselineVersionId, baselineVersionNumber: 1,
-      inputType: 'client_message', inputText: input.inputText, driftScore: 45, riskLevel: 'medium',
-      summary: 'The client requested an additional report format.',
-      detectedChanges: [{ changeType: 'modified', title: 'Monthly reports', description: 'Add a PDF export option.', newText: input.inputText, oldText: 'Admins can export monthly reports.', impact: 'medium', confidence: 90, recommendation: 'Review the revised export format.' }],
-      requirementResults: [], addedCount: 0, modifiedCount: 1, removedCount: 0, ambiguousCount: 0, contradictionCount: 0,
-      estimatedExtraHours: 4, analysisEngine: 'openai_compatible',
-    };
-    return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'ok', data: { analysis: preview } }) });
+  await page.route('**/api/v1/drift/scope-jobs', (route) => {
+      const input = route.request().postDataJSON();
+      mockAnalyzed = true;
+      preview = {
+        previewId, projectId: input.projectId, baselineVersionId: input.baselineVersionId, baselineVersionNumber: 1,
+        inputType: 'client_message', inputText: input.inputText, driftScore: 45, cumulativeDriftScore: 45, riskLevel: 'medium',
+        summary: 'The client requested an additional report format.',
+        effort: { status: 'not_estimable', assumptions: [], questions: ['Which export system is used?'] },
+        scopePairs: [{ requirementId: 'monthly-reports', relation: 'modifies', explanation: 'The export format changes.' }],
+        detectedChanges: [{ changeType: 'modified', title: 'Monthly reports', description: 'Add a PDF export option.', newText: input.inputText, oldText: 'Admins can export monthly reports.', impact: 'medium', recommendation: 'Review the revised export format.' }],
+        requirementResults: [], addedCount: 0, modifiedCount: 1, removedCount: 0, ambiguousCount: 0, contradictionCount: 0,
+        estimatedExtraHours: 0, analysisEngine: 'openai_compatible', scopeSchemaVersion: 'scope-assessment-v1',
+      };
+      return route.fulfill({ status: 202, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'queued', data: { job: { id: 'd'.repeat(24), status: 'queued', processed: 0, total: 1, providerType: 'openai_compatible', modelName: 'mock-model' } } }) });
   });
+  await page.route('**/api/v1/drift/scope-jobs/*', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, message: 'complete', data: { job: { id: 'd'.repeat(24), status: 'complete', processed: 1, total: 1, providerType: 'openai_compatible', modelName: 'mock-model', result: preview } } }) }));
   await page.route('**/api/v1/drift/save', (route) => {
     expect(route.request().postDataJSON()).toEqual({ previewId });
     if (!preview || savedAnalysis) return route.fulfill({ status: 404, contentType: 'application/json', body: JSON.stringify({ message: 'Analysis preview is unavailable or already saved.' }) });

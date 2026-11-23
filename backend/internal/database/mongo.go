@@ -67,6 +67,8 @@ var expectedIndexes = []indexDefinition{
 	{"requirementversions", "project_1_versionNumber_-1", bson.D{{Key: "project", Value: 1}, {Key: "versionNumber", Value: -1}}, false, nil},
 	{"requirementversions", "project_version_unique", bson.D{{Key: "project", Value: 1}, {Key: "versionNumber", Value: 1}}, true, nil},
 	{"analysispreviews", "expiresAt_1", bson.D{{Key: "expiresAt", Value: 1}}, false, &previewExpirySeconds},
+	{"scopejobs", "status_1_createdAt_1", bson.D{{Key: "status", Value: 1}, {Key: "createdAt", Value: 1}}, false, nil},
+	{"scopejobs", "project_1_createdAt_-1", bson.D{{Key: "project", Value: 1}, {Key: "createdAt", Value: -1}}, false, nil},
 	{"driftanalyses", "project_1_createdAt_-1", bson.D{{Key: "project", Value: 1}, {Key: "createdAt", Value: -1}}, false, nil},
 	{"changerequests", "project_1_createdAt_-1", bson.D{{Key: "project", Value: 1}, {Key: "createdAt", Value: -1}}, false, nil},
 	{"files", "project_1_createdAt_-1", bson.D{{Key: "project", Value: 1}, {Key: "createdAt", Value: -1}}, false, nil},

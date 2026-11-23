@@ -7,12 +7,14 @@ import (
 )
 
 type ChangeRequestChange struct {
-	Title           string   `bson:"title" json:"title"`
-	Description     string   `bson:"description" json:"description"`
-	ChangeType      string   `bson:"changeType" json:"changeType"`
-	Impact          string   `bson:"impact" json:"impact"`
-	AffectedModules []string `bson:"affectedModules,omitempty" json:"affectedModules,omitempty"`
-	EstimatedEffort *float64 `bson:"estimatedEffort,omitempty" json:"estimatedEffort,omitempty"`
+	BaselineRequirementID string   `bson:"baselineRequirementId,omitempty" json:"baselineRequirementId,omitempty"`
+	Title                 string   `bson:"title" json:"title"`
+	Description           string   `bson:"description" json:"description"`
+	ProposedText          string   `bson:"proposedText,omitempty" json:"proposedText,omitempty"`
+	ChangeType            string   `bson:"changeType" json:"changeType"`
+	Impact                string   `bson:"impact" json:"impact"`
+	AffectedModules       []string `bson:"affectedModules,omitempty" json:"affectedModules,omitempty"`
+	EstimatedEffort       *float64 `bson:"estimatedEffort,omitempty" json:"estimatedEffort,omitempty"`
 }
 
 type ApprovalEvent struct {

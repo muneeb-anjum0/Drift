@@ -109,6 +109,50 @@ func (h Handler) Analyze(c *gin.Context) {
 	}
 	response.Success(c, http.StatusOK, "Drift analysis completed", gin.H{"analysis": out})
 }
+func (h Handler) StartScopeJob(c *gin.Context) {
+	var p AnalyzeRequest
+	if c.ShouldBindJSON(&p) != nil || h.validate.Struct(p) != nil || len(p.InputText) > 12000 {
+		response.Error(c, http.StatusBadRequest, "A project, current scope, and request of at most 12,000 characters are required", nil)
+		return
+	}
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
+	defer cancel()
+	job, err := h.service.StartScopeJob(ctx, middleware.CurrentUserID(c), p)
+	if err != nil {
+		h.err(c, err)
+		return
+	}
+	response.Success(c, http.StatusAccepted, "Scope comparison queued", gin.H{"job": job})
+}
+func (h Handler) GetScopeJob(c *gin.Context) {
+	id, err := utils.ObjectID(c.Param("jobId"))
+	if err != nil {
+		response.Error(c, http.StatusBadRequest, "Invalid job id", nil)
+		return
+	}
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
+	defer cancel()
+	job, err := h.service.GetScopeJob(ctx, middleware.CurrentUserID(c), id)
+	if err != nil {
+		h.err(c, err)
+		return
+	}
+	response.Success(c, http.StatusOK, "Scope comparison status", gin.H{"job": job})
+}
+func (h Handler) CancelScopeJob(c *gin.Context) {
+	id, err := utils.ObjectID(c.Param("jobId"))
+	if err != nil {
+		response.Error(c, http.StatusBadRequest, "Invalid job id", nil)
+		return
+	}
+	ctx, cancel := requestctx.WithTimeout(c.Request.Context())
+	defer cancel()
+	if err := h.service.CancelScopeJob(ctx, middleware.CurrentUserID(c), id); err != nil {
+		h.err(c, err)
+		return
+	}
+	response.Success(c, http.StatusOK, "Scope comparison canceled", gin.H{})
+}
 func (h Handler) Save(c *gin.Context) {
 	var p SaveRequest
 	c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, 1024)
@@ -177,6 +221,18 @@ func parseID(c *gin.Context, key string) (primitive.ObjectID, bool) {
 	return id, true
 }
 func (h Handler) err(c *gin.Context, err error) {
+	if errors.Is(err, ErrScopeRevisionStale) {
+		response.Error(c, http.StatusConflict, "Scope changed. Compare the request against the current revision.", nil)
+		return
+	}
+	if errors.Is(err, ErrIncompleteScopeAssessment) {
+		response.Error(c, http.StatusBadGateway, "The model did not assess every scope item with valid evidence. No analysis was saved.", nil)
+		return
+	}
+	if errors.Is(err, ErrScopeTooLarge) {
+		response.Error(c, http.StatusBadRequest, "This scope has more than 500 items. Divide it into smaller projects before comparing.", nil)
+		return
+	}
 	if errors.Is(err, ErrTooManyClientRequests) {
 		response.Error(c, http.StatusBadRequest, "Compare up to five client requests at a time", nil)
 		return

@@ -17,6 +17,8 @@ import (
 
 type Service struct{ db *mongo.Database }
 
+var ErrScopeFrozen = errors.New("the original scope is frozen; use an approved change request")
+
 func NewService(db *mongo.Database) Service { return Service{db: db} }
 
 func (s Service) Create(ctx context.Context, userID primitive.ObjectID, p CreateRequirementRequest) (Requirement, error) {
@@ -27,6 +29,9 @@ func (s Service) Create(ctx context.Context, userID primitive.ObjectID, p Create
 	project, err := authorization.RequireProjectCapability(ctx, s.db, projectID, userID, authorization.CapabilityWrite)
 	if err != nil {
 		return Requirement{}, err
+	}
+	if project.CurrentScopeVersion != nil {
+		return Requirement{}, ErrScopeFrozen
 	}
 	if p.WorkspaceID != "" && p.WorkspaceID != project.Workspace.Hex() {
 		return Requirement{}, utils.ErrForbidden
@@ -71,8 +76,12 @@ func (s Service) Update(ctx context.Context, id, userID primitive.ObjectID, p Up
 	if err != nil {
 		return req, err
 	}
-	if _, err := authorization.RequireProjectCapability(ctx, s.db, req.Project, userID, authorization.CapabilityWrite); err != nil {
+	project, err := authorization.RequireProjectCapability(ctx, s.db, req.Project, userID, authorization.CapabilityWrite)
+	if err != nil {
 		return req, err
+	}
+	if project.CurrentScopeVersion != nil {
+		return req, ErrScopeFrozen
 	}
 	update := bson.M{"updatedAt": time.Now().UTC(), "updatedBy": userID}
 	if p.Title != "" {
@@ -117,8 +126,12 @@ func (s Service) Delete(ctx context.Context, id, userID primitive.ObjectID) erro
 	if err != nil {
 		return err
 	}
-	if _, err := authorization.RequireProjectCapability(ctx, s.db, req.Project, userID, authorization.CapabilityWrite); err != nil {
+	project, err := authorization.RequireProjectCapability(ctx, s.db, req.Project, userID, authorization.CapabilityWrite)
+	if err != nil {
 		return err
+	}
+	if project.CurrentScopeVersion != nil {
+		return ErrScopeFrozen
 	}
 	_, err = s.db.Collection("requirements").DeleteOne(ctx, bson.M{"_id": id})
 	if err == nil {
@@ -135,6 +148,9 @@ func (s Service) Baseline(ctx context.Context, userID primitive.ObjectID, p Base
 	project, err := authorization.RequireProjectCapability(ctx, s.db, projectID, userID, authorization.CapabilityApprove)
 	if err != nil {
 		return RequirementVersion{}, err
+	}
+	if project.CurrentScopeVersion != nil {
+		return RequirementVersion{}, ErrScopeFrozen
 	}
 	reqs, err := s.ListByProject(ctx, projectID, userID)
 	if err != nil {
@@ -178,7 +194,18 @@ func (s Service) Baseline(ctx context.Context, userID primitive.ObjectID, p Base
 	if _, err = s.db.Collection("requirementversions").InsertOne(ctx, version); err != nil {
 		return version, err
 	}
+	// The first frozen snapshot becomes the starting comparison scope. Later
+	// snapshots do not silently replace revisions published from decisions.
+	updated, err := s.db.Collection("projects").UpdateOne(ctx, bson.M{"_id": projectID, "currentScopeVersion": bson.M{"$exists": false}}, bson.M{"$set": bson.M{"currentScopeVersion": version.ID}})
+	if err != nil || updated.MatchedCount != 1 {
+		_, _ = s.db.Collection("requirementversions").DeleteOne(ctx, bson.M{"_id": version.ID})
+		if err == nil {
+			err = ErrScopeFrozen
+		}
+		return version, err
+	}
 	if _, err = s.db.Collection("requirements").UpdateMany(ctx, bson.M{"project": projectID}, bson.M{"$set": bson.M{"isBaseline": true, "baselineVersion": versionNumber, "updatedAt": time.Now().UTC(), "updatedBy": userID}}); err != nil {
+		_, _ = s.db.Collection("projects").UpdateOne(ctx, bson.M{"_id": projectID, "currentScopeVersion": version.ID}, bson.M{"$unset": bson.M{"currentScopeVersion": ""}})
 		_, _ = s.db.Collection("requirementversions").DeleteOne(ctx, bson.M{"_id": version.ID})
 		return version, err
 	}

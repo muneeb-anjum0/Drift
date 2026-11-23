@@ -82,6 +82,7 @@ export const DriftHistory = ({
                         <p className="mt-1.5">{analysis.summary}</p>
                       </div>
                       <DetectedChangesList changes={analysis.detectedChanges} />
+                      {analysis.scopePairs?.length ? <details className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 text-xs"><summary className="cursor-pointer font-semibold">Full scope evidence · {analysis.scopePairs.length} requirements</summary><ol className="mt-3 max-h-80 space-y-2 overflow-y-auto">{analysis.scopePairs.map((pair) => <li key={pair.requirementId} className="border-t border-[var(--color-border)] pt-2"><strong>{pair.requirementId}</strong> · {pair.relation}<p className="mt-1">{pair.explanation}</p>{pair.oldQuote || pair.newQuote ? <p className="mt-1 text-[var(--color-text-muted)]">{pair.oldQuote ? `Scope: “${pair.oldQuote}”` : ''}{pair.oldQuote && pair.newQuote ? ' · ' : ''}{pair.newQuote ? `Request: “${pair.newQuote}”` : ''}</p> : null}</li>)}</ol></details> : null}
                       {canDelete ? <div className="flex justify-end">
                         <Button type="button" variant="danger" size="sm" onClick={() => onDelete(analysis)} disabled={isDeleting}>
                           <Trash2 className="mr-2 h-4 w-4" />
